@@ -1,0 +1,15 @@
+{% load static %}
+  <p>
+    <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
+
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select the type of contact to create
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="nav-item nav-link" href="{% url 'externaluser' %}">External User</a>
+        <a class="nav-item nav-link" href="{% url 'idapuser' %}">LDAP User</a>
+        <a class="nav-item nav-link" href="{% url 'itsmuser' %}">ITSM User</a>
+      </div>
+    </div>
+    </p>

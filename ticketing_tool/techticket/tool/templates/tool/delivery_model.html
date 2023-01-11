@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Creation of Delivery Model</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+     </head>
+
+<body>
+    <form>
+        <h2> Creation of a Delivery Model</h2>
+
+          Name: <input type = "text" name = "ch_name"/>
+          <br>
+         <br>
+
+          Organization: <input type = "text" name = "ch_organization"/><a href="{% url 'neworganization' %}"><br>
+            <span class="glyphicon glyphicon-plus-sign"></span> 
+          </a><br>
+
+          Description: <input type = "text" name = "ch_description" /><br>
+         <br>
+      <br>
+      <button class="btn btn-primary" type="submit">Create</button>
+      <input class="btn btn-primary" type="reset" value="Cancel">
+
+      <div>
+        {% for msg in messages %}
+            {{ msg }}
+        {% endfor %}     
+      </div>
+    
+</form>
+  
+</body>
+</html>
+  
+    

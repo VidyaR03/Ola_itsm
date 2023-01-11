@@ -1,0 +1,14 @@
+
+    
+    body{
+        background-color:rgb(212, 244, 248);
+    }
+    #overdue-tickets{ background-color: rgb(11, 107, 192);}
+    #open-tickets{ background-color: rgb(91, 167, 233);}
+    #new-and-my-open-tickets{ background-color: rgb(91, 167, 233);}
+    #tickets-on-hold{ background-color: rgb(91, 167, 233);}
+    #tickets-due-today{ background-color: rgb(91, 167, 233);}
+    #service-request{ background-color: rgb(91, 167, 233);}
+    #tickets-iam-watching{ background-color: rgb(91, 167, 233);}
+    #unassigned-tickets{ background-color: rgb(91, 167, 233);}
+    

@@ -1,0 +1,16 @@
+{% load static %}
+  <p>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select the type of contact to create
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="nav-item nav-link" href="{% url 'googlechat' %}">Googlechat Notification</a>
+        <a class="nav-item nav-link" href="{% url 'micronoti' %}">Microsoft Teams Notification </a>
+        <a class="nav-item nav-link" href="{% url 'rocketchat' %}">Rocket chat Notification</a>
+        <a class="nav-item nav-link" href="{% url 'slacknoti' %}">Slck Notification</a>
+        <a class="nav-item nav-link" href="{% url 'webhook' %}">Webhook Call</a>
+        <a class="nav-item nav-link" href="{% url 'itsmwebhook' %}">ITSM Webhook Call</a>
+      </div>
+    </div>
+    </p>

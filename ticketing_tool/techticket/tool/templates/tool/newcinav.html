@@ -1,0 +1,22 @@
+{% load static %}
+  <p>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select the type of Functional CI to create 
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="nav-item nav-link" href="{% url 'application' %}">Application Solution</a>
+        <a class="nav-item nav-link" href="{% url 'businessprocess' %}">Business Process</a>
+        <a class="nav-item nav-link" href="{% url 'newdb' %}">DB Server</a>
+        <a class="nav-item nav-link" href="{% url 'databaseschema' %}">Database Schema</a>
+        <a class="nav-item nav-link" href="{% url 'newmiddleware' %}">Middleware</a>
+        <a class="nav-item nav-link" href="{% url 'middlewareinstance' %}">Middleware Instance</a>
+        <a class="nav-item nav-link" href="{% url 'other_software' %}">Other Software</a>
+        <a class="nav-item nav-link" href="{% url 'pcsoftware' %}">PC Software</a>
+        <a class="nav-item nav-link" href="{% url 'webapplication' %}">Web Application</a>
+        <a class="nav-item nav-link" href="{% url 'webserver' %}">Web Server</a>
+        <a class="nav-item nav-link" href="{% url 'networkdevice' %}">Network Device</a>
+        <a class="nav-item nav-link" href="{% url 'server' %}">Server</a>
+      </div>
+    </div>
+    </p>
