@@ -8,7 +8,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "~/Downloads/ITSMn_All_Update_Done/ITSMn/ITSM/ticketingtool/ticketingtool/techticket/manage.py",
+            "program": "~/Desktop/Ola_Itsm/ticketing_tool/techticket/manage.py",
             "args": [
                 "runserver"
             ],
