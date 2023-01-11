@@ -1,0 +1,20 @@
+{% extends 'tool/main.html' %}
+
+{% block content %}
+
+<br>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{form}}
+    
+    <button class="btn btn-primary" type="submit">Create</button>
+    <input class="btn btn-primary" type="reset" value="Cancel">
+</form>
+<div>
+    {% for msg in messages %}
+        {{ msg }}
+    {% endfor %}    
+</div>
+
+{% endblock %}
