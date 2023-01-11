@@ -556,10 +556,11 @@ def assign_changeModal(request):
             nchange.ch_assign_agent = per.ch_person_firstname
             nchange.save()
         try:
-            subject = 'Welcome to DataFlair'
-            message = 'Hope you are enjoying your Django Tutorials'
-            recepient = 'ankushnarayanpure@gmail.com'
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [recepient], fail_silently = False)
+            subject = 'Welcome to Olatech Solutions'
+            message = 'Hope you are enjoying your Olatech Services'
+            sender = settings.EMAIL_HOST_USER
+            recepient = per.e_person_email
+            send_mail(subject, message, sender, [recepient], fail_silently = False)
         except:
             print('email not send')
 

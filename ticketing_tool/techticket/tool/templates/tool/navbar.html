@@ -1,10 +1,10 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg">
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    </button> -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup" style="color: wheat;">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="{% url 'home' %}">Dashboard</a>
         <a class="nav-item nav-link" href="{%  url 'configurationmanagement' %}">Configuration Management</a>
@@ -14,10 +14,9 @@
         <a class="nav-item nav-link" href="{% url 'admuser' %}">Administration</a>
         <a class="nav-item nav-link" href="{% url 'sysconfinav' %}">Configuration</a>
         <a class="nav-item nav-link" href="{% url 'new_organization' %}">Data Administration</a>
-       
       </div>
     </div>
-    <span>Hello,</span>
+    <span style="color: black; padding-right: 50px;">Hello, {{request.user}}</span>
     <span><a href="{% url 'logout' %}">Logout</a></span>
   </nav>
 
