@@ -18,7 +18,9 @@
   <script src="../../../static/js/demo.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static '/css/person.css' %}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 
+<body>
   <div class="container">
     <div class="row">
       <div class="text-right">
@@ -30,9 +32,6 @@
       </div>
     </div>
   </div>
-</head>
-
-<body>
   <div class="container" style="margin-top:30px;">
     <div class="row" style="margin-top: 5px;">
       <div class="col-xl-12">
@@ -108,14 +107,15 @@
   <!-- for addition of change -->
   <div id="addcl_New_changeModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="{% url 'cadd' %}" method="POST">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Add Change</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <!--start of left half -->
             <div class="form-group">
               <label>Organization<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
@@ -145,17 +145,20 @@
               <label>Title</label>
               <input name="ch_title" type="text" class="form-control">
             </div>
+          </div>
+
+          <div class="modal-body" style="width: 330px; display: inline-block;"><!--start of right half -->
             <div class="form-group">
               <label for="dt_start_date">Start Date</label>
-              <!-- <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" value="">
-              <span class="validity"></span> -->
-              <input class="form-control w-25" type="datetime-local" id="dt_start_date" name="dt_start_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
+              <input class="form-control w-25" type="datetime-local" id="dt_start_date" name="dt_start_date"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
             </div>
             <div class="form-group">
               <label for="dt_Updated_date">Updated Date</label>
               <!-- <input class="form-control" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date">
               <span class="validity"></span> -->
-              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
+              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
             </div>
             <div class="form-group">
               <label>Parent Change</label>
@@ -167,7 +170,7 @@
             </div>
             <div class="form-group">
               <label>Description</label>
-              <input name="txt_description" type="text" class="form-control">
+              <input name="txt_description" type="textarea" class="form-control">
             </div>
           </div>
           <div class="modal-footer">
@@ -183,14 +186,15 @@
   {% for i in nchange %}
   <div id="editcl_New_changeModal-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%;">
         <form action="/cupdate/{{i.id}}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Edit New Change</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <!--start of left half -->
             <div class="form-group">
               <label>ID</label>
               <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -217,6 +221,9 @@
               <label>Category</label>
               <input name="ch_category" value="{{i.ch_category}}" type="text" class="form-control" required>
             </div>
+            <br>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;"><!--start of right half -->
             <div class="form-group">
               <label>Title</label>
               <input name="ch_title" value="{{i.ch_title}}" type="text" class="form-control" required>
@@ -230,7 +237,8 @@
               <label for="bday">Last Updated Date</label>
               <!-- <input class="form-control" type="datetime-local" value="{{i.dt_Updated_date}}" name="dt_Updated_date">
               <span class="validity"></span> -->
-              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
             <div class="form-group">
               <label>Parent Change</label>
@@ -260,46 +268,46 @@
   <div id="assign_changeModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Assign Change</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <!-- <div class="form-group">
+        <div class="modal-header">
+          <h4 class="modal-title">Assign Change</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="form-group">
               <label>Selected change Ids are</label>
               <ol></ol>
             </div> -->
-            <!-- for team person from that team -->
-            <div class="form-group">
-              <label>Team</label>
-              <select name="ch_status" type="text" id="select_team" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option selected>Select Team to Assign Change</option>
-                {% for team in allteam %}
-                <option value="{{team.ch_teamname}}">{{team.ch_teamname}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <!-- for team person from that team -->
-            <div class="form-group">
-              <label>Person</label>
-              <select name="ch_status" id="select_person" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option selected>Select Person to Assign Change</option>
-                {% for person in team_person %}
-                <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
-                  {{person.ch_person_firstname}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="form-group">
-              <button type="submit" id="assign_btn" class="btn btn-primary">Update</button>
-              <!-- <input type="submit" class="btn btn-info" value="Update"> -->
-              <!-- <a href="{% url 'newchange' %}" id='task_assigned' class="btn btn-primary" onclick="assign_entries()" role="button">Assign</a> -->
-              <!-- <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"> -->
-              <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancle</a>
-            </div>
+          <!-- for team person from that team -->
+          <div class="form-group">
+            <label>Team</label>
+            <select name="ch_status" type="text" id="select_team" class="form-control"
+              aria-label="Default select example" aria-invalid="false">
+              <option selected>Select Team to Assign Change</option>
+              {% for team in allteam %}
+              <option value="{{team.ch_teamname}}">{{team.ch_teamname}}</option>
+              {% endfor %}
+            </select>
           </div>
+          <!-- for team person from that team -->
+          <div class="form-group">
+            <label>Person</label>
+            <select name="ch_status" id="select_person" type="text" class="form-control"
+              aria-label="Default select example" aria-invalid="false">
+              <option selected>Select Person to Assign Change</option>
+              {% for person in team_person %}
+              <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
+                {{person.ch_person_firstname}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" id="assign_btn" class="btn btn-primary">Update</button>
+            <!-- <input type="submit" class="btn btn-info" value="Update"> -->
+            <!-- <a href="{% url 'newchange' %}" id='task_assigned' class="btn btn-primary" onclick="assign_entries()" role="button">Assign</a> -->
+            <!-- <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"> -->
+            <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancle</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
