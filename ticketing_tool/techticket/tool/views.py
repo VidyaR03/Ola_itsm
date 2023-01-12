@@ -11,6 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import send_mail
 
+
+
+
+
+
+
     
 @login_required(login_url='/login_render/')
 def home(request):
@@ -54,6 +60,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'tool/register.html', context)
+
 
 
 def loginPage(request):
