@@ -94,8 +94,6 @@ def landingPage(request):
 #     context={'form':form}
 #     return render(request,'tool/client.html',context)
 
-# def service(request):
- #   return render(request,'tool/service.html')
 
 # def service(request):
 #     form=TeamForm()
