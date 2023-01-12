@@ -631,7 +631,7 @@ class cl_User_request(models.Model):
     ch_impact = models.CharField(max_length=100, null=True)
     ch_urgency = models.CharField(max_length=100, null=True)
     ch_priority = models.CharField(max_length=100, null=True)
-    dt_start_date = models.DateTimeField(auto_now=True)
+    dt_start_date = models.DateTimeField(auto_now=False)
     dt_end_date = models.DateTimeField(auto_now=True)
     dt_tto = models.CharField(max_length=10)
     dt_ttr = models.CharField(max_length=10)
@@ -640,7 +640,7 @@ class cl_User_request(models.Model):
     ch_parent_request = models.CharField(max_length=100, null=True)
     ch_parent_change = models.CharField(max_length=100, null=True)
     txt_description = models.TextField()
-    ch_agent = models.CharField(max_length=100, default='Deallocate')
+    ch_assign_agent = models.CharField(max_length=100, default='Deallocate')
 
     def __str__(self):
         return self.ch_status

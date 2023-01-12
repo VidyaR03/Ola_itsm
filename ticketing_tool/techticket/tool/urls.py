@@ -119,6 +119,8 @@ urlpatterns = [
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/<str:id>', views.UDelete, name='udelete'),
+    path('assign_userModal', views.assign_userModal, name='assign_userModal'),
+
     
     #URL For new middleware
     path("newmiddleware/", views.new_middleware, name='newmiddleware'),
