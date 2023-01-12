@@ -408,7 +408,7 @@ def TUpdate(request, id):
         id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_organization = request.POST.get('ch_organization')
         e_team_emailfield = request.POST.get('e_team_emailfield')
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
@@ -578,12 +578,10 @@ def assign_changeModal(request):
 def user_request(request):
     ur = cl_User_request.objects.all()
     if request.method == "GET":
-        allteam = cl_Team.objects.all()
-        team_person = cl_Person.objects.all()
-    q = request.GET.get('searchstatus')
-    if q != None:
-        ur = cl_User_request.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/userrequest.html', {'ur': ur , 'allteam' : allteam, 'team_person': team_person})
+        q = request.GET.get('searchstatus')
+        if q != None:
+            ur = cl_User_request.objects.filter(ch_status__icontains=q)
+    return render(request, 'tool/userrequest.html', {'ur': ur})
 
 
 @login_required(login_url='/login_render/')
@@ -606,8 +604,8 @@ def UADD(request):
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
-        dt_tto=request.POST.get('ch_tto_time')
-        dt_ttr=request.POST.get('ch_tto_time')
+        dt_tto=request.POST.get('ch_tto')
+        dt_ttr=request.POST.get('ch_tto')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
@@ -650,7 +648,7 @@ def UUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        fk_caller = cl_Person.objects.get(ch_person_firstname = request.POST.get('ch_Person'))
+        fk_caller = request.POST.get('fk_caller')
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -663,8 +661,8 @@ def UUpdate(request, id):
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
-        dt_tto = request.POST.get('ch_tto_time')
-        dt_ttr=request.POST.get('ch_tto_time')
+        dt_tto = request.POST.get('ch_tto')
+        dt_ttr=request.POST.get('ch_tto')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
@@ -701,32 +699,6 @@ def UDelete(request, id):
         'ur': ur,
     }
     return redirect('userrequest')
-
-def assign_userModal(request):
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')
-        p_Emp_id = request.POST.get('p')
-        print(list_id)
-        print(p_Emp_id)
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
-        for i in list_id:
-            ur = cl_User_request.objects.filter(id=i).first()
-            ur.ch_assign_agent = per.ch_person_firstname
-            ur.save()
-        try:
-            subject = 'Welcome to DataFlair'
-            message = 'Hope you are enjoying your Django Tutorials'
-            recepient = 'ankushnarayanpure@gmail.com'
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [recepient], fail_silently = False)
-        except:
-            print('email not send')
-
-        ur = cl_User_request.objects.all()
-        context = {
-            'ur': ur,
-        }
-    return render(request, 'tool/tassign.html', context)
-
 
 
 @login_required(login_url='/login_render/')

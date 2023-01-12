@@ -145,27 +145,18 @@
               <label>Title</label>
               <input name="ch_title" type="text" class="form-control">
             </div>
-
             <div class="form-group">
-              <label for="bday">Start Date</label>
-              <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" required
-               >
-              <span class="validity"></span>
-            </div>
-            <!-- <div class="form-group">
               <label for="dt_start_date">Start Date</label>
-               <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" value="">
-              <span class="validity"></span> 
+              <!-- <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" value="">
+              <span class="validity"></span> -->
               <input class="form-control w-25" type="datetime-local" id="dt_start_date" name="dt_start_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
-            </div> -->
-            Update Date : <input type="datetime-local" id='current_date' value="{% now 'Y-m-d'  %}"><br>
-
-            <!-- <div class="form-group">
-              <label for="dt_Updated_date">Updated Date</label> -->
+            </div>
+            <div class="form-group">
+              <label for="dt_Updated_date">Updated Date</label>
               <!-- <input class="form-control" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date">
               <span class="validity"></span> -->
-              <!-- <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
-            </div> -->
+              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
+            </div>
             <div class="form-group">
               <label>Parent Change</label>
               <input name="ch_parent_change" type="text" class="form-control">
@@ -231,22 +222,15 @@
               <input name="ch_title" value="{{i.ch_title}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-             
-                <label for="bday">Start Date</label>
-                <input class="form-control" type="datetime" value="{{i.dt_start_date|date:'Y-m-d H:i:s'}}" id="edit_dt_start_date" name="dt_start_date" required   >
-                <span class="validity"></span>
-            </div>
-              <!-- <label for="bday">Start Date : {{i.dt_start_date}}</label> -->
+              <label for="bday">Start Date : {{i.dt_start_date}}</label>
               <!-- <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" value="{{i.dt_start_date}}">
               <span class="validity"></span> -->
             </div>
             <div class="form-group">
-              Last Update Date : <input type="datetime" id='edit_current_date' value="{% now 'Y-m-d H:i:s'  %}"><br>
-
-              <!-- <label for="bday">Last Updated Date</label> -->
+              <label for="bday">Last Updated Date</label>
               <!-- <input class="form-control" type="datetime-local" value="{{i.dt_Updated_date}}" name="dt_Updated_date">
               <span class="validity"></span> -->
-              <!-- <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required> -->
+              <input class="form-control w-25" type="datetime-local" id="dt_Updated_date" name="dt_Updated_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
             <div class="form-group">
               <label>Parent Change</label>

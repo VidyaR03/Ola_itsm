@@ -37,7 +37,13 @@
             </div>
         </div>
     </div>
-
+    <!-- <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <h2><b>Creation of a new User Request</b></h2>
+                    </div> -->
     <div class="text-right">
         <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal"><i
                 class="material-icons">&#xE147;</i> <span>Add New User Request</span></a>
@@ -45,8 +51,6 @@
     <div class="text-right">
         <a href="#deletecl_User_requestModal" class="btn btn-danger" data-toggle="modal"><i
                 class="material-icons">delete</i> <span>Delete User Request</span></a>
-        <a href="#assign_userModal" class="btn btn-primary" data-toggle="modal"><span>Assign Change</span></a>
-
     </div>
     </div>
     </div>
@@ -71,7 +75,7 @@
                 <!-- <th>Priority</th> -->
                 <th>Start Date</th>
                 <th>Updated Date</th>
-                <th>TTO (In Hours)</th>
+                <th>TTO (In Days)</th>
                 <th>Service</th>
                 <!-- <th>Service Subcategory</th>
                         <th>Parent Request</th>
@@ -82,17 +86,14 @@
         </thead>
         <tbody>
             {% for i in ur %}
-            <tr id="{{i.id}}">
+            <tr>
                 <td>
-                    <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
-                  </td>
-                <!-- <td>
                     <span class="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1">
                         <label for="checkbox1"></label>
                     </span>
-                </td> -->
-                <td>{{i.id}}</td>
+                </td>
+                <td>{{i.id}}
                 <td>{{i.fk_organization}}</td>
                 <td>{{i.fk_caller}}</td>
                 <!-- <td>{{i.ch_status}}</td>
@@ -104,13 +105,13 @@
                 <!-- <td>{{i.ch_priority}}</td> -->
                 <td>{{i.dt_start_date}}</td>
                 <td>{{i.dt_end_date}}</td>
-                <td>{{i.dt_tto}}</td>
+                <td>{{i.dt_tto}}</td> 
                 <td>{{i.ch_service}}</td>
                 <!-- <td>{{i.ch_service_subcategory}}</td>
                         <td>{{i.ch_parent_request}}</td>
                         <td>{{i.ch_parent_change}}</td> -->
                 <td>{{i.txt_description}}</td>
-                <td>{{i.ch_assign_agent}}</td>
+                <td>{{i.ch_agent}}</td>
                 <td>
                     <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                             class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -154,8 +155,8 @@
                         </div>
                         <div class="form-group">
                             <label>Organization<a href="{% url 'new_organization' %}">
-                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                </a></label>
+                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                              </a></label>
                             <input name="ch_organization" type="text" required>
                         </div>
                         <div class="form-group">
@@ -241,16 +242,10 @@
                                 </option>
                             </select>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="bday">Start Date</label>
-                            <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date"
-                                required>
-                            <span class="validity"></span>
-                        </div> -->
                         <div class="form-group">
                             <label for="bday">Start Date</label>
-                            <input class="form-control" type="datetime-local" id="dt_start_date" name="dt_start_date" required
-                             >
+                            <input class="form-control" type="date" id="dt_start_date" onkeyup="tto_calculate()" name="dt_start_date" required
+                              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
                             <span class="validity"></span>
                           </div>
                         <!-- <div class="form-group">
@@ -265,7 +260,7 @@
                         <!-- pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"> -->
                         <!-- <span class="validity"></span>-->
                         <!-- </div>  -->
-                        Update Date : <input type="datetime-local" id='current_date' value="{% now 'Y-m-d '   %}"><br>
+                        Update Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
                         <!-- <div class="form-group">
                             <label for="end">End date:</label>
                             <input type="date" id="start" name="trip-end"
@@ -274,30 +269,29 @@
                         </div> -->
                         <div class="form-group">
                             <label>TTO</label>
-                            <input name="ch_tto_time" id="add_tto_time" type="text" value="">hr
-                            <input name="ch_tto" id="add_tto" type="text" value="">days
-                            <input name="ch_tto_month" id="add_tto_month" type="text" value="">month
+                            <input name="ch_tto" id="add_tto" type="text" value="" class="form-control">
+                            <input name="ch_tto_month" id="add_tto_month" type="text" value="" class="form-control">
 
                         </div>
                         <div class="form-group">
                             <label>Service</label>
-                            <input name="ch_service" type="text">
+                            <input name="ch_service" type="text" >
                         </div>
                         <div class="form-group">
                             <label>Service Subcategory</label>
-                            <input name="ch_service_subcategory" type="text">
+                            <input name="ch_service_subcategory" type="text" >
                         </div>
                         <div class="form-group">
                             <label>Parent Request</label>
-                            <input name="ch_parent_request" type="text">
+                            <input name="ch_parent_request" type="text" >
                         </div>
                         <div class="form-group">
                             <label>Parent Change</label>
-                            <input name="ch_parent_change" type="text">
+                            <input name="ch_parent_change" type="text" >
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input name="txt_description" type="text">
+                            <input name="txt_description" type="text" >
                         </div>
                         <div class="form-group">
                             <label>Agent</label>
@@ -330,12 +324,10 @@
                             <input name="id" type="text" value="{{i.id}}" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>Organization<a href="{% url 'new_organization' %}">
-                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                              </a></label>
-                            <input name="ch_organization"  value="{{i.fk_organization}}"  type="text" class="form-control" required />
-                          </div>
-
+                            <label>Organization</label>
+                            <input name="ch_organization" value="{{i.fk_organization}}" type="text" class="form-control"
+                                required>
+                        </div>
                         <div class="form-group">
                             <label>Caller</label>
                             <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
@@ -370,12 +362,12 @@
                         </div>
                         <div class="form-group">
                             <label>Title</label>
-                            <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" >
+                            <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Request Type</label>
                             <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control"
-                                >
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Impact</label>
@@ -428,27 +420,18 @@
                           
 
                         </div> -->
-
                         <div class="form-group">
                             <label for="bday">Start Date</label>
-                            <input class="form-control" type="datetime" value="{{i.dt_start_date|date:'Y-m-d H:i:s'}}" id="edit_dt_start_date" name="dt_start_date" required>
+                            <input class="form-control" type="date" value="{{i.dt_start_date|date:'Y-m-d'}}" id="dt_start_date" name="dt_start_date" required
+                              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
                             <span class="validity"></span>
-                        </div>
-                        <!-- <div class="form-group">
-                            <label for="bday">Start Date</label>
-                            <input class="form-control" type="datetime" value="{{i.dt_start_date|date:'Y-m-d h:m'}}"
-                                id="edit_dt_start_date" name="dt_start_date" required
-                                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                            <span class="validity"></span>
-                        </div> -->
+                          </div>
                         <!-- <div class="form-group">
                             <label for="end">Start date:</label>
                             <input type="date" id="start" name="start_date" value="2022-01-01" min="2022-01-01"
                                 max="2030-01-01">
                         </div> -->
-                        <!-- Update Date : <input type="datetime" id='edit_current_date' value="{% now 'Y-m-d h:m'   %}"><br> -->
-                        Update Date : <input type="datetime" id='edit_current_date' value="{% now 'Y-m-d H:i:s'  %}"><br>
-
+                        Update Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
 
                         <!-- <div class="form-group">
                             <label for="end">Update date:</label>
@@ -471,15 +454,8 @@
                         </div> -->
                         <div class="form-group">
                             <label>TTO</label>
-                            <input name="ch_tto_time" id="edit_tto_time" value="{{i.dt_tto}}"  type="text" >hr
-                            <input name="ch_tto" id="edit_tto" type="text" value="{{i.ch_tto}}" >days 
-                           <input name="ch_tto_month" id="edit_tto_month" type="text" value="" >month
-                     
-
-
-                            <!-- <input name="ch_tto_days" id="edit_tto_days" type="text" value="{{i.ch_tto_days}}"   class="form-control">
-                            <input name="ch_tto_time" id="edit_tto_time" type="text" value=""  class="form-control">
-                            <input name="ch_tto_month" id="edit_tto_month" type="text" value="" class="form-control"> -->
+                            <input name="ch_tto" id="add_tto" type="text" value="{{i.ch_tto}}" onkeyup="tto_calculate()"  class="form-control">
+                            <input name="ch_tto_month" id="add_tto_month" type="text" value="" class="form-control">
 
                         </div>
                         <!-- <div class="form-group">
@@ -488,27 +464,27 @@
                         </div> -->
                         <div class="form-group">
                             <label>Service</label>
-                            <input name="ch_service" type="text" value="{{i.ch_service}}" class="form-control" >
+                            <input name="ch_service" type="text" value="{{i.ch_service}}" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Service Subcategory</label>
                             <input name="ch_service_subcategory" type="text" value="{{i.ch_service_subcategory}}"
-                                class="form-control" >
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Parent Request</label>
                             <input name="ch_parent_request" type="text" value="{{i.ch_parent_request}}"
-                                class="form-control" >
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Parent Change</label>
                             <input name="ch_parent_change" type="text" value="{{i.ch_parent_change}}"
-                                class="form-control" >
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
                             <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control"
-                                >
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Agent</label>
@@ -547,261 +523,47 @@
         </div>
     </div>
     {% endfor %}
-
-    <!-- Assign Change form -->
-    <div id="assign_userModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Assign Change</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <!-- <div class="form-group">
-              <label>Selected change Ids are</label>
-              <ol></ol>
-            </div> -->
-                    <!-- for team person from that team -->
-                    <div class="form-group">
-                        <label>Team</label>
-                        <select name="ch_status" type="text" id="select_team" class="form-control"
-                            aria-label="Default select example" aria-invalid="false">
-                            <option selected>Select Team to Assign Change</option>
-                            {% for team in allteam %}
-                            <option value="{{team.ch_teamname}}">{{team.ch_teamname}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <!-- for team person from that team -->
-                    <div class="form-group">
-                        <label>Person</label>
-                        <select name="ch_status" id="select_person" type="text" class="form-control"
-                            aria-label="Default select example" aria-invalid="false">
-                            <option selected>Select Person to Assign Change</option>
-                            {% for person in team_person %}
-                            <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
-                                {{person.ch_person_firstname}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        Assign Date : <input type="datetime-local" id='assign_date' value="{% now 'Y-m-d'  %}"><br>
-
-                    </div>
-
-
-                    <div class="form-group">
-                        <button type="submit" id="assign_btn" class="btn btn-primary">Update</button>
-                        <!-- <input type="submit" class="btn btn-info" value="Update"> -->
-                        <!-- <a href="{% url 'newchange' %}" id='task_assigned' class="btn btn-primary" onclick="assign_entries()" role="button">Assign</a> -->
-                        <!-- <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"> -->
-                        <a href="{% url 'userrequest' %}" class="btn btn-default" role="button">Cancle</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-<!-- for delete change -->
-<script>
-    $(document).ready(function () {
-        $('#delete_btn').click(function () {
-            if (confirm('Are You Sure You Want to Delete User?')) {
-                var id = [];
-                var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function (i) {
-                    id[i] = $(this).val()
-
-                })
-                if (id.length === 0) {
-                    alert("please select user Which u want to delete?")
-                } else {
-                    console.log(id)
-                    $.ajax({
-                        url: "{% url 'cdelete' %}",
-                        method: "POST",
-                        data: {
-                            id,
-                            csrfmiddlewaretoken: csrf
-                        },
-                        success: function (response) {
-                            alert("success")
-                            location.reload();
-                            for (var i = 0; i < id.length; i++) {
-                                var error = $(response).find('#error_text')
-                                var error_class = $(error).attr('class')
-                                $('#error').addClass(error_class)
-                                $('#error').text(error.text())
-                                $('tr#' + id[i] + '').fadeOut('slow');
-                            }
-                        },
-                    })
-                }
-            }
-        })
-    })
-</script>
-
-<!-- for assign change -->
-<script>
-    $(document).ready(function () {
-        $('#assign_btn').click(function () {
-            if (confirm('Are You Sure You Want to Assign Change?')) {
-                var id = [];
-                var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function (i) {
-                    id[i] = $(this).val()
-                })
-                if (id.length === 0) {
-                    alert("please select Change Which u want to assign?")
-                } else {
-                    console.log(id)
-                    var p = document.getElementById('select_person').value
-                    $.ajax({
-                        url: "{% url 'assign_userModal' %}",
-                        method: "POST",
-                        data: {
-                            id,
-                            p,
-                            csrfmiddlewaretoken: csrf
-                        },
-                        success: function (response) {
-                            alert("success")
-                            location.reload();
-                            for (var i = 0; i < id.length; i++) {
-                                var error = $(response).find('#error_text')
-                                var error_class = $(error).attr('class')
-                                $('#error').addClass(error_class)
-                                $('#error').text(error.text())
-                                $('tr#' + id[i] + '').fadeOut('slow');
-                            }
-                        },
-                    })
-                }
-            }
-        })
-    })
-</script>
-
-<script>
-    $('#select-all').click(function (event) {
-        if (this.checked) {
-            // Iterate each checkbox
-            $(':checkbox').each(function () {
-                this.checked = true;
-
-            });
-        } else {
-            $(':checkbox').each(function () {
-                this.checked = false;
-            });
-        }
-    }); 
-</script>
-<!-- SLA calculate -->
-<script>
-    date = new Date();
-    year = date.getFullYear();
-    month = date.getMonth()+1;
-    day = date.getDate();
-    document.getElementById("assign_date").innerHTML.value = day + "/" + month + "/" + year;
-
-    var date3 = new Date(document.getElementById('assign_date').value);
-    
-
-    var add = new Date(date3.getDate());
-
-    console.log(add());
-
-
-</script>
-
-
-
-<!-- TO calculate TTO in Hours -->
-<script>
-
-    date = new Date();
-    year = date.getFullYear();
-    month = date.getMonth() + 1;
-    day = date.getDate();
-    document.getElementById("current_date").innerHTML.value = day + "/" + month + "/" + year;
-
-
-    var date1 = new Date(document.getElementById('dt_start_date').value);
-    var date2 = new Date(document.getElementById('current_date').value);
-    var diff = new Date(date2.getTime() - date1.getTime());
-    console.log(diff.getUTCDate() - 1); // Gives day count of difference
-    var tto_date = (diff.getUTCDate() - 1);
-    var tto_mon = (diff.getUTCMonth());
-    var tto_time = (diff.getUTCHours());
-
-    console.log(tto_mon)
-    document.getElementById("add_tto_time").value = tto_time; //For time
-    document.getElementById("add_tto_time").innerText = tto_time; //For time
-    document.getElementById("add_tto").value = tto_date;// For days
-    document.getElementById("add_tto").innerText = tto_date;// For Days
-    document.getElementById("add_tto_month").value = tto_mon; //For month
-    document.getElementById("add_tto_month").innerText = tto_mon; //For Month
-
-
-    // document.getElementById("edit_tto").value = tto_date; 
-    // document.getElementById("edit_tto").innerText = tto_date;
-    // document.getElementById("edit_tto_time").value = tto_time; 
-    // document.getElementById("edit_tto_time").innerText = tto_time;
-
-
-
-
-
-    var add_btn = document.getElementById("add_tto_time")
-    console.log(add_btn)
-    add_btn.addEventListener("click", function () {
-        console.log(document.getElementById('dt_start_date').value)
-        console.log(document.getElementById('current_date').value)
-        var date1 = new Date(document.getElementById('dt_start_date').value);
-        var date2 = new Date(document.getElementById('current_date').value);
-        var diff = new Date(date2.getTime() - date1.getTime());
-        console.log(diff.getUTCDate() - 1); // Gives day count of difference
-        var tto_date = (diff.getUTCDate() - 1);
-        var tto_mon = (diff.getUTCMonth());
-        var tto_time = (diff.getUTCHours());
-
-        document.getElementById("add_tto").value = tto_date;
-        document.getElementById("add_tto").innerText = tto_date;
-        document.getElementById("add_tto_month").value = tto_mon;
-        document.getElementById("add_tto_month").innerText = tto_mon;
-        document.getElementById("add_tto_time").value = tto_time;
-        document.getElementById("add_tto_time").innerText = tto_time;
-    })
-
-
-    // var edit_btn = document.getElementById("edit_tto_time")
  
-        // var edit_btn = document.getElementById("edit_tto_time")
-        var edit_btn = document.getElementById("edit_tto_time")
 
-        console.log(edit_btn)
-        edit_btn.addEventListener("click", function () {
-            console.log(document.getElementById('edit_dt_start_date').value)
-            console.log(document.getElementById('edit_current_date').value)
 
-            var date1 = new Date(document.getElementById('edit_dt_start_date').value);
-            var date2 = new Date(document.getElementById('edit_current_date').value);
+
+    <script>
+
+        date = new Date();
+        year = date.getFullYear();
+        month = date.getMonth() + 1;
+        day = date.getDate();
+        document.getElementById("current_date").innerHTML.value = day + "/" + month + "/" + year;
+
+
+            var date1 = new Date(document.getElementById('dt_start_date').value);
+            var date2 = new Date(document.getElementById('current_date').value);
             var diff = new Date(date2.getTime() - date1.getTime());
-            // console.log(diff.getUTCDate() - 1); // Gives day count of difference
-            var tto_date1 = (diff.getUTCDate() - 1);
-            console.log(tto_date1)
-            var tto_mon1 = (diff.getUTCMonth());
-            console.log(tto_mon1)
-            var tto_time1 = (diff.getUTCHours());
-            console.log(tto_time1)
-            document.getElementById("edit_tto_days").value = tto_date1;
-            document.getElementById("edit_tto_days").innerText = tto_date1;
-            document.getElementById("edit_tto_month").value = tto_mon1;
-            document.getElementById("edit_tto_month").innerText = tto_mon1;
-            document.getElementById("edit_tto_time").value = tto_time1;
-            document.getElementById("edit_tto_time").innerText = tto_time1;
+            console.log(diff.getUTCDate() - 1); // Gives day count of difference
+            var tto_date = (diff.getUTCDate() - 1);
+            var tto_mon = (diff.getUTCMonth());
+            console.log(tto_mon)
+            document.getElementById("add_tto").value = tto_date;
+            document.getElementById("add_tto").innerText = tto_date;
+            document.getElementById("add_tto_month").value = tto_mon;
+            document.getElementById("add_tto_month").innerText = tto_mon;
+            
+
+
+
+        var add_btn = document.getElementById("add_tto")
+        console.log(add_btn)
+        add_btn.addEventListener("click", function () {
+            var date1 = new Date(document.getElementById('dt_start_date').value);
+            var date2 = new Date(document.getElementById('current_date').value);
+            var diff = new Date(date2.getTime() - date1.getTime());
+            console.log(diff.getUTCDate() - 1); // Gives day count of difference
+            var tto_date = (diff.getUTCDate() - 1);
+            var tto_mon = (diff.getUTCMonth());
+            document.getElementById("add_tto").value = tto_date;
+            document.getElementById("add_tto").innerText = tto_date;
+            document.getElementById("add_tto_month").value = tto_mon;
+            document.getElementById("add_tto_month").innerText = tto_mon;
         })
 
         // function diff() {
@@ -817,7 +579,7 @@
         //     // TTO=[];
         //     // for(var i; i<intervals.length; i++){ // var d=diff[intervals[i]]; var d=d<10? '0' +d : d; // TTO.push(d + '' +
         //     intervals[i]); // } // document.getElementById("TTO").innerHTML=TTO.join("") } // setInterval(diff, 1000);
-</script>
+    </script>
 </body>
 
 
