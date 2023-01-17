@@ -8,6 +8,12 @@ from django.db import models
 import uuid
 from datetime import datetime
 from django.db.models import Max
+from django.db.models import Max
+from django.conf import settings
+import os
+
+from django.core.files.storage import FileSystemStorage
+
 
 
 class cl_New_organization(models.Model):
@@ -25,27 +31,43 @@ class cl_New_organization(models.Model):
         db_table = 'cl_New_organization'
 
 
+class cl_Software(models.Model):
+    """This models creates table for Software"""
+    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    ch_sofname = models.CharField(max_length=100, null=True)
+    ch_vendor = models.CharField(max_length=100, null=True)
+    chversion = models.CharField(max_length=100, null=True)
+    ch_type = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.ch_sofname
+
+    class Meta:
+        db_table = 'cl_Software'
+
+
+
 class cl_Web_server(models.Model):
     """Models which create the table for Web Server"""
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_wsname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
     ch_system = models.CharField(max_length=100, null=True)
     ch_path = models.CharField(max_length=100, null=True)
-    ch_software = models.CharField(max_length=100, null=True)
+    ch_software = models.ForeignKey(cl_Software, on_delete=models.CASCADE, null=True, blank=True)
     ch_software_license = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
-
+        return self.ch_wsname
+ 
     class Meta:
         db_table = 'cl_Web_server'
 
+############ Brand #############
 
 class cl_Brand(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -57,6 +79,7 @@ class cl_Brand(models.Model):
     class Meta:
         db_table = 'cl_Brand'
 
+######## Netwok type #########
 
 class cl_network_type(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -68,6 +91,8 @@ class cl_network_type(models.Model):
     class Meta:
         db_table = 'cl_network_type'
 
+
+######### ISO Version #########
 
 class cl_ios_version(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -82,6 +107,9 @@ class cl_ios_version(models.Model):
         db_table = 'cl_ios_version'
 
 
+
+########## Model #######
+
 class cl_model(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
     ch_modelname = models.CharField(max_length=100, null=True)
@@ -94,6 +122,7 @@ class cl_model(models.Model):
     class Meta:
         db_table = 'cl_model'
 
+##### Os Family ####
 
 class cl_os_family(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -105,6 +134,8 @@ class cl_os_family(models.Model):
     class Meta:
         db_table = 'cl_os_family'
 
+
+##### OS_Version ####3
 
 class cl_os_version(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -118,6 +149,8 @@ class cl_os_version(models.Model):
     class Meta:
         db_table = 'cl_os_version'
 
+######## ServiceFamilies ########        
+
 class cl_Servicefamilies(models.Model):
     """Models which create the table for Provider Contract"""
     id = models.CharField(primary_key=True, editable=False, max_length=10)
@@ -130,8 +163,7 @@ class cl_Servicefamilies(models.Model):
     class Meta:
         db_table = 'cl_Servicefamilies'
 
-# class cl_provider(models.Model):
-#     id = models.CharField(primary_key=True, editable=False, max_length=10)
+######### OS License #############
 
 
 class cl_os_license(models.Model):
@@ -159,21 +191,13 @@ class cl_Team(models.Model):
     """
     Models Which create a table for team
     """
-    # id = models.AutoField(primary_key=True)
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
-
-    def save(self, **kwargs):
-        if not self.id:
-            max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
-            self.id = "{}{:05s}".format('R', max if max is not None else 1)
-        super().save(*kwargs)
-
-    # print(id)
-
-    # tid = models.CharField(max_length=17,unique=True, editable=False)
+   
+class cl_Team(models.Model):
+    """
+    Models Which create a table for team
+    """
     ch_teamname = models.CharField(max_length=100, null=True)
     ch_teamstatus = models.CharField(max_length=100, null=True)
-    # ch_organization = models.CharField(max_length=100,null=True)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     e_team_emailfield = models.EmailField(null=True)
@@ -182,62 +206,20 @@ class cl_Team(models.Model):
     ch_team_function = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_teamname
+        return self.ch_organization
 
     class Meta:
         db_table = 'cl_Team'
 
-    # return new_help_id
 
-    # def inid():
-    #     lid=cl_Team.objects.filter(id=id)
-    #     print(lid)
-
-    #     if not lid:
-    #         return 'R-'+'0000'
-
-    #     t_id=lid.tid
-    #     hin=t_id[:5]
-    #     n_int=int(hin)+1
-    #     n_id='R-'+str(n_int).zfill(4)
-    #     return n_id
-    # print(inid)
-
-    # def increment_helpdesk_number():
-    #     last_helpdesk = cl_Team.objects.all().order_by('id').last()
-
-    #     if not last_helpdesk:
-    #         return 'R-'+'0000'
-
-   # help_id = last_helpdesk.help_num
-   # help_int = help_id[13:17]
-    #new_help_int = int(help_int) + 1
-    #new_help_id = 'HEL-' + str(datetime.now().strftime('%Y%m%d-')) + str(new_help_int).zfill(4)
-
-    # return new_help_id
-    # ticket_id = models.CharField(max_length=17, unique=True, default=increment_helpdesk_number, editable=False, blank=True)
-    # id = models.AutoField(primary_key=True)
-    # def build_id(self, id):
-    #     Rid='R'+'-'+str(id)
-    #     return (Rid)
-
-    # ticket_id = models.CharField(max_length=15, default=(build_id(None, id)))
-
-    # def save(self, **kwargs):
-    #     if not self.id:
-    #         max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
-    #         self.id = "{:05d}".format('R', max if max is not None else 1)
-    #     super().save(*kwargs
 
 
 class cl_Person(models.Model):
     """Models which create table for Person Information"""
     ch_person_firstname = models.CharField(max_length=100, null=True)
     ch_person_lastname = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    ch_team = models.ForeignKey(
-        cl_Team, on_delete=models.CASCADE, null=True, blank=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_team = models.ForeignKey(cl_Team, on_delete=models.CASCADE, null=True, blank=True)
     ch_person_status = models.CharField(max_length=100, null=True)
     ch_person_location = models.CharField(max_length=100, null=True)
     ch_person_function = models.CharField(max_length=100, null=True)
@@ -256,11 +238,11 @@ class cl_Person(models.Model):
 
 class cl_Location(models.Model):
     """This model create table for details of location"""
-    id = models.AutoField(primary_key=True, editable=False)
+
 
     ch_location_name = models.CharField(max_length=100, null=True)
     txt_address = models.TextField(null=True)
-    ch_owner_organization = models.ForeignKey(
+    ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_city = models.CharField(max_length=100, null=True)
     i_pincode = models.IntegerField()
@@ -268,11 +250,10 @@ class cl_Location(models.Model):
     ch_status = models.CharField(max_length=100, default='active')
 
     def __str__(self):
-        return self.name
+        return self.ch_location_name
 
     class Meta:
         db_table = 'cl_Location'
-
 
 class tassign(models.Model):
     ch_teamname = models.ForeignKey(cl_Team, on_delete=models.CASCADE)
@@ -282,8 +263,8 @@ class tassign(models.Model):
 
 class cl_Document(models.Model):
     """This model creates table for to insert information about documentation """
-    id = models.AutoField(primary_key=True, editable=False)
-
+   
+ 
     id = models.AutoField(primary_key=True, editable=False)
     ch_name = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
@@ -293,7 +274,13 @@ class cl_Document(models.Model):
     """ Create here Disable Document type  """
     txt_text = models.TextField(null=True)
     url_URL = models.URLField(null=True)
-    ch_File = models.CharField(max_length=100, null=True)
+    disc_Attachment = models.FileField(upload_to="")
+
+  
+
+    def delete(self, filename, *args, **kwargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.qr_code.name))
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.ch_name
@@ -302,19 +289,8 @@ class cl_Document(models.Model):
         db_table = 'cl_Document'
 
 
-class cl_Software(models.Model):
-    """This models creates table for Software"""
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_vendor = models.CharField(max_length=100, null=True)
-    chversion = models.CharField(max_length=100, null=True)
-    ch_type = models.CharField(max_length=100, null=True)
+########## Application Solution ############
 
-    def __str__(self):
-        return self.ch_name
-
-    class Meta:
-        db_table = 'cl_Software'
 
 
 class cl_Application_solution(models.Model):
@@ -322,10 +298,9 @@ class cl_Application_solution(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
 
     ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_organization = models.ForeignKey( cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
@@ -333,6 +308,10 @@ class cl_Application_solution(models.Model):
 
     class Meta:
         db_table = 'cl_Application_solution'
+
+
+  ####### Service ############      
+
 
 class cl_Service(models.Model):
     """Models which create the table for Service"""
@@ -353,6 +332,8 @@ class cl_Service(models.Model):
         db_table = 'cl_Service'
 
 
+######## Delivery Model #######
+
 class cl_Delivery_model(models.Model):
     """Models which create table for Delivery Model"""
     id = models.AutoField(primary_key=True, editable=False)
@@ -369,18 +350,6 @@ class cl_Delivery_model(models.Model):
         db_table = 'cl_Delivery_model'
 
 
-# class cl_Delivery_model(models.Model):
-#     ch_name = models.CharField(max_length=50, null=True)
-#     ch_organization = models.ForeignKey(
-#         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-#     ch_description = models.TextField()
-
-#     def __str__(self):
-#         return self.name
-
-#     class Meta:
-#         db_table = 'cl_Delivery_model'
-
 
 class cl_Business_process(models.Model):
     """Models which creates table for Business Process"""
@@ -390,7 +359,7 @@ class cl_Business_process(models.Model):
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=50, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
@@ -404,11 +373,10 @@ class cl_Newdb_server(models.Model):
     """ ivEdit which creates table for New db Server"""
     id = models.AutoField(primary_key=True, editable=False)
     ch_dbname = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=50, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     ch_software = models.CharField(max_length=100, null=True)
     ch_software_license = models.CharField(max_length=100, null=True)
     ch_system = models.CharField(max_length=100, null=True)
@@ -425,16 +393,15 @@ class cl_Newdb_server(models.Model):
 class cl_Database_schema(models.Model):
     """Models which create the table for Database Schema """
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    ch_db_server = models.CharField(max_length=100, null=True)
+    ch_dsname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_db_server = models.ForeignKey(cl_Newdb_server, on_delete=models.CASCADE, null=True, blank=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_dsname
 
     class Meta:
         db_table = 'cl_Database_schema'
@@ -443,175 +410,168 @@ class cl_Database_schema(models.Model):
 class cl_New_middleware(models.Model):
     """Models which create the table for New Middleware"""
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_midname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey( cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=50, null=True)
     ch_system = models.CharField(max_length=100, null=True)
-    ch_software = models.CharField(max_length=100, null=True)
+    ch_software = models.ForeignKey( cl_Software, on_delete=models.CASCADE, null=True, blank=True)
     ch_software_license = models.CharField(max_length=100, null=True)
     ch_path = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_midname
 
     class Meta:
         db_table = 'cl_New_middleware'
 
 
+############ Middleware Instance #########
+
 class cl_Middleware_instance(models.Model):
     """Models which creates the table for Middleware Instance """
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    ch_middleware = models.CharField(max_length=100, null=True)
+    ch_miname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_middleware =  models.ForeignKey(cl_New_middleware, on_delete=models.CASCADE, null=True, blank=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_miname
 
     class Meta:
         db_table = 'cl_Middleware_instance'
 
 
+####### Network Device #########
+
 class cl_Network_device(models.Model):
     """Models which create table for Network Device"""
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_ndname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
     ch_location = models.CharField(max_length=100, null=True)
-    ch_network_type = models.ForeignKey(
-        cl_network_type, on_delete=models.CASCADE, null=True, blank=True)
-    ch_brand = models.ForeignKey(
-        cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
-    ch_model = models.ForeignKey(
-        cl_model, on_delete=models.CASCADE, null=True, blank=True)
-    i_os_version = models.ForeignKey(
-        cl_ios_version, on_delete=models.CASCADE, null=True, blank=True)
+    ch_network_type = models.ForeignKey(cl_network_type, on_delete=models.CASCADE, null=True, blank=True)
+    ch_brand = models.ForeignKey(cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
+    ch_model = models.ForeignKey(cl_model, on_delete=models.CASCADE, null=True, blank=True)
+    i_ios_version = models.ForeignKey( cl_ios_version, on_delete=models.CASCADE, null=True, blank=True)
     i_management_ip = models.IntegerField()
     ch_ram = models.CharField(max_length=100, null=True)
     i_rack_unit = models.IntegerField()
     i_serial_number = models.IntegerField()
     i_asset_number = models.IntegerField()
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
-    dt_purchase_date = models.DateTimeField(auto_now=False, auto_now_add=False)
-    dt_end_of_warranty = models.DateField(default=datetime)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
+    dt_purchase_date = models.DateTimeField(auto_now=False)
+    dt_end_of_warranty = models.DateField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_ndname
 
     class Meta:
         db_table = 'cl_Network_device'
 
 
+########## Other Softwar ##########
+
 class cl_Other_software(models.Model):
     """Modles which create the table for Other Software"""
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_osname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
     ch_system = models.CharField(max_length=100, null=True)
     ch_path = models.CharField(max_length=100, null=True)
-    ch_software = models.CharField(max_length=100, null=True)
+    ch_software = models.ForeignKey( cl_Software, on_delete=models.CASCADE, null=True, blank=True)
     ch_software_license = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_osname
 
     class Meta:
         db_table = 'cl_Other_software'
 
+######### Web Application ##########
 
 class cl_Web_application(models.Model):
     """Models which create the table for Web Application """
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    ch_webserver = models.ForeignKey(
-        cl_Web_server, on_delete=models.CASCADE, null=True, blank=True)
+    ch_waname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_webserver = models.ForeignKey(cl_Web_server, on_delete=models.CASCADE, null=True, blank=True)
     url_website = models.URLField(max_length=200)
     ch_business_criticality = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_waname
 
     class Meta:
         db_table = 'cl_Web_application'
 
 
+############# Server #############
+
 class cl_Server(models.Model):
     """ Models which create the table for Server"""
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_sname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
     ch_location = models.CharField(max_length=100, null=True)
-    ch_os_family = models.ForeignKey(
-        cl_os_family, on_delete=models.CASCADE, null=True, blank=True)
-    ch_brand = models.ForeignKey(
-        cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
-    ch_model = models.ForeignKey(
-        cl_model, on_delete=models.CASCADE, null=True, blank=True)
-    i_os_version = models.ForeignKey(
-        cl_os_version, on_delete=models.CASCADE, null=True, blank=True)
+    ch_os_family = models.ForeignKey(cl_os_family, on_delete=models.CASCADE, null=True, blank=True)
+    ch_brand = models.ForeignKey(cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
+    ch_model = models.ForeignKey( cl_model, on_delete=models.CASCADE, null=True, blank=True)
+    i_os_version = models.ForeignKey(cl_os_version, on_delete=models.CASCADE, null=True, blank=True)
     i_management_ip = models.IntegerField()
-    i_os_license = models.ForeignKey(
-        cl_os_license, on_delete=models.CASCADE, null=True, blank=True)
+    i_os_license = models.ForeignKey(cl_os_license, on_delete=models.CASCADE, null=True, blank=True)
     ch_ram = models.CharField(max_length=100, null=True)
     ch_cpu = models.CharField(max_length=100, null=True)
     i_rack_unit = models.IntegerField()
     i_serial_number = models.IntegerField()
     i_asset_number = models.IntegerField()
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
-    dt_purchase_date = models.DateTimeField(auto_now=True)
-    dt_end_of_warranty = models.DateTimeField(
-        auto_now=False, auto_now_add=False)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
+    dt_purchase_date = models.DateTimeField(auto_now=False)
+    dt_end_of_warranty = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_sname
 
     class Meta:
         db_table = 'cl_Server'
 
 
+########### PC Software ###########
+
 class cl_Pc_software(models.Model):
     """Models Which create the table for PC Software """
     id = models.AutoField(primary_key=True, editable=False)
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    ch_pcname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_business_criticality = models.CharField(max_length=100, null=True)
     ch_system = models.CharField(max_length=100, null=True)
     ch_path = models.CharField(max_length=100, null=True)
-    ch_software = models.CharField(max_length=100, null=True)
+    ch_software = models.ForeignKey( cl_Software, on_delete=models.CASCADE, null=True, blank=True)
     ch_software_license = models.CharField(max_length=100, null=True)
     ch_path = models.CharField(max_length=100, null=True)
-    dt_move_to_production_date = models.DateTimeField(auto_now=True)
+    dt_move_to_production_date = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_pcname
 
     class Meta:
         db_table = 'cl_Pc_software'
@@ -694,6 +654,7 @@ class cl_Customer_contract(models.Model):
 
     class Meta:
         db_table = 'cl_Customer_contract'
+
 
 
 class cl_Providercontract(models.Model):
@@ -1069,3 +1030,17 @@ class cl_Itsmwebhook(models.Model):
 
     class Meta:
         db_table = 'cl_Itsmwebhook'
+
+
+
+class CSV_import(models.Model):
+    disc_Attachment = models.FileField(upload_to="")
+
+    
+    def delete(self, filename, *args, **kwargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.qr_code.name))
+        super().delete(*args, **kwargs)
+
+    class Meta:
+        db_table = 'CSV_import'
+     
