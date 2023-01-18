@@ -48,8 +48,10 @@
     </div>
         <div class="text-right">
               <a href="#addcl_PersonModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Person</span></a>
+              <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+
             </div>
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="table">
                 <thead>
                     <tr>
                       <th>
@@ -73,14 +75,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                  {% csrf_token %}
                   {% for i in per %}
-                  <tr>
+                  <tr id="{{i.id}}">
+
                     <td>
-                      <span class="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                        <label for="checkbox1"></label>
-                        </span>
-                      </td>
+                      <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+                    </td>
                       <td>{{i.ch_person_firstname}}</td>
                       <td>{{i.ch_person_lastname}}</td>
                       <td>{{i.ch_organization}}</td>
@@ -95,7 +96,7 @@
                       <td>{{i.ch_person_mobilenumber}}</td>
                     <td>
                       <a href="#editcl_PersonModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deletecl_PersonModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                      <!-- <a href="#deletecl_PersonModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> -->
                     </td>
                   </tr>
                   {% endfor %}
@@ -122,13 +123,15 @@
               </div>
               <div class="form-group">
                 <label>Organization<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span> 
-                </a></label>
-                <input name="ch_organization" type="text" class="form-control"  required>
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_organization" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Team</label>
-                <input name="ch_team" type="text" class="form-control"  required>
+                <label>Team<a href="{% url 'team' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_team" type="text" class="form-control" required>
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -196,12 +199,16 @@
               <input name="ch_person_lastname" value="{{i.ch_person_lastname}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Organization</label>
+              <label>Organization<a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
               <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Team</label>
-              <input name="ch_team" value="{{i.ch_team}}" type="text" class="form-control"  required>
+              <label>Team<a href="{% url 'team' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_team"  value="{{i.ch_team}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Status</label>
@@ -248,54 +255,63 @@
     </div>
   </div>
     {% endfor %}
-  <!-- Delete Modal HTML -->
-    {% for i in per %}
-  <div id="deletecl_PersonModal-{{forloop.counter}}" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-          <div class="modal-header">
-            <h4 class="modal-title">Delete </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete these Records?</p>
-            <p class="text-warning"><small>{{i.firstname}} Information are delete?</small></p>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <a href="/delete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-    {% endfor %}
+  
 </body>
 <script>
-    $(document).ready(function(){
-  // Activate tooltip
-  $('[data-toggle="tooltip"]').tooltip();
-  // Select/Deselect checkboxes
-  var checkbox = $('table tbody input[type="checkbox"]');
-  $("#selectAll").click(function(){
-    if(this.checked){
-      checkbox.each(function(){
+  $(document).ready(function () {
+    $('#delete_btn').click(function () {
+      if (confirm('Are You Sure You Want to Delete User?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+
+        })
+        if (id.length === 0) {
+          alert("please select user Which u want to delete?")
+        } else {
+          console.log(id)
+          $.ajax({
+            url: "{% url 'delete' %}",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf
+            },
+            success: function (response) {
+              alert("success")
+              location.reload();
+              for (var i = 0; i < id.length; i++) {
+                var error = $(response).find('#error_text')
+                var error_class = $(error).attr('class')
+                $('#error').addClass(error_class)
+                $('#error').text(error.text())
+                $('tr#' + id[i] + '').fadeOut('slow');
+              }
+            },
+          })
+        }
+      }
+    })
+  })
+   
+</script>
+<script>
+  $('#select-all').click(function (event) {
+    if (this.checked) {
+      // Iterate each checkbox
+      $(':checkbox').each(function () {
         this.checked = true;
+
       });
-    } else{
-      checkbox.each(function(){
+    } else {
+      $(':checkbox').each(function () {
         this.checked = false;
       });
     }
-  });
-  checkbox.click(function(){
-    if(!this.checked){
-      $("#selectAll").prop("checked", false);
-    }
-  });
-});
+  }); 
 </script>
+
 </html>
 
 
