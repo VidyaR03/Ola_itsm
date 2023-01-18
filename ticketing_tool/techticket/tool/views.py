@@ -25,11 +25,13 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
+from django.utils import timezone
+from datetime import *
 from django.contrib.auth.decorators import login_required
 
 
     
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def home(request):
     # print(request.COOKIES['sessionid'])
     return render(request, 'tool/dashboard.html')
@@ -841,7 +843,7 @@ def newchange(request):
 @login_required(login_url='/login_render/')
 def CADD(request):
     if request.method == "POST":
-        print('organization :',request.POST.get('ch_organization'))
+        # print('organization :',request.POST.get('ch_organization'))
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
         ch_caller = request.POST.get('ch_caller')
         ch_status = request.POST.get('ch_status')
@@ -863,7 +865,6 @@ def CADD(request):
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description = txt_description,
-            
         )
         nchange.save()
         return redirect('newchange')
@@ -964,40 +965,50 @@ def assign_changeModal(request):
 
 @login_required(login_url='/login_render/')
 def user_request(request):
-    ur = cl_User_request.objects.all()
     if request.method == "GET":
+        ur = cl_User_request.objects.all()
         q = request.GET.get('searchstatus')
         if q != None:
             ur = cl_User_request.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/userrequest.html', {'ur': ur})
+        escalated_ur = escalation(ur)
+
+        context = {
+            'ur': ur,
+            'escalated_ur': escalated_ur
+            }
+        return render(request, 'tool/userrequest.html', context)
+
+def escalation(ur):
+    escalated_ur = []
+    for req in ur:
+        if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_agent == 'Deallocate':
+            escalated_ur.append(req)
+        elif datetime.date(req.dt_escalation_date) == datetime.date(datetime.now()) and datetime.time(req.dt_escalation_date) < datetime.time(datetime.now()):
+            escalated_ur.append(req)
+    return escalated_ur
 
 
 @login_required(login_url='/login_render/')
 def UADD(request):
     if request.method == "POST":
-        id = request.POST.get('id')
-        print(id)
         fk_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
         fk_caller = cl_Person.objects.get(ch_person_firstname = request.POST.get('ch_Person'))
-        # fk_caller = request.POST.get('ch_Person')
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
         ch_request_type = request.POST.get('ch_request_type')
         ch_impact = request.POST.get('ch_impact')
         ch_urgency = request.POST.get('ch_urgency')
-        ch_priority = request.POST.get('ch_priority')
+        ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
-        dt_end_date = request.POST.get('dt_end_date')
+        dt_updated_date = request.POST.get('dt_updated_date')
+        dt_escalation_date = request.POST.get('dt_escalation_date')
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
-        dt_tto=request.POST.get('ch_tto')
-        dt_ttr=request.POST.get('ch_tto')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
-            id=id,
             fk_organization=fk_organization,
             fk_caller=fk_caller,
             ch_status=ch_status,
@@ -1008,17 +1019,15 @@ def UADD(request):
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
             dt_start_date =dt_start_date,
-            dt_end_date =dt_end_date,
+            dt_updated_date =dt_updated_date,
+            dt_escalation_date = dt_escalation_date,
             ch_service =ch_service,
             ch_service_subcategory =ch_service_subcategory,
             ch_parent_request=ch_parent_request,
-            dt_tto=dt_tto,
-            dt_ttr=dt_ttr,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
         )
         ur.save()
-        print(ur)
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html')
 
@@ -1049,8 +1058,8 @@ def UUpdate(request, id):
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
-        dt_tto = request.POST.get('ch_tto')
-        dt_ttr=request.POST.get('ch_tto')
+        # dt_tto = request.POST.get('ch_tto')
+        # dt_ttr=request.POST.get('ch_tto')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
@@ -1069,13 +1078,13 @@ def UUpdate(request, id):
             ch_service =ch_service,
             ch_service_subcategory =ch_service_subcategory,
             ch_parent_request=ch_parent_request,
-            dt_tto=dt_tto,
-            dt_ttr=dt_ttr,
+            # dt_tto=dt_tto,
+            # dt_ttr=dt_ttr,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
         )
         ur.save()
-        print(ur)
+        # print(ur)
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html')
 
@@ -1088,6 +1097,14 @@ def UDelete(request, id):
     }
     return redirect('userrequest')
 
+
+@login_required(login_url='/login_render/')
+def escalate_notify(request):
+    ur = cl_User_request.objects.all()
+    return render(request, 'tool/userrequest.html', {'ur': ur})
+
+
+#######################################################
 
 @login_required(login_url='/login_render/')
 def customer_contract(request):
@@ -1219,18 +1236,11 @@ def provider_contract(request):
 @login_required(login_url='/login_render/')
 def SPADD(request):
     if request.method == "POST":
-        # print('o_id = ',org_id)        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-
-        # ch_organization = org_id
-        # print('organization :',request.POST.get('ch_organization'))
-        # id = request.POST.get('id')
-
         ch_pname = request.POST.get('ch_pname')
         ch_customer = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
         ch_pcprovider =  cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')

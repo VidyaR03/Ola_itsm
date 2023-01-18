@@ -90,6 +90,7 @@ urlpatterns = [
     path('dbAdd', views.dbAdd, name='dbAdd'),
     path('dbEdit', views.dbEdit, name='dbEdit'),
     path('dbUpdate/<str:id>', views.dbUpdate, name='dbUpdate'),
+
     path('dbDelete/', views.dbDelete, name='dbDelete'),
     
    
@@ -102,6 +103,7 @@ urlpatterns = [
     path('DSADD', views.DSADD, name='DSADD'),
     path('DSEdit', views.DSEdit, name='DSEdit'),
     path('DSUpdate/<str:id>', views.DSUpdate, name='DSUpdate'),
+
     path('DSDelete/', views.DSDelete, name='DSDelete'),
     
    
@@ -114,9 +116,6 @@ urlpatterns = [
     path('pcUpdate/<str:id>', views.pcUpdate, name='pcUpdate'),
     path('pcDelete/', views.pcDelete, name='pcDelete'),
     
-
-
-
     
     # URL for Incident Management
     path("userrequest/", views.user_request, name='userrequest'),
@@ -124,6 +123,8 @@ urlpatterns = [
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/<str:id>', views.UDelete, name='udelete'),
+    path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+
     
     #URL For new middleware
     path("newmiddleware/", views.new_middleware, name='newmiddleware'),
