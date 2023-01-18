@@ -1,24 +1,35 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect
-from tool.models import cl_Location, cl_Service
+from django.http import HttpResponse
+from tool.models import cl_Location, cl_Service, cl_Software
 from django.contrib.auth import authenticate, login, logout
+import random
+import datetime
+import time
+from django.http import JsonResponse
 from tool.models import cl_New_organization
 from django.db.models import Q
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from tool.modules.configurationmanagement.ConfigurationManagement import *
-from django.contrib.auth.decorators import login_required
-from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import View
+from django.template.loader import get_template
+# from django.views import View
+from xhtml2pdf import pisa
+from django.core.exceptions import BadRequest
+from django.http import FileResponse
+from django.shortcuts import render
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
 from django.core.mail import send_mail
-
-
-
-
-
+from django.contrib.auth.decorators import login_required
 
 
     
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def home(request):
     # print(request.COOKIES['sessionid'])
     return render(request, 'tool/dashboard.html')
@@ -83,53 +94,188 @@ def landingPage(request):
    return render(request,'tool/login.html')
 
 
-# def client(request):
-#     form=PersonForm()
-#     if request.method=='POST':
-#         form=PersonForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
 
-#     context={'form':form}
-#     return render(request,'tool/client.html',context)
+# @login_required(login_url='/login_render/')
 
 
-# def service(request):
-#     form=TeamForm()
+def document(request):
+    doc = cl_Document.objects.all()
+    for entry in doc:
+        if entry.disc_Attachment == 'annonymous.pdf':
+            entry.disc_Attachment = 'No File'
+    
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            doc = cl_Document.objects.filter(ch_name__icontains=q)        
+    context = {
+        'doc': doc,
+    }
+    return render(request, 'tool/document.html', context)
 
-#     if request.method=='POST':
-#         form=TeamForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/service.html', context)
+
+def DocAdd(request):
+    if request.method == "POST":
+        # id = request.POST.get('id')
+        ch_name = request.POST.get('ch_name')
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=request.POST.get('ch_organization'))
+        ch_version = request.POST.get('ch_version')
+        txt_description = request.POST.get('txt_description')
+        txt_text = request.POST.get('txt_text')
+        url_URL = request.POST.get('url_URL')
+        try:
+            Attachment = request.FILES['disc_Attachment']
+        except:
+            Attachment = 'annonymous.pdf'
+        doc = cl_Document(
+            # id=id,
+            ch_name=ch_name,
+            ch_organization=ch_organization,
+            ch_version=ch_version,
+            txt_description=txt_description,
+            txt_text=txt_text,
+            url_URL=url_URL,
+            disc_Attachment = Attachment
+        )
+        doc.save()
+        return redirect('document')
+    return render(request, 'tool/document.html')
 
 
-# def client (request):
-#     """
-#     fetching data using json
-#     """
-#     data=list(cl_Person.objects.values())
-#     return JsonResponse(data,safe=False)
+def DocEdit(request,id):
+    doc = cl_Document.objects.filter(id=id).first()
+    context = {
+        'doc': doc,
+    }
+    return render(request, 'tool/document.html', context)
 
-@login_required(login_url='/login_render/')
+def DocUpdate(request, id):
+    if request.method == "POST":
+        discl = cl_Document.objects.filter(id = id).first()
+        attachment_name = request.POST.get('disc_Attachment')
+        if discl.disc_Attachment == attachment_name:
+            # id = request.POST.get('id')
+            ch_name = request.POST.get('ch_name')
+            ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+            ch_version = request.POST.get('ch_version')
+            txt_description = request.POST.get('txt_description')
+            txt_text = request.POST.get('txt_text')
+            url_URL = request.POST.get('url_URL')
+      
+            doc = cl_Document(
+                id=id,
+                ch_name=ch_name,
+                ch_organization=ch_organization,
+                ch_version=ch_version,
+                txt_description=txt_description,
+                txt_text=txt_text,
+                url_URL=url_URL,
+                disc_Attachment = attachment_name,
+        
+            )
+            doc.save()
+            return redirect('document')
+        # return render(request, 'tool/document.html')
+
+        else:
+            ch_name=request.POST.get('ch_name')
+            ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+            ch_version=request.POST.get('ch_version')
+            txt_description=request.POST.get('txt_description')
+            txt_text=request.POST.get('txt_text')
+            url_URL=request.POST.get('url_URL')
+            try:
+                Attachment = request.FILES['disc_Attachment']
+            except:
+                Attachment = 'annonymous.pdf'
+            doc = cl_Document(
+                id = id,
+                ch_name=ch_name,
+                ch_organization=ch_organization,
+                ch_version=ch_version,
+                txt_description=txt_description,
+                txt_text=txt_text,
+                url_URL=url_URL,
+                disc_Attachment = Attachment,
+            )
+            doc.save()
+            return redirect('document')
+    return render(request, 'tool/document.html')
+
+
+def DocDelete(request,id):
+    doc = cl_Document.objects.filter(id=id)
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            doc = cl_Document.objects.filter(id=i).first()
+            doc.delete()
+    doc.delete()
+    context = {
+        'doc': doc,
+    }
+    return redirect('document')
+
+
+def DeleteAttachedPDF(request,id):
+    print('function called')
+    id = request.GET['id']
+    doc = cl_Document.objects.filter(id = id).first()
+    file_to_delete = str(doc.disc_Attachment)
+    media_path = settings.MEDIA_ROOT
+    file_path = os.path.join(media_path, file_to_delete)
+    print(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return HttpResponse(request, 'tool/document.html')
+    else:
+        return HttpResponse(request, 'tool/document.html')
+
+
+
+def render_to_pdf(template_src, context_dict={}):
+	template = get_template(template_src)
+	html  = template.render(context_dict)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None
+
+
+
+
+class ViewAttachedPDF(View):
+	def get(self, request, path):
+            media_path = settings.MEDIA_ROOT
+            file_path = os.path.join(media_path, path)
+            print(file_path)
+            return FileResponse(open(file_path, 'rb'), content_type='application/')
+
+
+
+############## Location ##########
+
 def Location(request):
     loc = cl_Location.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            org = cl_New_organization.objects.filter(ch_location_name__icontains=q)
 
     context = {
         'loc': loc,
     }
     return render(request, 'tool/location.html', context)
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def LADD(request):
     if request.method == "POST":
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        print('organization :',ch_organization)
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
@@ -138,7 +284,7 @@ def LADD(request):
         loc = cl_Location(
             ch_location_name=ch_location_name,
             txt_address=txt_address,
-            ch_owner_organization=ch_organization,
+            ch_organization=ch_organization,
             ch_city=ch_city,
             i_pincode=i_pincode,
             ch_country=ch_country,
@@ -148,7 +294,7 @@ def LADD(request):
         return redirect('location')
     return render(request, 'tool/location.html')
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def LEdit(request):
     loc = cl_Location.objects.all()
     context = {
@@ -156,12 +302,12 @@ def LEdit(request):
     }
     return render(request, 'tool/location.html', context)
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def LUpdate(request, id):
     if request.method == "POST":
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
-        ch_owner_organization = request.POST.get('ch_owner_organization')
+        ch_organization = request.POST.get('ch_owner_organization')
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
@@ -171,7 +317,7 @@ def LUpdate(request, id):
             id=id,
             ch_location_name=ch_location_name,
             txt_address=txt_address,
-            ch_owner_organization=ch_owner_organization,
+            ch_organization=ch_organization,
             ch_city=ch_city,
             i_pincode=i_pincode,
             ch_country=ch_country,
@@ -181,10 +327,14 @@ def LUpdate(request, id):
         return redirect('location')
     return redirect(request, 'tool/location.html')
 
-@login_required(login_url='/login_render/')
-def LDelete(request, id):
-    loc = cl_Location.objects.filter(id=id)
-    loc.delete()
+# @login_required(login_url='/login_render/')
+def LDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            loc = cl_Location.objects.filter(id=i).first()
+            loc.delete()
     context = {
         'loc': loc,
     }
@@ -192,7 +342,9 @@ def LDelete(request, id):
 
 
 
-@login_required(login_url='/login_render/')
+
+
+# @login_required(login_url='/login_render/')
 def new_organization(request):
     org = cl_New_organization.objects.all()
     if request.method == "GET":
@@ -201,7 +353,7 @@ def new_organization(request):
             org = cl_New_organization.objects.filter(ch_name__icontains=q)
     return render(request, 'tool/neworganization.html', {'org': org})
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def OrgADD(request):
     if request.method == "POST":
         ch_name = request.POST.get('ch_name')
@@ -221,7 +373,7 @@ def OrgADD(request):
         return redirect('new_organization')
     return render(request, 'tool/neworganization.html')
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def OrgEdit(request):
     org = cl_New_organization.objects.all()
     context = {
@@ -229,7 +381,7 @@ def OrgEdit(request):
     }
     return render(request, 'tool/neworganization.html', context)
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def OrgUpdate(request):
     if request.method == "POST":
         ch_name = request.POST.get('ch_name')
@@ -250,7 +402,7 @@ def OrgUpdate(request):
         return redirect('new_organization')
     return render(request, 'tool/neworganization.html')
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def OrgDelete(request):
     org = cl_New_organization.objects.filter()
     org.delete()
@@ -268,27 +420,20 @@ def client(request):
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
     return render(request, 'tool/client.html', {'per': per})
 
-# def client(request):
-#     per=cl_Person.objects.all()
 
-#     context={
-#         'per':per,
-#     }
-#     return render(request,'tool/client.html',context)
-
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def ADD(request):
     if request.method == "POST":
-        ch_person_firstname = str.capitalize(request.POST.get('ch_person_firstname'))
-        ch_person_lastname = str.capitalize(request.POST.get('ch_person_lastname'))
-        ch_organization = cl_New_organization.objects.get(ch_name = str.capitalize(request.POST.get('ch_organization')))
-        ch_team = cl_Team.objects.get(ch_teamname = str.capitalize(request.POST.get('ch_team')))
-        ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
-        ch_person_location = str.capitalize(request.POST.get('ch_person_location'))
-        ch_person_function = str.capitalize(request.POST.get('ch_person_function'))
-        ch_manager = str.capitalize(request.POST.get('ch_manager'))
-        ch_employee_number = str.upper(request.POST.get('ch_employee_number'))
-        e_person_email = str.lower(request.POST.get('e_person_email'))
+        ch_person_firstname = (request.POST.get('ch_person_firstname'))
+        ch_person_lastname = (request.POST.get('ch_person_lastname'))
+        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_team = cl_Team.objects.get(ch_teamname = (request.POST.get('ch_team')))
+        ch_person_status = (request.POST.get('ch_person_status'))
+        ch_person_location = (request.POST.get('ch_person_location'))
+        ch_person_function = (request.POST.get('ch_person_function'))
+        ch_manager = (request.POST.get('ch_manager'))
+        ch_employee_number = (request.POST.get('ch_employee_number'))
+        e_person_email = (request.POST.get('e_person_email'))
         ch_person_phone = request.POST.get('ch_person_phone')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
 
@@ -310,7 +455,7 @@ def ADD(request):
         return redirect('client')
     return render(request, 'tool/client.html')
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def Edit(request):
     per = cl_Person.objects.all()
     context = {
@@ -318,12 +463,15 @@ def Edit(request):
     }
     return render(request, 'tool/client.html', context)
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def Update(request, id):
     if request.method == "POST":
+        id = request.POST.get('id')
+
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = request.POST.get('ch_organization')
+        ch_team = request.POST.get('ch_team')
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -334,9 +482,12 @@ def Update(request, id):
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
 
         per = cl_Person(
+            id=id,
             ch_person_firstname=ch_person_firstname,
             ch_person_lastname=ch_person_lastname,
             ch_organization=ch_organization,
+             ch_team=ch_team,
+
             ch_person_status=ch_person_status,
             ch_person_location=ch_person_location,
             ch_person_function=ch_person_function,
@@ -350,20 +501,247 @@ def Update(request, id):
         return redirect('client')
     return render(request, 'tool/client.html')
 
-@login_required(login_url='/login_render/')
-def Delete(request, id):
-    per = cl_Person.objects.filter(id=id)
-    per.delete()
+# @login_required(login_url='/login_render/')
+def Delete(request):
+   if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            per = cl_Person.objects.filter(id=i).first()
+            per.delete()
+            context = {
+                'per': per,
+            }
+        return redirect('client')
+
+
+def document(request):
+    doc = cl_Document.objects.all()
+    for entry in doc:
+        if entry.disc_Attachment == 'annonymous.pdf':
+            entry.disc_Attachment = 'No File'
+    
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            doc = cl_Document.objects.filter(ch_name__icontains=q)        
     context = {
-        'per': per,
+        'doc': doc,
     }
-    return redirect('client')
+    return render(request, 'tool/document.html', context)
+
+def DocAdd(request):
+    if request.method == "POST":
+        # id = request.POST.get('id')
+        ch_name = request.POST.get('ch_name')
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=request.POST.get('ch_organization'))
+        ch_version = request.POST.get('ch_version')
+        txt_description = request.POST.get('txt_description')
+        txt_text = request.POST.get('txt_text')
+        url_URL = request.POST.get('url_URL')
+        try:
+            Attachment = request.FILES['disc_Attachment']
+        except:
+            Attachment = 'annonymous.pdf'
+        doc = cl_Document(
+            # id=id,
+            ch_name=ch_name,
+            ch_organization=ch_organization,
+            ch_version=ch_version,
+            txt_description=txt_description,
+            txt_text=txt_text,
+            url_URL=url_URL,
+            disc_Attachment = Attachment
+        )
+        doc.save()
+        return redirect('document')
+    return render(request, 'tool/document.html')
 
 
-#############################################
+def DocEdit(request,id):
+    doc = cl_Document.objects.filter(id=id).first()
+    context = {
+        'doc': doc,
+    }
+    return render(request, 'tool/document.html', context)
+
+def DocUpdate(request, id):
+    if request.method == "POST":
+        discl = cl_Document.objects.filter(id = id).first()
+        attachment_name = request.POST.get('disc_Attachment')
+        if discl.disc_Attachment == attachment_name:
+            # id = request.POST.get('id')
+            ch_name = request.POST.get('ch_name')
+            ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+            ch_version = request.POST.get('ch_version')
+            txt_description = request.POST.get('txt_description')
+            txt_text = request.POST.get('txt_text')
+            url_URL = request.POST.get('url_URL')
+      
+            doc = cl_Document(
+                id=id,
+                ch_name=ch_name,
+                ch_organization=ch_organization,
+                ch_version=ch_version,
+                txt_description=txt_description,
+                txt_text=txt_text,
+                url_URL=url_URL,
+                disc_Attachment = attachment_name,
+        
+            )
+            doc.save()
+            return redirect('document')
+        # return render(request, 'tool/document.html')
+
+        else:
+            ch_name=request.POST.get('ch_name')
+            ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+            ch_version=request.POST.get('ch_version')
+            txt_description=request.POST.get('txt_description')
+            txt_text=request.POST.get('txt_text')
+            url_URL=request.POST.get('url_URL')
+            try:
+                Attachment = request.FILES['disc_Attachment']
+            except:
+                Attachment = 'annonymous.pdf'
+            doc = cl_Document(
+                id = id,
+                ch_name=ch_name,
+                ch_organization=ch_organization,
+                ch_version=ch_version,
+                txt_description=txt_description,
+                txt_text=txt_text,
+                url_URL=url_URL,
+                disc_Attachment = Attachment,
+            )
+            doc.save()
+            return redirect('document')
+    return render(request, 'tool/document.html')
 
 
-@login_required(login_url='/login_render/')
+def DocDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            doc = cl_Document.objects.filter(id=i)
+            doc.delete()
+    context = {
+        'doc': doc,
+    }
+    return redirect('document')
+
+
+def DeleteAttachedPDF(request,id):
+    print('function called')
+    id = request.GET['id']
+    doc = cl_Document.objects.filter(id = id).first()
+    file_to_delete = str(doc.disc_Attachment)
+    media_path = settings.MEDIA_ROOT
+    file_path = os.path.join(media_path, file_to_delete)
+    print(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return HttpResponse(request, 'tool/document.html')
+    else:
+        return HttpResponse(request, 'tool/document.html')
+
+
+
+def render_to_pdf(template_src, context_dict={}):
+	template = get_template(template_src)
+	html  = template.render(context_dict)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None
+
+
+
+###################  Software #####################
+
+
+def software(request):
+    soft = cl_Software.objects.all()
+   
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            soft = cl_Software.objects.filter(ch_teamname__icontains=q)
+        return render(request, 'tool/software.html', {'soft': soft})
+
+
+def softAdd(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_sofname = request.POST.get('ch_sofname')
+        # ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        # print('organization :',ch_organization)
+        ch_vendor = request.POST.get('ch_vendor')
+        chversion = request.POST.get('chversion')
+        ch_type = request.POST.get('ch_type')
+        soft = cl_Software(
+            id=id,
+            ch_sofname=ch_sofname,
+            ch_vendor=ch_vendor,
+            chversion=chversion,
+            ch_type=ch_type,
+        )
+        soft.save()
+        return redirect('software')
+    return render(request, 'tool/software.html')
+
+
+def softEdit(request):
+    soft = cl_Software.objects.all()
+    context = {
+        'soft': soft,
+    }
+    return render(request, 'tool/software.html', context)
+
+
+def softUpdate(request, id):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_sofname = request.POST.get('ch_sofname')
+        ch_vendor = request.POST.get('ch_vendor')
+        chversion = request.POST.get('chversion')
+        ch_type = request.POST.get('ch_type')
+        soft = cl_Software(
+            id=id,
+            ch_sofname=ch_sofname,
+            ch_vendor=ch_vendor,
+            chversion=chversion,
+            ch_type=ch_type,
+        )
+        soft.save()
+        return redirect('software')
+    return redirect(request, 'tool/software.html')
+
+
+def softDelete(request):
+   if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            soft = cl_Software.objects.filter(id=i).first()
+            soft.delete()
+            context = {
+                'soft': soft,
+            }
+        return redirect('software')
+
+
+
+
+
+
+################### Team     ######################
+
+
+# @login_required(login_url='/login_render/')
 def team(request):
     tem = cl_Team.objects.all()
     if request.method == "GET":
@@ -372,11 +750,12 @@ def team(request):
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
     return render(request, 'tool/service.html', {'tem': tem})
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def TADD(request):
     if request.method == "POST":
-        id = request.POST.get('id')
-        print(id)
+        # id = request.POST.get('id')
+        print('organization :',request.POST.get('ch_organization'))
+
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
@@ -385,7 +764,7 @@ def TADD(request):
         b_team_notification = request.POST.get('b_team_notification')
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
-            id=id,
+
             ch_teamname=ch_teamname,
             ch_teamstatus=ch_teamstatus,
             ch_organization=ch_organization,
@@ -395,11 +774,10 @@ def TADD(request):
             ch_team_function=ch_team_function,
         )
         tem.save()
-        print(tem)
         return redirect('team')
     return render(request, 'tool/service.html')
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def TEdit(request):
     tem = cl_Team.objects.all()
     context = {
@@ -407,13 +785,13 @@ def TEdit(request):
     }
     return render(request, 'tool/service.html', context)
 
-@login_required(login_url='/login_render/')
+# @login_required(login_url='/login_render/')
 def TUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = request.POST.get('ch_organization')
+        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
         e_team_emailfield = request.POST.get('e_team_emailfield')
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
@@ -432,17 +810,22 @@ def TUpdate(request, id):
         return redirect('team')
     return render(request, 'tool/service.html')
 
-@login_required(login_url='/login_render/')
-def TDelete(request, id):
-    tem = cl_Team.objects.filter(id=id)
-    tem.delete()
-    context = {
-        'tem': tem,
-    }
-    return redirect('team')
+# @login_required(login_url='/login_render/')
+def TDelete(request):
+   if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            tem = cl_Team.objects.filter(id=i).first()
+            tem.delete()
+            context = {
+                'tem': tem,
+            }
+        return redirect('team')
 
 
-################################################
+ 
+################### New channge   #############################
 
 @login_required(login_url='/login_render/')
 def newchange(request):
@@ -1603,3 +1986,103 @@ def itsmwebhook(request):
             messages.success(request, 'Data Add Successfully')
     context = {'form': form}
     return render(request, 'tool/itsmwebhook.html', context)
+
+ ############ CSV ###############
+
+
+def csvimport(request):
+    """
+    It is view function for the additon of new users
+    """
+    if request.method == "POST":
+        # disc_Attachment = request.POST.get('disc_Attachment')
+        
+        try:
+            Attachment = request.FILES['disc_Attachment']
+        except:
+            Attachment = 'annonymous.pdf'
+
+        csv = CSV_import(
+            
+            disc_Attachment = Attachment
+        )
+        csv.save()
+        return redirect('csvimport')
+    return render(request, 'tool/add_file1.html')
+
+
+
+
+
+
+def csv_edit(request, id):
+    csv = CSV_import.objects.filter(Id = id).first
+    context = {
+        'csv': csv,
+    }
+    return render(request, 'tool/edit_file.html', context)    
+
+
+   
+def csv_update(request, id):
+    """
+    It is view function for the additon of new users
+    """
+    if request.method == "POST":
+        discl = CSV_import.objects.filter(Id = id).first()
+        attachment_name = request.POST.get('disc_Attachment')
+        if discl.disc_Attachment == attachment_name:
+            
+
+            csv = CSV_import(
+                Id=id,
+                 disc_Attachment = attachment_name
+               
+        
+            )
+            csv.save()
+            return redirect('csvimport')
+        else:
+          
+            
+            try:
+                Attachment = request.FILES['disc_Attachment']
+            except:
+                Attachment = 'annonymous.pdf'
+
+            csv = CSV_import (
+               
+                disc_Attachment = Attachment
+            )
+            csv.save()
+            return redirect('csvimport')
+    return render(request, 'tool/edit_file.html')
+
+
+
+
+def DeleteCSVAttachedPDF(request):
+    id = request.GET['id']
+    csv = CSV_import.objects.filter(Id = id).first()
+    file_to_delete = str(csv.disc_Attachment)
+    media_path = settings.MEDIA_ROOT
+    file_path = os.path.join(media_path, file_to_delete)
+    print(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return HttpResponse(request, 'tool/edit_file.html')
+    else:
+        return HttpResponse(request, 'tool/edit_file.html')
+
+
+
+
+def render_to_pdf(template_src, context_dict={}):
+	template = get_template(template_src)
+	html  = template.render(context_dict)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None
+
