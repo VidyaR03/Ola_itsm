@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django_crontab",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -124,11 +125,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -166,3 +167,10 @@ EMAIL_HOST = 'mail.supremecluster.com'
 EMAIL_HOST_USER = 'ankush.n@olatechs.com'
 EMAIL_HOST_PASSWORD = '******'
 EMAIL_USE_SSL=True
+
+# CRONJOBS = [
+#     ('*/1 * * * * ', 'tool.views.home')
+# ]
+
+# CRONTAB_COMMAND_SUFFIX = '2>&1'
+

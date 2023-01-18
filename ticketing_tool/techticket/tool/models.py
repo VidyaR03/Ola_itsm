@@ -3,11 +3,11 @@ from enum import unique
 from operator import mod
 from optparse import Option
 from re import M
-from xmlrpc.client import DateTime
 from django.db import models
 import uuid
 from datetime import datetime
 from django.db.models import Max
+
 
 
 class cl_New_organization(models.Model):
@@ -159,21 +159,15 @@ class cl_Team(models.Model):
     """
     Models Which create a table for team
     """
-    # id = models.AutoField(primary_key=True)
     id = models.CharField(primary_key=True, editable=False, max_length=10)
-
     def save(self, **kwargs):
         if not self.id:
             max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
             self.id = "{}{:05s}".format('R', max if max is not None else 1)
         super().save(*kwargs)
 
-    # print(id)
-
-    # tid = models.CharField(max_length=17,unique=True, editable=False)
     ch_teamname = models.CharField(max_length=100, null=True)
     ch_teamstatus = models.CharField(max_length=100, null=True)
-    # ch_organization = models.CharField(max_length=100,null=True)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     e_team_emailfield = models.EmailField(null=True)
@@ -257,7 +251,6 @@ class cl_Person(models.Model):
 class cl_Location(models.Model):
     """This model create table for details of location"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_location_name = models.CharField(max_length=100, null=True)
     txt_address = models.TextField(null=True)
     ch_owner_organization = models.ForeignKey(
@@ -283,7 +276,6 @@ class tassign(models.Model):
 class cl_Document(models.Model):
     """This model creates table for to insert information about documentation """
     id = models.AutoField(primary_key=True, editable=False)
-
     id = models.AutoField(primary_key=True, editable=False)
     ch_name = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
@@ -320,7 +312,6 @@ class cl_Software(models.Model):
 class cl_Application_solution(models.Model):
     """Models which create table for Application Solution"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_name = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
@@ -631,10 +622,9 @@ class cl_User_request(models.Model):
     ch_impact = models.CharField(max_length=100, null=True)
     ch_urgency = models.CharField(max_length=100, null=True)
     ch_priority = models.CharField(max_length=100, null=True)
-    dt_start_date = models.DateTimeField(auto_now=True)
-    dt_end_date = models.DateTimeField(auto_now=True)
-    dt_tto = models.CharField(max_length=10)
-    dt_ttr = models.CharField(max_length=10)
+    dt_start_date = models.DateTimeField(default=datetime.now)
+    dt_updated_date = models.DateTimeField(default=datetime.now)
+    dt_escalation_date = models.DateTimeField(default=datetime.now)
     ch_service = models.CharField(max_length=100, null=True)
     ch_service_subcategory = models.CharField(max_length=100, null=True)
     ch_parent_request = models.CharField(max_length=100, null=True)
@@ -721,12 +711,6 @@ class cl_Providercontract(models.Model):
 
     class Meta:
         db_table = 'cl_Providercontract'
-
-
-
-
-
-
 
 
 class cl_Service_subcategory(models.Model):
@@ -932,7 +916,6 @@ class ch_Itsmuser(models.Model):
 class cl_Slacknotification(models.Model):
     """Models which create the table for Slacknotification"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_name = models.CharField(max_length=100, null=True)
     txt_description = models.TextField()
     ch_status = models.CharField(max_length=100, default='Inactive')
@@ -962,7 +945,6 @@ class cl_Slacknotification(models.Model):
 class cl_Microsoft_Teams_notification(models.Model):
     """Models which create the table for Microsoft_Teams_notification"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_name = models.CharField(max_length=100, null=True)
     txt_description = models.TextField()
     ch_status = models.CharField(max_length=100, default='Inactive')
