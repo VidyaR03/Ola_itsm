@@ -160,20 +160,9 @@ class cl_Team(models.Model):
     Models Which create a table for team
     """
     # id = models.AutoField(primary_key=True)
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
-
-    def save(self, **kwargs):
-        if not self.id:
-            max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
-            self.id = "{}{:05s}".format('R', max if max is not None else 1)
-        super().save(*kwargs)
-
-    # print(id)
-
-    # tid = models.CharField(max_length=17,unique=True, editable=False)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_teamname = models.CharField(max_length=100, null=True)
     ch_teamstatus = models.CharField(max_length=100, null=True)
-    # ch_organization = models.CharField(max_length=100,null=True)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     e_team_emailfield = models.EmailField(null=True)
@@ -187,6 +176,19 @@ class cl_Team(models.Model):
     class Meta:
         db_table = 'cl_Team'
 
+
+    # def save(self, **kwargs):
+    #     if not self.id:
+    #         max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
+    #         self.id = "{}{:05s}".format('R', max if max is not None else 1)
+    #     super().save(*kwargs)
+
+    # print(id)
+
+    # tid = models.CharField(max_length=17,unique=True, editable=False)
+    
+    # ch_organization = models.CharField(max_length=100,null=True)
+    
     # return new_help_id
 
     # def inid():
@@ -232,6 +234,7 @@ class cl_Team(models.Model):
 
 class cl_Person(models.Model):
     """Models which create table for Person Information"""
+    id = models.AutoField(primary_key=True, editable=False)
     ch_person_firstname = models.CharField(max_length=100, null=True)
     ch_person_lastname = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
@@ -640,7 +643,7 @@ class cl_User_request(models.Model):
     ch_parent_request = models.CharField(max_length=100, null=True)
     ch_parent_change = models.CharField(max_length=100, null=True)
     txt_description = models.TextField()
-    ch_agent = models.CharField(max_length=100, default='Deallocate')
+    ch_assign_agent = models.CharField(max_length=100, default='Deallocate')
 
     def __str__(self):
         return self.ch_status
@@ -845,7 +848,7 @@ class cl_Oauth_google(models.Model):
     ch_used_smtp = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_status
 
     class Meta:
         db_table = 'cl_Oauth_google'
@@ -866,7 +869,7 @@ class cl_Oauth_mazure(models.Model):
     ch_used_smtp = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_status
 
     class Meta:
         db_table = 'cl_Oauth_mazure'
@@ -874,8 +877,8 @@ class cl_Oauth_mazure(models.Model):
 
 class cl_Ldapuser(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
-
-    ch_person = models.CharField(max_length=100, null=True)
+    ch_person =models.ForeignKey(
+        cl_Person, on_delete=models.CASCADE)
     ch_ldapserver = models.CharField(max_length=100, null=True)
     e_email = models.EmailField()
     ch_login = models.CharField(max_length=100, null=True)
@@ -883,7 +886,7 @@ class cl_Ldapuser(models.Model):
     ch_status = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_person
 
     class Meta:
         db_table = 'cl_Ldapuser'
@@ -893,15 +896,16 @@ class cl_Externaluser(models.Model):
     """Models which create the table for External User"""
     id = models.AutoField(primary_key=True, editable=False)
 
-    ch_person = models.CharField(max_length=100, null=True)
-    ch_first_name = models.CharField(max_length=100, null=True)
+    ch_person = models.ForeignKey(
+        cl_Person, on_delete=models.CASCADE)
+    ch_person_lastname = models.CharField(max_length=100, null=True)
     e_email = models.EmailField()
     ch_login = models.CharField(max_length=100, null=True)
     ch_language = models.CharField(max_length=100, null=True)
     ch_status = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_person
 
     class Meta:
         db_table = 'cl_Externaluser'
@@ -923,7 +927,7 @@ class ch_Itsmuser(models.Model):
         auto_now=False, auto_now_add=False)
 
     def __str__(self):
-        return self.ch_name
+        return self.ch_person
 
     class Meta:
         db_table = 'ch_Itsmuser'
@@ -979,7 +983,7 @@ class cl_Microsoft_Teams_notification(models.Model):
     ch_other_action_code = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.name
+        return self.ch_name
 
     class Meta:
         db_table = 'cl_Microsoft_Teams_notification'
@@ -1045,7 +1049,7 @@ class cl_Rocketchat(models.Model):
     Emoji_avtar = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.name
+        return self.ch_name
 
     class Meta:
         db_table = 'cl_Rocketchat'
@@ -1065,7 +1069,7 @@ class cl_Itsmwebhook(models.Model):
     Process_response_callback = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.name
+        return self.ch_name
 
     class Meta:
         db_table = 'cl_Itsmwebhook'

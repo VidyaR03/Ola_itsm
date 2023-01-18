@@ -100,14 +100,14 @@
   </table>
   <div id="addcl_Web_serverModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="{% url 'wsAdd' %}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Add New Web Server</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>ID</label>
               <input name="id" type="text" class="form-control">
@@ -138,6 +138,8 @@
                 <option value="Medium">Medium</option>
               </select>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
               Move to Production Date: <input type="text" value="{% now 'd-m-Y' %}"><br>
             </div>
@@ -174,14 +176,14 @@
   {% for i in ws %}
   <div id="editcl_Web_serverModal-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="/wsUpdate/{{i.id}}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Edit </h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>ID</label>
               <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -214,6 +216,9 @@
             <div class="form-group">
               Move to Production Date: <input type="text" value="{% now 'd-m-Y' %}"><br>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
+          
             <div class="form-group">
               <label>Software</label>
               <input name="ch_software" value="{{i.ch_software}}" type="text" class="form-control">

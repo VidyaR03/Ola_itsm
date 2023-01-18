@@ -1,32 +1,34 @@
 <!-- {% include 'tool/contactnav.html' %} -->
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Location</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static '/css/location.css' %}">
+{% load static %}
 
-<div class="container">
-    <div class="row">
-        <div class="text-right">
-            <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
-            <a href="{% url 'configurationmanagement' %}" class="btn btn-primary" role="button">Back to Page</a>
-            <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Hello, {{request.user}} Logout</span></a>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Location</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/location.css' %}">
+
+    <div class="container">
+        <div class="row">
+            <div class="text-right">
+                <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
+                <a href="{% url 'configurationmanagement' %}" class="btn btn-primary" role="button">Back to Page</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i
+                        class="material-icons">&#xE147;</i> <span>Hello, {{request.user}} Logout</span></a>
+            </div>
         </div>
+
     </div>
 
-</div>
-
-  <body>
+<body>
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
@@ -35,7 +37,8 @@
                         <h2><b>Creation of a new Location</b></h2>
                     </div>
                     <div class="col-sm-pull-9">
-                        <a href="#addcl_LocationModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Location</span></a>
+                        <a href="#addcl_LocationModal" class="btn btn-success" data-toggle="modal"><i
+                                class="material-icons">&#xE147;</i> <span>Add New Location</span></a>
 
 
                     </div>
@@ -80,18 +83,20 @@
                         <td>{{i.ch_country}}</td>
                         <td>{{i.ch_status}}</td>
                         <td>
-                            <a href="#editcl_LocationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deletecl_LocationModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#editcl_LocationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                                    class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deletecl_LocationModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
+                                    class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
                     </tr>
                     {% endfor %}
-                    
-                    
-                    
+
+
+
                 </tbody>
             </table>
             <div class="clearfix">
-              <!-- <div class="hint-text">Showing <b>5 Page</b> out of <b>25</b> entries</div>
+                <!-- <div class="hint-text">Showing <b>5 Page</b> out of <b>25</b> entries</div>
                 <ul class="pagination">
                     <li class="page-item disabled"><a href="#">Previous</a></li>
                     <li class="page-item"><a href="#" class="page-link">1</a></li>
@@ -107,21 +112,22 @@
     <!-- Add Modal HTML -->
     <div id="addcl_LocationModal" class="modal fade">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
                 <form action="{% url 'ladd' %}" method="post">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h4 class="modal-title">Add Loation</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
+                    <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+                        <!-- <div class="form-group">
                             <label>ID</label>
                            <input name="id" type="text" class="form-control" required>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label>Name</label>
-                            <input name="ch_location_name" type="text" value="{{i.ch_location_name}}" class="form-control" required>
+                            <input name="ch_location_name" type="text" value="{{i.ch_location_name}}"
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Address</label>
@@ -129,27 +135,35 @@
                         </div>
                         <div class="form-group">
                             <label>Owner Organization<a href="{% url 'new_organization' %}">
-                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span> 
-                              </a></label>
-                            <input name="ch_organization" type="text"  value="{{i.cl_New_organization}}"class="form-control"  required>
+                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                </a></label>
+                            <input name="ch_organization" type="text" value="{{i.cl_New_organization}}"
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>City</label>
-                            <input name="ch_city" type="text"  value="{{i.ch_city}}"  class="form-control" required>
+                            <input name="ch_city" type="text" value="{{i.ch_city}}" class="form-control" required>
                         </div>
+                    </div>
+                    <div class="modal-body" style="width: 330px; display: inline-block;">
+
+
                         <div class="form-group">
                             <label>Pincode</label>
-                            <input name="i_pincode" type="text"  value="{{i.i_pincode}}" class="form-control" data-msg="Please enter 6 digit number" pattern="[0-9 ]+" minlength="6" maxlength="6" required>
+                            <input name="i_pincode" type="text" value="{{i.i_pincode}}" class="form-control"
+                                data-msg="Please enter 6 digit number" pattern="[0-9 ]+" minlength="6" maxlength="6"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Country</label>
-                            <input name="ch_country" type="text" value="{{i.ch_country}}"  class="form-control" required>
+                            <input name="ch_country" type="text" value="{{i.ch_country}}" class="form-control" required>
                         </div>
 
                         <div class="form-group">
 
                             <label>Status</label>
-                            <select  name="ch_status"  type="text" class="form-control" aria-label="Default select example" aria-invalid="false">
+                            <select name="ch_status" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
 
@@ -168,20 +182,23 @@
     {% for i in loc %}
     <div id="editcl_LocationModal-{{forloop.counter}}" class="modal fade">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
                 <form action="/lupdate/{{i.id}}" method="post">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h4 class="modal-title">Edit Employee</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <label>ID</label>
-                        <input name="id" type="text" class="form-control" required>
+                    <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+
+                        <div class="modal-body">
+                            <label>ID</label>
+                            <input name="id" type="text" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Name</label>
-                            <input name="ch_location_name" value="{{i.ch_location_name}}" type="text" class="form-control" required>
+                            <input name="ch_location_name" value="{{i.ch_location_name}}" type="text"
+                                class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Address</label>
@@ -189,15 +206,20 @@
                         </div>
                         <div class="form-group">
                             <label>Owner Organization</label>
-                            <input name="cl_New_organization" value="{{i.cl_New_organization}}" type="text" class="form-control"  required>
+                            <input name="cl_New_organization" value="{{i.cl_New_organization}}" type="text"
+                                class="form-control" required>
                         </div>
+                    </div>
+                    <div class="modal-body" style="width: 330px; display: inline-block;">
+
                         <div class="form-group">
                             <label>City</label>
                             <input name="ch_city" value="{{i.ch_city}}" type="text" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Pincode</label>
-                            <input name="i_pincode" value="{{i.i_pincode}}" type="text" class="form-control" pattern="[a-zA-Z0-9 ]+" minlength="6" maxlength="6" required>
+                            <input name="i_pincode" value="{{i.i_pincode}}" type="text" class="form-control"
+                                pattern="[a-zA-Z0-9 ]+" minlength="6" maxlength="6" required>
                         </div>
                         <div class="form-group">
                             <label>Country</label>
@@ -208,7 +230,8 @@
                         <div class="form-group">
 
                             <label>Status</label>
-                            <select  name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" aria-label="Default select example" aria-invalid="false">
+                            <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
 
@@ -254,31 +277,32 @@
 
 
 <script>
-    $(document).ready(function(){
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+    $(document).ready(function () {
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip();
 
-    // Select/Deselect checkboxes
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function(){
-        if(this.checked){
-            checkbox.each(function(){
-                this.checked = true;
-            });
-        } else{
-            checkbox.each(function(){
-                this.checked = false;
-            });
-        }
+        // Select/Deselect checkboxes
+        var checkbox = $('table tbody input[type="checkbox"]');
+        $("#selectAll").click(function () {
+            if (this.checked) {
+                checkbox.each(function () {
+                    this.checked = true;
+                });
+            } else {
+                checkbox.each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+        checkbox.click(function () {
+            if (!this.checked) {
+                $("#selectAll").prop("checked", false);
+            }
+        });
     });
-    checkbox.click(function(){
-        if(!this.checked){
-            $("#selectAll").prop("checked", false);
-        }
-    });
-});
 
 
 </script>
+
 </html>
 }

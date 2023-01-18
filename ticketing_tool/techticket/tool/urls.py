@@ -233,6 +233,8 @@ urlpatterns = [
     path('spupdate/<str:id>', views.SPUpdate, name='spupdate'),
     path('spdelete/<str:id>', views.SPDelete, name='spdelete'),
 
+     #URL for System
+     path("systemnav/", views.systemnav, name='systemnav'),
 
     #Url for services
 
@@ -327,8 +329,14 @@ urlpatterns = [
     path("admuser/", views.admuser,name='admuser'),
     path("itsmuser/", views.itsmuser,name='itsmuser'),
     path("idapuser/", views.ldapuser,name='idapuser'),
-    path("externaluser/", views.externaluser,name='externaluser'),
 
+
+    #URL for External User
+    path("externaluser/", views.externaluser,name='externaluser'),
+    path('extadd', views.extADD, name='extadd'),
+    path('extedit', views.extEdit, name='extedit'),
+    path('extupdate/<str:id>', views.extUpdate, name='extupdate'),
+    path('extdelete/<str:id>', views.extDelete, name='extdelete'),
     #Assign
     # path("tassign/", views.assignform, name='assign'),
 

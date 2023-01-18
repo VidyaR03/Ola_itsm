@@ -60,7 +60,7 @@
         <th>Business Criticality</th>
         <th>Location</th>
       
-        <th>OS Family </th>
+        <!-- <th>OS Family </th> -->
         
         <!-- <th>Brand</th> -->
         <!-- <th>Model</th> -->
@@ -103,6 +103,7 @@
         <td>{{i.i_management_ip}}</td>
         <td>{{i.i_os_license}}</td>
         <!-- <td>{{i.ch_ram}}</td>
+          <td>{{i.ch_cpu}}</td>
         <td>{{i.i_rack_unit}}</td>     
         <td>{{i.i_serial_number}}</td>
         <td>{{i.i_asset_number}}</td> -->
@@ -195,7 +196,9 @@
             <input name="i_management_ip" type="text" class="form-control">
           </div>
           <div class="form-group">
-            <label>Os License</label>
+            <label>Os License<a href="{% url 'os_version' %}">
+              <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+            </a></label>
             <input name="i_os_license" type="text" class="form-control">
           </div>
           <div class="form-group">

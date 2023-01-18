@@ -6,9 +6,15 @@
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Select the type of contact to create
       </button>
+      <p></p>
+      <a href="{% url 'systemnav' %}" class="btn btn-primary" role="button">Back</a>
+
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <br>
         <a class="nav-item nav-link" href="{% url 'externaluser' %}">External User</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'idapuser' %}">LDAP User</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'itsmuser' %}">ITSM User</a>
       </div>
     </div>

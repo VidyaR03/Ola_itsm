@@ -20,6 +20,8 @@
         <!-- <a href="{% url 'configurationmanagement' %}" class="btn btn-primary" role="button">View List</a> -->
         <!-- <a href="{% url 'contact' %}" class="btn btn-primary" role="button">Back to Contact</a> -->
         <!-- <a href="{% url 'contact' %}">Back</a> -->
+        <a href="{% url 'systemnav' %}" class="btn btn-primary" role="button">Back</a>
+
         <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE147;</i>
           <span>Hello, {{request.user}} Logout</span></a>
         {{my_filter.form}}

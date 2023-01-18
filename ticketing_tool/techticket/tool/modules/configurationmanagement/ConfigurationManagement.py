@@ -94,7 +94,7 @@ def DocAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_version = request.POST.get('ch_version')
         txt_description = request.POST.get('txt_description')
         txt_text = request.POST.get('txt_text')
@@ -128,7 +128,7 @@ def DocUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_version = request.POST.get('ch_version')
         txt_description = request.POST.get('txt_description')
         txt_text = request.POST.get('txt_text')
@@ -183,7 +183,7 @@ def appAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
@@ -214,7 +214,7 @@ def appUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
@@ -267,7 +267,7 @@ def bussAdd(request):
         # id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -302,7 +302,7 @@ def bussUpdate(request, id):
         id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -346,7 +346,7 @@ def dbAdd(request):
         # id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -387,7 +387,7 @@ def dbUpdate(request, id):
         id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -439,7 +439,7 @@ def DSADD(request):
         print(id)
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_db_server = request.POST.get('ch_db_server')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -475,7 +475,7 @@ def DSUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_db_server = request.POST.get('ch_db_server')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -519,7 +519,7 @@ def MADD(request):
         print(id)
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_middleware = request.POST.get('ch_middleware')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -609,7 +609,7 @@ def MWAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -650,7 +650,7 @@ def MWUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -702,7 +702,7 @@ def osAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -743,7 +743,7 @@ def osUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -837,7 +837,7 @@ def waAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_webserver = cl_Web_server.objects.get(
             ch_name=request.POST.get('ch_webserver'))
         url_website = request.POST.get('url_website')
@@ -873,7 +873,7 @@ def waUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_webserver = cl_Web_server.objects.get(
             ch_name=request.POST.get('ch_webserver'))
         url_website = request.POST.get('url_website')
@@ -920,7 +920,7 @@ def ndAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -977,7 +977,7 @@ def ndUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -1227,7 +1227,7 @@ def olAdd(request):
         ch_name = request.POST.get('ch_name')
         ch_version = cl_os_version.objects.get(ch_iosname=request.POST.get('ch_version'))
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_usage_limit = request.POST.get('ch_usage_limit')
         ch_perpetual = request.POST.get('ch_perpetual')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1265,7 +1265,7 @@ def olUpdate(request, id):
         ch_name = request.POST.get('ch_name')
         ch_version = cl_os_version.objects.get(ch_iosname=request.POST.get('ch_version'))
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_usage_limit = request.POST.get('ch_usage_limit')
         ch_perpetual = request.POST.get('ch_perpetual')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1510,7 +1510,7 @@ def serverAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -1571,7 +1571,7 @@ def serverUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -1656,7 +1656,7 @@ def wsAdd(request):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -1697,7 +1697,7 @@ def wsUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -1781,7 +1781,7 @@ def pcAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -1822,7 +1822,7 @@ def pcUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=request.POST.get('ch_organization'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
