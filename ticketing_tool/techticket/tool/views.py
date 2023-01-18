@@ -25,7 +25,6 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
-
 from django.contrib.auth.decorators import login_required
 
 
@@ -72,6 +71,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'tool/register.html', context)
+
 
 
 def loginPage(request):
