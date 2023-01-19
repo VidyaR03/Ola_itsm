@@ -78,7 +78,6 @@
                   {% csrf_token %}
                   {% for i in per %}
                   <tr id="{{i.id}}">
-
                     <td>
                       <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
                     </td>
