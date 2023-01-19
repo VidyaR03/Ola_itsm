@@ -3,6 +3,7 @@
 <html lang="en">
 {% load static %}
 
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,31 +42,12 @@
                                 class="material-icons">&#xE147;</i> <span>Add New Location</span></a>
 
 
-                    </div>
-                </div>
             </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="custom-checkbox">
-                                <input type="checkbox" id="selectAll">
-                                <label for="selectAll"></label>
-                            </span>
-                        </th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Owner_organization</th>
-                        <th>City</th>
-                        <th>Pincode</th>
-                        <th>Country</th>
-                        <th>Status</th>
+        </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in loc %}
+    </div>
+</head>
+
 
                     <tr>
                         <td>
@@ -106,9 +88,77 @@
                     <li class="page-item"><a href="#" class="page-link">5</a></li>
                     <li class="page-item"><a href="#" class="page-link">Next</a></li>
                 </ul>-->
+
+<body>
+    <div class="container" style="margin-top:30px;">
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-xl-12">
+                <form action="" method="get" class="form-inline">
+                    <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
+                    <input type="submit" class="btn btn-success" value="Search by Name">
+                </form>
+
             </div>
         </div>
     </div>
+    <div class="text-right">
+        <a href="#addcl_LocationModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i>
+            <span>Add New Location</span></a>
+        <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+    </div>
+    <table class="table table-striped table-hover" id="table">
+        <thead>
+            <tr>
+                <th>
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll"></label>
+                    </span>
+                </th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Organization</th>
+                <th>City</th>
+                <th>Pincode</th>
+                <th>Country</th>
+                <th>Status</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% csrf_token %}
+
+            {% for i in loc %}
+
+            <tr id="{{i.id}}">
+                
+                <td>
+                    <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+                
+                </td>
+                <td>{{i.id}}</td>
+                <td>{{i.ch_location_name}}</td>
+                <td>{{i.txt_address}}</td>
+                <td>{{i.ch_organization}}</td>
+                <td>{{i.ch_city}}</td>
+                <td>{{i.i_pincode}}</td>
+                <td>{{i.ch_country}}</td>
+                <td>{{i.ch_status}}</td>
+
+                <td>
+                    <a href="#editcl_LocationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                            class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
     <!-- Add Modal HTML -->
     <div id="addcl_LocationModal" class="modal fade">
         <div class="modal-dialog">
@@ -119,10 +169,12 @@
                         <h4 class="modal-title">Add Loation</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
+
                     <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
                         <!-- <div class="form-group">
                             <label>ID</label>
                            <input name="id" type="text" class="form-control" required>
+
                         </div> -->
                         <div class="form-group">
                             <label>Name</label>
@@ -134,12 +186,13 @@
                             <input name="txt_address" value="{{i.txt_address}}" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>Owner Organization<a href="{% url 'new_organization' %}">
-                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                </a></label>
-                            <input name="ch_organization" type="text" value="{{i.cl_New_organization}}"
-                                class="form-control" required>
-                        </div>
+
+                            <label>Organization<a href="{% url 'new_organization' %}">
+                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                              </a></label>
+                            <input name="ch_organization" type="text" class="form-control" required>
+                          </div>
+
                         <div class="form-group">
                             <label>City</label>
                             <input name="ch_city" type="text" value="{{i.ch_city}}" class="form-control" required>
@@ -189,6 +242,7 @@
                         <h4 class="modal-title">Edit Employee</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
+
                     <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
 
                         <div class="modal-body">
@@ -225,59 +279,40 @@
                             <label>Country</label>
                             <input name="ch_country" value="{{i.ch_country}}" type="text" class="form-control" required>
 
-                        </div>
+                    </div>
 
-                        <div class="form-group">
+                    <div class="form-group">
 
-                            <label>Status</label>
-                            <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
-                                aria-label="Default select example" aria-invalid="false">
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
 
-                            </select>
+                        <label>Status</label>
+                        <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
+                            aria-label="Default select example" aria-invalid="false">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
 
-                        </div>
 
+                        </select>
 
                     </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-info" value="Update">
-                    </div>
-                </form>
+
+
             </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                <input type="submit" class="btn btn-info" value="Update">
+            </div>
+            </form>
         </div>
     </div>
+ </div>
     {% endfor %}
-    <!-- Delete Modal HTML -->
-    {% for i in loc %}
-    <div id="deletecl_LocationModal-{{forloop.counter}}" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>{{i.name}} Information are delete?</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <a href="/ldelete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+
 </body>
 
-
+<!-- Delete Location -->
 <script>
     $(document).ready(function () {
+
         // Activate tooltip
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -306,3 +341,61 @@
 
 </html>
 }
+
+        $('#delete_btn').click(function () {
+            if (confirm('Are You Sure You Want to Delete User?')) {
+                var id = [];
+                var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                $(':checkbox:checked').each(function (i) {
+                    id[i] = $(this).val()
+
+                })
+                if (id.length === 0) {
+                    alert("please select user Which u want to delete?")
+                } else {
+                    console.log(id)
+                    $.ajax({
+                        url: "{% url 'ldelete' %}",
+                        method: "POST",
+                        data: {
+                            id,
+                            csrfmiddlewaretoken: csrf
+                        },
+                        success: function (response) {
+                            alert("success")
+                            location.reload();
+                            for (var i = 0; i < id.length; i++) {
+                                var error = $(response).find('#error_text')
+                                var error_class = $(error).attr('class')
+                                $('#error').addClass(error_class)
+                                $('#error').text(error.text())
+                                $('tr#' + id[i] + '').fadeOut('slow');
+                            }
+                        },
+                    })
+                }
+            }
+        })
+    })
+
+
+</script>
+
+<script>
+    $('#select-all').click(function (event) {
+        if (this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function () {
+                this.checked = true;
+
+            });
+        } else {
+            $(':checkbox').each(function () {
+                this.checked = false;
+            });
+        }
+    }); 
+</script>
+
+</html>
+

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -13,7 +15,7 @@ urlpatterns = [
     path('add', views.ADD, name='add'),
     path('edit', views.Edit, name='edit'),
     path('update/<str:id>', views.Update, name='update'),
-    path('delete/<str:id>', views.Delete, name='delete'),
+    path('delete/', views.Delete, name='delete'),
     path("client/", views.client,name='client'),
 
     #Url For New Change
@@ -28,7 +30,7 @@ urlpatterns = [
     path('tadd', views.TADD, name='tadd'),
     path('tedit', views.TEdit, name='tedit'),
     path('tupdate/<str:id>', views.TUpdate, name='tupdate'),
-    path('tdelete/<str:id>', views.TDelete, name='tdelete'),
+    path('tdelete/', views.TDelete, name='tdelete'),
     path("team/", views.team, name='team'),
     path("configurationmanagement/", views.configuration, name='configurationmanagement'),
     path("contact/", views.contact, name='contact'),
@@ -40,7 +42,7 @@ urlpatterns = [
     path('ladd', views.LADD, name='ladd'),
     path('ledit', views.LEdit, name='ledit'),
     path('lupdate/<str:id>', views.LUpdate, name='lupdate'),
-    path('ldelete/<str:id>', views.LDelete, name='ldelete'),
+    path('ldelete/', views.LDelete, name='ldelete'),
           
      #Url for Organization
     path("new_organization/", views.new_organization,name='new_organization'),
@@ -55,21 +57,24 @@ urlpatterns = [
     path('DocAdd', views.DocAdd, name='DocAdd'),
     path('DocEdit', views.DocEdit, name='DocEdit'),
     path('DocUpdate/<str:id>', views.DocUpdate, name='DocUpdate'),
-    path('DocDelete/<str:id>', views.DocDelete, name='DocDelete'),
+    path('DocDelete/', views.DocDelete, name='DocDelete'),
+    path('DeleteAttachedPDF', views.DeleteAttachedPDF, name="DeleteAttachedPDF"),
+    path('show_attched_pdf/<str:path>', views.ViewAttachedPDF.as_view(), name="show_attched_pdf"),
+
 
      # Url Software
     path("software/", views.software, name='software'),
     path('softAdd', views.softAdd, name='softAdd'),
     path('softEdit', views.softEdit, name='softEdit'),
     path('softUpdate/<str:id>', views.softUpdate, name='softUpdate'),
-    path('softDelete/<str:id>', views.softDelete, name='softDelete'),
+    path('softDelete/', views.softDelete, name='softDelete'),
     
     #Url for Business Process
     path("businessprocess/", views.business_process, name='businessprocess'),
     path('bussAdd', views.bussAdd, name='bussAdd'),
     path('bussEdit', views.bussEdit, name='bussEdit'),
     path('bussUpdate/<str:id>', views.bussUpdate, name='bussUpdate'),
-    path('bussDelete/<str:id>', views.bussDelete, name='bussDelete'),
+    path('bussDelete/', views.bussDelete, name='bussDelete'),
 
 
     #Url FOr Aplication Solution
@@ -77,7 +82,7 @@ urlpatterns = [
     path('appAdd', views.appAdd, name='appAdd'),
     path('appEdit', views.appEdit, name='appEdit'),
     path('appUpdate/<str:id>', views.appUpdate, name='appUpdate'),
-    path('appDelete/<str:id>', views.appDelete, name='appDelete'),
+    path('appDelete/', views.appDelete, name='appDelete'),
 
    
     #Url for New DB
@@ -85,7 +90,8 @@ urlpatterns = [
     path('dbAdd', views.dbAdd, name='dbAdd'),
     path('dbEdit', views.dbEdit, name='dbEdit'),
     path('dbUpdate/<str:id>', views.dbUpdate, name='dbUpdate'),
-    path('dbDelete/<str:id>', views.dbDelete, name='dbDelete'),
+
+    path('dbDelete/', views.dbDelete, name='dbDelete'),
     
    
 
@@ -97,7 +103,8 @@ urlpatterns = [
     path('DSADD', views.DSADD, name='DSADD'),
     path('DSEdit', views.DSEdit, name='DSEdit'),
     path('DSUpdate/<str:id>', views.DSUpdate, name='DSUpdate'),
-    path('DSDelete/<str:id>', views.DSDelete, name='DSDelete'),
+
+    path('DSDelete/', views.DSDelete, name='DSDelete'),
     
    
    
@@ -107,11 +114,8 @@ urlpatterns = [
     path('pcAdd', views.pcAdd, name='pcAdd'),
     path('pcEdit', views.pcEdit, name='pcEdit'),
     path('pcUpdate/<str:id>', views.pcUpdate, name='pcUpdate'),
-    path('pcDelete/<str:id>', views.pcDelete, name='pcDelete'),
+    path('pcDelete/', views.pcDelete, name='pcDelete'),
     
-
-
-
     
     # URL for Incident Management
     path("userrequest/", views.user_request, name='userrequest'),
@@ -119,20 +123,22 @@ urlpatterns = [
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/<str:id>', views.UDelete, name='udelete'),
+    path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+
     
     #URL For new middleware
     path("newmiddleware/", views.new_middleware, name='newmiddleware'),
     path('MWAdd', views.MWAdd, name='MWAdd'),
     path('MWEdit', views.MWEdit, name='MWEdit'),
     path('MWUpdate/<str:id>', views.MWUpdate, name='MWUpdate'),
-    path('MWDelete/<str:id>', views.MWDelete, name='MWDelete'),
+    path('MWDelete/', views.MWDelete, name='MWDelete'),
     
     #Url for Middleware Instance
     path("middlewareinstance/", views.middlewareinstance, name='middlewareinstance'),
     path('MADD', views.MADD, name='MADD'),
     path('MEdit', views.MEdit, name='MEdit'),
     path('MUpdate/<str:id>', views.MUpdate, name='MUpdate'),
-    path('MDelete/<str:id>', views.MDelete, name='MDelete'),
+    path('MDelete/', views.MDelete, name='MDelete'),
      
      #URL for Network Type
     path("network_type/", views.network_type,name='network_type'),
@@ -187,14 +193,14 @@ urlpatterns = [
     path('ndAdd', views.ndAdd, name='ndAdd'),
     path('ndEdit', views.ndEdit, name='ndEdit'),
     path('ndUpdate/<str:id>', views.ndUpdate, name='ndUpdate'),
-    path('ndDelete/<str:id>', views.ndDelete, name='ndDelete'),
+    path('ndDelete/', views.ndDelete, name='ndDelete'),
 
     #URL For Server
     path("server/", views.server,name='server'),
     path('serverAdd', views.serverAdd, name='serverAdd'),
     path('serverEdit', views.serverEdit, name='serverEdit'),
     path('serverUpdate/<str:id>', views.serverUpdate, name='serverUpdate'),
-    path('serverDelete/<str:id>', views.serverDelete, name='serverDelete'),
+    path('serverDelete/', views.serverDelete, name='serverDelete'),
 
 
 
@@ -204,7 +210,7 @@ urlpatterns = [
     path('waAdd', views.waAdd, name='waAdd'),
     path('wsEdit', views.wsEdit, name='waEdit'),
     path('waUpdate/<str:id>', views.waUpdate, name='waUpdate'),
-    path('waDelete/<str:id>', views.waDelete, name='waDelete'),
+    path('waDelete/', views.waDelete, name='waDelete'),
 
 
 
@@ -213,7 +219,7 @@ urlpatterns = [
     path('wsAdd', views.wsAdd, name='wsAdd'),
     path('wsEdit', views.wsEdit, name='wsEdit'),
     path('wsUpdate/<str:id>', views.wsUpdate, name='wsUpdate'),
-    path('wsDelete/<str:id>', views.wsDelete, name='wsDelete'),
+    path('wsDelete/', views.wsDelete, name='wsDelete'),
 
 
 
@@ -277,7 +283,7 @@ urlpatterns = [
     path('osAdd', views.osAdd, name='osAdd'),
     path('osEdit', views.osEdit, name='osEdit'),
     path('osUpdate/<str:id>', views.osUpdate, name='osUpdate'),
-    path('osDelete/<str:id>', views.osDelete, name='osDelete'),
+    path('osDelete/', views.osDelete, name='osDelete'),
 
 
 
@@ -350,4 +356,4 @@ urlpatterns = [
     path("rocketchat/", views.rocketchat,name='rocketchat'),
     path("itsmwebhook/", views.itsmwebhook,name='itsmwebhook'),
    
-    ]
+    ]+ static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)

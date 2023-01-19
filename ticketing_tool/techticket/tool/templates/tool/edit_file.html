@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit File</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+    <form action="/csvupdate/{{csv.Id}}" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="row m-2">
+           
+
+            <td>
+                <a href='csvedit/{{i.Id}}' class="btn btn-primary" role="button">Edit</a>
+            </td>
+            <table class="table table-striped">
+                <tbody>
+                   
+                    <tr>
+                        <th>
+                            Current Attachment
+                        </th>
+                        <td id="edit_Attach">
+                            <input class="form-control" name="disc_Attachment" value="{{i.disc_Attachment}}" type="text"
+                                style="display: none;">
+                            <a target="_blank" id="Current_Attachment" value="{{i.disc_Attachment}}"
+                                href="/show_attched_pdf/{{disclosure.disc_Attachment}}">{{i.disc_Attachment}}</a>
+                            <button type="button" id="del_Attach" class="btn btn-default pull-right"><i
+                                    class="fa fa-trash"></i></button>
+                        </td>
+                        <!-- <td>
+                          <a href='dedit/{{i.id}}' class="btn btn-primary" role="button">Edit</a>
+                      </td> -->
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <input class="btn btn-primary" type="submit" value="update">
+            </div>
+        </div>
+    </form>
+
+    <script>
+
+        if (document.getElementById('Current_Attachment').innerText == 'annonymous.pdf') {
+            document.getElementById("edit_Attach").innerHTML = `<input type="file" id="file-selector" name="disc_Attachment" class="form-control w-25">`
+        }
+
+        let select = document.getElementById('del_Attach')
+        select.addEventListener('click', function () {
+            result = confirm('Do you want to delete current attchment?')
+            if (result == true) {
+                id_to_delete = document.getElementById('Id_disclosure').value
+                document.getElementById("edit_Attach").innerHTML = `<input type="file" id="file-selector" name="disc_Attachment" class="form-control w-25">`
+                console.log(id_to_delete)
+                $.ajax({
+                    type: "GET",
+                    url: '/DeleteCSVAttachedPDF',
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}', id: id_to_delete, },
+                    success: function callback(response) {
+                        console.log(response);
+                    }
+                });
+            }
+        })
+    </script>
+</body>
+
+
+</html>

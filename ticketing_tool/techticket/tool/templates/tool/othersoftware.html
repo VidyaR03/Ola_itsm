@@ -36,6 +36,7 @@
         <form action="" method="get" class="form-inline">
           <input type="text" class="form-control" name="searchname" placeholder="Search">
           <input type="submit" class="btn btn-success" value="Search">
+
         </form>
       </div>
     </div>
@@ -43,8 +44,10 @@
   <div class="text-right">
     <a href="#addcl_Other_softwareModal" class="btn btn-success" data-toggle="modal"><i
         class="material-icons">&#xE147;</i> <span>Add Other Software</span></a>
+        <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+
   </div>
-  <table class="table table-striped table-hover">
+  <table class="table table-striped table-hover" id="table" >
     <thead>
       <tr>
         <th>
@@ -68,17 +71,17 @@
       </tr>
     </thead>
     <tbody>
+      {% csrf_token %}
+
       {% for i in os %}
-      <tr>
+      <tr id="{{i.id}}">
+
         <td>
-          <span class="custom-checkbox">
-            <input type="checkbox" id="checkbox1" name="options[]" value="1">
-            <label for="checkbox1"></label>
-          </span>
+          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
 
         <td>{{i.id}}</td>
-        <td>{{i.ch_name}}</td>
+        <td>{{i.ch_osname}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_status}}</td>
         <td>{{i.ch_business_criticality}}</td>
@@ -91,8 +94,7 @@
         <td>
           <a href="#editcl_Other_softwareModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-          <a href="#deletecl_Other_softwareModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
-              class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+         
         </td>
       </tr>
       {% endfor %}
@@ -114,7 +116,7 @@
             </div> -->
             <div class="form-group">
               <label>Name</label>
-              <input name="ch_name" type="text" class="form-control" required>
+              <input name="ch_osname" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Organization<a href="{% url 'new_organization' %}">
@@ -139,13 +141,18 @@
               </select>
             </div>
             <div class="form-group">
-              Move to Production Date: <input type="text" value="{% now 'd-m-Y' %}"><br>
+              <label >Moveto Production Date</label>
+              <input class="form-control" type="date" id="dt_move_to_production_date"  name="dt_move_to_production_date" required
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+              <span class="validity"></span>
             </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
-              <label>Software</label>
-              <input name="ch_software" type="text" class="form-control">
+              <label>Software<a href="{% url 'software' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_software" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Software License</label>
@@ -190,11 +197,13 @@
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input name="ch_name" value="{{i.ch_name}}" type="text" class="form-control" required>
+              <input name="ch_osname" value="{{i.ch_osname}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Organization</label>
-              <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+              <label>Organization<a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_organization"  value="{{i.ch_organization}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Status</label>
@@ -214,14 +223,19 @@
               </select>
             </div>
             <div class="form-group">
-              Move to Production Date: <input type="text" value="{% now 'd-m-Y' %}"><br>
+              <label >Moveto Production Date</label>
+              <input class="form-control" type="date" id="dt_move_to_production_date" value="{{i.dt_move_to_production_date}}"   name="dt_move_to_production_date" required
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+              <span class="validity"></span>
             </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
 
             <div class="form-group">
-              <label>Software</label>
-              <input name="ch_software" value="{{i.ch_software}}" type="text" class="form-control">
+              <label>Software<a href="{% url 'software' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_software" value="{{i.ch_software}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Software License</label>
@@ -249,53 +263,66 @@
     </div>
   </div>
   {% endfor %}
-  <!-- Delete Modal HTML -->
-  {% for i in os %}
-  <div id="deletecl_Other_softwareModal-{{forloop.counter}}" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-          <div class="modal-header">
-            <h4 class="modal-title">Delete </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete this Records?</p>
-            <p class="text-warning"><small>{{i.id}} Information are delete?</small></p>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <a href="/osDelete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+  
 </body>
+ 
+<!--  Multiple Delete  -->
 <script>
   $(document).ready(function () {
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
-    // Select/Deselect checkboxes
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function () {
+      $('#delete_btn').click(function () {
+        if (confirm('Are You Sure You Want to Delete User?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+  
+          })
+          if (id.length === 0) {
+            alert("please select user Which u want to delete?")
+          } else {
+            console.log(id)
+            $.ajax({
+              url: "{% url 'osDelete' %}",
+              method: "POST",
+              data: {
+                id,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+  
+  </script>
+  
+  <script>
+    $('#select-all').click(function (event) {
       if (this.checked) {
-        checkbox.each(function () {
+        // Iterate each checkbox
+        $(':checkbox').each(function () {
           this.checked = true;
+  
         });
       } else {
-        checkbox.each(function () {
+        $(':checkbox').each(function () {
           this.checked = false;
         });
       }
-    });
-    checkbox.click(function () {
-      if (!this.checked) {
-        $("#selectAll").prop("checked", false);
-      }
-    });
-  });
-</script>
-
-</html>
+    }); 
+  </script>
+  
+  
+  </html>
+  

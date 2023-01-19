@@ -19,6 +19,96 @@
 
     <link rel="stylesheet" type="text/css" href="{% static '/css/location.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .notification-drop {
+            font-family: 'Ubuntu', sans-serif;
+            color: rgb(0, 0, 0);
+        }
+
+        .notification-drop .item {
+            padding: 10px;
+            font-size: 20px;
+            position: relative;
+            border-bottom: 1px solid rgb(143, 57, 57);
+        }
+
+        .notification-drop .item:hover {
+            cursor: pointer;
+        }
+
+        .notification-drop .item i {
+            margin-left: 10px;
+        }
+
+        .notification-drop .item ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            background: rgb(214, 201, 201);
+            left: -250px;
+            /* right: 0; */
+            z-index: 1;
+            border-top: 1px solid #ddd;
+            scroll-behavior: smooth;
+            max-height: 40vh;
+            overflow: scroll;
+            justify-content: flex-start;
+
+        }
+
+        .notification-drop .item ul li {
+            font-size: 16px;
+            padding: 5px 5px 5px 5px;
+        }
+
+        .notification-drop .item ul li:hover {
+            background: rgb(192, 202, 42);
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        @media screen and (min-width: 500px) {
+            .notification-drop {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .notification-drop .item {
+                border: none;
+            }
+        }
+
+        .notification-bell {
+            font-size: 25px;
+
+        }
+
+        /* .dropdown-menu {
+            max-height: 40vh;
+            overflow: scroll;
+            width: fit-content;
+        } */
+
+        .btn__badge {
+            background: #FF5D5D;
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 0;
+            right: 0px;
+            padding: 3px 10px;
+            border-radius: 45%;
+        }
+    </style>
+</head>
+
+<body>
     <div class="container">
 </head>
 
@@ -30,581 +120,408 @@
                 <a href="{% url 'configurationmanagement' %}" class="btn btn-primary" role="button">Back to Page</a>
                 <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i
                         class="material-icons">&#xE147;</i> <span>Hello, {{request.user}} Logout</span></a>
+                <div>
+                    <ul class="notification-drop">
+                        <li class="item">
+                            <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i> <span
+                                class="btn__badge pulse-button ">{{ escalated_ur|length }}</span>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'escalate_notify' %}" class="btn btn-default" role="button">Mark
+                                        Read All</a></li>
+                                {% for i in escalated_ur %}
+                                <li>Change id {{ i.id }} has been Escalated</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <body>
-        <div class="container" style="margin-top:30px;">
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-xl-12">
-                    <form action="" method="get" class="form-inline">
-                        <input type="text" class="form-control" name="searchstatus" placeholder="Search">
-                        <input type="submit" class="btn btn-success" value="Search">
-                    </form>
-                </div>
+    <div class="container" style="margin-top:30px; display: inline-block;">
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-xl-12">
+                <form action="" method="get" class="form-inline">
+                    <input type="text" class="form-control" name="searchstatus" placeholder="Search">
+                    <input type="submit" class="btn btn-success" value="Search">
+                </form>
             </div>
         </div>
-        <!-- <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-7">
-                        <h2><b>Creation of a new User Request</b></h2>
-                    </div> -->
-        <div class="text-right">
-            <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal"><i
-                    class="material-icons">&#xE147;</i> <span>Add New User Request</span></a>
-        </div><br>
-        <div class="text-right">
-            <a href="#deletecl_User_requestModal" class="btn btn-danger" data-toggle="modal"><i
-                    class="material-icons">delete</i> <span>Delete User Request</span></a>
-        </div>
-        </div>
-        </div>
-        <table class="table table-striped table-hover" id="table">
-            <thead>
-                <tr>
-                    <th>
-                        <span class="custom-checkbox">
-                            <input type="checkbox" id="selectAll">
-                            <label for="selectAll"></label>
-                        </span>
-                    </th>
-                    <th>ID</th>
-                    <th>Organization</th>
-                    <th>Caller</th>
-                    <!-- <th>Status</th>
-                        <th>Origin</th>
-                        <th>Title</th>
-                        <th>Request Type</th>
-                        <th>Impact</th> -->
-                    <th>Urgency</th>
-                    <!-- <th>Priority</th> -->
-                    <th>Start Date</th>
-                    <th>Updated Date</th>
-                    <th>TTO (In Days)</th>
-                    <th>Service</th>
-                    <!-- <th>Service Subcategory</th>
-                        <th>Parent Request</th>
-                        <th>Parent Change</th> -->
-                    <th>Description</th>
-                    <th>Agent</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in ur %}
-                <tr>
-                    <td>
-                        <span class="custom-checkbox">
-                            <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                            <label for="checkbox1"></label>
-                        </span>
-                    </td>
-                    <td>{{i.id}}
-                    <td>{{i.fk_organization}}</td>
-                    <td>{{i.fk_caller}}</td>
-                    <!-- <td>{{i.ch_status}}</td>
-                        <td>{{i.ch_origin}}</td>
-                        <td>{{i.ch_title}}</td>
-                        <td>{{i.ch_request_type}}</td>
-                        <td>{{i.ch_impact}}</td> -->
-                    <td>{{i.ch_urgency}}</td>
-                    <!-- <td>{{i.ch_priority}}</td> -->
-                    <td>{{i.dt_start_date}}</td>
-                    <td>{{i.dt_end_date}}</td>
-                    <td>{{i.dt_tto}}</td>
-                    <td>{{i.ch_service}}</td>
-                    <!-- <td>{{i.ch_service_subcategory}}</td>
-                        <td>{{i.ch_parent_request}}</td>
-                        <td>{{i.ch_parent_change}}</td> -->
-                    <td>{{i.txt_description}}</td>
-                    <td>{{i.ch_agent}}</td>
-                    <td>
-                        <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
-                                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a href="#deletecl_User_requestModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
-                                class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                    </td>
-                </tr>
-                {% empty %}
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="clearfix">
-            <!-- <div class="hint-text">Showing <b>5 Page</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>-->
-        </div>
-        </div>
-        </div>
+    </div>
+    <div class="text-right" >
+        <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i> <span>Add New User Request</span></a>
+    </div><br>
+    <div class="text-right">
+        <a href="#deletecl_User_requestModal" class="btn btn-danger" data-toggle="modal"><i
+                class="material-icons">delete</i> <span>Delete User Request</span></a>
+    </div>
 
-        <!-- Add Modal HTML -->
-        <div id="addcl_User_requestModal" class="modal fade">
-            <div class="modal-dialog">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll"></label>
+                    </span>
+                </th>
+                <th>ID</th>
+                <th>Organization</th>
+                <th>Caller</th>
+                <th>Urgency</th>
+                <th>Start Date</th>
+                <th>Updated Date</th>
+                <th>Escalate After</th>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Agent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in ur %}
+            <tr>
+                <td>
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                        <label for="checkbox1"></label>
+                    </span>
+                </td>
+                <td>{{i.id}}
+                <td>{{i.fk_organization}}</td>
+                <td>{{i.fk_caller}}</td>
+                <td>{{i.ch_urgency}}</td>
+                <td>{{i.dt_start_date}}</td>
+                <td>{{i.dt_updated_date}}</td>
+                <td>{{i.dt_escalation_date}}</td>
+                <td>{{i.ch_service}}</td>
+                <td>{{i.txt_description}}</td>
+                <td>{{i.ch_agent}}</td>
+                <td>
+                    <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                            class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                    <a href="#deletecl_User_requestModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
+                            class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add Modal HTML -->
+    <div id="addcl_User_requestModal" class="modal fade">
+        <div class="modal-dialog">
                 <div class="modal-content" style="width: 800px; position: relative; right: 50%; bottom: 50%;">
-                    <form action="{% url 'uadd' %}" method="post">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h4 class="modal-title">Add </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <form action="{% url 'uadd' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <div class="form-group">
+                            <label>ID</label>
+                            <input class="form-control" name="id" type="text" value="{{i.id}}" required>
+                        </div> -->
+                        <div class="form-group">
+                            <label>Organization<a href="{% url 'new_organization' %}">
+                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                </a></label>
+                            <input class="form-control" name="ch_organization" type="text" required>
                         </div>
-                        <!-- <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;"> -->
-
-                            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-                                <div class="form-group">
-                                    <label>ID</label>
-                                    <input name="id" type="text" value="{{i.id}}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Organization<a href="{% url 'new_organization' %}">
-                                            <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                        </a></label>
-                                    <input name="ch_organization" type="text" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Caller<a href="{% url 'client' %}">
-                                            <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                        </a></label>
-                                    <input name="ch_Person" type="text" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <!-- <input name="ch_status" type="text"  class="form-control"  required> -->
-                                    <select name="ch_status" type="text" class="form-control"
-                                        aria-label="Default select example" aria-invalid="false">
-                                        <option value="Active"> Active
-                                        </option>
-                                        <option value="Inactive"> Inactive
-                                        </option>
-                                        <option value="New"> New
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Origin</label>
-                                    <!-- <input name="ch_origin" type="text"  class="form-control" required> -->
-                                    <select name="ch_origin" type="text" class="form-control"
-                                        aria-label="Default select example" aria-invalid="false">
-                                        <option value="Phone"> Phone
-                                        </option>
-                                        <option value="Email"> Email
-                                        </option>
-                                        <option value="Portal"> Portal
-                                        </option>
-                                        <option value="Monitoring"> Monitoring
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Service</label>
-                                    <input name="ch_service" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input name="ch_title" type="text" required>
-                                </div>
-                               
-                                <div class="form-group">
-                                    <label>Impact</label>
-                                    <!-- <input name="ch_impact" type="text"  class="form-control"  required> -->
-                                    <select name="ch_impact" type="text" class="form-control"
-                                        aria-label="Default select example" aria-invalid="false">
-                                        <option value="A deparment"> A deparment
-                                        </option>
-                                        <option value="A person"> A person
-                                        </option>
-                                        <option value="A service"> A service
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Urgency</label>
-                                    <!-- <input name="ch_urgency" type="text"  class="form-control"  required> -->
-                                    <select name="ch_urgency" type="text" class="form-control"
-                                        aria-label="Default select example" aria-invalid="false">
-                                        <option value="Critical"> Critical
-                                        </option>
-                                        <option value="High"> High
-                                        </option>
-                                        <option value="Medium"> Medium
-                                        </option>
-                                        <option value="Low"> Low
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Priority</label>
-                                    <!-- <input name="ch_priority" type="text"   class="form-control"  required> -->
-                                    <select name="ch_priority" type="text" class="form-control"
-                                        aria-label="Default select example" aria-invalid="false">
-                                        <option value="Critical"> Critical
-                                        </option>
-                                        <option value="High"> High
-                                        </option>
-                                        <option value="Medium"> Medium
-                                        </option>
-                                        <option value="Low"> Low
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Caller</label>
+                            <input class="form-control" name="ch_Person" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="ch_status" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Active"> Active
+                                </option>
+                                <option value="Inactive"> Inactive
+                                </option>
+                                <option value="New"> New
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Origin</label>
+                            <select name="ch_origin" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Phone"> Phone
+                                </option>
+                                <option value="Email"> Email
+                                </option>
+                                <option value="Portal"> Portal
+                                </option>
+                                <option value="Monitoring"> Monitoring
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input class="form-control" name="ch_title" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Request Type</label>
+                            <input class="form-control" name="ch_request_type" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Impact</label>
+                            <select name="ch_impact" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="A deparment"> A deparment
+                                </option>
+                                <option value="A person"> A person
+                                </option>
+                                <option value="A service"> A service
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Urgency</label>
+                            <select name="ch_urgency" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Critical"> Critical
+                                </option>
+                                <option value="High"> High
+                                </option>
+                                <option value="Medium"> Medium
+                                </option>
+                                <option value="Low"> Low
+                                </option>
+                            </select>
+                        </div>
+                        </div>
                             <div class="modal-body" style="width: 330px; display: inline-block;">  <!--start of right half -->
-                                <div class="form-group">
-                                    <label>Request Type</label>
-                                    <input name="ch_request_type" type="text" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bday">Start Date</label>
-                                    <input class="form-control" type="date" id="dt_start_date" onkeyup="tto_calculate()"
-                                        name="dt_start_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                                    <span class="validity"></span>
-                                </div>
-                                <!-- <div class="form-group">
-                            <label for="end">Start date:</label>
-                            <input type="date" id="start" name="trip-end" value="2022-01-01" onkeyup="tto_calculate()" min="2022-01-01"
-                                max="2030-01-01">
-                             </div> -->
-                                <!-- Start Date : <input type="text" value="{% now 'Y-m-d'  %}"><br> -->
-                                <!-- <div class="form-group">
-                            <label for="bday">Start Date</label>
-                            <input class="form-control" type="date" value="i.dt_start_date"  name="dt_start_date" required> -->
-                                <!-- pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"> -->
-                                <!-- <span class="validity"></span>-->
-                                <!-- </div>  -->
-                                Update Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
-                                <!-- <div class="form-group">
-                            <label for="end">End date:</label>
-                            <input type="date" id="start" name="trip-end"
-                            value="2022-01-01"
-                            min="2022-01-01" max="2030-01-01">
-                             </div> -->
-                                <div class="form-group">
-                                    <label>TTO</label>
-                                    <input name="ch_tto" id="add_tto" type="text" value="" class="form-control">
-                                    <input name="ch_tto_month" id="add_tto_month" type="text" value=""
-                                        class="form-control">
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select name="ch_priority" type="text" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Critical"> Critical
+                                </option>
+                                <option value="High"> High
+                                </option>
+                                <option value="Medium"> Medium
+                                </option>
+                                <option value="Low"> Low
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dt_start_date">Start Date</label>
+                            <input class="form-control w-25" type="datetime-local" name="dt_start_date"
+                                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dt_updated_date">Updated Date</label>
+                            <input class="form-control" type="datetime-local" name="dt_updated_date"
+                                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+                            <span class="validity"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="dt_escalation_date">Escalate After</label>
+                            <input class="form-control" type="datetime-local" name="dt_escalation_date"
+                                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Service</label>
+                            <input class="form-control" name="ch_service" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Service Subcategory</label>
+                            <input class="form-control" name="ch_service_subcategory" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Parent Request</label>
+                            <input class="form-control" name="ch_parent_request" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Parent Change</label>
+                            <input class="form-control" name="ch_parent_change" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input class="form-control" name="txt_description" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Agent</label>
+                            <input class="form-control" name="ch_agent" type="text" >
+                        </div>
 
-                                </div>
-                               
-                                <div class="form-group">
-                                    <label>Service Subcategory</label>
-                                    <input name="ch_service_subcategory" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Parent Request</label>
-                                    <input name="ch_parent_request" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Parent Change</label>
-                                    <input name="ch_parent_change" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Description</label>
-                                    <input name="txt_description" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>Agent</label>
-                                    <input name="ch_agent" type="text" disabled>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                <input type="submit" class="btn btn-success" value="Add">
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Modal HTML -->
-        {% for i in ur %}
-        <div id="editcl_User_requestModal-{{forloop.counter}}" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="/uupdate/{{i.id}}" method="post">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h4 class="modal-title">Edit</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+
+    <!-- Edit Modal HTML -->
+    {% for i in ur %}
+    <div id="editcl_User_requestModal-{{forloop.counter}}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/uupdate/{{i.id}}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input name="id" type="text" value="{{i.id}}" class="form-control" required>
                         </div>
-
-                        <div class="modal-body"style="width: 330px; padding-left: 30px; display: inline-block;">
-                            <div class="form-group">
-                                <label>ID</label>
-                                <input name="id" type="text" value="{{i.id}}" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Organization</label>
-                                <input name="ch_organization" value="{{i.fk_organization}}" type="text"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Caller</label>
-                                <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Status</label>
-                                <!-- <input name="ch_status"   value="{{i.ch_status}}"       type="text"  class="form-control"  required> -->
-                                <select name="ch_status" type="text" value="{{i.ch_status}}" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
-                                    <option value="Active"> Active
-                                    </option>
-                                    <option value="Inactive"> Inactive
-                                    </option>
-                                    <option value="New"> New
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Origin</label>
-                                <!-- <input name="ch_origin" type="text"    value="{{i.ch_origin}}"       class="form-control" required> -->
-                                <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
-                                    <option value="Phone"> Phone
-                                    </option>
-                                    <option value="Email"> Email
-                                    </option>
-                                    <option value="Portal"> Portal
-                                    </option>
-                                    <option value="Monitoring"> Monitoring
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Request Type</label>
-                                <input name="ch_request_type" type="text" value="{{i.ch_request_type}}"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Impact</label>
-                                <!-- <input name="ch_impact" type="text"   value="{{i.ch_impact}}"  class="form-control"  required> -->
-                                <select name="ch_impact" type="text" value="{{i.ch_impact}" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
-                                    <option value="A deparment"> A deparment
-                                    </option>
-                                    <option value="A person"> A person
-                                    </option>
-                                    <option value="A service"> A service
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Urgency</label>
-                                <!-- <input name="ch_urgency" type="text"  value="{{i.ch_urgency}}"   class="form-control"  required> -->
-                                <select name="ch_urgency" type="text" value="{{i.ch_urgency}" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
-                                    <option value="Critical"> Critical
-                                    </option>
-                                    <option value="High"> High
-                                    </option>
-                                    <option value="Medium"> Medium
-                                    </option>
-                                    <option value="Low"> Low
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Priority</label>
-                                <!-- <input name="ch_priority" type="text"    value="{{i.ch_priority}}" class="form-control"  required> -->
-                                <select name="ch_priority" type="text" value="{{i.ch_priority}}" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
-                                    <option value="Critical"> Critical
-                                    </option>
-                                    <option value="High"> High
-                                    </option>
-                                    <option value="Medium"> Medium
-                                    </option>
-                                    <option value="Low"> Low
-                                    </option>
-                                </select>
-                            </div>
-                            
-
+                        <div class="form-group">
+                            <label>Organization</label>
+                            <input name="ch_organization" value="{{i.fk_organization}}" type="text" class="form-control"
+                                required>
                         </div>
-                            <!-- <div>
-                            start Date:<input class="form-control" type="date" value="{{i.dt_start_date}}" id="dt_start_date" onkeyup="tto_calculate()" name="dt_start_date">
-                          
-
-                        </div> -->
-                        <div class="model-body" style="width: 330px; display: inline-block;"><!--start of right half -->
-                            <div class="form-group">
-                                <label for="bday">Start Date</label>
-                                <input class="form-control" type="date" value="{{i.dt_start_date|date:'Y-m-d'}}"
-                                    id="dt_start_date" name="dt_start_date" required
-                                    pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                                <span class="validity"></span>
-                            </div>
-                            <!-- <div class="form-group">
-                            <label for="end">Start date:</label>
-                            <input type="date" id="start" name="start_date" value="2022-01-01" min="2022-01-01"
-                                max="2030-01-01">
-                                 </div> -->
-                            Update Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
-
-                            <!-- <div class="form-group">
-                            <label for="end">Update date:</label>
-                            <input type="date" id="updated" name="updated_date" value="{% now 'd-m-y' %}" disabled>
-                                 </div> -->
-
-                            <!-- Start Date: <input type="text" value="{{ i.dt_start_date }}" class="form-control" readonly><br> -->
-                            <!-- <div class="form-group">
-                             <label for="bday">Start Date</label>
-                            <input class="form-control" type="date" value="i.dt_start_date"  name="dt_start_date" required> -->
-                            <!-- pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"> -->
-                            <!-- <span class="validity"></span>
-                          </div> -->
-                            <!-- Update Date : <input type="text" value="{% now 'd-m-y'  %}"><br> -->
-                            <!-- <div class="form-group">
-                            <label for="end">End date:</label>
-                            <input type="date" id="start" name="trip-end"
-                            value="2022-01-01"
-                            min="2022-01-01" max="2030-01-01">
-                                     </div> -->
-                            <div class="form-group">
-                                <label>TTO</label>
-                                <input name="ch_tto" id="add_tto" type="text" value="{{i.ch_tto}}"
-                                    onkeyup="tto_calculate()" class="form-control">
-                                <input name="ch_tto_month" id="add_tto_month" type="text" value="" class="form-control">
-
-                            </div>
-                            <!-- <div class="form-group">
+                        <div class="form-group">
+                            <label>Caller</label>
+                            <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="ch_status" type="text" value="{{i.ch_status}}" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Active"> Active
+                                </option>
+                                <option value="Inactive"> Inactive
+                                </option>
+                                <option value="New"> New
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Origin</label>
+                            <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Phone"> Phone
+                                </option>
+                                <option value="Email"> Email
+                                </option>
+                                <option value="Portal"> Portal
+                                </option>
+                                <option value="Monitoring"> Monitoring
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Request Type</label>
+                            <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Impact</label>
+                            <select name="ch_impact" type="text" value="{{i.ch_impact}" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="A deparment"> A deparment
+                                </option>
+                                <option value="A person"> A person
+                                </option>
+                                <option value="A service"> A service
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Urgency</label>
+                            <!-- <input name="ch_urgency" type="text"  value="{{i.ch_urgency}}"   class="form-control"  required> -->
+                            <select name="ch_urgency" type="text" value="{{i.ch_urgency}" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Critical"> Critical
+                                </option>
+                                <option value="High"> High
+                                </option>
+                                <option value="Medium"> Medium
+                                </option>
+                                <option value="Low"> Low
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <!-- <input name="ch_priority" type="text"    value="{{i.ch_priority}}" class="form-control"  required> -->
+                            <select name="ch_priority" type="text" value="{{i.ch_priority}}" class="form-control"
+                                aria-label="Default select example" aria-invalid="false">
+                                <option value="Critical"> Critical
+                                </option>
+                                <option value="High"> High
+                                </option>
+                                <option value="Medium"> Medium
+                                </option>
+                                <option value="Low"> Low
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bday">Start Date</label>
+                            <input class="form-control" type="date" value="{{i.dt_start_date|date:'Y-m-d'}}"
+                                id="dt_start_date" name="dt_start_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                            <span class="validity"></span>
+                        </div>
+                        Update Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
+                        <div class="form-group">
                             <label>TTO</label>
-                            <input name="ch_tto" class="ch_tto" type="text" value="" class="form-control" style="width: 50px;">
-                                </div> -->
-                            <div class="form-group">
-                                <label>Service</label>
-                                <input name="ch_service" type="text" value="{{i.ch_service}}" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label>Service Subcategory</label>
-                                <input name="ch_service_subcategory" type="text" value="{{i.ch_service_subcategory}}"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Parent Request</label>
-                                <input name="ch_parent_request" type="text" value="{{i.ch_parent_request}}"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Parent Change</label>
-                                <input name="ch_parent_change" type="text" value="{{i.ch_parent_change}}"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <input name="txt_description" type="text" value="{{i.txt_description}}"
-                                    class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Agent</label>
-                                <input name="ch_agent" type="text" placeholder="Deallocate">
-                            </div>
+                            <input name="ch_tto" id="add_tto" type="text" value="{{i.ch_tto}}" onkeyup="tto_calculate()"
+                                class="form-control">
+                            <input name="ch_tto_month" id="add_tto_month" type="text" value="" class="form-control">
+
                         </div>
-                        
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-success" value="Add">
+                        <div class="form-group">
+                            <label>Service</label>
+                            <input name="ch_service" type="text" value="{{i.ch_service}}" class="form-control" required>
                         </div>
-                    </form>
-                </div>
+                        <div class="form-group">
+                            <label>Service Subcategory</label>
+                            <input name="ch_service_subcategory" type="text" value="{{i.ch_service_subcategory}}"
+                                class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Parent Request</label>
+                            <input name="ch_parent_request" type="text" value="{{i.ch_parent_request}}"
+                                class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Parent Change</label>
+                            <input name="ch_parent_change" type="text" value="{{i.ch_parent_change}}"
+                                class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Agent</label>
+                            <input name="ch_agent" type="text" placeholder="Deallocate">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
             </div>
         </div>
-        {% endfor %}
-        <!-- Delete Modal HTML -->
-        {% for i in ur %}
-        <div id="deletecl_User_requestModal-{{forloop.counter}}" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h4 class="modal-title">Delete Employee</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete these Records?</p>
-                            <p class="text-warning"><small>{{i.ch_impact}} Information are delete?</small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <a href="/udelete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
 
-
-
-
-        <script>
-
-            date = new Date();
-            year = date.getFullYear();
-            month = date.getMonth() + 1;
-            day = date.getDate();
-            document.getElementById("current_date").innerHTML.value = day + "/" + month + "/" + year;
-
-
-            var date1 = new Date(document.getElementById('dt_start_date').value);
-            var date2 = new Date(document.getElementById('current_date').value);
-            var diff = new Date(date2.getTime() - date1.getTime());
-            console.log(diff.getUTCDate() - 1); // Gives day count of difference
-            var tto_date = (diff.getUTCDate() - 1);
-            var tto_mon = (diff.getUTCMonth());
-            console.log(tto_mon)
-            document.getElementById("add_tto").value = tto_date;
-            document.getElementById("add_tto").innerText = tto_date;
-            document.getElementById("add_tto_month").value = tto_mon;
-            document.getElementById("add_tto_month").innerText = tto_mon;
-
-
-
-
-            var add_btn = document.getElementById("add_tto")
-            console.log(add_btn)
-            add_btn.addEventListener("click", function () {
-                var date1 = new Date(document.getElementById('dt_start_date').value);
-                var date2 = new Date(document.getElementById('current_date').value);
-                var diff = new Date(date2.getTime() - date1.getTime());
-                console.log(diff.getUTCDate() - 1); // Gives day count of difference
-                var tto_date = (diff.getUTCDate() - 1);
-                var tto_mon = (diff.getUTCMonth());
-                document.getElementById("add_tto").value = tto_date;
-                document.getElementById("add_tto").innerText = tto_date;
-                document.getElementById("add_tto_month").value = tto_mon;
-                document.getElementById("add_tto_month").innerText = tto_mon;
-            })
-
-        // function diff() {
-        //     console.log(document.getElementById('start').value)
-        //     console.log("hii")
-        //     // var a = moment(document.getElementById('start'));
-        //     // var b = moment(document.getElementById('updated'));
-        //     // diff = moment.preciseDiff(a, b, true);
-        //     // console.log("Diff",diff)
-
-
-        //     // intervals = ['year','month','days','hours','minutes','seconds'];
-        //     // TTO=[];
-        //     // for(var i; i<intervals.length; i++){ // var d=diff[intervals[i]]; var d=d<10? '0' +d : d; // TTO.push(d + '' +
-        //     intervals[i]); // } // document.getElementById("TTO").innerHTML=TTO.join("") } // setInterval(diff, 1000);
-        </script>
-    </body>
+    <script>
+        $(document).ready(function () {
+            $(".notification-drop .item").on('click', function () {
+                $(this).find('ul').toggle();
+            });
+        });
+    </script>
+</body>
 
 
 </html>

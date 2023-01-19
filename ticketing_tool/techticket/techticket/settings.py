@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django_crontab",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -124,11 +125,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -138,6 +139,16 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS=[ 
     os.path.join(BASE_DIR, 'static')
 ]
+
+
+
+MEDIA_URL = '/attachments/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'tool/attachments')
+
+
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -166,3 +177,10 @@ EMAIL_HOST = 'mail.supremecluster.com'
 EMAIL_HOST_USER = 'ankush.n@olatechs.com'
 EMAIL_HOST_PASSWORD = '******'
 EMAIL_USE_SSL=True
+
+# CRONJOBS = [
+#     ('*/1 * * * * ', 'tool.views.home')
+# ]
+
+# CRONTAB_COMMAND_SUFFIX = '2>&1'
+

@@ -43,8 +43,11 @@
   <div class="text-right">
     <a href="#addcl_Network_deviceModal" class="btn btn-success" data-toggle="modal"><i
         class="material-icons">&#xE147;</i> <span>Add New Network Device</span></a>
+    <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+
+
   </div>
-  <table class="table table-striped table-hover">
+  <table class="table table-striped table-hover" id="table">
     <thead>
       <tr>
         <th>
@@ -76,17 +79,17 @@
       </tr>
     </thead>
     <tbody>
+      {% csrf_token %}
+
       {% for i in nd %}
-      <tr>
+      <tr id="{{i.id}}">
+
         <td>
-          <span class="custom-checkbox">
-            <input type="checkbox" id="checkbox1" name="options[]" value="1">
-            <label for="checkbox1"></label>
-          </span>
+          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
 
         <td>{{i.id}}</td>
-        <td>{{i.ch_name}}</td>
+        <td>{{i.ch_ndname}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_status}}</td>
         <td>{{i.ch_business_criticality}}</td>
@@ -94,7 +97,7 @@
         <td>{{i.ch_network_type}}</td>
         <td>{{i.ch_brand}}</td>
         <td>{{i.ch_model}}</td>
-        <td>{{i.i_os_version}}</td>
+        <td>{{i.i_ios_version}}</td>
         <td>{{i.i_management_ip}}</td>
         <td>{{i.ch_ram}}</td>
         <td>{{i.i_rack_unit}}</td>
@@ -107,10 +110,11 @@
         <td>
           <a href="#editcl_Network_deviceModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-          <a href="#deletecl_Network_deviceModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
-              class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+
         </td>
       </tr>
+      {% empty %}
+      <span class="text-center text-danger">No Record Found</span>
       {% endfor %}
     </tbody>
   </table>
@@ -130,7 +134,7 @@
             </div> -->
             <div class="form-group">
               <label>Name</label>
-              <input name="ch_name" type="text" class="form-control" required>
+              <input name="ch_ndname" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Organization<a href="{% url 'new_organization' %}">
@@ -154,38 +158,38 @@
                 <option value="Medium">Medium</option>
               </select>
             </div>
-            <div class="form-group">
+             <div class="form-group">
               <label>Location</label>
               <input name="ch_location" type="text" class="form-control">
-            </div>
-            <d<div class="form-group">
+             </div>
+             <div class="form-group">
               <label>Network Type<a href="{% url 'network_type' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <input name="ch_network_type" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            </div>
+            <div class="form-group">
             <label>Brand<a href="{% url 'brand' %}">
                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
               </a></label>
             <input name="ch_brand" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            </div>
+            <div class="form-group">
             <label>Model<a href="{% url 'cmodel' %}">
                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
               </a></label>
             <input name="ch_model" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            </div>
+            <div class="form-group">
             <label>IOS Version<a href="{% url 'iosver' %}">
                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
               </a></label>
-            <input name="i_os_version" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            <input name="i_ios_version" type="text" class="form-control">
+            </div>
+           <div class="form-group">
             <label>Management IP</label>
             <input name="i_management_ip" type="text" class="form-control">
-          </div>
+           </div>
           <div class="form-group">
             <label>RAM</label>
             <input name="ch_ram" type="text" class="form-control">
@@ -203,33 +207,40 @@
             <input name="i_asset_number" type="text" class="form-control">
           </div>
 
-          <div class="form-group">
-            Move to Production Date: <input type="date" name="dt_move_to_production_date" value="{% now 'd-m-Y' %}"><br>
-          </div>
-          <div class="form-group">
-            <label for="end">Purchase date:</label>
-            <input type="date" id="start" name="Purchase-date" value="2022-01-01" min="2022-01-01" max="2030-01-01">
-          </div>
-          <div class="form-group">
-            <label for="end">End Of Warrenty:</label>
-            <input type="date" id="start" name="Warrenty-end" value="2022-01-01" min="2022-01-01" max="2030-01-01">
-          </div>
-          <div class="form-group">
+           <div class="form-group">
+            <label>Moveto Production Date</label>
+            <input class="form-control" type="date" id="dt_move_to_production_date" name="dt_move_to_production_date"
+              required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+            <span class="validity"></span>
+           </div>
+           <div class="form-group">
+            <label>Purchase Date</label>
+            <input class="form-control" type="date" id="dt_purchase_date" name="dt_purchase_date" required
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+            <span class="validity"></span>
+           </div>
+           <div class="form-group">
+            <label> End Of Warrenty</label>
+            <input class="form-control" type="date" id="dt_end_of_warranty" name="dt_end_of_warranty" required
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+            <span class="validity"></span>
+           </div>
+           <div class="form-group">
             <label>Description</label>
             <input name="txt_description" type="text" class="form-control">
+           </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-        <input type="submit" class="btn btn-success" value="Add">
-      </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Add">
+          </div>
       </form>
     </div>
   </div>
   </div>
   <!-- Edit Modal HTML -->
   {% for i in nd %}
-  <div id="editcl_Network_devicerModal-{{forloop.counter}}" class="modal fade">
+  <div id="editcl_Network_deviceModal-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
         <form action="/ndUpdate/{{i.id}}" method="post">
@@ -245,23 +256,25 @@
             </div>
             <div class="form-group">
               <label>Name</label>
-              <input name="ch_name" value="{{i.ch_name}}" type="text" class="form-control" required>
+              <input name="ch_ndname" value="{{i.ch_ndname}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Organization</label>
-              <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+              <label>Organization<a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_organization" type="text" value="{{i.ch_organization}}" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Status</label>
-              <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
+              <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
             <div class="form-group">
               <label>Business Criticality</label>
-              <select name="ch_business_criticality" value="{{i.ch_business_criticality}}" type="text"
+              <select name="ch_business_criticality" type="text" value="{{i.ch_business_criticality}}"
                 class="form-control" required>
                 <option value="High">High</option>
                 <option value="Low">Low</option>
@@ -270,117 +283,142 @@
             </div>
             <div class="form-group">
               <label>Location</label>
-              <input name="ch_location" value="{{i.ch_location}}" type="text" class="form-control">
+              <input name="ch_location" type="text" value="{{i.ch_location}}" class="form-control">
             </div>
-            <d<div class="form-group">
-              <label>Network Type</label>
-              <input name="ch_network_type" value="{{i.ch_network_type}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Brand</label>
-            <input name="ch_brand" value="{{i.ch_brand}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Model</label>
-            <input name="ch_model" value="{{i.ch_model}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>IOS Version</label>
-            <input name="i_os_version" value="{{i.i_os_version}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            <div class="form-group">
+              <label>Network Type<a href="{% url 'network_type' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <input name="ch_network_type" type="text" value="{{i.ch_network_type}}" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>Brand<a href="{% url 'brand' %}">
+                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              </a></label>
+            <input name="ch_brand" type="text" value="{{i.ch_brand}}" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>Model<a href="{% url 'cmodel' %}">
+                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              </a></label>
+            <input name="ch_model" type="text" value="{{i.ch_model}}" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>IOS Version<a href="{% url 'iosver' %}">
+                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              </a></label>
+            <input name="i_ios_version" type="text" value="{{i.i_ios_version}}" class="form-control">
+            </div>
+            <div class="form-group">
             <label>Management IP</label>
-            <input name="i_management_ip" value="{{i.i_management_ip}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>Ram</label>
-            <input name="ch_ram" value="{{i.ch_ram}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            <input name="i_management_ip" type="text" value="{{i.i_management_ip}}" class="form-control">
+            </div>
+            <div class="form-group">
+            <label>RAM</label>
+            <input name="ch_ram" type="text" value="{{i.ch_ram}}" class="form-control">
+            </div>
+            <div class="form-group">
             <label>Rack Unit</label>
-            <input name="i_rack_unit" value="{{i.i_rack_unit}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            <input name="i_rack_unit" type="text" value="{{i.i_rack_unit}}" class="form-control">
+            </div>
+            <div class="form-group">
             <label>Serial Number</label>
-            <input name="i_serial_number" value="{{i.i_serial_number}}" type="text" class="form-control">
-          </div>
-          <div class="form-group">
+            <input name="i_serial_number" type="text" value="{{i.i_serial_number}}" class="form-control">
+            </div>
+            <div class="form-group">
             <label>Asset Number</label>
-            <input name="i_asset_number" value="{{i.i_asset_number}}" type="text" class="form-control">
-          </div>
+             <input name="i_asset_number" type="text" value="{{i.i_asset_number}}" class="form-control">
+            </div>
 
-          <div class="form-group">
-            Move to Production Date: <input type="text" value="{% now 'd-m-Y' %}"><br>
-          </div>
-          <div class="form-group">
-            <label for="end">Purchase date:</label>
-            <input type="date" id="start" name="trip-end" value="2022-01-01" min="2022-01-01" max="2030-01-01">
-          </div>
-          <div class="form-group">
-            <label for="end">End Of Warrenty:</label>
-            <input type="date" id="start" name="trip-end" value="2022-01-01" min="2022-01-01" max="2030-01-01">
-          </div>
-          <div class="form-group">
+            <div class="form-group">
+                 <label>Moveto Production Date</label>
+                    <input class="form-control" type="date" id="dt_move_to_production_date"
+              value="{{i.dt_move_to_production_date}}" name="dt_move_to_production_date" required
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+              <span class="validity"></span>
+            </div>
+            <div class="form-group">
+             <label>Purchase Date</label>
+             <input class="form-control" type="date" id="dt_purchase_date" name="dt_purchase_date"
+              value="{{i.dt_purchase_date}}" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+             <span class="validity"></span>
+            </div>
+            <div class="form-group">
+             <label> End Of Warrenty</label>
+             <input class="form-control" type="date" id="dt_end_of_warranty" name="dt_end_of_warranty"
+              value="{{i.dt_end_of_warranty}}" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+             <span class="validity"></span>
+            </div>
+            <div class="form-group">
             <label>Description</label>
-            <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
-          </div>
-      </div>
-      <div class="modal-footer">
-        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-        <input type="submit" class="btn btn-info" value="Update">
-      </div>
-      </form>
-    </div>
-  </div>
-  </div>
-  {% endfor %}
-  <!-- Delete Modal HTML -->
-  {% for i in nd %}
-  <div id="deletecl_Network_deviceModal-{{forloop.counter}}" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-          <div class="modal-header">
-            <h4 class="modal-title">Delete </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to delete this Records?</p>
-            <p class="text-warning"><small>{{i.id}} Information are delete?</small></p>
-          </div>
-          <div class="modal-footer">
+            <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control">
+            </div>
+           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <a href="/ndDelete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-          </div>
+            <input type="submit" class="btn btn-info" value="Update">
+           </div>
         </form>
       </div>
     </div>
   </div>
+
   {% endfor %}
-</body>
-<script>
-  $(document).ready(function () {
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
-    // Select/Deselect checkboxes
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function () {
+  <!--  Multiple Delete  -->
+  <script>
+    $(document).ready(function () {
+      $('#delete_btn').click(function () {
+        if (confirm('Are You Sure You Want to Delete User?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+
+          })
+          if (id.length === 0) {
+            alert("please select user Which u want to delete?")
+          } else {
+            console.log(id)
+            $.ajax({
+              url: "{% url 'ndDelete' %}",
+              method: "POST",
+              data: {
+                id,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+
+  </script>
+
+  <script>
+    $('#select-all').click(function (event) {
       if (this.checked) {
-        checkbox.each(function () {
+        // Iterate each checkbox
+        $(':checkbox').each(function () {
           this.checked = true;
+
         });
       } else {
-        checkbox.each(function () {
+        $(':checkbox').each(function () {
           this.checked = false;
         });
       }
-    });
-    checkbox.click(function () {
-      if (!this.checked) {
-        $("#selectAll").prop("checked", false);
-      }
-    });
-  });
-</script>
+    }); 
+  </script>
+
 
 </html>

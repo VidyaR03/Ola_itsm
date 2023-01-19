@@ -23,7 +23,7 @@ def software(request):
 def softAdd(request):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
+        ch_sofname = request.POST.get('ch_sofname')
         # ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
         # print('organization :',ch_organization)
         ch_vendor = request.POST.get('ch_vendor')
@@ -31,7 +31,7 @@ def softAdd(request):
         ch_type = request.POST.get('ch_type')
         soft = cl_Software(
             id=id,
-            ch_name=ch_name,
+            ch_sofname=ch_sofname,
             ch_vendor=ch_vendor,
             chversion=chversion,
             ch_type=ch_type,
@@ -52,13 +52,13 @@ def softEdit(request):
 def softUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
+        ch_sofname = request.POST.get('ch_sofname')
         ch_vendor = request.POST.get('ch_vendor')
         chversion = request.POST.get('chversion')
         ch_type = request.POST.get('ch_type')
         soft = cl_Software(
             id=id,
-            ch_name=ch_name,
+            ch_sofname=ch_sofname,
             ch_vendor=ch_vendor,
             chversion=chversion,
             ch_type=ch_type,
@@ -168,6 +168,7 @@ def DocDelete(request, id):
 #     return render(request, 'tool/software.html',context)
 
 
+
 def application_solution(request):
     appso = cl_Application_solution.objects.all()
     if request.method == "GET":
@@ -232,24 +233,36 @@ def appUpdate(request, id):
     return render(request, 'tool/application_solution.html')
 
 
-def appDelete(request, id):
-    appso = cl_Application_solution.objects.filter(id=id)
-    appso.delete()
-    context = {
-        'appso': appso,
-    }
+def appDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            appso = cl_Application_solution.objects.filter(id=i).first()
+            appso.delete()
+            context = {
+                'appso': appso,
+            }
     return redirect('application')
+
+
+############ Delivery Model #############
 
 
 def delivery_model(request):
     form = DeliverymodelForm()
-    if request.method == 'POST':
+    if request.method == 'POST':AutoField(primary_key=True)
+196
+ 
+    id = models.AutoField(primary_key=True, editable=False
         form = DeliverymodelForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
     context = {'form': form}
     return render(request, 'tool/delivery_model.html', context)
+
+ ########## Business Processs #############
 
 
 def business_process(request):
@@ -270,8 +283,7 @@ def bussAdd(request):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         print(ch_business_name)
         buss = cl_Business_process(
@@ -305,8 +317,7 @@ def bussUpdate(request, id):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         buss = cl_Business_process(
             id=id,
@@ -322,14 +333,21 @@ def bussUpdate(request, id):
     return render(request, 'tool/business_process.html')
 
 
-def bussDelete(request, id):
-    buss = cl_Business_process.objects.filter(id=id)
-    buss.delete()
-    context = {
-        'buss': buss,
-    }
-    return redirect('businessprocess')
+def bussDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            buss = cl_Business_process.objects.filter(id=i).first()
+            buss.delete()
+            context = {
+                'buss': buss,
+            }
+        return redirect('businessprocess')
 
+
+
+############# NewDB ###############
 
 def newdb_server(request):
     db = cl_Newdb_server.objects.all()
@@ -337,7 +355,7 @@ def newdb_server(request):
         q = request.GET.get('searchname')
         if q != None:
             db = cl_Newdb_server.objects.filter(
-                ch_name__icontains=q)
+               ch_dbname__icontains=q)
     return render(request, 'tool/newdb_server.html', {'db': db})
 
 
@@ -349,8 +367,7 @@ def dbAdd(request):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         ch_software = request.POST.get('ch_software')
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
@@ -390,8 +407,7 @@ def dbUpdate(request, id):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         ch_software = request.POST.get('ch_software')
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
@@ -415,21 +431,26 @@ def dbUpdate(request, id):
     return render(request, 'tool/newdb_server.html')
 
 
-def dbDelete(request, id):
-    db = cl_Newdb_server.objects.filter(id=id)
-    db.delete()
-    context = {
-        'db': db,
-    }
+def dbDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            db = cl_Newdb_server.objects.filter(id=i).first()
+            db.delete()
+            context = {
+                'db': db,
+            }
     return redirect('newdb')
 
+######### Data Base Schema #####
 
 def dataschema(request):
     schema = cl_Database_schema.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
-            schema = cl_Database_schema.objects.filter(ch_name__icontains=q)
+            schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
     return render(request, 'tool/database_schema.html', {'schema': schema})
 
 
@@ -437,17 +458,20 @@ def DSADD(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         print(id)
-        ch_name = request.POST.get('ch_name')
+
+        
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_db_server = request.POST.get('ch_db_server')
+            ch_name=str.capitalize(request.POST.get('ch_organization')))    
+
+        ch_dsname = request.POST.get('ch_dsname')        
+        ch_db_server =cl_Newdb_server.objects.get(ch_dbname=request.POST.get('ch_db_server'))
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         schema = cl_Database_schema(
             # id=id,
-            ch_name=ch_name,
+            ch_dsname=ch_dsname,
             ch_organization=ch_organization,
             ch_db_server=ch_db_server,
             ch_business_criticality=ch_business_criticality,
@@ -472,18 +496,17 @@ def DSEdit(request):
 
 def DSUpdate(request, id):
     if request.method == "POST":
-        id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
+        id = request.POST.get('id')        
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_db_server = request.POST.get('ch_db_server')
+            ch_name=str.capitalize(request.POST.get('ch_organization')))        
+        ch_dsname = request.POST.get('ch_dsname')        
+        ch_db_server =cl_Newdb_server.objects.get(ch_dbname=request.POST.get('ch_db_server'))
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         schema = cl_Database_schema(
             id=id,
-            ch_name=ch_name,
+            ch_dsname=ch_dsname,
             ch_organization=ch_organization,
             ch_db_server=ch_db_server,
             ch_business_criticality=ch_business_criticality,
@@ -495,14 +518,21 @@ def DSUpdate(request, id):
     return render(request, 'tool/database_schema.html')
 
 
-def DSDelete(request, id):
-    schema = cl_Database_schema.objects.filter(id=id)
-    schema.delete()
-    context = {
-        'schema': schema,
-    }
+def DSDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            schema = cl_Database_schema.objects.filter(id=i).first()
+            schema.delete()
+            context = {
+                'schema': schema,
+            }
     return redirect('databaseschema')
 
+
+
+############## Middleware ##########
 
 def middlewareinstance(request):
     mi = cl_Middleware_instance.objects.all()
@@ -516,18 +546,18 @@ def middlewareinstance(request):
 def MADD(request):
     if request.method == "POST":
         # id = request.POST.get('id')
+
         print(id)
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_middleware = request.POST.get('ch_middleware')
+            ch_name=str.capitalize(request.POST.get('ch_organization')))        
+        ch_miname = request.POST.get('ch_miname')
+        ch_middleware = cl_New_middleware.objects.get(ch_midname=request.POST.get('ch_middleware'))
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         mi = cl_Middleware_instance(
-            # id=id,
-            ch_name=ch_name,
+            
+            ch_miname=ch_miname,
             ch_organization=ch_organization,
             ch_middleware=ch_middleware,
             ch_business_criticality=ch_business_criticality,
@@ -535,7 +565,7 @@ def MADD(request):
             txt_description=txt_description,
         )
         mi.save()
-        print(mi)
+        
 
         return redirect('middlewareinstance')
 
@@ -553,16 +583,16 @@ def MEdit(request):
 def MUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
-        ch_organization = request.POST.get('ch_organization')
-        ch_middleware = request.POST.get('ch_middleware')
+        ch_miname = request.POST.get('ch_miname')
+        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        ch_middleware = cl_New_middleware.objects.get(ch_midname=request.POST.get('ch_middleware'))
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         mi = cl_Middleware_instance(
             id=id,
-            ch_name=ch_name,
+            ch_miname=ch_miname,
             ch_organization=ch_organization,
             ch_middleware=ch_middleware,
             ch_business_criticality=ch_business_criticality,
@@ -574,54 +604,49 @@ def MUpdate(request, id):
     return render(request, 'tool/middleware_instance.html')
 
 
-def MDelete(request, id):
-    mi = cl_Middleware_instance.objects.filter(id=id)
-    mi.delete()
-    context = {
-        'mi': mi,
-    }
+def MDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            mi = cl_Middleware_instance.objects.filter(id=i).first()
+            mi.delete()
+            context = {
+                'mi': mi,
+            }
     return redirect('middlewareinstance')
 
 
-# def new_middleware(request):
-#     form=NewmiddldbewareForm()
 
-#     if request.method=='POST':
-#         form=NewmiddlewareForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/new_middleware.html', context)
+##################  New Middleware  ##########
 
 def new_middleware(request):
     middle = cl_New_middleware.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
-            middle = cl_New_middleware.objects.filter(
-                ch_name__icontains=q)
+            middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
     return render(request, 'tool/new_middleware.html', {'middle': middle})
 
 
 def MWAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_midname = request.POST.get('ch_midname')
+        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get( 'dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         middle = cl_New_middleware(
             # id=id,
-            ch_name=ch_name,
+            ch_midname=ch_midname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -648,21 +673,20 @@ def MWEdit(request):
 def MWUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_midname = request.POST.get('ch_midname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         middle = cl_New_middleware(
             id=id,
-            ch_name=ch_name,
+            ch_midname=ch_midname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -678,14 +702,20 @@ def MWUpdate(request, id):
     return render(request, 'tool/new_middleware.html')
 
 
-def MWDelete(request, id):
-    middle = cl_New_middleware.objects.filter(id=id)
-    middle.delete()
-    context = {
-        'middle': middle,
-    }
+def MWDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            middle = cl_New_middleware.objects.filter(id=i).first()
+            middle.delete()
+            context = {
+                'middle': middle,
+            }
     return redirect('newmiddleware')
 
+ 
+######### Other Software ###########
 
 def other_software(request):
     os = cl_Other_software.objects.all()
@@ -700,21 +730,20 @@ def other_software(request):
 def osAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_osname = request.POST.get('ch_osname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         os = cl_Other_software(
             # id=id,
-            ch_name=ch_name,
+            ch_osname=ch_osname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -741,21 +770,20 @@ def osEdit(request):
 def osUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_osname = request.POST.get('ch_osname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         os = cl_Other_software(
             id=id,
-            ch_name=ch_name,
+            ch_osname=ch_osname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -771,55 +799,20 @@ def osUpdate(request, id):
     return render(request, 'tool/othersoftware.html')
 
 
-def osDelete(request, id):
-    os = cl_Other_software.objects.filter(id=id)
-    os.delete()
-    context = {
-        'os': os,
-    }
+def osDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            os = cl_Other_software.objects.filter(id=i).first()
+            os.delete()
+            context = {
+                'os': os,
+            }
     return redirect('other_software')
 
-# def middleware_instance(request):
-#     form=MiddlewareinstanceForm()
-#     if request.method=='POST':
-#         form=MiddlewareinstanceForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/middleware_instance.html',context)
 
-
-# def network_device(request):
-#     form=NetworkForm()
-#     if request.method=='POST':
-#         form=NetworkForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/network_device.html',context)
-
-
-# def other_software(request):
-#     form=OthersoftwareForm()
-#     if request.method=='POST':
-#         form=OthersoftwareForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/othersoftware.html',context)
-
-# def web_application(request):
-#     form=WebapplicationForm()
-#     if request.method=='POST':
-#         form=WebapplicationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/webapplication.html',context)
+############ Web App ############
 
 
 def web_application(request):
@@ -828,26 +821,25 @@ def web_application(request):
         q = request.GET.get('searchname')
         if q != None:
             wa = cl_Web_application.objects.filter(
-                ch_name__icontains=q)
+                ch_waname__icontains=q)
     return render(request, 'tool/webapplication.html', {'wa': wa})
 
 
 def waAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_webserver = cl_Web_server.objects.get(
-            ch_name=request.POST.get('ch_webserver'))
+            ch_name=str.capitalize(request.POST.get('ch_organization')))  
+
+        ch_waname = request.POST.get('ch_waname')
+        ch_webserver = cl_Web_server.objects.get(ch_wsname=request.POST.get('ch_webserver'))
         url_website = request.POST.get('url_website')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
         wa = cl_Web_application(
             # id=id,
-            ch_name=ch_name,
+            ch_waname=ch_waname,
             ch_organization=ch_organization,
             ch_webserver=ch_webserver,
             url_website=url_website,
@@ -871,11 +863,11 @@ def wsEdit(request):
 def waUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
+        ch_waname = request.POST.get('ch_waname')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_webserver = cl_Web_server.objects.get(
-            ch_name=request.POST.get('ch_webserver'))
+            ch_wsname=request.POST.get('ch_webserver'))
         url_website = request.POST.get('url_website')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
@@ -883,7 +875,7 @@ def waUpdate(request, id):
         txt_description = request.POST.get('txt_description')
         wa = cl_Web_application(
             id=id,
-            ch_name=ch_name,
+            ch_waname=ch_waname,
             ch_organization=ch_organization,
             ch_webserver=ch_webserver,
             url_website=url_website,
@@ -896,14 +888,20 @@ def waUpdate(request, id):
     return render(request, 'tool/webapplication.html')
 
 
-def waDelete(request, id):
-    wa = cl_Web_application.objects.filter(id=id)
-    wa.delete()
-    context = {
-        'wa': wa,
-    }
+def waDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            wa = cl_Web_application.objects.filter(id=i).first()
+            wa.delete()
+            context = {
+                'wa': wa,
+            }
     return redirect('webapplication')
 
+
+########## network Device ######
 
 def networkdevice(request):
     nd = cl_Network_device.objects.all()
@@ -911,37 +909,35 @@ def networkdevice(request):
         q = request.GET.get('searchname')
         if q != None:
             nd = cl_Network_device.objects.filter(
-                ch_name__icontains=q)
+                ch_ndname__icontains=q)
     return render(request, 'tool/network_device.html', {'nd': nd})
 
 
 def ndAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_ndname = request.POST.get('ch_ndname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
-        ch_network_type = cl_network_type.objects.get(
-            ch_nname=request.POST.get('ch_network_type'))
+        ch_network_type = cl_network_type.objects.get(ch_nname=request.POST.get('ch_network_type'))
         ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
-        i_ios_version = cl_ios_version.objects.get(ch_iosname=request.POST.get('i_os_version'))
+        i_ios_version = cl_ios_version.objects.get(ch_iosname=request.POST.get('i_ios_version'))
         i_management_ip = request.POST.get('i_management_ip')
         ch_ram = request.POST.get('ch_ram')
         i_rack_unit = request.POST.get('i_rack_unit')
         i_serial_number = request.POST.get('i_serial_number')
         i_asset_number = request.POST.get('i_asset_number')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        dt_purchase_date = request.POST.get('Purchase-date')
-        dt_end_of_warranty = request.POST.get('Warrenty-end')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        dt_purchase_date = request.POST.get('dt_purchase_date')
+        dt_end_of_warranty = request.POST.get('dt_end_of_warranty')
         txt_description = request.POST.get('txt_description')
         nd = cl_Network_device(
             # id=id,
-            ch_name=ch_name,
+            ch_ndname=ch_ndname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -976,16 +972,15 @@ def ndEdit(request):
 def ndUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_ndname = request.POST.get('ch_ndname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
-        ch_network_type = cl_network_type.objects.get(
-            ch_nname=request.POST.get('ch_network_type'))
+        ch_network_type = cl_network_type.objects.get( ch_nname=request.POST.get('ch_network_type'))
         ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
-        i_ios_version = cl_ios_version.objects.get(ch_iosname=request.POST.get('i_os_version'))
+        i_ios_version = cl_ios_version.objects.get(ch_iosname=request.POST.get('i_ios_version'))
         i_management_ip = request.POST.get('i_management_ip')
         ch_ram = request.POST.get('ch_ram')
         i_rack_unit = request.POST.get('i_rack_unit')
@@ -997,7 +992,7 @@ def ndUpdate(request, id):
         txt_description = request.POST.get('txt_description')
         nd = cl_Network_device(
             id=id,
-            ch_name=ch_name,
+            ch_ndname=ch_ndname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1021,14 +1016,19 @@ def ndUpdate(request, id):
     return render(request, 'tool/network_device.html')
 
 
-def ndDelete(request, id):
-    nd = cl_Network_device.objects.filter(id=id)
-    nd.delete()
-    context = {
-        'nd': nd,
-    }
+def ndDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            nd = cl_Network_device.objects.filter(id=i).first()
+            nd.delete()
+            context = {
+                'nd': nd,
+            }
     return redirect('networkdevice')
 
+########## Network Type #########
 
 def network_type(request):
     nt = cl_network_type.objects.all()
@@ -1502,39 +1502,37 @@ def server(request):
         q = request.GET.get('searchname')
         if q != None:
             se = cl_Server.objects.filter(
-                ch_name__icontains=q)
+                ch_sname__icontains=q)
     return render(request, 'tool/server.html', {'se': se})
 
 
 def serverAdd(request):
     if request.method == "POST":
-        # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
+
+        # id = request.POST.get('id')   
         ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_sname = request.POST.get('ch_sname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
         ch_os_family =  cl_os_family.objects.get(ch_fname=request.POST.get('ch_os_family'))
-
         ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
         i_os_version = cl_os_version.objects.get(ch_osname=request.POST.get('i_os_version'))
-
         i_management_ip = request.POST.get('i_management_ip')
         ch_ram = request.POST.get('ch_ram')
         ch_cpu = request.POST.get('ch_cpu')
-
         i_rack_unit = request.POST.get('i_rack_unit')
         i_serial_number = request.POST.get('i_serial_number')
         i_asset_number = request.POST.get('i_asset_number')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
-        dt_purchase_date = request.POST.get('Purchase-date')
-        dt_end_of_warranty = request.POST.get('Warrenty-end')
+        dt_purchase_date = request.POST.get('dt_purchase_date')
+        dt_end_of_warranty = request.POST.get('dt_end_of_warranty')
         txt_description = request.POST.get('txt_description')
         se = cl_Server(
-            # id=id,
-            ch_name=ch_name,
+            id=id,
+            ch_sname=ch_sname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1570,32 +1568,29 @@ def serverEdit(request):
 def serverUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_sname = request.POST.get('ch_sname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
         ch_os_family =  cl_os_family.objects.get(ch_fname=request.POST.get('ch_os_family'))
-
         ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
         i_os_version = cl_os_version.objects.get(ch_osname=request.POST.get('i_os_version'))
-
         i_management_ip = request.POST.get('i_management_ip')
         ch_ram = request.POST.get('ch_ram')
         ch_cpu = request.POST.get('ch_cpu')
-
         i_rack_unit = request.POST.get('i_rack_unit')
         i_serial_number = request.POST.get('i_serial_number')
         i_asset_number = request.POST.get('i_asset_number')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
-        dt_purchase_date = request.POST.get('Purchase-date')
-        dt_end_of_warranty = request.POST.get('Warrenty-end')
+        dt_purchase_date = request.POST.get('dt_purchase_date')
+        dt_end_of_warranty = request.POST.get('dt_end_of_warranty')
         txt_description = request.POST.get('txt_description')
         se = cl_Server(
              id=id,
-            ch_name=ch_name,
+            ch_sname=ch_sname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1620,55 +1615,47 @@ def serverUpdate(request, id):
     return render(request, 'tool/server.html')
 
 
-def serverDelete(request, id):
-    se = cl_Server.objects.filter(id=id)
-    se.delete()
-    context = {
-        'se': se,
-    }
+def serverDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            se = cl_Server.objects.filter(id=i).first()
+            se.delete()
+            context = {
+                'se': se,
+            }
     return redirect('server')
 
 
-
-# def web_server(request):
-#     form=WebserverForm()
-#     if request.method=='POST':
-#         form=WebserverForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/webserver.html',context)
-
+############## Web Server ################
 
 def web_server(request):
     ws = cl_Web_server.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
-            ws = cl_Web_server.objects.filter(
-                ch_name__icontains=q)
+            ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
     return render(request, 'tool/webserver.html', {'ws': ws})
 
 
 def wsAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        # id = request.POST.get('id')
+        ch_wsname = request.POST.get('ch_wsname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         ws = cl_Web_server(
-            id=id,
-            ch_name=ch_name,
+            # id=id,
+            ch_wsname=ch_wsname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1695,21 +1682,20 @@ def wsEdit(request):
 def wsUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_wsname = request.POST.get('ch_wsname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         ws = cl_Web_server(
             id=id,
-            ch_name=ch_name,
+            ch_wsname=ch_wsname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1725,75 +1711,50 @@ def wsUpdate(request, id):
     return render(request, 'tool/webserver.html')
 
 
-def wsDelete(request, id):
-    ws = cl_Web_server.objects.filter(id=id)
-    ws.delete()
-    context = {
-        'ws': ws,
-    }
+def wsDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            ws = cl_Web_server.objects.filter(id=i).first()
+            ws.delete()
+            context = {
+                'ws': ws,
+            }
     return redirect('webserver')
 
-# def network_device(request):
-#     form=NetworkdeviceForm()
-#     if request.method=='POST':
-#         form=NetworkdeviceForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/network_device.html',context)
 
 
 
 
-# def server(request):
-#     form = ServerForm()
-#     if request.method == 'POST':
-#         form = ServerForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Data Add Successfully")
-#     context = {'form': form}
-#     return render(request, 'tool/server.html', context)
+######## PC Software ######
 
-
-# def pc_software(request):
-#     form=PcsoftwareForm()
-#     if request.method=='POST':
-#         form=PcsoftwareForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/pc_software.html',context)
 def pc_software(request):
     pc = cl_Pc_software.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
-            pc = cl_Pc_software.objects.filter(
-                ch_name__icontains=q)
+            pc = cl_Pc_software.objects.filter(ch_pcname_icontains=q)
     return render(request, 'tool/pc_software.html', {'pc': pc})
 
 
 def pcAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_pcname = request.POST.get('ch_pcname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         pc = cl_Pc_software(
             # id=id,
-            ch_name=ch_name,
+            ch_pcname=ch_pcname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1820,21 +1781,20 @@ def pcEdit(request):
 def pcUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_pcname = request.POST.get('ch_pcname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
-        dt_move_to_production_date = request.POST.get(
-            'dt_move_to_production_date')
-        ch_software = request.POST.get('ch_software')
+        dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
+        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
         txt_description = request.POST.get('txt_description')
         pc = cl_Pc_software(
             id=id,
-            ch_name=ch_name,
+            ch_pcname=ch_pcname,
             ch_organization=ch_organization,
             ch_status=ch_status,
             ch_business_criticality=ch_business_criticality,
@@ -1850,10 +1810,14 @@ def pcUpdate(request, id):
     return render(request, 'tool/pc_software.html')
 
 
-def pcDelete(request, id):
-    pc = cl_Pc_software.objects.filter(id=id)
-    pc.delete()
-    context = {
-        'pc': pc,
-    }
+def pcDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            pc = cl_Pc_software.objects.filter(id=i).first()
+            pc.delete()
+            context = {
+                'pc': pc,
+            }
     return redirect('pcsoftware')
