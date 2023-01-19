@@ -25,12 +25,13 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
+
 from django.utils import timezone
 from datetime import *
 from django.contrib.auth.decorators import login_required
 
 
-    
+
 @login_required(login_url='/login_render/')
 def home(request):
     # print(request.COOKIES['sessionid'])
@@ -40,8 +41,12 @@ def home(request):
 def login_render(request):
     return render(request, 'tool/login.html')
 
+
 def servicenav(request):
     return render(request, 'tool/servicenav.html')
+
+def systemnav(request):
+    return render(request, 'tool/systemnav.html')
 
 
 def sysconfienav(request):
@@ -75,7 +80,6 @@ def registerPage(request):
     return render(request, 'tool/register.html', context)
 
 
-
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -88,12 +92,14 @@ def loginPage(request):
             messages.info(request, 'Username OR Password is incorrect')
     return redirect('home')
 
+
 def logoutUser(request):
     logout(request)
-    return render(request,'tool/login.html')
+    return render(request, 'tool/login.html')
+
 
 def landingPage(request):
-   return render(request,'tool/login.html')
+    return render(request, 'tool/login.html')
 
 
 
@@ -272,12 +278,19 @@ def Location(request):
     }
     return render(request, 'tool/location.html', context)
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def LADD(request):
     if request.method == "POST":
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        print('organization :', ch_organization)
+
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
@@ -296,7 +309,10 @@ def LADD(request):
         return redirect('location')
     return render(request, 'tool/location.html')
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def LEdit(request):
     loc = cl_Location.objects.all()
     context = {
@@ -304,9 +320,13 @@ def LEdit(request):
     }
     return render(request, 'tool/location.html', context)
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def LUpdate(request, id):
     if request.method == "POST":
+        id = request.POST.get('id')
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
         ch_organization = request.POST.get('ch_owner_organization')
@@ -329,6 +349,7 @@ def LUpdate(request, id):
         return redirect('location')
     return redirect(request, 'tool/location.html')
 
+
 # @login_required(login_url='/login_render/')
 def LDelete(request):
     if request.method == "POST":
@@ -337,16 +358,15 @@ def LDelete(request):
         for i in list_id:
             loc = cl_Location.objects.filter(id=i).first()
             loc.delete()
+
     context = {
         'loc': loc,
     }
     return redirect('location')
 
 
+@login_required(login_url='/login_render/')
 
-
-
-# @login_required(login_url='/login_render/')
 def new_organization(request):
     org = cl_New_organization.objects.all()
     if request.method == "GET":
@@ -355,10 +375,13 @@ def new_organization(request):
             org = cl_New_organization.objects.filter(ch_name__icontains=q)
     return render(request, 'tool/neworganization.html', {'org': org})
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def OrgADD(request):
     if request.method == "POST":
-        ch_name = request.POST.get('ch_name')
+        ch_name = str.capitalize(request.POST.get('ch_name'))
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
         ch_parent = request.POST.get('ch_parent')
@@ -375,7 +398,10 @@ def OrgADD(request):
         return redirect('new_organization')
     return render(request, 'tool/neworganization.html')
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def OrgEdit(request):
     org = cl_New_organization.objects.all()
     context = {
@@ -383,7 +409,10 @@ def OrgEdit(request):
     }
     return render(request, 'tool/neworganization.html', context)
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def OrgUpdate(request):
     if request.method == "POST":
         ch_name = request.POST.get('ch_name')
@@ -404,7 +433,9 @@ def OrgUpdate(request):
         return redirect('new_organization')
     return render(request, 'tool/neworganization.html')
 
-# @login_required(login_url='/login_render/')
+
+@login_required(login_url='/login_render/')
+
 def OrgDelete(request):
     org = cl_New_organization.objects.filter()
     org.delete()
@@ -413,29 +444,43 @@ def OrgDelete(request):
     }
     return redirect('new_organization')
 
+
 @login_required(login_url='/login_render/')
-def client(request):
+def client(request):    
     per = cl_Person.objects.all()
+    org = cl_New_organization.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
-    return render(request, 'tool/client.html', {'per': per})
+    return render(request, 'tool/client.html', {'per': per, 'org':org})
 
 
-# @login_required(login_url='/login_render/')
+#     context={
+#         'per':per,
+#     }
+#     return render(request,'tool/client.html',context)
+
+
+@login_required(login_url='/login_render/')
 def ADD(request):
     if request.method == "POST":
-        ch_person_firstname = (request.POST.get('ch_person_firstname'))
-        ch_person_lastname = (request.POST.get('ch_person_lastname'))
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        ch_team = cl_Team.objects.get(ch_teamname = (request.POST.get('ch_team')))
-        ch_person_status = (request.POST.get('ch_person_status'))
-        ch_person_location = (request.POST.get('ch_person_location'))
-        ch_person_function = (request.POST.get('ch_person_function'))
-        ch_manager = (request.POST.get('ch_manager'))
-        ch_employee_number = (request.POST.get('ch_employee_number'))
-        e_person_email = (request.POST.get('e_person_email'))
+        ch_person_firstname = str.capitalize(
+            request.POST.get('ch_person_firstname'))
+        ch_person_lastname = str.capitalize(
+            request.POST.get('ch_person_lastname'))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_team = cl_Team.objects.get(
+            ch_teamname=str.capitalize(request.POST.get('ch_team')))
+        ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
+        ch_person_location = str.capitalize(
+            request.POST.get('ch_person_location'))
+        ch_person_function = str.capitalize(
+            request.POST.get('ch_person_function'))
+        ch_manager = str.capitalize(request.POST.get('ch_manager'))
+        ch_employee_number = str.upper(request.POST.get('ch_employee_number'))
+        e_person_email = str.lower(request.POST.get('e_person_email'))
         ch_person_phone = request.POST.get('ch_person_phone')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
 
@@ -457,7 +502,10 @@ def ADD(request):
         return redirect('client')
     return render(request, 'tool/client.html')
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def Edit(request):
     per = cl_Person.objects.all()
     context = {
@@ -465,11 +513,11 @@ def Edit(request):
     }
     return render(request, 'tool/client.html', context)
 
+
 # @login_required(login_url='/login_render/')
 def Update(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = request.POST.get('ch_organization')
@@ -503,6 +551,7 @@ def Update(request, id):
         return redirect('client')
     return render(request, 'tool/client.html')
 
+
 # @login_required(login_url='/login_render/')
 def Delete(request):
    if request.method == "POST":
@@ -527,6 +576,7 @@ def document(request):
         q = request.GET.get('searchname')
         if q != None:
             doc = cl_Document.objects.filter(ch_name__icontains=q)        
+
     context = {
         'doc': doc,
     }
@@ -752,21 +802,23 @@ def team(request):
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
     return render(request, 'tool/service.html', {'tem': tem})
 
+
 # @login_required(login_url='/login_render/')
 def TADD(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         print('organization :',request.POST.get('ch_organization'))
-
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        e_team_emailfield = request.POST.get('e_team_emailfield')
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
 
+            # id=id,
             ch_teamname=ch_teamname,
             ch_teamstatus=ch_teamstatus,
             ch_organization=ch_organization,
@@ -779,7 +831,10 @@ def TADD(request):
         return redirect('team')
     return render(request, 'tool/service.html')
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def TEdit(request):
     tem = cl_Team.objects.all()
     context = {
@@ -787,14 +842,17 @@ def TEdit(request):
     }
     return render(request, 'tool/service.html', context)
 
-# @login_required(login_url='/login_render/')
+
+
+@login_required(login_url='/login_render/')
+
 def TUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
-        e_team_emailfield = request.POST.get('e_team_emailfield')
+        ch_organization = request.POST.get('ch_organization')
+        e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
         ch_team_function = request.POST.get('ch_team_function')
@@ -826,25 +884,29 @@ def TDelete(request):
         return redirect('team')
 
 
+
  
 ################### New channge   #############################
 
 @login_required(login_url='/login_render/')
 def newchange(request):
-    nchange =cl_New_change.objects.all()
+    nchange = cl_New_change.objects.all()
     if request.method == "GET":
         allteam = cl_Team.objects.all()
         team_person = cl_Person.objects.all()
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam' : allteam, 'team_person': team_person})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person})
+
 
 @login_required(login_url='/login_render/')
 def CADD(request):
     if request.method == "POST":
-        # print('organization :',request.POST.get('ch_organization'))
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+
+        print('organization :', request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_caller = request.POST.get('ch_caller')
         ch_status = request.POST.get('ch_status')
         ch_category = request.POST.get('ch_category')
@@ -858,17 +920,19 @@ def CADD(request):
             ch_organization=ch_organization,
             ch_caller=ch_caller,
             ch_status=ch_status,
-            ch_category = ch_category,
+            ch_category=ch_category,
             ch_title=ch_title,
             dt_start_date=dt_start_date,
-            dt_Updated_date = dt_Updated_date,
+            dt_Updated_date=dt_Updated_date,
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description = txt_description,
+
         )
         nchange.save()
         return redirect('newchange')
     return render(request, 'tool/newchange.html')
+
 
 @login_required(login_url='/login_render/')
 def CEdit(request):
@@ -887,7 +951,8 @@ def CUpdate(request, id):
     if request.method == "POST":
         nchange = cl_New_change.objects.filter(id=id).first()
         id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_caller = request.POST.get('ch_caller')
         ch_status = request.POST.get('ch_status')
         ch_category = request.POST.get('ch_category')
@@ -900,22 +965,21 @@ def CUpdate(request, id):
         txt_description = request.POST.get('txt_description')
         nchange = cl_New_change(
             id=id,
-            ch_organization = ch_organization,
-            ch_caller = ch_caller,
+            ch_organization=ch_organization,
+            ch_caller=ch_caller,
             ch_status=ch_status,
-            ch_category = ch_category,
+            ch_category=ch_category,
             ch_title=ch_title,
             dt_start_date=dt_start_date,
             dt_Updated_date=dt_Updated_date,
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
-            txt_description = txt_description,
-           
+            txt_description=txt_description,
+
         )
         nchange.save()
         return redirect('newchange')
     return render(request, 'tool/newchange.html')
-
 
 
 @login_required(login_url='/login_render/')
@@ -949,7 +1013,8 @@ def assign_changeModal(request):
             message = 'Hope you are enjoying your Olatech Services'
             sender = settings.EMAIL_HOST_USER
             recepient = per.e_person_email
-            send_mail(subject, message, sender, [recepient], fail_silently = False)
+            send_mail(subject, message, sender, [
+                      recepient], fail_silently=False)
         except:
             print('email not send')
 
@@ -958,7 +1023,6 @@ def assign_changeModal(request):
             'nchange': nchange,
         }
     return render(request, 'tool/tassign.html', context)
-
 
 
 #############################################################
@@ -991,8 +1055,13 @@ def escalation(ur):
 @login_required(login_url='/login_render/')
 def UADD(request):
     if request.method == "POST":
-        fk_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        fk_caller = cl_Person.objects.get(ch_person_firstname = request.POST.get('ch_Person'))
+        id = request.POST.get('id')
+        print(id)
+        fk_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        fk_caller = cl_Person.objects.get(
+            ch_person_firstname=str.capitalize(request.POST.get('ch_Person')))
+        # fk_caller = request.POST.get('ch_Person')
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -1018,6 +1087,7 @@ def UADD(request):
             ch_impact=ch_impact,
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
+
             dt_start_date =dt_start_date,
             dt_updated_date =dt_updated_date,
             dt_escalation_date = dt_escalation_date,
@@ -1026,6 +1096,7 @@ def UADD(request):
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
+
         )
         ur.save()
         return redirect('userrequest')
@@ -1040,12 +1111,15 @@ def UEdit(request):
     }
     return render(request, 'tool/userrequest.html', context)
 
+
 @login_required(login_url='/login_render/')
 def UUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        fk_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        fk_caller = request.POST.get('fk_caller')
+        fk_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        fk_caller = cl_Person.objects.get(
+            ch_person_firstname=str.capitalize(request.POST.get('ch_Person')))
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -1073,10 +1147,10 @@ def UUpdate(request, id):
             ch_impact=ch_impact,
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
-            dt_start_date =dt_start_date,
-            dt_end_date =dt_end_date,
-            ch_service =ch_service,
-            ch_service_subcategory =ch_service_subcategory,
+            dt_start_date=dt_start_date,
+            dt_end_date=dt_end_date,
+            ch_service=ch_service,
+            ch_service_subcategory=ch_service_subcategory,
             ch_parent_request=ch_parent_request,
             # dt_tto=dt_tto,
             # dt_ttr=dt_ttr,
@@ -1085,8 +1159,10 @@ def UUpdate(request, id):
         )
         ur.save()
         # print(ur)
+
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html')
+
 
 @login_required(login_url='/login_render/')
 def UDelete(request, id):
@@ -1108,7 +1184,7 @@ def escalate_notify(request):
 
 @login_required(login_url='/login_render/')
 def customer_contract(request):
-    cust =cl_Customer_contract.objects.all()
+    cust = cl_Customer_contract.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1123,10 +1199,12 @@ def SCADD(request):
         # id = request.POST.get('id')
 
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_ccustomer = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_pprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1139,15 +1217,15 @@ def SCADD(request):
             ch_cname=ch_cname,
             ch_ccustomer=ch_ccustomer,
             ch_status=ch_status,
-            ch_contract_type = ch_contract_type,
+            ch_contract_type=ch_contract_type,
             ch_pprovider=ch_pprovider,
             dt_start_date=dt_start_date,
-            dt_end_date = dt_end_date,
+            dt_end_date=dt_end_date,
             i_cost_unit=i_cost_unit,
             i_cost=i_cost,
-            i_cost_currency =i_cost_currency,
-            i_billing_frequency =i_billing_frequency,
-            txt_description = txt_description,
+            i_cost_currency=i_cost_currency,
+            i_billing_frequency=i_billing_frequency,
+            txt_description=txt_description,
         )
         cust.save()
         # print(nchange)
@@ -1158,7 +1236,7 @@ def SCADD(request):
 
 @login_required(login_url='/login_render/')
 def SCEdit(request):
-    cust =cl_Customer_contract.objects.all()
+    cust = cl_Customer_contract.objects.all()
     context = {
         'cust': cust,
     }
@@ -1173,10 +1251,12 @@ def SCUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_ccustomer = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider =  cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_pprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1190,15 +1270,15 @@ def SCUpdate(request, id):
             ch_cname=ch_cname,
             ch_ccustomer=ch_ccustomer,
             ch_status=ch_status,
-            ch_contract_type = ch_contract_type,
+            ch_contract_type=ch_contract_type,
             ch_provider=ch_pprovider,
             dt_start_date=dt_start_date,
-            dt_end_date = dt_end_date,
+            dt_end_date=dt_end_date,
             i_cost_unit=i_cost_unit,
             i_cost=i_cost,
-            i_cost_currency =i_cost_currency,
-            i_billing_frequency =i_billing_frequency,
-            txt_description = txt_description,
+            i_cost_currency=i_cost_currency,
+            i_billing_frequency=i_billing_frequency,
+            txt_description=txt_description,
         )
         cust.save()
 
@@ -1207,16 +1287,17 @@ def SCUpdate(request, id):
 
     return render(request, 'tool/scustomer_contract.html')
 
+
 @login_required(login_url='/login_render/')
-def SCDelete(request,id):
+def SCDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     cust = cl_Customer_contract.objects.filter(id=id)
-    
+
     cust.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'cust': cust,
     }
@@ -1225,7 +1306,7 @@ def SCDelete(request,id):
 
 @login_required(login_url='/login_render/')
 def provider_contract(request):
-    pro =cl_Providercontract.objects.all()
+    pro = cl_Providercontract.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1237,10 +1318,12 @@ def provider_contract(request):
 def SPADD(request):
     if request.method == "POST":
         ch_pname = request.POST.get('ch_pname')
-        ch_customer = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_customer = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pcprovider =  cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_pcprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1255,16 +1338,16 @@ def SPADD(request):
             ch_pname=ch_pname,
             ch_customer=ch_customer,
             ch_status=ch_status,
-            ch_contract_type = ch_contract_type,
+            ch_contract_type=ch_contract_type,
             ch_pcprovider=ch_pcprovider,
             dt_start_date=dt_start_date,
-            dt_end_date = dt_end_date,
+            dt_end_date=dt_end_date,
             i_cost_unit=i_cost_unit,
             i_cost=i_cost,
-            i_cost_currency =i_cost_currency,
-            i_billing_frequency =i_billing_frequency,
-            txt_description = txt_description,
-            ch_sla =ch_sla,
+            i_cost_currency=i_cost_currency,
+            i_billing_frequency=i_billing_frequency,
+            txt_description=txt_description,
+            ch_sla=ch_sla,
         )
         pro.save()
         # print(nchange)
@@ -1273,9 +1356,10 @@ def SPADD(request):
 
     return render(request, 'tool/sprovidercontract.html')
 
+
 @login_required(login_url='/login_render/')
 def SPEdit(request):
-    pro =cl_Providercontract.objects.all()
+    pro = cl_Providercontract.objects.all()
     context = {
         'pro': pro,
     }
@@ -1293,13 +1377,15 @@ def SPUpdate(request, id):
         # ch_organization = org_id
         id = request.POST.get('id')
 
-        print('organization :',request.POST.get('ch_organization'))
+        print('organization :', request.POST.get('ch_organization'))
         ch_pname = request.POST.get('ch_pname')
-        ch_customer = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_customer = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
 
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pcprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_pcprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
 
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
@@ -1315,16 +1401,16 @@ def SPUpdate(request, id):
             ch_pname=ch_pname,
             ch_customer=ch_customer,
             ch_status=ch_status,
-            ch_contract_type = ch_contract_type,
+            ch_contract_type=ch_contract_type,
             ch_pcprovider=ch_pcprovider,
             dt_start_date=dt_start_date,
-            dt_end_date = dt_end_date,
+            dt_end_date=dt_end_date,
             i_cost_unit=i_cost_unit,
             i_cost=i_cost,
-            i_cost_currency =i_cost_currency,
-            i_billing_frequency =i_billing_frequency,
-            txt_description = txt_description,
-            ch_sla =ch_sla,
+            i_cost_currency=i_cost_currency,
+            i_billing_frequency=i_billing_frequency,
+            txt_description=txt_description,
+            ch_sla=ch_sla,
         )
         pro.save()
         # print(nchange)
@@ -1335,20 +1421,19 @@ def SPUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SPDelete(request,id):
+def SPDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     pro = cl_Providercontract.objects.filter(id=id)
-    
+
     pro.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'pro': pro,
     }
     return redirect('providercontract')
-
 
 
 @login_required(login_url='/login_render/')
@@ -1372,12 +1457,12 @@ def SFADD(request):
         id = request.POST.get('id')
 
         ch_sname = request.POST.get('ch_sname')
-        
+
         sf = cl_Servicefamilies(
-            id = id,
+            id=id,
             ch_sname=ch_sname,
-           
-           
+
+
         )
         sf.save()
         return redirect('servicefamilies')
@@ -1398,12 +1483,11 @@ def SFUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sname = request.POST.get('ch_sname')
-       
 
         sf = cl_Servicefamilies(
             id=id,
             ch_sname=ch_sname,
-           
+
         )
         sf.save()
         return redirect('servicefamilies')
@@ -1422,7 +1506,7 @@ def SFDelete(request, id):
 
 @login_required(login_url='/login_render/')
 def sservice(request):
-    ser =cl_Service.objects.all()
+    ser = cl_Service.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1437,29 +1521,31 @@ def SSADD(request):
         id = request.POST.get('id')
 
         ch_ssname = request.POST.get('ch_ssname')
-        ch_sprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        ch_service_family = cl_Servicefamilies.objects.get(ch_sname = request.POST.get('ch_sfamily'))
+        ch_sprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_service_family = cl_Servicefamilies.objects.get(
+            ch_sname=request.POST.get('ch_sfamily'))
         ch_status = request.POST.get('ch_status')
-        txt_description = request.POST.get('txt_description') 
+        txt_description = request.POST.get('txt_description')
 
         ser = cl_Service(
             id=id,
             ch_ssname=ch_ssname,
-            ch_sprovider =ch_sprovider,
-            ch_service_family =ch_service_family,
+            ch_sprovider=ch_sprovider,
+            ch_service_family=ch_service_family,
             ch_status=ch_status,
-            txt_description=txt_description,            
+            txt_description=txt_description,
         )
         ser.save()
         # print(nchange)
         return redirect('service')
- 
+
     return render(request, 'tool/sservice.html')
 
 
 @login_required(login_url='/login_render/')
 def SSEdit(request):
-    ser =cl_Service.objects.all()
+    ser = cl_Service.objects.all()
     context = {
         'ser': ser,
     }
@@ -1472,21 +1558,23 @@ def SSUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')      
-        
+        id = request.POST.get('id')
+
         ch_ssname = request.POST.get('ch_ssname')
-        ch_sprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        ch_service_family = cl_Servicefamilies.objects.get(ch_sname = request.POST.get('ch_sfamily'))
+        ch_sprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_service_family = cl_Servicefamilies.objects.get(
+            ch_sname=request.POST.get('ch_sfamily'))
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
         ser = cl_Service(
             id=id,
             ch_ssname=ch_ssname,
-            ch_sprovider =ch_sprovider,
-            ch_service_family =ch_service_family,
+            ch_sprovider=ch_sprovider,
+            ch_service_family=ch_service_family,
             ch_status=ch_status,
             txt_description=txt_description,
-            
+
         )
         ser.save()
 
@@ -1497,15 +1585,15 @@ def SSUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SSDelete(request,id):
+def SSDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     ser = cl_Service.objects.filter(id=id)
-    
+
     ser.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'ser': ser,
     }
@@ -1514,7 +1602,7 @@ def SSDelete(request,id):
 
 @login_required(login_url='/login_render/')
 def service_subcategory(request):
-    sub =cl_Service_subcategory.objects.all()
+    sub = cl_Service_subcategory.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1529,17 +1617,18 @@ def SADD(request):
         # id = request.POST.get('id')
 
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.get(ch_ssname = request.POST.get('ch_sservice'))
+        ch_sservice = cl_Service.objects.get(
+            ch_ssname=request.POST.get('ch_sservice'))
         ch_status = request.POST.get('ch_status')
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
         sub = cl_Service_subcategory(
             # id=id,
             ch_subname=ch_subname,
-            ch_sservice =ch_sservice,
+            ch_sservice=ch_sservice,
             ch_status=ch_status,
-            ch_request_type =ch_request_type,
-            txt_description = txt_description,
+            ch_request_type=ch_request_type,
+            txt_description=txt_description,
         )
         sub.save()
         # print(nchange)
@@ -1550,7 +1639,7 @@ def SADD(request):
 
 @login_required(login_url='/login_render/')
 def SEdit(request):
-    sub =cl_Service_subcategory.objects.all()
+    sub = cl_Service_subcategory.objects.all()
     context = {
         'sub': sub,
     }
@@ -1566,17 +1655,18 @@ def SUpdate(request, id):
         id = request.POST.get('id')
 
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.get(ch_ssname = request.POST.get('ch_sservice'))
+        ch_sservice = cl_Service.objects.get(
+            ch_ssname=request.POST.get('ch_sservice'))
         ch_status = request.POST.get('ch_status')
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
         sub = cl_Service_subcategory(
             id=id,
             ch_subname=ch_subname,
-            ch_sservice =ch_sservice,
+            ch_sservice=ch_sservice,
             ch_status=ch_status,
-            ch_request_type =ch_request_type,
-            txt_description = txt_description,
+            ch_request_type=ch_request_type,
+            txt_description=txt_description,
         )
         sub.save()
 
@@ -1587,31 +1677,29 @@ def SUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SDelete(request,id):
+def SDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     sub = cl_Service_subcategory.objects.filter(id=id)
-    
+
     sub.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'sub': sub,
     }
     return redirect('service_subcategory')
 
 
-
 @login_required(login_url='/login_render/')
 def sla(request):
-    sl =cl_Sla.objects.all()
+    sl = cl_Sla.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             sl = cl_Sla.objects.filter(ch_status__icontains=q)
     return render(request, 'tool/ssla.html', {'sl': sl})
-
 
 
 @login_required(login_url='/login_render/')
@@ -1621,14 +1709,15 @@ def SLADD(request):
         # id = request.POST.get('id')
 
         ch_slname = request.POST.get('ch_slname')
-        ch_slaprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        txt_description = request.POST.get('txt_description') 
+        ch_slaprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        txt_description = request.POST.get('txt_description')
 
         sl = cl_Sla(
             # id=id,
             ch_slname=ch_slname,
-            ch_slaprovider =ch_slaprovider,
-            txt_description=txt_description          
+            ch_slaprovider=ch_slaprovider,
+            txt_description=txt_description
         )
         sl.save()
         # print(nchange)
@@ -1638,7 +1727,7 @@ def SLADD(request):
 
 @login_required(login_url='/login_render/')
 def SLEdit(request):
-    sl =cl_Service.objects.all()
+    sl = cl_Service.objects.all()
     context = {
         'sl': sl,
     }
@@ -1651,15 +1740,16 @@ def SLUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')        
+        id = request.POST.get('id')
         ch_slname = request.POST.get('ch_slname')
-        ch_slaprovider = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_slaprovider = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         txt_description = request.POST.get('txt_description')
         sl = cl_Sla(
             id=id,
             ch_slname=ch_slname,
-            ch_slaprovider =ch_slaprovider,
-            txt_description=txt_description 
+            ch_slaprovider=ch_slaprovider,
+            txt_description=txt_description
         )
         sl.save()
 
@@ -1670,20 +1760,19 @@ def SLUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SLDelete(request,id):
+def SLDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     sl = cl_Sla.objects.filter(id=id)
-    
+
     sl.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'sl': sl,
     }
     return redirect('sla')
-
 
 
 @login_required(login_url='/login_render/')
@@ -1715,7 +1804,7 @@ def STADD(request):
             ch_metric=ch_metric,
             ch_value=ch_value,
             ch_unit=ch_unit,
-           
+
         )
         slt.save()
         return redirect('slt')
@@ -1734,7 +1823,7 @@ def SLTEdit(request):
 @login_required(login_url='/login_render/')
 def SLTUpdate(request, id):
     if request.method == "POST":
-        id =  request.POST.get('id')
+        id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_priority = request.POST.get('ch_priority')
         ch_request_type = request.POST.get('ch_request_type')
@@ -1743,7 +1832,7 @@ def SLTUpdate(request, id):
         ch_unit = request.POST.get('ch_unit')
 
         slt = cl_Slt(
-            id = id,
+            id=id,
             ch_name=ch_name,
             ch_priority=ch_priority,
             ch_request_type=ch_request_type,
@@ -1766,10 +1855,9 @@ def SLTDelete(request, id):
     return redirect('slt')
 
 
-
 @login_required(login_url='/login_render/')
 def servicedelivery(request):
-    sd =cl_Servicedelivery.objects.all()
+    sd = cl_Servicedelivery.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -1784,26 +1872,27 @@ def SDADD(request):
         # id = request.POST.get('id')
 
         ch_sdname = request.POST.get('ch_sdname')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        txt_description = request.POST.get('txt_description') 
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        txt_description = request.POST.get('txt_description')
 
         sd = cl_Servicedelivery(
             # id=id,
             ch_sdname=ch_sdname,
-            ch_organization =ch_organization,
-            txt_description=txt_description           
+            ch_organization=ch_organization,
+            txt_description=txt_description
         )
         sd.save()
         # print(nchange)
 
         return redirect('servicedelivery')
- 
+
     return render(request, 'tool/sdelivery.html')
 
 
 @login_required(login_url='/login_render/')
 def SDEdit(request):
-    sd =cl_Servicedelivery.objects.all()
+    sd = cl_Servicedelivery.objects.all()
     context = {
         'sd': sd,
     }
@@ -1817,17 +1906,17 @@ def SDUpdate(request, id):
     """
     if request.method == "POST":
         id = request.POST.get('id')
-        
-        
+
         ch_sdname = request.POST.get('ch_sdname')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.get(
+            ch_name=str.capitalize(request.POST.get('ch_organization')))
         txt_description = request.POST.get('txt_description')
         sd = cl_Servicedelivery(
             id=id,
             ch_sdname=ch_sdname,
-            ch_organization =ch_organization,
+            ch_organization=ch_organization,
             txt_description=txt_description
-            
+
         )
         sd.save()
 
@@ -1838,20 +1927,19 @@ def SDUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SDDelete(request,id):
+def SDDelete(request, id):
     # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()    
+    # nchange.delete()
     sd = cl_Servicedelivery.objects.filter(id=id)
-    
+
     sd.delete()
 
     # return redirect('newchange')
-     
+
     context = {
         'sd': sd,
     }
     return redirect('servicedelivery')
-
 
 
 @login_required(login_url='/login_render/')
@@ -1904,14 +1992,78 @@ def ldapuser(request):
 
 @login_required(login_url='/login_render/')
 def externaluser(request):
-    form = ExternaluserForm()
-    if request.method == 'POST':
-        form = ExternaluserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    ext = cl_Externaluser.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchstatus')
+        if q != None:
+            ext = cl_Externaluser.objects.filter(ch_status__icontains=q)
+    return render(request, 'tool/externaluser.html', {'ext': ext})
+
+
+def extADD(request):
+    if request.method == "POST":
+        ch_person = cl_Person.objects.get(
+            ch_person_firstname=request.POST.get('ch_person'))
+        ch_person_lastname = request.POST.get('ch_person_lastname')
+        e_email = str.lower(request.POST.get('e_email'))
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ext = cl_Externaluser(
+            ch_person=ch_person,
+            ch_person_lastname=ch_person_lastname,
+            e_email=e_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+        )
+        ext.save()
+        return redirect('externaluser')
+    return render(request, 'tool/externaluser.html')
+
+
+def extEdit(request):
+    ext = cl_Externaluser.objects.all()
+    context = {
+        'ext': ext,
+    }
     return render(request, 'tool/externaluser.html', context)
+
+
+def extUpdate(request, id):
+    """
+    Function for update change_information
+    """
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_person = cl_Person.objects.get(
+            ch_person_firstname=request.POST.get('ch_person'))
+        ch_person_lastname = request.POST.get('ch_person_lastname')
+        e_email = request.POST.get('e_email')
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ext = cl_Externaluser(
+            id=id,
+            ch_person=ch_person,
+            ch_person_lastname=ch_person_lastname,
+            e_email=e_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+        )
+        ext.save()
+        return redirect('externaluser')
+    return render(request, 'tool/externaluser.html')
+
+
+def extDelete(request, id):
+    ext = cl_Externaluser.objects.get(id=id)
+    ext.delete()
+    context = {
+        'ext': ext,
+    }
+    return redirect('externaluser')
 
 
 @login_required(login_url='/login_render/')

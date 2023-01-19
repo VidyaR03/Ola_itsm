@@ -3,7 +3,7 @@
 {% load static %}
 
 <head>
-    <meta charset="utf-12">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Request</title>
@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="../../../static/js/demo.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{% static '/css/location.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -106,6 +110,10 @@
 
 <body>
     <div class="container">
+</head>
+
+<body>
+    <div class="container">
         <div class="row">
             <div class="text-right">
                 <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
@@ -130,6 +138,7 @@
             </div>
         </div>
     </div>
+
     <div class="container" style="margin-top:30px; display: inline-block;">
         <div class="row" style="margin-top: 5px;">
             <div class="col-xl-12">
@@ -204,7 +213,7 @@
     <!-- Add Modal HTML -->
     <div id="addcl_User_requestModal" class="modal fade">
         <div class="modal-dialog">
-            <div class="modal-content">
+                <div class="modal-content" style="width: 800px; position: relative; right: 50%; bottom: 50%;">
                 <form action="{% url 'uadd' %}" method="post">
                     {% csrf_token %}
                     <div class="modal-header">
@@ -286,6 +295,8 @@
                                 </option>
                             </select>
                         </div>
+                        </div>
+                            <div class="modal-body" style="width: 330px; display: inline-block;">  <!--start of right half -->
                         <div class="form-group">
                             <label>Priority</label>
                             <select name="ch_priority" type="text" class="form-control"
@@ -340,15 +351,13 @@
                             <label>Agent</label>
                             <input class="form-control" name="ch_agent" type="text" >
                         </div>
+
                     </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-success" value="Add">
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+
+
 
     <!-- Edit Modal HTML -->
     {% for i in ur %}
@@ -513,5 +522,6 @@
         });
     </script>
 </body>
+
 
 </html>

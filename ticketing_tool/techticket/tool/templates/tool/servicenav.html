@@ -11,14 +11,22 @@
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Select the type of contract to create
       </button>
+      <p></p>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="nav-item nav-link" href="{% url 'customercontract' %}">Customer Contract</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'providercontract' %}">Provider Contract</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'servicefamilies' %}">Service Families</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'service' %}">Services</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'service_subcategory' %}">Service Subcategory</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'sla' %}">SLAs</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'slt' %}">SLTs</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'servicedelivery' %}">Delivery Model</a>
         <!-- <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a> -->
 

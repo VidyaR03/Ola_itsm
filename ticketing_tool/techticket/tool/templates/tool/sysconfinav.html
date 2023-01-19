@@ -6,12 +6,19 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <p></p>
+    <a href="{% url 'systemnav' %}" class="btn btn-primary" role="button">Back</a>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="#">General Configuration</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'synchro_data_source' %}">Synchronization Data Sources</a>
+        <br>
         <a class="nav-item nav-link" href="#">Notification</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'sysconfiauth' %}">OAuth Client</a>
+        <br>
         <a class="nav-item nav-link" href="{% url 'integration' %}">Integration</a>
         
       </div>

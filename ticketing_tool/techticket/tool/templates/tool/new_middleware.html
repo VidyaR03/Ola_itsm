@@ -102,14 +102,14 @@
   </table>
   <div id="addcl_New_middlewareModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="{% url 'MWAdd' %}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Add New Middleware</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <!-- <div class="form-group">
               <label>ID</label>
               <input name="id" type="text" class="form-control">
@@ -146,6 +146,8 @@
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
               <span class="validity"></span>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
               <label>Software<a href="{% url 'software' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
@@ -181,14 +183,14 @@
   {% for i in middle %}
   <div id="editcl_New_middlewareModal-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="/MWUpdate/{{i.id}}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Edit </h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>ID</label>
               <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -226,6 +228,9 @@
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
               <span class="validity"></span>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
+          
             <div class="form-group">
               <label>Software<a href="{% url 'software' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
