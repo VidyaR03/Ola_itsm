@@ -413,6 +413,7 @@ def OrgDelete(request):
     }
     return redirect('new_organization')
 
+
 @login_required(login_url='/login_render/')
 def client(request):
     per = cl_Person.objects.all()
