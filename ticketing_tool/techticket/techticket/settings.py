@@ -73,6 +73,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "techticket.wsgi.application"
 
+CRONJOBS = [
+    ('*/5 * * * *', 'myapp.cron.my_code')
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

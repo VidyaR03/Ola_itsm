@@ -57,6 +57,7 @@
           <label for="selectAll"></label>
         </span>
       </th>
+      <th>ID</th>
       <th>Organization</th>
       <th>Caller</th>
       <th>Status</th>
@@ -78,6 +79,7 @@
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
+        <td>{{i.id}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_caller}}</td>
         <td>{{i.ch_status}}</td>
@@ -214,10 +216,12 @@
                 <option value="Resolved">Resolved</option>
               </select>
             </div>
+
             <div class="form-group">
               <label>Category</label>
               <input name="ch_category" value="{{i.ch_category}}" type="text" class="form-control" required>
             </div>
+            
             <br>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;"><!--start of right half -->
