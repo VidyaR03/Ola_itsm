@@ -96,7 +96,7 @@ urlpatterns = [
    
 
     
-    path("deliverymodel/", views.delivery_model,name='deliverymodel'),
+    # path("deliverymodel/", views.delivery_model,name='deliverymodel'),
    
    #Url for DB Schema   
     path("databaseschema/", views.dataschema, name='databaseschema'),
@@ -307,6 +307,14 @@ urlpatterns = [
     path('sdedit', views.SDEdit, name='sdedit'),
     path('sdupdate/<str:id>', views.SDUpdate, name='sdupdate'),
     path('sddelete/<str:id>', views.SDDelete, name='sddelete'),
+
+
+        #url for OS License
+    path("os_license/", views.os_license,name='os_license'),
+    path('olAdd', views.olAdd, name='olAdd'),
+    path('olEdit', views.olEdit, name='olEdit'),
+    path('olUpdate/<str:id>', views.olUpdate, name='olUpdate'),
+    path('olDelete/', views.olDelete, name='olDelete'),
 
 
 

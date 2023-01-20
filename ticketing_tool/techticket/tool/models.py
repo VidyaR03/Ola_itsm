@@ -33,7 +33,7 @@ class cl_New_organization(models.Model):
 
 class cl_Software(models.Model):
     """This models creates table for Software"""
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_sofname = models.CharField(max_length=100, null=True)
     ch_vendor = models.CharField(max_length=100, null=True)
     chversion = models.CharField(max_length=100, null=True)
@@ -67,10 +67,12 @@ class cl_Web_server(models.Model):
     class Meta:
         db_table = 'cl_Web_server'
 
+
+
 ############ Brand #############
 
 class cl_Brand(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_brandname = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -82,7 +84,7 @@ class cl_Brand(models.Model):
 ######## Netwok type #########
 
 class cl_network_type(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_nname = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -95,7 +97,7 @@ class cl_network_type(models.Model):
 ######### ISO Version #########
 
 class cl_ios_version(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_iosname = models.CharField(max_length=100, null=True)
     ch_brandname = models.ForeignKey(
         cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
@@ -111,7 +113,7 @@ class cl_ios_version(models.Model):
 ########## Model #######
 
 class cl_model(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_modelname = models.CharField(max_length=100, null=True)
     ch_brandname = models.ForeignKey(
         cl_Brand, on_delete=models.CASCADE, null=True, blank=True)
@@ -167,7 +169,7 @@ class cl_Servicefamilies(models.Model):
 
 
 class cl_os_license(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_name = models.CharField(max_length=100, null=True)
     ch_version = models.ForeignKey(
         cl_os_version, on_delete=models.CASCADE, null=True, blank=True)
@@ -185,6 +187,8 @@ class cl_os_license(models.Model):
 
     class Meta:
         db_table = 'cl_os_license'
+
+
 
    
 class cl_Team(models.Model):
@@ -204,7 +208,7 @@ class cl_Team(models.Model):
     ch_team_function = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.ch_organization
+        return self.ch_teamname
 
     class Meta:
         db_table = 'cl_Team'
@@ -229,6 +233,7 @@ class cl_Team(models.Model):
 
 class cl_Person(models.Model):
     """Models which create table for Person Information"""
+    id = models.AutoField(primary_key=True, editable=False)
     id = models.AutoField(primary_key=True, editable=False)
     ch_person_firstname = models.CharField(max_length=100, null=True)
     ch_person_lastname = models.CharField(max_length=100, null=True)
@@ -325,7 +330,7 @@ class cl_Application_solution(models.Model):
 
 class cl_Service(models.Model):
     """Models which create the table for Service"""
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
 
     ch_ssname = models.CharField(max_length=100, null=True)
     ch_sprovider = models.ForeignKey(
@@ -620,9 +625,11 @@ class cl_User_request(models.Model):
 
 class cl_New_change(models.Model):
     """Models which create the table for New Change"""
+    id = models.AutoField(primary_key=True, editable=False)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    ch_caller = models.CharField(max_length=100, null=True)
+    ch_caller = models.ForeignKey(
+        cl_Person, on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, default='new')
     ch_category = models.CharField(max_length=100, null=True)
     ch_title = models.CharField(max_length=100, null=True)

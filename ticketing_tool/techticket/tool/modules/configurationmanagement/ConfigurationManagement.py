@@ -22,7 +22,7 @@ def software(request):
 
 def softAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
         # ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
         # print('organization :',ch_organization)
@@ -30,7 +30,7 @@ def softAdd(request):
         chversion = request.POST.get('chversion')
         ch_type = request.POST.get('ch_type')
         soft = cl_Software(
-            id=id,
+            # id=id,
             ch_sofname=ch_sofname,
             ch_vendor=ch_vendor,
             chversion=chversion,
@@ -249,18 +249,16 @@ def appDelete(request):
 ############ Delivery Model #############
 
 
-def delivery_model(request):
-    form = DeliverymodelForm()
-    if request.method == 'POST':AutoField(primary_key=True)
-196
- 
-    id = models.AutoField(primary_key=True, editable=False
-        form = DeliverymodelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Data Add Successfully")
-    context = {'form': form}
-    return render(request, 'tool/delivery_model.html', context)
+# def delivery_model(request):
+#     form = DeliverymodelForm()
+#     if request.method == 'POST':AutoField(primary_key=True) 
+#     id = models.AutoField(primary_key=True, editable=False
+#         form = DeliverymodelForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Data Add Successfully")
+#     context = {'form': form}
+#     return render(request, 'tool/delivery_model.html', context)
 
  ########## Business Processs #############
 
@@ -900,6 +898,9 @@ def waDelete(request):
             }
     return redirect('webapplication')
 
+########## OS License ######
+
+
 
 ########## network Device ######
 
@@ -916,9 +917,8 @@ def networkdevice(request):
 def ndAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_ndname = request.POST.get('ch_ndname')
+        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -945,7 +945,7 @@ def ndAdd(request):
             ch_network_type=ch_network_type,
             ch_brand=ch_brand,
             ch_model=ch_model,
-            i_os_version=i_ios_version,
+            i_ios_version=i_ios_version,
             i_management_ip=i_management_ip,
             ch_ram=ch_ram,
             i_rack_unit=i_rack_unit,
@@ -972,8 +972,8 @@ def ndEdit(request):
 def ndUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_ndname = request.POST.get('ch_ndname')
+        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
@@ -1041,11 +1041,11 @@ def network_type(request):
 
 def ntAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         print(id)
         ch_nname = request.POST.get('ch_nname')
         nt = cl_network_type(
-            id=id,
+            # id=id,
             ch_nname=ch_nname,
         )
         nt.save()
@@ -1225,7 +1225,7 @@ def olAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_version = cl_os_version.objects.get(ch_iosname=request.POST.get('ch_version'))
+        ch_version = cl_os_version.objects.get(ch_osname=request.POST.get('ch_version'))
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_usage_limit = request.POST.get('ch_usage_limit')
@@ -1263,7 +1263,7 @@ def olUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_version = cl_os_version.objects.get(ch_iosname=request.POST.get('ch_version'))
+        ch_version = cl_os_version.objects.get(ch_osname=request.POST.get('ch_version'))
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_usage_limit = request.POST.get('ch_usage_limit')
@@ -1291,11 +1291,15 @@ def olUpdate(request, id):
 
 
 def olDelete(request, id):
-    ol = cl_os_license.objects.filter(id=id)
-    ol.delete()
-    context = {
-        'ol': ol,
-    }
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            ol = cl_os_license.objects.filter(id=i).first()
+            ol.delete()
+            context = {
+                'ol': ol,
+            }
     return redirect('os_license')
 
 
@@ -1312,11 +1316,11 @@ def brand(request):
 
 def bnAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         print(id)
         ch_brandname = request.POST.get('ch_brandname')
         brand = cl_Brand(
-            id=id,
+            # id=id,
             ch_brandname=ch_brandname,
         )
         brand.save()
@@ -1369,14 +1373,14 @@ def cmodel(request):
 
 def mdAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         print(id)
         ch_modelname = request.POST.get('ch_modelname')
         ch_brandname = cl_Brand.objects.get(
             ch_brandname=request.POST.get('ch_brandname'))
 
         model = cl_model(
-            id=id,
+            # id=id,
             ch_modelname=ch_modelname,
             ch_brandname=ch_brandname,
 
@@ -1434,14 +1438,14 @@ def iosver(request):
 
 def ivAdd(request):
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         print(id)
         ch_iosname = request.POST.get('ch_iosname')
         ch_brandname = cl_Brand.objects.get(
             ch_brandname=request.POST.get('ch_brandname'))
 
         iv = cl_ios_version(
-            id=id,
+            # id=id,
             ch_iosname=ch_iosname,
             ch_brandname=ch_brandname,
         )
@@ -1520,6 +1524,7 @@ def serverAdd(request):
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
         i_os_version = cl_os_version.objects.get(ch_osname=request.POST.get('i_os_version'))
         i_management_ip = request.POST.get('i_management_ip')
+        i_os_license = cl_os_license.objects.get(ch_name=request.POST.get('i_os_license'))
         ch_ram = request.POST.get('ch_ram')
         ch_cpu = request.POST.get('ch_cpu')
         i_rack_unit = request.POST.get('i_rack_unit')
@@ -1531,7 +1536,7 @@ def serverAdd(request):
         dt_end_of_warranty = request.POST.get('dt_end_of_warranty')
         txt_description = request.POST.get('txt_description')
         se = cl_Server(
-            id=id,
+            # id=id,
             ch_sname=ch_sname,
             ch_organization=ch_organization,
             ch_status=ch_status,
@@ -1542,6 +1547,7 @@ def serverAdd(request):
             ch_model=ch_model,
             i_os_version=i_os_version,
             i_management_ip=i_management_ip,
+            i_os_license = i_os_license,
             ch_ram=ch_ram,
             ch_cpu = ch_cpu,
             i_rack_unit=i_rack_unit,
@@ -1578,6 +1584,7 @@ def serverUpdate(request, id):
         ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
         i_os_version = cl_os_version.objects.get(ch_osname=request.POST.get('i_os_version'))
         i_management_ip = request.POST.get('i_management_ip')
+        i_os_license = cl_os_license.objects.get(ch_name=request.POST.get('i_os_license'))
         ch_ram = request.POST.get('ch_ram')
         ch_cpu = request.POST.get('ch_cpu')
         i_rack_unit = request.POST.get('i_rack_unit')
@@ -1600,6 +1607,7 @@ def serverUpdate(request, id):
             ch_model=ch_model,
             i_os_version=i_os_version,
             i_management_ip=i_management_ip,
+            i_os_license = i_os_license,
             ch_ram=ch_ram,
             ch_cpu = ch_cpu,
             i_rack_unit=i_rack_unit,

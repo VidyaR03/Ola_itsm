@@ -17,7 +17,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 from django.template.loader import get_template
 # from django.views import View
-from xhtml2pdf import pisa
 from django.core.exceptions import BadRequest
 from django.http import FileResponse
 from django.shortcuts import render
@@ -25,6 +24,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
+from xhtml2pdf import pisa
 
 from django.utils import timezone
 from datetime import *
@@ -520,8 +520,8 @@ def Update(request, id):
         id = request.POST.get('id')
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
-        ch_organization = request.POST.get('ch_organization')
-        ch_team = request.POST.get('ch_team')
+        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
+        ch_team = cl_Team.objects.get(ch_teamname=str.capitalize(request.POST.get('ch_team')))
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -536,8 +536,7 @@ def Update(request, id):
             ch_person_firstname=ch_person_firstname,
             ch_person_lastname=ch_person_lastname,
             ch_organization=ch_organization,
-             ch_team=ch_team,
-
+            ch_team=ch_team,
             ch_person_status=ch_person_status,
             ch_person_location=ch_person_location,
             ch_person_function=ch_person_function,
@@ -796,11 +795,13 @@ def softDelete(request):
 # @login_required(login_url='/login_render/')
 def team(request):
     tem = cl_Team.objects.all()
+    org = cl_New_organization.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
-    return render(request, 'tool/service.html', {'tem': tem})
+    return render(request, 'tool/service.html', {'tem': tem, 'org':org})
 
 
 # @login_required(login_url='/login_render/')
@@ -810,8 +811,8 @@ def TADD(request):
         print('organization :',request.POST.get('ch_organization'))
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
@@ -851,7 +852,7 @@ def TUpdate(request, id):
         id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = request.POST.get('ch_organization')
+        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
         e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
         i_team_phonenumber = request.POST.get('i_team_phonenumber')
         b_team_notification = request.POST.get('b_team_notification')
@@ -907,7 +908,8 @@ def CADD(request):
         print('organization :', request.POST.get('ch_organization'))
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_caller = request.POST.get('ch_caller')
+        ch_caller =cl_Person.objects.get(
+            ch_person_firstname=str.capitalize(request.POST.get('ch_caller')))
         ch_status = request.POST.get('ch_status')
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
@@ -953,7 +955,8 @@ def CUpdate(request, id):
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_caller = request.POST.get('ch_caller')
+        ch_caller =cl_Person.objects.get(
+            ch_person_firstname=str.capitalize(request.POST.get('ch_caller')))
         ch_status = request.POST.get('ch_status')
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
