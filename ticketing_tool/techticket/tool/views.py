@@ -37,6 +37,11 @@ def home(request):
     # print(request.COOKIES['sessionid'])
     return render(request, 'tool/dashboard.html')
 
+@login_required(login_url='/login_render/')
+def dashboard(request):
+    # print(request.COOKIES['sessionid'])
+    return render(request, 'tool/dashboard.html')
+
 
 def login_render(request):
     return render(request, 'tool/login.html')
@@ -1015,7 +1020,7 @@ def assign_changeModal(request):
             subject = 'Welcome to Olatech Solutions'
             message = 'Hope you are enjoying your Olatech Services'
             sender = settings.EMAIL_HOST_USER
-            recepient = per.e_person_email
+            recepient = per.e_person_email,
             send_mail(subject, message, sender, [
                       recepient], fail_silently=False)
         except:

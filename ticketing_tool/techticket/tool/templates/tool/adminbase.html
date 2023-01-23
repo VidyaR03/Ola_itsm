@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/>
+
+	<!-- Import lib -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static "fontawesome-free/css/all.min.css" %}">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<!-- End import lib -->
+
+	<!-- For New Change -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- For New Change End-->
+
+
+	<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+</head>
+<body>
+
+		<!-- navbar -->
+		<div class="navbar">
+			<!-- nav left -->
+			<img src="{% static 'images/olatlogo_300dpi_updated.png' %}"
+			style="height: 50px; max-width: fit-content; margin-top: 10px;">
+			<h3 class="nav-item" style="padding-left: 20px; ">IT Service Management</h3>
+			<!-- end nav left -->
+	
+			<!-- nav right -->
+			<div class="navbar-nav nav-right">
+				<h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3>
+				<div class="avt dropdown">
+					<img src="{% static "images/admin.png" %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					<ul id="user-menu" class="dropdown-menu" style="position: relative; left: 30px;">
+						<li  class="dropdown-menu-item">
+							<a href="/logout" class="dropdown-menu-link">
+							<span>Logout</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- end navbar -->
+
+		
+	<!-- sidebar -->
+	<div class="sidebar" style="margin-top: 66px;">
+		<ul class="sidebar-nav">
+
+			<li class="sidebar-nav-item">
+				<a href="/dashboard" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tachometer-alt"></i>
+					</div>
+					<span>
+						Dashboard
+					</span>
+				</a>
+			</li>
+
+			<li class="sidebar-nav-item">
+				<a href="/newchange" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-users"></i>
+					</div>
+					<span>New Change</span>
+				</a>
+			</li>
+
+			<li  class="sidebar-nav-item">
+				<a href="/userrequest" class="sidebar-nav-link">
+					<div>
+					<i class="fas fa-hat-cowboy"></i>
+
+					</div>
+					<span>Incedent Management</span>
+				</a>
+			</li>
+
+			<li  class="sidebar-nav-item">
+				<a href="/admin-request" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-spinner"></i>
+					</div>
+					<span>Request</span>
+				</a>
+			</li>
+
+			<li  class="sidebar-nav-item">
+				<a href="/admin-report" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-coins"></i>
+					</div>
+					<span>Report</span>
+				</a>
+			</li>
+
+			<li  class="sidebar-nav-item">
+				<a href="/admin-feedback" class="sidebar-nav-link">
+					<div>
+					<i class="fas fa-comments"></i>
+					</div>
+					<span>FeedBack</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- end sidebar -->
+
+
+
+
+
+	<div>
+		<!--content start-->
+		<div class="content">
+			{% block content %}
+	
+			{% endblock content %}
+		</div>
+		<!--content end-->
+	</div>
+
+
+	<!-- import script -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="{% static "index.js" %}"></script>
+	<!-- end import script -->
+
+	<!-- For New Change -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- For New Change End-->
+</body>
+</html>
