@@ -1,59 +1,181 @@
-{% extends 'tool/main.html' %}
+{% extends 'tool/adminbase.html' %}
+{% load static %}
 {% block content %}
-{% include 'tool/status.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #F1F1F1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.dropdown-content a:hover {background-color: #ddd;}
-.dropdown:hover .dropdown-content {display: block;}
-.dropdown:hover .dropbtn {background-color: #3E8E41;}
-</style>
-</head>
-<body style="background-color: white;">
-    <h4>Quickly Create any type of object</h4>
-<div class="dropdown">
-  <button class="dropbtn">+</button>
-  <div class="dropdown-content">
-    <a href="{% url 'userrequest' %}">User Request</a>
-    <a href="{% url 'customercontract' %}">Customer Contract</a>
-    <a href="{% url 'slt' %}">SLT</a>
-    <a href="{% url 'sla' %}">SLA</a>
-    <a href="{% url 'servicedelivery' %}">Delivery Model</a>
-    <a href="{% url 'team' %}">Team</a>
-    <a href="{% url 'servicenav' %}">Service</a>
-    <a href="{% url 'newchange' %}">Change</a>
-    <a href="{% url 'application' %}">Application Solution</a>
-    <a href="{% url 'location' %}">Location</a>
-  </div>
-</div>
-</body>
-</html>
 
-{% endblock %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.0/chart.min.js" integrity="sha512-qKyIokLnyh6oSnWsc5h21uwMAQtljqMZZT17CIMXuCQNIfFSFF4tJdMOaJHL9fQdJUANid6OB6DRR0zdHrbWAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script> src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"</script>
+
+
+<!-- main content -->
+<div class="wrapper">
+  <br><br>
+  <!-- ****** cards start ********** -->
+  <div class="row" style="margin-left: 20px; margin-right: 20px;">
+    <div class="col-3 col-m-6 col-sm-6" >
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bold;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Total Request</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Overdue Tickets</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">New And Open Tickets</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Tickets On Hold</h2>
+      </div>
+    </div>
+
+  </div>
+  <!-- ****** cards end ********** -->
+
+  <br><br><br>
+
+  <!-- ****** cards start ********** -->
+  <div class="row" style="margin-left: 20px; margin-right: 20px;">
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Tickets & Watching</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Assign Tickets</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; ">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Service Request</h2>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter " style="background: linear-gradient(140deg, #9266d0  10%, rgb(199, 73, 73) 40%, #dbd753  90%);">
+        <h3 style="color:black; font-weight: bolder;">100
+          <!-- <i class="fas fa-users"></i> -->
+        </h3>
+        <h3 style="color:black; ">{{total_customer}}</h3>
+        <h2 style="color:black; ">Change Request</h2>
+      </div>
+    </div>
+
+  </div>
+  <!-- ****** cards end ********** -->
+
+
+  <!-- ****** table  start ********** -->
+  <!-- <div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 style="color:red; text-align:center" >Recent Enquiry By Customer
+						</h3>
+
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+								<tr>
+									<th>Customer Name</th>
+									<th>Vehicle Name</th>
+									<th>Category</th>
+									<th>Vehicle Model</th>
+									<th>Vehicle Brand</th>
+									<th>Problem Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for c,r in data %}
+								<tr>
+									<td> {{c.get_name}}</td>
+									<td> {{r.vehicle_name}}</td>
+									<td>{{r.category}}</td>
+									<td>{{r.vehicle_model}}</td>
+									<td>{{r.vehicle_brand}}</td>
+									<td>{{r.problem_description}}</td>
+								</tr>
+								{% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div> -->
+  <!-- ****** table start ********** -->
+
+  <br><br><br><br><br><br>
+
+  <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+
+
+
+
+</div>
+<!-- end main content -->
+
+<script>
+  var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+  var yValues = [55, 49, 44, 24, 15];
+  var barColors = [
+    "#b91d47",
+    "#00aba9",
+    "#2b5797",
+    "#e8c3b9",
+    "#1e7145"
+  ];
+  
+  new Chart("myChart", {
+    type: "doughnut",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "World Wide Wine Production 2018"
+      }
+    }
+  });
+  </script>
+
+{% endblock content %}
