@@ -34,6 +34,8 @@ urlpatterns = [
     path('tdelete/', views.TDelete, name='tdelete'),
     path("team/", views.team, name='team'),
     path("configurationmanagement/", views.configuration, name='configurationmanagement'),
+    path("configurationmanagement_copy/", views.configurationmanagement_copy, name='configurationmanagement_copy'),
+
     path("contact/", views.contact, name='contact'),
     path("newci/", views.newci, name='newci'),
    

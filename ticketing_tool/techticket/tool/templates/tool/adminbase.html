@@ -4,6 +4,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/>
+	<title>ITSM</title>
 
 	<!-- Import lib -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
@@ -16,6 +17,21 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- For New Change End-->
+
+	<!-- css for menu -->
+	<style>
+		.menus {
+			position: relative; 
+			left: 50px;
+			padding: 10px;
+			color: black;
+		}
+
+		.menus:hover {
+			background-color: gainsboro;
+			text-decoration: none;
+		}
+	</style>
 
 
 	<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
@@ -53,7 +69,7 @@
 		<ul class="sidebar-nav">
 
 			<li class="sidebar-nav-item">
-				<a href="/dashboard" class="sidebar-nav-link">
+				<a href="/dashboard" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
@@ -64,16 +80,16 @@
 			</li>
 
 			<li class="sidebar-nav-item">
-				<a href="/newchange" class="sidebar-nav-link">
+				<a href="/newchange" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-users"></i>
 					</div>
-					<span>New Change</span>
+					<span>Change Management</span>
 				</a>
 			</li>
 
 			<li  class="sidebar-nav-item">
-				<a href="/userrequest" class="sidebar-nav-link">
+				<a href="/userrequest" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 					<i class="fas fa-hat-cowboy"></i>
 
@@ -82,30 +98,43 @@
 				</a>
 			</li>
 
-			<li  class="sidebar-nav-item">
-				<a href="/admin-request" class="sidebar-nav-link">
+			<li  class="sidebar-nav-item"  onclick="show_confi_menu()" >
+				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-spinner"></i>
 					</div>
-					<span>Request</span>
-				</a>
+					<span>Configuration Management</span>
+				</label>
+				<div id="confi_menu" onmouseleave="hide_confi_menu()" style="display: none;">
+					<p class="menus" style="text-decoration: none; margin-bottom: 2px;" onclick="show_contact_menu()">
+						<i class="fas fa-chevron-right"></i> Contacts</p>
+					<div id="contact_menu" onmouseleave="hide_contact_menu()" style="display: none;
+					position: relative; left: 30px;">					
+						<a class="menus" href="{% url 'team' %}"  style="display: block;"><i class="fas fa-chevron-right"></i> Team</a>
+						<a class="menus" href="{% url 'client' %}"  style="display: block;"><i class="fas fa-chevron-right"></i> Person</a>
+					</div>				
+					<a class="menus" href="{% url 'location' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Location</a>
+					<a class="menus" href="{% url 'newci' %}" style="display: block;"><i class="fas fa-chevron-right"></i> New CI</a>
+					<a class="menus" href="{% url 'document' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Documents</a>
+					<a class="menus" href="{% url 'software' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Software Catlog</a>
+				</div>
 			</li>
 
 			<li  class="sidebar-nav-item">
-				<a href="/admin-report" class="sidebar-nav-link">
+				<a href="/servicenav" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-coins"></i>
 					</div>
-					<span>Report</span>
+					<span>Service Management</span>
 				</a>
 			</li>
 
 			<li  class="sidebar-nav-item">
-				<a href="/admin-feedback" class="sidebar-nav-link">
+				<a href="#" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 					<i class="fas fa-comments"></i>
 					</div>
-					<span>FeedBack</span>
+					<span>Settings</span>
 				</a>
 			</li>
 		</ul>
@@ -135,5 +164,32 @@
 	<!-- For New Change -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<!-- For New Change End-->
+
+	<!-- for display configuration management menu -->
+	<script>
+		function show_confi_menu() {
+			// alert('hi')
+			document.getElementById('confi_menu').style.display = 'block'
+		}
+
+		function hide_confi_menu() {
+			// alert('hi')
+			document.getElementById('confi_menu').style.display = 'none'
+		}
+	</script>
+
+	<!-- for display configuration management menu -->
+	<script>
+		function show_contact_menu() {
+			// alert('hi')
+			document.getElementById('contact_menu').style.display = 'block'
+		}
+	
+		function hide_contact_menu() {
+			// alert('hi')
+			document.getElementById('contact_menu').style.display = 'none'
+		}
+	</script>
+
 </body>
 </html>

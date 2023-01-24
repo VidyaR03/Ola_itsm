@@ -794,15 +794,14 @@ def softDelete(request):
 
 
 
-################### Team     ######################
+################### Team ######################
 
 
 # @login_required(login_url='/login_render/')
 def team(request):
-    tem = cl_Team.objects.all()
-    org = cl_New_organization.objects.all()
-
     if request.method == "GET":
+        tem = cl_Team.objects.all()
+        org = cl_New_organization.objects.all()
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
