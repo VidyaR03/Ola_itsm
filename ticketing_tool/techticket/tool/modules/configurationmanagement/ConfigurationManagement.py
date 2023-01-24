@@ -8,6 +8,10 @@ def configuration(request):
     return render(request, 'tool/configurationmanagement.html')
 
 
+def configurationmanagement_copy(request):
+    return render(request, 'tool/configurationmanagement_COPY.html')
+
+
 def contact(request):
     return render(request, 'tool/contact.html')
 
