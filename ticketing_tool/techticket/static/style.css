@@ -101,7 +101,7 @@ body {
 }
 
 .navbar-nav i {
-	font-size: 1.4rem;
+	font-size: 10rem;
 }
 
 .nav-right {
@@ -287,6 +287,32 @@ body {
 	background: var(--second-bg-color);
 	transition: margin-left .5s;
 }
+/* ########################### */
+.menus:hover {
+	background: var(--second-bg-color);
+	/* padding: 0px; */
+	font-size: 19px;
+	color: black;
+}
+
+.sidebar {
+	color: black;
+	font-size: larger;
+	font-weight: 100;
+	
+}
+.menus {
+	position: relative; 
+	left: 50px;
+	padding: 10px;
+	color: black;
+}
+
+.menus:hover {
+	background-color: gainsboro;
+	text-decoration: none;
+}
+
 
 .sidebar {
 	width: 82px;
@@ -301,7 +327,7 @@ body {
 }
 
 .sidebar:hover {
-	width: 250px;
+	width: 320px;
 }
 
 .sidebar-nav {
@@ -342,6 +368,10 @@ body {
 
 .sidebar-nav-link:hover {
 	background: var(--second-bg-color);
+	/* padding: 0px; */
+	font-size: 19px;
+	color: black;
+	/* font-style: "bo"; */
 }
 
 .sidebar-nav-link.active {
