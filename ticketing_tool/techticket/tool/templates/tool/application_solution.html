@@ -50,7 +50,9 @@
       <input type="text" class="form-control" name="searchname" placeholder="Search">
       <input type="submit" class="btn btn-primary" value="Search">
     </form>
-    <div style="display: inline-block; position: relative; left: 68.5%;">
+    <div style="display: inline-block; position: relative; left: 61%;">
+      <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
+        <span>Back to New CI</span></a>
       <a href="#addcl_Application_solutionModal" class="btn btn-success" data-toggle="modal">
         <span>Add Application Solution</span></a>
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
@@ -59,7 +61,7 @@
       <thead>
         <tr>
           <th>
-            <span class="custom-checkbox">
+            <span class="custom-checkbox">  
               <input type="checkbox" id="selectAll">
               <label for="selectAll"></label>
             </span>

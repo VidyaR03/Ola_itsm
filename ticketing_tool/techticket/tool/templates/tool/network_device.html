@@ -49,7 +49,9 @@
       <input type="text" class="form-control" name="searchname" placeholder="Search">
       <input type="submit" class="btn btn-primary" value="Search">
     </form>
-    <div style="display: inline-block; position: relative; left: 68%;">
+    <div style="display: inline-block; position: relative; left: 61%;">
+      <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
+        <span>Back to New CI</span></a>
       <a href="#addcl_Network_deviceModal" class="btn btn-success" data-toggle="modal"><span>Add New Network
           Device</span></a>
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
