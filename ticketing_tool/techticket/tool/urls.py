@@ -11,6 +11,7 @@ urlpatterns = [
     path('login', views.loginPage, name='login'),
     path('login_render/', views.login_render, name='login_render'),
     path('logout/', views.logoutUser, name='logout'),
+    path('logs/', views.view_logs, name='logs'),
     
     #Url for person form
     path('add', views.ADD, name='add'),

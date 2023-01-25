@@ -1052,4 +1052,15 @@ class CSV_import(models.Model):
 
     class Meta:
         db_table = 'CSV_import'
-     
+
+
+class user_activity_log(models.Model):
+    """This is Model for user_activity_log"""
+    username=models.CharField(max_length = 200)
+    action=models.CharField(max_length = 200)
+    event=models.CharField(max_length = 200)
+    resultcode=models.IntegerField()      
+    duration=models.DateTimeField(default=datetime.now())
+
+    class Meta:
+        db_table = 'user_activity_log'

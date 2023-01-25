@@ -12,7 +12,6 @@ from django.db.models import Q
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from tool.modules.configurationmanagement.ConfigurationManagement import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 from django.template.loader import get_template
@@ -29,6 +28,8 @@ from xhtml2pdf import pisa
 from django.utils import timezone
 from datetime import *
 from django.contrib.auth.decorators import login_required
+from tool.modules.configurationmanagement.ConfigurationManagement import *
+from tool.modules.user_logs.user_activity_log import *
 
 
 
@@ -92,6 +93,11 @@ def loginPage(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            user_name = "Mangesh"
+            useraction = "Login on Web_page"
+            event ="event"
+            resultcode = "200"
+            user_activity(user_name, useraction, event, resultcode)
             return redirect('home')
         else:
             messages.info(request, 'Username OR Password is incorrect')
@@ -107,6 +113,13 @@ def landingPage(request):
     return render(request, 'tool/login.html')
 
 
+def view_logs(request):
+    """
+    This function create views of log
+    """
+    log = user_activity_log.objects.all()
+    context = {"log" : log}
+    return render(request, 'tool/logs.html', context)
 
 # @login_required(login_url='/login_render/')
 
@@ -116,7 +129,6 @@ def document(request):
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
-    
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -162,6 +174,7 @@ def DocEdit(request,id):
         'doc': doc,
     }
     return render(request, 'tool/document.html', context)
+
 
 def DocUpdate(request, id):
     if request.method == "POST":
@@ -397,7 +410,6 @@ def OrgADD(request):
             ch_status=ch_status,
             ch_parent=ch_parent,
             ch_delivery_model=ch_delivery_model,
-
         )
         org.save()
         return redirect('new_organization')
