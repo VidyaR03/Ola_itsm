@@ -1,18 +1,26 @@
-{% extends 'tool/main.html' %}
+{% extends 'tool/adminbase.html' %}
+{% load static %}
 {% block content %}
 
-<p>sla</p>
+<div class="container" style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+    <div>
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{form}}
-    
-    <button class="btn btn-primary" type="submit">Create</button>
-    <input class="btn btn-primary" type="reset" value="Cancel">
-</form>
-<div>
-    {% for msg in messages %}
-        {{ msg }}
-    {% endfor %}    
+        <h3>MS Teams Notification</h3>
+        <br>
+        <br>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+
+            <button class="btn btn-primary" type="submit">Create</button>
+            <input class="btn btn-primary" type="reset" value="Cancel">
+        </form>
+        <div>
+            {% for msg in messages %}
+            {{ msg }}
+            {% endfor %}
+        </div>
+    </div>
 </div>
-{% endblock %}
+{% endblock content %}

@@ -1,35 +1,78 @@
+{% extends 'tool/adminbase.html' %}
 {% load static %}
-<br>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-</nav>
-  <p>
-    <div class="text-right">
-      <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
+{% block content %}
 
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Select the type of contract to create
-      </button>
-      <p></p>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="nav-item nav-link" href="{% url 'customercontract' %}">Customer Contract</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'providercontract' %}">Provider Contract</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'servicefamilies' %}">Service Families</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'service' %}">Services</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'service_subcategory' %}">Service Subcategory</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'sla' %}">SLAs</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'slt' %}">SLTs</a>
-        <br>
-        <a class="nav-item nav-link" href="{% url 'servicedelivery' %}">Delivery Model</a>
-        <!-- <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a> -->
-
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+  <!-- ****** cards start ********** -->
+  <div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter"
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'customercontract' %}">Customer Contract</a>
       </div>
     </div>
-    </p>
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter "
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'providercontract' %}">Provider Contract</a>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter "
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'servicefamilies' %}">Service Families</a>
+      </div>
+    </div>
+  </div>
+  <!-- ****** cards ends ********** -->
+
+
+  <!-- ****** cards start ********** -->
+  <div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter"
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'service' %}">Services</a>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter "
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'service_subcategory' %}">Service Subcategory</a>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6">
+      <div class="counter "
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;" href="{% url 'sla' %}">SLAs</a>
+      </div>
+    </div>
+  </div>
+  <!-- ****** cards ends ********** -->
+
+
+  <!-- ****** cards start ********** -->
+  <div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter"
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;" href="{% url 'slt' %}">SLTs</a>
+      </div>
+    </div>
+    <div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+      <div class="counter "
+        style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+        <a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+          href="{% url 'servicedelivery' %}">Delivery Model</a>
+      </div>
+    </div>
+  </div>
+  <!-- ****** cards ends ********** -->
+</div>
+
+{% endblock content%}

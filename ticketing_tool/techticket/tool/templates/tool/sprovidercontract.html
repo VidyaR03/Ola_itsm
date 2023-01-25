@@ -1,6 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'tool/adminbase.html' %}
 {% load static %}
+{% block content %}
+
+<!-- <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -25,15 +28,6 @@
                 <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
                 <a href="{% url 'providercontract' %}" class="btn btn-primary" role="button">View List</a>
                 <a href="{% url 'servicenav' %}" class="btn btn-primary" role="button">Back</a>
-
-
-
-                <!-- <a href="{% url 'contact' %}" class="btn btn-primary" role="button">Back to Contact</a> -->
-
-
-
-                <!-- <a href="{% url 'contact' %}">Back</a> -->
-
                 <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i
                         class="material-icons">&#xE147;</i>
                     <span>Hello, {{request.user}} Logout</span></a>
@@ -51,28 +45,27 @@
                     <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
                     <input type="submit" class="btn btn-success" value="Search by Status">
                 </form>
-
+                
             </div>
         </div>
     </div>
-    <div class="text-right">
-        <a href="#addcl_ProvidercontractModal" class="btn btn-success" data-toggle="modal"><i
-                class="material-icons">&#xE147;</i>
+    <div class="text-right"> -->
+        <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+            <div>
+              <form action="" method="get" class="form-inline"
+                style="display: inline-block; margin-top: 10px; margin-left: 10px;">
+                <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
+                <input type="submit" class="btn btn-primary" value="Search">
+              </form>
+              <div style="display: inline-block; position: relative; left: 68%;">
+        <a href="#addcl_ProvidercontractModal" class="btn btn-success" data-toggle="modal">
             <span>Add Customer Contract</span></a>
         <a href="#deletecl_ProvidercontractModal/{{i.id }} " class="btn btn-danger" data-toggle="modal"
-            onclick="removeSelectedRow();"><i class="material-icons">delete</i>
-
-
-            <!-- <button onclick="removeSelectedRow();"></button> -->
-
+            onclick="removeSelectedRow();">
             <span>Delete </span></a>
-        <!-- <input type="hidden" value="delete" class="deleterows"> -->
-
     </div>
 
-    <table class="table table-striped table-hover" id="table">
-        <!-- <table id="table" border="1">
-    <thead> -->
+    <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
         <tr>
             <th>
                 <span class="custom-checkbox">
@@ -344,7 +337,9 @@
         </div>
     </div>
     {% endfor %}
-</body>
+<!-- </body> -->
+
+
 <script>
 
 
@@ -511,4 +506,6 @@
     });
 </script>
 
-</html>
+<!-- </html> -->
+
+{% endblock content %}
