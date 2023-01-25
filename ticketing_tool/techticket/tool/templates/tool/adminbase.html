@@ -3,13 +3,13 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-	<link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/>
+	<!-- <link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/> -->
 	<title>ITSM</title>
 
 	<!-- Import lib -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
-	<link rel="stylesheet" type="text/css" href="{% static "fontawesome-free/css/all.min.css" %}">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="{% static 'fontawesome-free/css/all.min.css' %}">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> -->
 	<!-- End import lib -->
 
 	<!-- For New Change -->
@@ -34,23 +34,22 @@
 	</style>
 
 
-	<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
 
 		<!-- navbar -->
 		<div class="navbar">
 			<!-- nav left -->
-			<img src="{% static 'images/olatlogo_300dpi_updated.png' %}"
-			style="height: 50px; max-width: fit-content; margin-top: 10px;">
-			<h3 class="nav-item" style="padding-left: 20px; ">IT Service Management</h3>
+			<a href="/dashboard"><img src="{% static 'images/olatlogo_300dpi_updated.png' %}"
+			style="height: 50px; max-width: fit-content; margin-top: 10px;"></a>
+			<h3 class="nav-item" style="padding-left: 20px;">IT Service Management</h3>
 			<!-- end nav left -->
-	
 			<!-- nav right -->
 			<div class="navbar-nav nav-right">
 				<h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3>
 				<div class="avt dropdown">
-					<img src="{% static "images/admin.png" %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					<img src="{% static 'images/admin.png' %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
 					<ul id="user-menu" class="dropdown-menu" style="position: relative; left: 30px;">
 						<li  class="dropdown-menu-item">
 							<a href="/logout" class="dropdown-menu-link">
@@ -128,14 +127,36 @@
 					<span>Service Management</span>
 				</a>
 			</li>
-
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" style="text-decoration: none;">
+			<li  class="sidebar-nav-item"  onclick="show_setting_menu()" >
+				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
-					<i class="fas fa-comments"></i>
+						<i class="fas fa-comments"></i>
 					</div>
 					<span>Settings</span>
-				</a>
+				</label>
+				<div id="settings_menu" onmouseleave="hide_setting_menu()" style="display: none;">
+					<p class="menus" style="text-decoration: none; margin-bottom: 2px;" onclick="show_Administration_menu()">
+						<i class="fas fa-chevron-right"></i>Administration</p>
+					<div id="Administration_menu" onmouseleave="hide_Administration_menu()" style="display: none;
+					position: relative; left: 30px;">					
+						<a class="menus" href="{% url 'externaluser' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>External User</a>
+						<a class="menus" href="{% url 'idapuser' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>LDAP User</a>
+						<a class="menus" href="{% url 'itsmuser' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>ITSM User</a>
+					</div>	
+
+					<p class="menus" style="text-decoration: none; margin-bottom: 2px;" onclick="show_Configuration_menu()">
+						<i class="fas fa-chevron-right"></i>Configuration</p>
+					<div id="Configuration_menu" onmouseleave="hide_Configuration_menu()" style="display: none;
+					position: relative; left: 30px;">					
+						<a class="menus" href="#"  style="display: block;"><i class="fas fa-chevron-right"></i>General Configuration</a>
+						<a class="menus" href="{% url 'synchro_data_source' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>Sync Data Sources</a>
+						<a class="menus" href="#"  style="display: block;"><i class="fas fa-chevron-right"></i>Notification</a>
+						<a class="menus" href="{% url 'sysconfiauth' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>OAuth Client</a>
+						<a class="menus" href="{% url 'integration' %}"  style="display: block;"><i class="fas fa-chevron-right"></i>Integration</a>
+					</div>
+
+					<a class="menus" href="{% url 'new_organization' %}" style="display: block;"><i class="fas fa-chevron-right"></i>Data Administration</a>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -190,6 +211,43 @@
 			document.getElementById('contact_menu').style.display = 'none'
 		}
 	</script>
+
+	<!-- for display Settings menu -->
+	<script>
+		function show_setting_menu() {
+			// alert('hi')
+			document.getElementById('settings_menu').style.display = 'block'
+		}
+		
+		function hide_setting_menu() {
+			// alert('hi')
+			document.getElementById('settings_menu').style.display = 'none'
+		}
+	</script>
+
+<script>
+	function show_Administration_menu() {
+		// alert('hi')
+		document.getElementById('Administration_menu').style.display = 'block'
+	}
+	
+	function hide_Administration_menu() {
+		// alert('hi')
+		document.getElementById('Administration_menu').style.display = 'none'
+	}
+</script>
+
+<script>
+	function show_Configuration_menu() {
+		// alert('hi')
+		document.getElementById('Configuration_menu').style.display = 'block'
+	}
+	
+	function hide_Configuration_menu() {
+		// alert('hi')
+		document.getElementById('Configuration_menu').style.display = 'none'
+	}
+</script>
 
 </body>
 </html>

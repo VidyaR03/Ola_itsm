@@ -93,23 +93,16 @@ urlpatterns = [
     path('dbAdd', views.dbAdd, name='dbAdd'),
     path('dbEdit', views.dbEdit, name='dbEdit'),
     path('dbUpdate/<str:id>', views.dbUpdate, name='dbUpdate'),
-
     path('dbDelete/', views.dbDelete, name='dbDelete'),
     
-   
-
-    
-    # path("deliverymodel/", views.delivery_model,name='deliverymodel'),
    
    #Url for DB Schema   
     path("databaseschema/", views.dataschema, name='databaseschema'),
     path('DSADD', views.DSADD, name='DSADD'),
     path('DSEdit', views.DSEdit, name='DSEdit'),
     path('DSUpdate/<str:id>', views.DSUpdate, name='DSUpdate'),
-
     path('DSDelete/', views.DSDelete, name='DSDelete'),
     
-   
    
    
     #Url for Pc SOftware  
@@ -206,8 +199,6 @@ urlpatterns = [
     path('serverDelete/', views.serverDelete, name='serverDelete'),
 
 
-
-
     #Url for Web Application
     path("webapplication/", views.web_application, name='webapplication'),
     path('waAdd', views.waAdd, name='waAdd'),
@@ -245,16 +236,14 @@ urlpatterns = [
      #URL for System
      path("systemnav/", views.systemnav, name='systemnav'),
 
+
     #Url for services
-
-
     path("servicenav/", views.servicenav, name='servicenav'),
     # path("customercontract/", views.customer_contract, name='customercontract'),
     # path("providercontract/", views.provider_contract,name='providercontract'),
 
 
     #Url for services Family
-
     path("servicefamilies/", views.servicefamilies,name='servicefamilies'),
     path('sfadd', views.SFADD, name='sfadd'),
     path('sfedit', views.SFEdit, name='sfedit'),

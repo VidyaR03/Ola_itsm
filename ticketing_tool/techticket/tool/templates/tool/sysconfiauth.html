@@ -1,4 +1,42 @@
+{% extends 'tool/adminbase.html' %}
 {% load static %}
+{% block content %}
+
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+
+	<!-- ****** cards start ********** -->
+	<div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter"
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'authgoogle' %}">Creation of a new OAuth client for Google</a>
+			</div>
+		</div>
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'authmazure' %}">Creation of a new OAuth client for Microsoft Azure</a>
+			</div>
+		</div>
+		<!-- <div class="col-3 col-m-6 col-sm-6">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+					href="{% url 'newdb' %}">DB Server</a>
+			</div>
+		</div> -->
+	</div>
+	<!-- ****** cards ends ********** -->
+</div>
+
+{% endblock content%}
+  
+  
+  
+  
+  
   <p>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

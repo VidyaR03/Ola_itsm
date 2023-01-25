@@ -1,5 +1,65 @@
+{% extends 'tool/adminbase.html' %}
 {% load static %}
-  <p>
+{% block content %}
+
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+
+	<!-- ****** cards start ********** -->
+	<div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter"
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'googlechat' %}">Googlechat Notification</a>
+			</div>
+		</div>
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'micronoti' %}">Microsoft Teams Notification </a>
+			</div>
+		</div>
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px; margin-top: 20px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'rocketchat' %}">Rocket chat Notification</a>
+			</div>
+		</div>
+	</div>
+	<!-- ****** cards ends ********** -->
+
+	<!-- ****** cards start ********** -->
+	<div class="row" style="margin-left: 50px; margin-right: 20px; margin-bottom: 30px;">
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'slacknoti' %}">Slck Notification</a>
+			</div>
+		</div>
+		<div class="col-3 col-m-6 col-sm-6" style="margin-right:200px;">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'webhook' %}">Webhook Call</a>
+			</div>
+		</div>
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter "
+				style="background: linear-gradient(140deg, #8e3973  10%, #5355db  90%); width: 300px;">
+				<a style="margin: 10px; color: azure; font-weight: bolder; font-size: larger;"
+        href="{% url 'itsmwebhook' %}">ITSM Webhook Call</a>
+			</div>
+		</div>
+	</div>
+	<!-- ****** cards ends ********** -->
+
+</div>
+
+{% endblock content%}
+  <!-- <p>
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Select the type of contact to create
@@ -13,4 +73,4 @@
         <a class="nav-item nav-link" href="{% url 'itsmwebhook' %}">ITSM Webhook Call</a>
       </div>
     </div>
-    </p>
+    </p> -->
