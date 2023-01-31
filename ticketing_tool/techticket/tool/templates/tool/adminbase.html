@@ -31,7 +31,10 @@
 			<!-- end nav left -->
 			<!-- nav right -->
 			<div class="navbar-nav nav-right">
-				<h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3>
+				<!-- <h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3> -->
+				<h3 style="margin-right: 20px;">Hello, {{ request.user.first_name }}</h3>
+				<input type="text" style="display: none;" id="current_user" value="{{ request.user.first_name }}" >
+
 				<div class="avt dropdown">
 					<img src="{% static 'images/admin.png' %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
 					<ul id="user-menu" class="dropdown-menu" style="position: relative; left: 30px;">
@@ -50,7 +53,7 @@
 	<!-- sidebar -->
 	<div class="sidebar" style="margin-top: 66px;">
 		<ul class="sidebar-nav">
-			<li class="sidebar-nav-item">
+			<li class="sidebar-nav-item" id="dashboard_id">
 				<a href="/dashboard" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
@@ -61,7 +64,7 @@
 				</a>
 			</li>
 
-			<li class="sidebar-nav-item">
+			<li class="sidebar-nav-item" id="newchange_id">
 				<a href="/newchange" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-users"></i>
@@ -70,17 +73,17 @@
 				</a>
 			</li>
 
-			<li  class="sidebar-nav-item">
+			<li  class="sidebar-nav-item" id="userrequest_id">
 				<a href="/userrequest" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 					<i class="fas fa-hat-cowboy"></i>
 
 					</div>
-					<span style="font-weight: bold;">Incedent Management</span>
+					<span style="font-weight: bold;">Incident Management</span>
 				</a>
 			</li>
 
-			<li  class="sidebar-nav-item"  onclick="show_confi_menu()" >
+			<li  class="sidebar-nav-item"  onclick="show_confi_menu()" id="configuration_id">
 				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-spinner"></i>
@@ -101,7 +104,7 @@
 					<a class="menus" href="{% url 'software' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Software Catlog</a>
 				</div>
 			</li>
-			<li  class="sidebar-nav-item">
+			<li  class="sidebar-nav-item" id="servicenav_id" >
 				<a href="/servicenav" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-coins"></i>
@@ -109,7 +112,27 @@
 					<span style="font-weight: bold;">Service Management</span>
 				</a>
 			</li>
-			<li  class="sidebar-nav-item"  onclick="show_setting_menu()" >
+			<li  class="sidebar-nav-item" id="user_id" onclick="show_User_menu()" >
+				<label class="sidebar-nav-link" style="text-decoration: none;">
+					<div>
+						<i class="fas fa-spinner"></i>
+					</div>
+					<span style="font-weight: bold;">User Management</span>
+				</label>
+				<div id="User_menu" onmouseleave="hide_User_menu()" style="display: none;">
+					<!-- <p class="menus" style="text-decoration: none; margin-bottom: 2px;" onclick="show_contact_menu()">
+						<i class="fas fa-chevron-right"></i> Contacts</p>
+					<div id="contact_menu" onmouseleave="hide_contact_menu()" style="display: none;
+					position: relative; left: 30px;">					
+						<a class="menus" href="{% url 'team' %}"  style="display: block;"><i class="fas fa-chevron-right"></i> Team</a>
+						<a class="menus" href="{% url 'client' %}"  style="display: block;"><i class="fas fa-chevron-right"></i> Person</a>
+					</div>				 -->
+					<a class="menus" href="{% url 'user_display' %}" style="display: block;"><i class="fas fa-chevron-right"></i> User</a>
+					<a class="menus" href="{% url 'role_display' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Role</a>
+				</div>
+			</li>
+
+			<li  class="sidebar-nav-item" id="settings_id"  onclick="show_setting_menu()" >
 				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 						<i class="fas fa-comments"></i>
@@ -140,7 +163,7 @@
 					<a class="menus" href="{% url 'new_organization' %}" style="display: block;"><i class="fas fa-chevron-right"></i>Data Administration</a>
 				</div>
 			</li>
-			<li  class="sidebar-nav-item">
+			<li  class="sidebar-nav-item" id="logs_id">
 				<a href="/logs" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 					<i class="fas fa-file"></i>
@@ -165,7 +188,7 @@
 
 	<!-- import script -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-	<script src="{% static "index.js" %}"></script>
+	<script src="{% static 'index.js' %}"></script>
 	<!-- end import script -->
 
 	<!-- For New Change -->
@@ -234,6 +257,27 @@
 		document.getElementById('Configuration_menu').style.display = 'none'
 	}
 </script>
+
+<script>
+	function show_User_menu() {
+		// alert('hi')
+		document.getElementById('User_menu').style.display = 'block'
+	}
+	
+	function hide_User_menu() {
+		// alert('hi')
+		document.getElementById('User_menu').style.display = 'none'
+	}
+</script>
+
+<!-- <script>
+	user = document.getElementById('current_user').value
+	console.log(document.getElementById('settings_id'))
+
+	if (user === "mangesh") {
+		document.getElementById("settings_id").style.display = 'none'
+	}
+</script> -->
 
 </body>
 </html>

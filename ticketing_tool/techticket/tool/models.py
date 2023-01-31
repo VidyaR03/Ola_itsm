@@ -12,6 +12,8 @@ from django.conf import settings
 import os
 
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.models import AbstractUser
+from .managers import CustomUserManager
 
 
 
@@ -1064,3 +1066,77 @@ class user_activity_log(models.Model):
 
     class Meta:
         db_table = 'user_activity_log'
+
+
+class roles(models.Model):
+    """This is Model for role_permission"""
+    id = models.AutoField(primary_key=True, editable=False)
+    role_name=models.CharField(max_length = 200, unique=True)
+
+    # change_management
+    ch_m_a=models.CharField(max_length = 50, null=True, default='off')
+    ch_m_e=models.CharField(max_length = 50, null=True, default='off')
+    ch_m_d=models.CharField(max_length = 50, null=True, default='off')
+    ch_m_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # incident management
+    inci_m_a=models.CharField(max_length = 50, null=True, default='off')
+    inci_m_d=models.CharField(max_length = 50, null=True, default='off')
+    inci_m_e=models.CharField(max_length = 50, null=True, default='off')
+    inci_m_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # configuration management
+    confi_m_a=models.CharField(max_length = 50, null=True, default='off')
+    confi_m_e=models.CharField(max_length = 50, null=True, default='off')
+    confi_m_d=models.CharField(max_length = 50, null=True, default='off')
+    confi_m_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # service management
+    serv_m_a=models.CharField(max_length = 50, null=True, default='off')
+    serv_m_e=models.CharField(max_length = 50, null=True, default='off')
+    serv_m_d=models.CharField(max_length = 50, null=True, default='off')
+    serv_m_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # user management
+    user_m_a=models.CharField(max_length = 50, null=True, default='off')
+    user_m_e=models.CharField(max_length = 50, null=True, default='off')
+    user_m_d=models.CharField(max_length = 50, null=True, default='off')
+    user_m_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # settings
+    setting_a=models.CharField(max_length = 50, null=True, default='off')
+    setting_e=models.CharField(max_length = 50, null=True, default='off')
+    setting_d=models.CharField(max_length = 50, null=True, default='off')
+    setting_v=models.CharField(max_length = 50, null=True, default='off')
+
+    # history
+    history_a=models.CharField(max_length = 50, null=True, default='off')
+    history_e=models.CharField(max_length = 50, null=True, default='off')
+    history_d=models.CharField(max_length = 50, null=True, default='off')
+    history_v=models.CharField(max_length = 50, null=True, default='off')
+
+
+    def __str__(self):
+        return self.role_name
+
+    class Meta:
+        db_table = 'roles'
+
+
+
+class adminuser(AbstractUser):
+    """Models which create table for Person Information"""
+    username = None
+    last_login = None
+    is_staff = None
+    is_superuser = None
+    email = models.EmailField(unique=True)
+    ch_user_role = models.ForeignKey(
+        roles, on_delete=models.CASCADE, null=True, blank=True)
+    ch_user_expirydate = models.DateTimeField(max_length=100, null=True)
+    ch_user_mobilenumber = models.IntegerField(max_length=15, null=True)
+
+    object=CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS=[]

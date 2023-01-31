@@ -37,7 +37,12 @@ from tool.modules.user_logs.user_activity_log import *
 @login_required(login_url='/login_render/')
 def home(request):
     # print(request.COOKIES['sessionid'])
-    return render(request, 'tool/dashboard.html')
+    user = adminuser.objects.filter(email=request.user).first()
+    context = {
+        'user': user
+    }
+    # print(user.ch_user_role)
+    return render(request, 'tool/dashboard.html',context)
 
 @login_required(login_url='/login_render/')
 def dashboard(request):
@@ -87,22 +92,39 @@ def registerPage(request):
     return render(request, 'tool/register.html', context)
 
 
-def loginPage(request):
+def adminloginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            user_name = "Mangesh"
-            useraction = "Login on Web_page"
+        admin = authenticate(request, username=username, password=password)
+        if admin is not None:
+            login(request, admin)
+            admin_name = "Mangesh"
+            adminaction = "Login on Web_page"
             event ="event"
             resultcode = "200"
-            user_activity(user_name, useraction, event, resultcode)
+            user_activity(admin_name, adminaction, event, resultcode)
             return redirect('home')
         else:
             messages.info(request, 'Username OR Password is incorrect')
     return redirect('home')
+
+# def userloginPage(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             user_name = "Mangesh"
+#             useraction = "Login on Web_page"
+#             event ="event"
+#             resultcode = "200"
+#             user_activity(user_name, useraction, event, resultcode)
+#             return redirect('home')
+#         else:
+#             messages.info(request, 'Username OR Password is incorrect')
+#     return redirect('home')
 
 
 def logoutUser(request):
@@ -2443,3 +2465,142 @@ def render_to_pdf(template_src, context_dict={}):
 		return HttpResponse(result.getvalue(), content_type='application/pdf')
 	return None
 
+
+
+#####################ROLE Management###########################
+
+
+def role_display(request):
+    if request.method == "GET":
+        role = roles.objects.all()
+        q = request.GET.get('searchrole')
+        if q != None:
+            role = roles.objects.filter(role_name__icontains=q)        
+        context = {
+            'role': role,
+        }
+        return render(request, 'tool/roles.html', context)
+
+
+
+def role_add(request):
+    if request.method == "POST":
+        role_name = request.POST.get('role_name')
+
+        ch_m_a = request.POST.get('ch_m_a') 
+        ch_m_e = request.POST.get('ch_m_e')
+        ch_m_d = request.POST.get('ch_m_d')
+        ch_m_v = request.POST.get('ch_m_v')
+
+        inci_m_a = request.POST.get('inci_m_a') 
+        inci_m_e = request.POST.get('inci_m_e')
+        inci_m_d = request.POST.get('inci_m_d')
+        inci_m_v = request.POST.get('inci_m_v')
+
+        confi_m_a = request.POST.get('confi_m_a') 
+        confi_m_e = request.POST.get('confi_m_e')
+        confi_m_d = request.POST.get('confi_m_d')
+        confi_m_v = request.POST.get('confi_m_v')
+
+        serv_m_a = request.POST.get('serv_m_a') 
+        serv_m_e = request.POST.get('serv_m_e')
+        serv_m_d = request.POST.get('serv_m_d')
+        serv_m_v = request.POST.get('serv_m_v')
+
+        user_m_a = request.POST.get('user_m_a') 
+        user_m_e = request.POST.get('user_m_e')
+        user_m_d = request.POST.get('user_m_d')
+        user_m_v = request.POST.get('user_m_v')
+
+        setting_a = request.POST.get('setting_a') 
+        setting_e = request.POST.get('setting_e')
+        setting_d = request.POST.get('setting_d')
+        setting_v = request.POST.get('setting_v')
+
+        history_a = request.POST.get('history_a') 
+        history_e = request.POST.get('history_e')
+        history_d = request.POST.get('history_d')
+        history_v = request.POST.get('history_v')
+
+
+        role = roles (
+        role_name = role_name,
+
+        ch_m_a = ch_m_a, 
+        ch_m_e = ch_m_e,
+        ch_m_d = ch_m_d,
+        ch_m_v = ch_m_v,
+
+        inci_m_a = inci_m_a, 
+        inci_m_e = inci_m_e,
+        inci_m_d = inci_m_d,
+        inci_m_v = inci_m_v,
+
+        confi_m_a = confi_m_a, 
+        confi_m_e = confi_m_e,
+        confi_m_d = confi_m_d,
+        confi_m_v = confi_m_v,
+
+        serv_m_a = serv_m_a, 
+        serv_m_e = serv_m_e,
+        serv_m_d = serv_m_d,
+        serv_m_v = serv_m_v,
+
+        user_m_a = user_m_a, 
+        user_m_e = user_m_e,
+        user_m_d = user_m_d,
+        user_m_v = user_m_v,
+
+        setting_a = setting_a, 
+        setting_e = setting_e,
+        setting_d = setting_d,
+        setting_v = setting_v,
+
+        history_a = history_a, 
+        history_e = history_e,
+        history_d = history_d,
+        history_v = history_v,
+        )
+        role.save()
+        return redirect('role_display')
+    return render(request, 'tool/roles.html')
+
+
+
+def user_display(request):
+    if request.method == "GET":
+        user = adminuser.objects.all()
+        role = roles.objects.all()
+        q = request.GET.get('searchrole')
+        if q != None:
+            user = adminuser.objects.filter(ch_user_firstname__icontains=q)        
+        context = {
+            'user': user,
+            'role': role,
+        }
+        return render(request, 'tool/user.html', context)
+
+
+def add_new_user(request):
+    if request.method == "POST":
+        ch_user_firstname = request.POST.get('ch_user_firstname')
+        ch_user_lastname = request.POST.get('ch_user_lastname')
+        ch_user_email = request.POST.get('ch_user_email')
+        ch_user_password = request.POST.get('ch_user_password')
+        ch_user_role = roles.objects.get(
+            role_name=request.POST.get('role_name'))
+        ch_user_expirydate = request.POST.get('ch_user_expirydate')
+        ch_user_mobilenumber = request.POST.get('ch_user_mobilenumber')
+
+        user = adminuser(
+            first_name=ch_user_firstname,
+            last_name=ch_user_lastname,
+            email=ch_user_email,
+            ch_user_role=ch_user_role,
+            ch_user_expirydate=ch_user_expirydate,
+            ch_user_mobilenumber = ch_user_mobilenumber,
+        )
+        user.set_password(ch_user_password)
+        user.save()
+        return redirect('user_display')
+    return render(request, 'tool/user.html')

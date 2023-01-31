@@ -2,13 +2,14 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .managers import CustomUserManager
 
 
 urlpatterns = [
     path('', views.home, name='home'),
     path("register/", views.registerPage, name='register'),
     path("dashboard/", views.dashboard, name='dashboard'),
-    path('login', views.loginPage, name='login'),
+    path('login', views.adminloginPage, name='login'),
     path('login_render/', views.login_render, name='login_render'),
     path('logout/', views.logoutUser, name='logout'),
     path('logs/', views.view_logs, name='logs'),
@@ -320,10 +321,13 @@ urlpatterns = [
     path('sltdelete/<str:id>', views.SLTDelete, name='sltdelete'),
 
 
+    # for user role 
+    path("role_display", views.role_display, name='role_display'),
+    path("role_add", views.role_add, name='role_add'),
 
-
-
-
+    # for user  
+    path("user_display", views.user_display, name='user_display'),
+    path("add_new_user", views.add_new_user, name='add_new_user'),
 
     #url for system configuration
     path("synchro_data_source/", views.synchro_data_source,name='synchro_data_source'),

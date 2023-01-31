@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = 'tool.adminuser' # new
 # Application definition
 
 INSTALLED_APPS = [
@@ -148,9 +148,6 @@ STATICFILES_DIRS=[
 
 MEDIA_URL = '/attachments/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'tool/attachments')
-
-
-
 
 
 
