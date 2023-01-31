@@ -24,6 +24,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from xhtml2pdf import pisa
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 from django.utils import timezone
 from datetime import *
@@ -126,6 +127,16 @@ def view_logs(request):
 
 def document(request):
     doc = cl_Document.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(doc, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
@@ -135,6 +146,7 @@ def document(request):
             doc = cl_Document.objects.filter(ch_name__icontains=q)        
     context = {
         'doc': doc,
+        'users':users
     }
     return render(request, 'tool/document.html', context)
 
@@ -286,6 +298,16 @@ class ViewAttachedPDF(View):
 
 def Location(request):
     loc = cl_Location.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(loc, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -293,6 +315,7 @@ def Location(request):
 
     context = {
         'loc': loc,
+        'users':users
     }
     return render(request, 'tool/location.html', context)
 
@@ -387,11 +410,21 @@ def LDelete(request):
 
 def new_organization(request):
     org = cl_New_organization.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(org, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             org = cl_New_organization.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/neworganization.html', {'org': org})
+    return render(request, 'tool/neworganization.html', {'org': org,'users':users})
 
 
 
@@ -466,11 +499,21 @@ def OrgDelete(request):
 def client(request):    
     per = cl_Person.objects.all()
     org = cl_New_organization.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(per, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
-    return render(request, 'tool/client.html', {'per': per, 'org':org})
+    return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users})
 
 
 #     context={
@@ -581,9 +624,20 @@ def Delete(request):
             }
         return redirect('client')
 
+########### Document #####################
 
 def document(request):
     doc = cl_Document.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(doc, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
@@ -595,6 +649,7 @@ def document(request):
 
     context = {
         'doc': doc,
+        'users':users
     }
     return render(request, 'tool/document.html', context)
 
@@ -733,12 +788,22 @@ def render_to_pdf(template_src, context_dict={}):
 
 def software(request):
     soft = cl_Software.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(soft, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
    
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             soft = cl_Software.objects.filter(ch_teamname__icontains=q)
-        return render(request, 'tool/software.html', {'soft': soft})
+        return render(request, 'tool/software.html', {'soft': soft,'users':users})
 
 
 def softAdd(request):
@@ -814,10 +879,20 @@ def team(request):
     if request.method == "GET":
         tem = cl_Team.objects.all()
         org = cl_New_organization.objects.all()
+        page = request.GET.get('page', 1)
+
+        paginator = Paginator(tem, 10)
+        try:
+            users = paginator.page(page)
+        except PageNotAnInteger:
+            users = paginator.page(1)
+        except EmptyPage:
+            users = paginator.page(paginator.num_pages)
+
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
-    return render(request, 'tool/service.html', {'tem': tem, 'org':org})
+    return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users})
 
 
 # @login_required(login_url='/login_render/')
@@ -908,13 +983,23 @@ def TDelete(request):
 @login_required(login_url='/login_render/')
 def newchange(request):
     nchange = cl_New_change.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(nchange, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         allteam = cl_Team.objects.all()
         team_person = cl_Person.objects.all()
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1048,6 +1133,17 @@ def assign_changeModal(request):
 
 @login_required(login_url='/login_render/')
 def user_request(request):
+    ur = cl_User_request.objects.all()
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(ur, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         ur = cl_User_request.objects.all()
         q = request.GET.get('searchstatus')
@@ -1057,7 +1153,8 @@ def user_request(request):
 
         context = {
             'ur': ur,
-            'escalated_ur': escalated_ur
+            'escalated_ur': escalated_ur,
+            'users':users
             }
         return render(request, 'tool/userrequest.html', context)
 
@@ -1204,11 +1301,21 @@ def escalate_notify(request):
 @login_required(login_url='/login_render/')
 def customer_contract(request):
     cust = cl_Customer_contract.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(cust, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+   
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             cust = cl_Customer_contract.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/scustomer_contract.html', {'cust': cust})
+    return render(request, 'tool/scustomer_contract.html', {'cust': cust,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1326,11 +1433,21 @@ def SCDelete(request, id):
 @login_required(login_url='/login_render/')
 def provider_contract(request):
     pro = cl_Providercontract.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(pro, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+   
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             pro = cl_Customer_contract.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/sprovidercontract.html', {'pro': pro})
+    return render(request, 'tool/sprovidercontract.html', {'pro': pro,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1458,6 +1575,15 @@ def SPDelete(request, id):
 @login_required(login_url='/login_render/')
 def servicefamilies(request):
     sf = cl_Servicefamilies.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(sf, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
 
     if request.method == "GET":
         q = request.GET.get('searchname')
@@ -1466,6 +1592,7 @@ def servicefamilies(request):
 
     context = {
         'sf': sf,
+        'users':users
     }
     return render(request, 'tool/sservicefamily.html', context)
 
@@ -1526,11 +1653,21 @@ def SFDelete(request, id):
 @login_required(login_url='/login_render/')
 def sservice(request):
     ser = cl_Service.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(ser, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             ser = cl_Service.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/sservice.html', {'ser': ser})
+    return render(request, 'tool/sservice.html', {'ser': ser,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1622,11 +1759,21 @@ def SSDelete(request, id):
 @login_required(login_url='/login_render/')
 def service_subcategory(request):
     sub = cl_Service_subcategory.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(sub, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             sub = cl_Service_subcategory.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/service_subcategory.html', {'sub': sub})
+    return render(request, 'tool/service_subcategory.html', {'sub': sub,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1714,11 +1861,20 @@ def SDelete(request, id):
 @login_required(login_url='/login_render/')
 def sla(request):
     sl = cl_Sla.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(sl, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             sl = cl_Sla.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/ssla.html', {'sl': sl})
+    return render(request, 'tool/ssla.html', {'sl': sl,'users':users})
 
 
 @login_required(login_url='/login_render/')
@@ -1746,7 +1902,7 @@ def SLADD(request):
 
 @login_required(login_url='/login_render/')
 def SLEdit(request):
-    sl = cl_Service.objects.all()
+    sl = cl_Sla.objects.all()
     context = {
         'sl': sl,
     }
@@ -1797,9 +1953,19 @@ def SLDelete(request, id):
 @login_required(login_url='/login_render/')
 def SLT(request):
     slt = cl_Slt.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(slt, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
 
     context = {
         'slt': slt,
+        'users':users
     }
     return render(request, 'tool/sslt.html', context)
 
@@ -1877,11 +2043,21 @@ def SLTDelete(request, id):
 @login_required(login_url='/login_render/')
 def servicedelivery(request):
     sd = cl_Servicedelivery.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(sd, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             sd = cl_Servicedelivery.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/sdelivery.html', {'sd': sd})
+    return render(request, 'tool/sdelivery.html', {'sd': sd,'users':users})
 
 
 @login_required(login_url='/login_render/')

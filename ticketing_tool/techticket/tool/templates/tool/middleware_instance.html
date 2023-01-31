@@ -77,7 +77,8 @@
       <tbody>
         {% csrf_token %}
 
-        {% for i in mi %}
+        {% for i in users %}
+        {% if forloop.counter < 11 %}
         <tr id="{{i.id}}">
           <td>
             <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
@@ -94,11 +95,34 @@
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
         </tr>
-        {% empty %}
-        <!-- <span class="text-center text-danger">No Record Found</span> -->
+        {% endif %}
         {% endfor %}
       </tbody>
     </table>
+           
+
+{% if users.has_other_pages %}
+<ul class="pagination">
+  {% if users.has_previous %}
+    <li><a href="{% url 'middlewareinstance' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+  {% endif %}
+  {% for i in users.paginator.page_range %}
+    {% if users.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a href="{% url 'middlewareinstance' %}?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+  {% endfor %}
+  {% if users.has_next %}
+    <li><a href="{% url 'middlewareinstance' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
+{% endif %}
+
 
     <div id="addcl_Middleware_instanceModal" class="modal fade">
       <div class="modal-dialog">
