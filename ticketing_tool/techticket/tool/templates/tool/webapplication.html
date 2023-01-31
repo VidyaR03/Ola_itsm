@@ -77,8 +77,10 @@
             </thead>
             <tbody>
                 {% csrf_token %}
-                {% for i in wa %}
-                <tr id="{{i.id}}">
+
+                {% for i in users %}
+                {% if forloop.counter < 11 %}
+                 <tr id="{{i.id}}">
                     <td>
                         <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
                     </td>
@@ -94,12 +96,36 @@
                         <a href="#editcl_Web_applicationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     </td>
-                </tr>
-                {% empty %}
-                <!-- <span class="text-center text-danger">No Record Found</span> -->
-                {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
             </tbody>
         </table>
+
+
+        {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li><a href="{% url 'webapplication' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="{% url 'webapplication' %}?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li><a href="{% url 'webapplication' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+
         <div id="addcl_Web_applicationModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">

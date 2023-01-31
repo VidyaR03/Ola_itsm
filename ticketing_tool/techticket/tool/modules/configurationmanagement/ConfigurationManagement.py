@@ -2,6 +2,8 @@ from tool.forms import *
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from tool.models import *
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+
 
 
 def configuration(request):
@@ -175,12 +177,21 @@ def DocDelete(request, id):
 
 def application_solution(request):
     appso = cl_Application_solution.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(appso, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             appso = cl_Application_solution.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/application_solution.html', {'appso': appso})
+    return render(request, 'tool/application_solution.html', {'appso': appso,'users':users})
 
 
 def appAdd(request):
@@ -269,12 +280,21 @@ def appDelete(request):
 
 def business_process(request):
     buss = cl_Business_process.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(buss, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchbusinessname')
         if q != None:
             buss = cl_Business_process.objects.filter(
                 ch_business_name__icontains=q)
-    return render(request, 'tool/business_process.html', {'buss': buss})
+    return render(request, 'tool/business_process.html', {'buss': buss,'users':users})
 
 
 def bussAdd(request):
@@ -353,12 +373,21 @@ def bussDelete(request):
 
 def newdb_server(request):
     db = cl_Newdb_server.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(db, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             db = cl_Newdb_server.objects.filter(
                ch_dbname__icontains=q)
-    return render(request, 'tool/newdb_server.html', {'db': db})
+    return render(request, 'tool/newdb_server.html', {'db': db,'users':users})
 
 
 def dbAdd(request):
@@ -449,11 +478,20 @@ def dbDelete(request):
 
 def dataschema(request):
     schema = cl_Database_schema.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(schema, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
-    return render(request, 'tool/database_schema.html', {'schema': schema})
+    return render(request, 'tool/database_schema.html', {'schema': schema,'users':users})
 
 
 def DSADD(request):
@@ -538,11 +576,20 @@ def DSDelete(request):
 
 def middlewareinstance(request):
     mi = cl_Middleware_instance.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(mi, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             mi = cl_Middleware_instance.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/middleware_instance.html', {'mi': mi})
+    return render(request, 'tool/middleware_instance.html', {'mi': mi,'users':users})
 
 
 def MADD(request):
@@ -624,11 +671,20 @@ def MDelete(request):
 
 def new_middleware(request):
     middle = cl_New_middleware.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(middle, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
-    return render(request, 'tool/new_middleware.html', {'middle': middle})
+    return render(request, 'tool/new_middleware.html', {'middle': middle,'users':users})
 
 
 def MWAdd(request):
@@ -721,12 +777,21 @@ def MWDelete(request):
 
 def other_software(request):
     os = cl_Other_software.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(os, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             os = cl_Other_software.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/othersoftware.html', {'os': os})
+    return render(request, 'tool/othersoftware.html', {'os': os,'users':users})
 
 
 def osAdd(request):
@@ -819,12 +884,21 @@ def osDelete(request):
 
 def web_application(request):
     wa = cl_Web_application.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(wa, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             wa = cl_Web_application.objects.filter(
                 ch_waname__icontains=q)
-    return render(request, 'tool/webapplication.html', {'wa': wa})
+    return render(request, 'tool/webapplication.html', {'wa': wa,'users':users})
 
 
 def waAdd(request):
@@ -910,12 +984,21 @@ def waDelete(request):
 
 def networkdevice(request):
     nd = cl_Network_device.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(nd, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             nd = cl_Network_device.objects.filter(
                 ch_ndname__icontains=q)
-    return render(request, 'tool/network_device.html', {'nd': nd})
+    return render(request, 'tool/network_device.html', {'nd': nd,'users':users})
 
 
 def ndAdd(request):
@@ -1036,11 +1119,20 @@ def ndDelete(request):
 
 def network_type(request):
     nt = cl_network_type.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(nt, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             nt = cl_network_type.objects.filter(ch_nname__icontains=q)
-    return render(request, 'tool/network_type.html', {'nt': nt})
+    return render(request, 'tool/network_type.html', {'nt': nt,'users':users})
 
 
 def ntAdd(request):
@@ -1093,11 +1185,20 @@ def ntDelete(request, id):
 
 def os_family(request):
     osf = cl_os_family.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(osf, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_family.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_family.html', {'osf': osf})
+    return render(request, 'tool/os_family.html', {'osf': osf,'users':users})
 
 
 def osfAdd(request):
@@ -1152,11 +1253,20 @@ def osfDelete(request, id):
 
 def os_version(request):
     osv = cl_os_version.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(osv, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_version.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_version.html', {'osv': osv})
+    return render(request, 'tool/os_version.html', {'osv': osv,'users':users})
 
 
 def osvAdd(request):
@@ -1217,12 +1327,21 @@ def osvDelete(request, id):
 
 def os_license(request):
     ol = cl_os_license.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(ol, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             ol = cl_os_license.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/os_license.html', {'ol': ol})
+    return render(request, 'tool/os_license.html', {'ol': ol,'users':users})
 
 
 def olAdd(request):
@@ -1311,11 +1430,20 @@ def olDelete(request, id):
 
 def brand(request):
     brand = cl_Brand.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(brand, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             brand = cl_Brand.objects.filter(ch_brandname__icontains=q)
-    return render(request, 'tool/brand.html', {'brand': brand})
+    return render(request, 'tool/brand.html', {'brand': brand,'users':users})
 
 
 def bnAdd(request):
@@ -1368,11 +1496,20 @@ def bnDelete(request, id):
 
 def cmodel(request):
     model = cl_model.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(model, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             model = cl_model.objects.filter(ch_modelname__icontains=q)
-    return render(request, 'tool/model.html', {'model': model})
+    return render(request, 'tool/model.html', {'model': model,'users':users})
 
 
 def mdAdd(request):
@@ -1433,11 +1570,20 @@ def mdDelete(request, id):
 
 def iosver(request):
     iv = cl_ios_version.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(iv, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             iv = cl_ios_version.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/ios_version.html', {'iv': iv})
+    return render(request, 'tool/ios_version.html', {'iv': iv,'users':users})
 
 
 def ivAdd(request):
@@ -1506,12 +1652,21 @@ def ivDelete(request, id):
 
 def server(request):
     se = cl_Server.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(se, 7)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             se = cl_Server.objects.filter(
                 ch_sname__icontains=q)
-    return render(request, 'tool/server.html', {'se': se})
+    return render(request, 'tool/server.html', {'se': se,'users':users})
 
 
 def serverAdd(request):
@@ -1644,11 +1799,20 @@ def serverDelete(request):
 
 def web_server(request):
     ws = cl_Web_server.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(ws, 7)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
-    return render(request, 'tool/webserver.html', {'ws': ws})
+    return render(request, 'tool/webserver.html', {'ws': ws,'users':users})
 
 
 def wsAdd(request):
@@ -1743,11 +1907,20 @@ def wsDelete(request):
 
 def pc_software(request):
     pc = cl_Pc_software.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(pc, 7)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             pc = cl_Pc_software.objects.filter(ch_pcname_icontains=q)
-    return render(request, 'tool/pc_software.html', {'pc': pc})
+    return render(request, 'tool/pc_software.html', {'pc': pc,'users':users})
 
 
 def pcAdd(request):

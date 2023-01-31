@@ -75,7 +75,8 @@
     <tbody>
       {% csrf_token %}
 
-      {% for i in ol %}
+      {% for i in users %}
+      {% if forloop.counter < 11 %}       
       <tr id="{{i.id}}">
 
         <td>
@@ -101,11 +102,34 @@
 
         </td>
       </tr>
-      {% empty %}
-      <span class="text-center text-danger">No Record Found</span>
+      {% endif %}
       {% endfor %}
     </tbody>
   </table>
+
+  {% if users.has_other_pages %}
+  <ul class="pagination">
+      {% if users.has_previous %}
+      <li><a href="{% url 'os_license' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <li><a href="{% url 'os_license' %}?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if users.has_next %}
+      <li><a href="{% url 'os_license' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+  </ul>
+  {% endif %}
+
+
 
   <div id="addcl_os_licenseModal" class="modal fade">
     <div class="modal-dialog">

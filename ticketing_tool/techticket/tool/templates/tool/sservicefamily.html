@@ -78,7 +78,8 @@
       </thead>
 
       <tbody>
-        {% for i in sf %}
+        {% for i in users %}
+        {% if forloop.counter < 11 %}
         <tr>
           <td>
             <span class="custom-checkbox">
@@ -97,9 +98,37 @@
 
           </td>
         </tr>
+        {% endif %}
+
         {% endfor %}
       </tbody>
     </table>
+
+
+    
+{% if users.has_other_pages %}
+<ul class="pagination">
+  {% if users.has_previous %}
+    <li><a href="{% url 'servicefamilies' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+  {% endif %}
+  {% for i in users.paginator.page_range %}
+    {% if users.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a href="{% url 'servicefamilies' %}?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+  {% endfor %}
+  {% if users.has_next %}
+    <li><a href="{% url 'servicefamilies' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
+{% endif %}
+
+
 
     <div id="addcl_ServicefamiliesModal" class="modal fade">
       <div class="modal-dialog">
