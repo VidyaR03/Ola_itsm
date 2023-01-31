@@ -184,6 +184,8 @@ urlpatterns = [
     path('osvEdit', views.osvEdit, name='osvEdit'),
     path('osvUpdate/<str:id>', views.osvUpdate, name='osvUpdate'),
     path('osvDelete/<str:id>', views.osvDelete, name='osvDelete'),
+    path('sendMail', views.send_approval_Mail, name='sendMail'),
+
     
    
     #URL For Network Device

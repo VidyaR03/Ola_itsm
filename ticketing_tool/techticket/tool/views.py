@@ -1151,6 +1151,25 @@ def assign_changeModal(request):
     return render(request, 'tool/tassign.html', context)
 
 
+
+#############################################################
+
+##########Approve Change############333
+def send_approval_Mail(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
+
+        print(change_approve.txt_description)
+        subject = 'Welcome to Olatech Solutions'
+        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
+        print(message)
+        sender = settings.EMAIL_HOST_USER
+        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
+        send_mail(subject, message, sender, recepient, fail_silently=False)
+    return render(request, 'tool/approve_change.html')    
+
+
 #############################################################
 
 @login_required(login_url='/login_render/')
@@ -1183,7 +1202,7 @@ def user_request(request):
 def escalation(ur):
     escalated_ur = []
     for req in ur:
-        if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_agent == 'Deallocate':
+        if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_assign_agent == 'Deallocate':
             escalated_ur.append(req)
         elif datetime.date(req.dt_escalation_date) == datetime.date(datetime.now()) and datetime.time(req.dt_escalation_date) < datetime.time(datetime.now()):
             escalated_ur.append(req)

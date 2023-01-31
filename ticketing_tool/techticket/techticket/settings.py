@@ -176,7 +176,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 465
 EMAIL_HOST = 'mail.supremecluster.com'
 EMAIL_HOST_USER = 'ankush.n@olatechs.com'
-EMAIL_HOST_PASSWORD = '***********'
+EMAIL_HOST_PASSWORD = 'Contact@1234'
 EMAIL_USE_SSL=True
 
 # CRONJOBS = [

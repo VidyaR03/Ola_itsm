@@ -7,11 +7,13 @@
     <form action="" method="get" class="form-inline"  style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
       <input type="submit" class="btn btn-primary " value="Search by Status">
+      <button type="submit" id="approve_btn" class="btn btn-primary">Approve Request</button>
     </form>
     <div style="display: inline-block; position: relative; left: 58%;">
       <a href="#addcl_New_changeModal" class="btn btn-success" data-toggle="modal"><span>Add New Change</span></a>
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete Change</button>
       <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal"><span>Assign Change</span></a>
+      
     </div>
   </div>
 
@@ -383,6 +385,46 @@
       });
     }
   }); 
+</script>
+<!-- For Approve Change -->
+<script>
+  $(document).ready(function () {
+    $('#approve_btn').click(function () {
+      if (confirm('Are You Sure You Want to Approve Change?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select Change Which u want to assign?")
+        } else {
+          console.log(id)
+          var p = document.getElementById('select_person').value     
+          $.ajax({
+            url: "{% url 'sendMail' %}",
+            method: "POST",
+            data: {
+              id,
+              p,
+              csrfmiddlewaretoken: csrf
+            },
+            success: function (response) {
+              alert("success")
+              location.reload();
+              for (var i = 0; i < id.length; i++) {
+                var error = $(response).find('#error_text')
+                var error_class = $(error).attr('class')
+                $('#error').addClass(error_class)
+                $('#error').text(error.text())
+                $('tr#' + id[i] + '').fadeOut('slow');
+              }
+            },
+          })
+        }
+      }
+    })
+  })
 </script>
 
 
