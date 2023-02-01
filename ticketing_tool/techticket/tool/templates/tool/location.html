@@ -130,14 +130,14 @@
     <!-- Add Modal HTML -->
     <div id="addcl_LocationModal" class="modal fade">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
                 <form action="{% url 'ladd' %}" method="post">
                     {% csrf_token %}
                     <div class="modal-header">
                         <h4 class="modal-title">Add Loation</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
                         <!-- <div class="form-group">
                             <label>ID</label>
                             <input name="id" type="text" class="form-control" required>
@@ -161,6 +161,8 @@
                             <label>City</label>
                             <input name="ch_city" type="text" value="{{i.ch_city}}" class="form-control" required>
                         </div>
+                    </div>
+                    <div class="modal-body" style="width: 330px; display: inline-block;">
                         <div class="form-group">
                             <label>Pincode</label>
                             <input name="i_pincode" type="text" value="{{i.i_pincode}}" class="form-control"

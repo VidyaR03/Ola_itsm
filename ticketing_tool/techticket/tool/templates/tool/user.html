@@ -59,14 +59,14 @@
     </table>
     <div id="add_User" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 400px; position: relative; left: 15%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; left: 15%; bottom: 50%;">
           <form action="{% url 'add_new_user' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Add User</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
                 <label>First Name</label>
                 <input name="ch_user_firstname" type="text" class="form-control" required>
@@ -83,6 +83,9 @@
                 <label>Password</label>
                 <input name="ch_user_password" type="password" class="form-control">
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;"> 
+
               <div class="form-group">
                 <label>Role:<a href="{% url 'role_add' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>

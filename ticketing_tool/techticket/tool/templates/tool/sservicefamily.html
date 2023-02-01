@@ -53,9 +53,12 @@
     <form action="" method="get" class="form-inline"
       style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
-      <input type="submit" class="btn btn-primary" value="Search">
+      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'servicenav' %}">Service Management <span>&nbsp > </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'servicefamilies' %}">Service Family <span>&nbsp > </span></a></b>
     </form>
-    <div style="display: inline-block; position: relative; left: 70%;">
+    <div style="display: inline-block; position: relative; left: 58%;">
       <a href="#addcl_ServicefamiliesModal" class="btn btn-success" data-toggle="modal">
         <span>Add Service Family</span></a>
       <a href="#deletecl_ServicefamiliesModal/{{i.id }} " class="btn btn-danger" data-toggle="modal"
@@ -63,7 +66,7 @@
         <span>Delete</span></a>
     </div>
 
-    <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
+    <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
       <tr>
         <th>
           <span class="custom-checkbox">
@@ -132,7 +135,7 @@
 
     <div id="addcl_ServicefamiliesModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 300px; position: relative; left: 40%; bottom: 50%;">
           <form action="{% url 'sfadd' %}" method="POST">
             {% csrf_token %}
             <div class="modal-header">

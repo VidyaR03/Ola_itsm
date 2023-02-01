@@ -95,15 +95,16 @@
 
     <!-- Add Team Data -->
     <div id="addcl_TeamModal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
+       <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+
           <form action="{% url 'tadd' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Add Team</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
                 <label>Team Name</label>
                 <input name="ch_teamname" type="text" class="form-control" required>
@@ -126,6 +127,8 @@
                 <label>Email</label>
                 <input name="e_team_emailfield" type="text" class="form-control">
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>Mobile Number</label>
                 <input name="i_team_phonenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
