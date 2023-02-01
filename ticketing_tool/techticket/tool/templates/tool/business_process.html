@@ -129,14 +129,14 @@
 
     <div id="addcl_Business_processModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
           <form action="{% url 'bussAdd' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Add Business Process</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <!-- <div class="form-group">
               <label>ID</label>
               <input name="id" type="text" class="form-control">
@@ -159,6 +159,8 @@
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>Business Criticality</label>
                 <select name="ch_business_criticality" type="text" class="form-control" required>
