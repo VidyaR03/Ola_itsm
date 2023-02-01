@@ -141,7 +141,16 @@ def view_logs(request):
     This function create views of log
     """
     log = user_activity_log.objects.all()
-    context = {"log" : log}
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(log, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    context = {"log" : log,"users":users}
     return render(request, 'tool/logs.html', context)
 
 # @login_required(login_url='/login_render/')

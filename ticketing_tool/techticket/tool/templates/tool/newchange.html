@@ -6,18 +6,19 @@
   <div>
     <form action="" method="get" class="form-inline"  style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
-      <input type="submit" class="btn btn-primary " value="Search by Status">
-      <button type="submit" id="approve_btn" class="btn btn-primary">Approve Request</button>
+      <input type="submit" class="btn btn-primary " value="Search by Status"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
+      <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'newchange' %}"> Change Management</a></b>
     </form>
-    <div style="display: inline-block; position: relative; left: 58%;">
+    <div style="display: inline-block; position: relative; left:45%;">
       <a href="#addcl_New_changeModal" class="btn btn-success" data-toggle="modal"><span>Add New Change</span></a>
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete Change</button>
       <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal"><span>Assign Change</span></a>
-      
+      <button type="submit" id="approve_btn" class="btn btn-primary">Approve Request</button>
     </div>
   </div>
 
-  <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
+  <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
     <tr>
       <th>
         <span class="custom-checkbox">

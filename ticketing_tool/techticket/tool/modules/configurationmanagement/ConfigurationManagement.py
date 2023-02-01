@@ -1654,7 +1654,7 @@ def server(request):
     se = cl_Server.objects.all()
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(se, 7)
+    paginator = Paginator(se, 10)
     try:
         users = paginator.page(page)
     except PageNotAnInteger:
@@ -1801,7 +1801,7 @@ def web_server(request):
     ws = cl_Web_server.objects.all()
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(ws, 7)
+    paginator = Paginator(ws, 10)
     try:
         users = paginator.page(page)
     except PageNotAnInteger:

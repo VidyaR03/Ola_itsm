@@ -175,7 +175,7 @@ urlpatterns = [
     path('ivAdd', views.ivAdd, name='ivAdd'),
     path('ivEdit', views.ivEdit, name='ivEdit'),
     path('ivUpdate/<str:id>', views.ivUpdate, name='ivUpdate'),
-    path('ivDelete/<str:id>', views.ivDelete, name='ivDelete'),
+    path('ivDelete/', views.ivDelete, name='ivDelete'),
 
 
   # URL for OS version
