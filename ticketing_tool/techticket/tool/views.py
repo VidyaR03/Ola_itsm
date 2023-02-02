@@ -140,18 +140,24 @@ def view_logs(request):
     """
     This function create views of log
     """
-    log = user_activity_log.objects.all()
-    page = request.GET.get('page', 1)
 
-    paginator = Paginator(log, 10)
-    try:
-        users = paginator.page(page)
-    except PageNotAnInteger:
-        users = paginator.page(1)
-    except EmptyPage:
-        users = paginator.page(paginator.num_pages)
-    context = {"log" : log,"users":users}
+    log = user_activity_log.objects.all()
+    context = {"log" : log}
     return render(request, 'tool/logs.html', context)
+
+
+def LogsDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            log = user_activity_log.objects.filter(id=i).first()
+            log.delete()
+
+    context = {
+        'log': log,
+    }
+    return redirect('logs')    
 
 # @login_required(login_url='/login_render/')
 
@@ -1331,9 +1337,13 @@ def UUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def UDelete(request, id):
-    ur = cl_User_request.objects.filter(id=id)
-    ur.delete()
+def UDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.delete()
     context = {
         'ur': ur,
     }
@@ -1465,14 +1475,13 @@ def SCUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SCDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    cust = cl_Customer_contract.objects.filter(id=id)
-
-    cust.delete()
-
-    # return redirect('newchange')
+def SCDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            cust = cl_Customer_contract.objects.filter(id=i).first()
+            cust.delete()
 
     context = {
         'cust': cust,
@@ -1607,14 +1616,13 @@ def SPUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SPDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    pro = cl_Providercontract.objects.filter(id=id)
-
-    pro.delete()
-
-    # return redirect('newchange')
+def SPDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            pro = cl_Providercontract.objects.filter(id=i).first()
+            pro.delete()
 
     context = {
         'pro': pro,
@@ -1691,9 +1699,14 @@ def SFUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SFDelete(request, id):
-    sf = cl_Servicefamilies.objects.filter(id=id)
-    sf.delete()
+def SFDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            sf = cl_Servicefamilies.objects.filter(id=i).first()
+            sf.delete()
+
     context = {
         'sf': sf,
     }
@@ -1791,19 +1804,19 @@ def SSUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SSDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    ser = cl_Service.objects.filter(id=id)
-
-    ser.delete()
-
-    # return redirect('newchange')
+def SSDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            ser = cl_Service.objects.filter(id=i).first()
+            ser.delete()
 
     context = {
         'ser': ser,
     }
     return redirect('service')
+
 
 
 @login_required(login_url='/login_render/')
@@ -1893,14 +1906,13 @@ def SUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    sub = cl_Service_subcategory.objects.filter(id=id)
-
-    sub.delete()
-
-    # return redirect('newchange')
+def SDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            sub = cl_Service_subcategory.objects.filter(id=i).first()
+            sub.delete() 
 
     context = {
         'sub': sub,
@@ -1985,14 +1997,13 @@ def SLUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SLDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    sl = cl_Sla.objects.filter(id=id)
-
-    sl.delete()
-
-    # return redirect('newchange')
+def SLDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            sl = cl_Sla.objects.filter(id=i).first()
+            sl.delete()
 
     context = {
         'sl': sl,
@@ -2081,9 +2092,14 @@ def SLTUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SLTDelete(request, id):
-    slt = cl_Slt.objects.filter(id=id)
-    slt.delete()
+def SLTDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            slt = cl_Slt.objects.filter(id=i).first()
+            slt.delete()
+
     context = {
         'slt': slt,
     }
@@ -2172,14 +2188,14 @@ def SDUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def SDDelete(request, id):
-    # nchange = cl_New_change.objects.filter(id = id)
-    # nchange.delete()
-    sd = cl_Servicedelivery.objects.filter(id=id)
+def SDDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            sd = cl_Servicedelivery.objects.filter(id=i).first()
+            sd.delete()
 
-    sd.delete()
-
-    # return redirect('newchange')
 
     context = {
         'sd': sd,
@@ -2632,3 +2648,4 @@ def add_new_user(request):
         user.save()
         return redirect('user_display')
     return render(request, 'tool/user.html')
+    

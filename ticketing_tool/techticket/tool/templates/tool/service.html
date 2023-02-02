@@ -8,14 +8,10 @@
     <form action="" method="get" class="form-inline"
     style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchname" placeholder="Search">
-      <input type="submit" class="btn btn-primary" value="Search"><br>
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Config Management <span>&nbsp > </span></a></b>	
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'contact' %}">Contacts <span>&nbsp > </span></a></b>	
-      <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'team' %}">Team</a></b>
-    </form> 
- 
-    <div style="display: inline-block; position: relative; left: 55.5%;">
+      <input type="submit" class="btn btn-primary" value="Search">
+    </form>
+
+    <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       <a href="#addcl_TeamModal" class="btn btn-success" data-toggle="modal">
         <span>Add New Team</span></a>
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>

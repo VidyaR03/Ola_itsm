@@ -686,8 +686,8 @@ class cl_Providercontract(models.Model):
     ch_pcprovider = models.ForeignKey(
         cl_New_organization,  related_name='cl_new_organization_ch_pcprovider', on_delete=models.CASCADE, null=True, blank=True)
 
-    dt_start_date = models.DateTimeField(auto_now=False, auto_now_add=False)
-    dt_end_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    dt_start_date = models.DateTimeField(auto_now=True)
+    dt_end_date = models.DateTimeField(auto_now=True)
     i_cost_unit = models.IntegerField()
     i_cost = models.IntegerField()
     i_cost_currency = models.IntegerField()

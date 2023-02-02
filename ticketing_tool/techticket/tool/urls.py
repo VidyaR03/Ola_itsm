@@ -13,6 +13,8 @@ urlpatterns = [
     path('login_render/', views.login_render, name='login_render'),
     path('logout/', views.logoutUser, name='logout'),
     path('logs/', views.view_logs, name='logs'),
+    path('delete/', views.LogsDelete, name='logsdelete'),
+
     
     #Url for person form
     path('add', views.ADD, name='add'),
@@ -120,7 +122,7 @@ urlpatterns = [
     path('uadd', views.UADD, name='uadd'),
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
-    path('udelete/<str:id>', views.UDelete, name='udelete'),
+    path('udelete/', views.UDelete, name='udelete'),
     path('escalate_notify', views.escalate_notify, name='escalate_notify'),
 
     
@@ -227,7 +229,7 @@ urlpatterns = [
     path('scadd', views.SCADD, name='scadd'),
     path('scedit', views.SCEdit, name='scedit'),
     path('scupdate/<str:id>', views.SCUpdate, name='scupdate'),
-    path('scdelete/<str:id>', views.SCDelete, name='scdelete'),
+    path('scdelete', views.SCDelete, name='scdelete'),
     
      #Url for provider contract
 
@@ -235,7 +237,7 @@ urlpatterns = [
     path('spadd', views.SPADD, name='spadd'),
     path('spedit', views.SPEdit, name='spedit'),
     path('spupdate/<str:id>', views.SPUpdate, name='spupdate'),
-    path('spdelete/<str:id>', views.SPDelete, name='spdelete'),
+    path('spdelete', views.SPDelete, name='spdelete'),
 
      #URL for System
      path("systemnav/", views.systemnav, name='systemnav'),
@@ -252,7 +254,7 @@ urlpatterns = [
     path('sfadd', views.SFADD, name='sfadd'),
     path('sfedit', views.SFEdit, name='sfedit'),
     path('sfupdate/<str:id>', views.SFUpdate, name='sfupdate'),
-    path('sfdelete/<str:id>', views.SFDelete, name='sfdelete'),
+    path('sfdelete', views.SFDelete, name='sfdelete'),
 
 
      #Url for services 
@@ -261,7 +263,7 @@ urlpatterns = [
     path('ssadd', views.SSADD, name='ssadd'),
     path('ssedit', views.SSEdit, name='ssedit'),
     path('ssupdate/<str:id>', views.SSUpdate, name='ssupdate'),
-    path('ssdelete/<str:id>', views.SSDelete, name='ssdelete'),
+    path('ssdelete', views.SSDelete, name='ssdelete'),
 
 
 
@@ -270,7 +272,7 @@ urlpatterns = [
     path('sadd', views.SADD, name='sadd'),
     path('sedit', views.SEdit, name='sedit'),
     path('supdate/<str:id>', views.SUpdate, name='supdate'),
-    path('sdelete/<str:id>', views.SDelete, name='sdelete'),
+    path('sdelete', views.SDelete, name='sdelete'),
 
 
     
@@ -292,7 +294,7 @@ urlpatterns = [
     path('sladd', views.SLADD, name='sladd'),
     path('sledit', views.SLEdit, name='sledit'),
     path('slupdate/<str:id>', views.SLUpdate, name='slupdate'),
-    path('sldelete/<str:id>', views.SLDelete, name='sldelete'),
+    path('sldelete', views.SLDelete, name='sldelete'),
 
 
     
@@ -302,7 +304,7 @@ urlpatterns = [
     path('sdadd', views.SDADD, name='sdadd'),
     path('sdedit', views.SDEdit, name='sdedit'),
     path('sdupdate/<str:id>', views.SDUpdate, name='sdupdate'),
-    path('sddelete/<str:id>', views.SDDelete, name='sddelete'),
+    path('sddelete', views.SDDelete, name='sddelete'),
 
 
         #url for OS License
@@ -320,7 +322,7 @@ urlpatterns = [
     path('sltadd', views.STADD, name='sltadd'),
     path('sltedit', views.SLTEdit, name='sltedit'),
     path('sltupdate/<str:id>', views.SLTUpdate, name='sltupdate'),
-    path('sltdelete/<str:id>', views.SLTDelete, name='sltdelete'),
+    path('sltdelete', views.SLTDelete, name='sltdelete'),
 
 
     # for user role 
