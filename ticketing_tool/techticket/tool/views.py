@@ -2648,3 +2648,4 @@ def add_new_user(request):
         user.save()
         return redirect('user_display')
     return render(request, 'tool/user.html')
+    
