@@ -54,8 +54,8 @@
         <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'newdb' %}">DB Server</a></b>
       </form>
 
-  <div style="display: inline-block; position: relative; left: 50%;">
-    <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
+  <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+        <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
       <span>Back to New CI</span></a>
     <a href="#addcl_Newdb_serverModal" class="btn btn-success" data-toggle="modal"><span>New DB Server</span></a>
         <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>

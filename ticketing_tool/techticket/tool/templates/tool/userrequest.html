@@ -168,7 +168,7 @@
       
            <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'userrequest' %}">Incident Management</a></b>
         </form>
-        <div style="display: inline-block; position: relative; left: 50%;">
+        <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
             <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal">
                 <span>Add New User Request</span></a>
             <button type="submit" id="delete_btn" class="btn btn-danger">Delete User Request</button>
@@ -203,12 +203,9 @@
         <tbody>
             {% for i in users %}
             {% if forloop.counter < 11 %}          
-              <tr>
+            <tr id="{{i.id}}">
                 <td>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                        <label for="checkbox1"></label>
-                    </span>
+                  <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
                 </td>
                 <td>{{i.id}}
                 <td>{{i.fk_organization}}</td>
@@ -575,4 +572,144 @@
 
 </html> -->
 
-{% endblock content %}
+<!-- for delete change -->
+<script>
+    $(document).ready(function () {
+      $('#delete_btn').click(function () {
+        if (confirm('Are You Sure You Want to Delete User?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+  
+          })
+          if (id.length === 0) {
+            alert("please select user Which u want to delete?")
+          } else {
+            console.log(id)
+            $.ajax({
+              url: "{% url 'udelete' %}",
+              method: "POST",
+              data: {
+                id,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+  </script>
+  
+  <!-- for assign change -->
+  <script>
+    $(document).ready(function () {
+      $('#assign_btn').click(function () {
+        if (confirm('Are You Sure You Want to Assign Change?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+          })
+          if (id.length === 0) {
+            alert("please select Change Which u want to assign?")
+          } else {
+            console.log(id)
+            var p = document.getElementById('select_person').value
+            $.ajax({
+              url: "{% url 'assign_change' %}",
+              method: "POST",
+              data: {
+                id,
+                p,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+  </script>
+  
+  <script>
+    $('#select-all').click(function (event) {
+      if (this.checked) {
+        // Iterate each checkbox
+        $(':checkbox').each(function () {
+          this.checked = true;
+  
+        });
+      } else {
+        $(':checkbox').each(function () {
+          this.checked = false;
+        });
+      }
+    }); 
+  </script>
+  <!-- For Approve Change -->
+  <script>
+    $(document).ready(function () {
+      $('#approve_btn').click(function () {
+        if (confirm('Are You Sure You Want to Approve Change?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+          })
+          if (id.length === 0) {
+            alert("please select Change Which u want to assign?")
+          } else {
+            console.log(id)
+            var p = document.getElementById('select_person').value     
+            $.ajax({
+              url: "{% url 'sendMail' %}",
+              method: "POST",
+              data: {
+                id,
+                p,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+  </script>
+  
+  
+  <!-- </html> -->
+  
+  {% endblock content %}
