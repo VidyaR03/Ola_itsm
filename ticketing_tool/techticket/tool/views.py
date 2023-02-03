@@ -160,6 +160,15 @@ def view_logs(request):
 
 
 @login_required(login_url='/login_render/')
+def LogsDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            log = user_activity_log.objects.filter(id=i).first()
+            log.delete()
+    return redirect('logs')
+
+@login_required(login_url='/login_render/')
 def document(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
@@ -261,7 +270,6 @@ def DocUpdate(request, id):
             resultcode = "200"
             user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
-
         else:
             ch_name=request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
@@ -293,7 +301,6 @@ def DocDelete(request,id):
     doc = cl_Document.objects.filter(id=id)
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             doc = cl_Document.objects.filter(id=i).first()
             doc.delete()
@@ -303,7 +310,6 @@ def DocDelete(request,id):
 @login_required(login_url='/login_render/')
 def DeleteAttachedPDF(request,id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    print('function called')
     id = request.GET['id']
     doc = cl_Document.objects.filter(id = id).first()
     file_to_delete = str(doc.disc_Attachment)
@@ -328,7 +334,6 @@ def render_to_pdf(template_src, context_dict={}):
 	return None
 
 
-
 class ViewAttachedPDF(View):
 	def get(self, request, path):
             media_path = settings.MEDIA_ROOT
@@ -344,7 +349,6 @@ def Location(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     loc = cl_Location.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(loc, 10)
     try:
         users = paginator.page(page)
@@ -668,7 +672,6 @@ def Delete(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             per = cl_Person.objects.filter(id=i).first()
             per.delete()
@@ -815,10 +818,8 @@ def DocUpdate(request, id):
 
 @login_required(login_url='/login_render/')
 def DocDelete(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             doc = cl_Document.objects.filter(id=i)
             doc.delete()
@@ -828,7 +829,6 @@ def DocDelete(request):
 @login_required(login_url='/login_render/')
 def DeleteAttachedPDF(request,id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    print('function called')
     id = request.GET['id']
     doc = cl_Document.objects.filter(id = id).first()
     file_to_delete = str(doc.disc_Attachment)
@@ -841,7 +841,7 @@ def DeleteAttachedPDF(request,id):
         event ="event"
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
-        return HttpResponse(request, 'tool/document.html')
+        return HttpResponse(request, 'tool/document.html',{'permission':permission})
     else:
         return HttpResponse(request, 'tool/document.html',{'permission':permission})
 
@@ -945,7 +945,6 @@ def softUpdate(request, id):
 def softDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             soft = cl_Software.objects.filter(id=i).first()
             soft.delete()
@@ -980,7 +979,6 @@ def team(request):
     return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users,'permission':permission})
 
 
-@login_required(login_url='/login_render/')
 @login_required(login_url='/login_render/')
 def TADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -1062,7 +1060,6 @@ def TUpdate(request, id):
 def TDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             tem = cl_Team.objects.filter(id=i).first()
             tem.delete()
@@ -1196,7 +1193,6 @@ def CUpdate(request, id):
 def CDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.delete()
@@ -1417,7 +1413,6 @@ def UUpdate(request, id):
 
 @login_required(login_url='/login_render/')
 def UDelete(request, id):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.filter(id=id)
     ur.delete()
     admin_name = request.session["username"]
@@ -1555,14 +1550,9 @@ def SCUpdate(request, id):
 def SCDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             cust = cl_Customer_contract.objects.filter(id=i).first()
             cust.delete()
-
-    context = {
-        'cust': cust,
-    }
     return redirect('customercontract')
 
 
@@ -1689,14 +1679,9 @@ def SPUpdate(request, id):
 def SPDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             pro = cl_Providercontract.objects.filter(id=i).first()
             pro.delete()
-
-    context = {
-        'pro': pro,
-    }
     return redirect('providercontract')
 
 
@@ -1770,14 +1755,9 @@ def SFUpdate(request, id):
 def SFDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             sf = cl_Servicefamilies.objects.filter(id=i).first()
             sf.delete()
-
-    context = {
-        'sf': sf,
-    }
     return redirect('servicefamilies')
 
 
@@ -1872,14 +1852,9 @@ def SSUpdate(request, id):
 def SSDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             ser = cl_Service.objects.filter(id=i).first()
             ser.delete()
-
-    context = {
-        'ser': ser,
-    }
     return redirect('service')
 
 ######################################################
@@ -1971,14 +1946,9 @@ def SUpdate(request, id):
 def SDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             sub = cl_Service_subcategory.objects.filter(id=i).first()
             sub.delete() 
-
-    context = {
-        'sub': sub,
-    }
     return redirect('service_subcategory')
 
 
@@ -2061,14 +2031,9 @@ def SLUpdate(request, id):
 def SLDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             sl = cl_Sla.objects.filter(id=i).first()
             sl.delete()
-
-    context = {
-        'sl': sl,
-    }
     return redirect('sla')
 
 ################################################
@@ -2160,14 +2125,9 @@ def SLTUpdate(request, id):
 def SLTDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             slt = cl_Slt.objects.filter(id=i).first()
             slt.delete()
-
-    context = {
-        'slt': slt,
-    }
     return redirect('slt')
 
 
@@ -2249,15 +2209,9 @@ def SDUpdate(request, id):
 def SDDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             sd = cl_Servicedelivery.objects.filter(id=i).first()
             sd.delete()
-
-
-    context = {
-        'sd': sd,
-    }
     return redirect('servicedelivery')
 
 
@@ -2859,7 +2813,6 @@ def add_new_user(request):
     return render(request, 'tool/user.html',{'permission':permission})
 
 
-
 @login_required(login_url='/login_render/')
 def user_edit(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -2876,24 +2829,37 @@ def user_edit(request, id):
 
 # =============================================================================
 
+@login_required(login_url='/login_render/')
 def servicenav(request):
-    return render(request, 'tool/servicenav.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/servicenav.html',{'permission':permission})
 
+
+@login_required(login_url='/login_render/')
 def systemnav(request):
-    return render(request, 'tool/systemnav.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/systemnav.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def sysconfienav(request):
-    return render(request, 'tool/sysconfinav.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/sysconfinav.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def sysconfiauth(request):
-    return render(request, 'tool/sysconfiauth.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/sysconfiauth.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def admuser(request):
-    return render(request, 'tool/admuser.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/admuser.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def integrationav(request):
-    return render(request, 'tool/integrationav.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/integrationav.html',{'permission':permission})

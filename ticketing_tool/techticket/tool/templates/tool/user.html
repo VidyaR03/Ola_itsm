@@ -8,7 +8,10 @@
     <form action="" method="get" class="form-inline"
       style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchname" placeholder="Search">
-      <input type="submit" class="btn btn-primary" value="Search">
+      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'user_display' %}">User Management</a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       {% if permission.user_m_a == "on" or permission == None %}
@@ -33,11 +36,9 @@
           <th>Email</th>
           <th>Role</th>
           <th>Mobile Number</th>
-          <!-- <th>Status</th> -->
           {% if permission.user_m_e == "on" or permission == None %}
           <th>Edit</th>
           {% endif %}
-
         </tr>
       </thead>
       <tbody>
@@ -53,12 +54,6 @@
           <td>{{i.email}}</td>
           <td>{{i.ch_user_role}}</td>
           <td>{{i.ch_user_mobilenumber}}</td>
-          <!-- {% if i.is_active == True %}
-          <td>Active</td>
-          {% else %}
-          <td>Not Active</td>
-          {% endif %} -->
-
           {% if permission.user_m_e == "on" or permission == None %}
           <td>
             <a href="#edit_User-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="material-icons"
@@ -97,7 +92,7 @@
                 <input name="ch_user_password" type="password" class="form-control">
               </div>
             </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;"> 
+            <div class="modal-body" style="width: 330px; display: inline-block;">
 
               <div class="form-group">
                 <label>Role:<a href="{% url 'role_add' %}">
@@ -156,8 +151,8 @@
             </div>
             <div class="form-group">
               <label>Mobile Number</label>
-              <input name="ch_user_mobilenumber" value="{{i.ch_user_mobilenumber}}" type="number" class="form-control" pattern="[0-9 ]+" maxlength="14"
-                disabled>
+              <input name="ch_user_mobilenumber" value="{{i.ch_user_mobilenumber}}" type="number" class="form-control"
+                pattern="[0-9 ]+" maxlength="14" disabled>
             </div>
             <!-- <div class="form-group">
               <label style="display: block;">Password</label>

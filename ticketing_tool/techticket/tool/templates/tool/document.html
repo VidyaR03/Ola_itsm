@@ -41,21 +41,25 @@
   <div class="text-right"> -->
 
 
-    <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
-      <div>
-          <form action="" method="get" class="form-inline"
-              style="display: inline-block; margin-top: 10px; margin-left: 10px;">
-              <input type="text" class="form-control" name="searchname" placeholder="Search">
-              <input type="submit" class="btn btn-primary" value="Search"><br>
-              <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
-              <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Config Management <span>&nbsp > </span></a></b>	
-            
-              <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'document' %}">Document <span>&nbsp > </span></a></b>	
-          </form>
-          <div style="display: inline-block; position: relative; left: 58%;">
-    <a href="#addcl_DocumentModal" class="btn btn-success" data-toggle="modal"><span>Add New Document</span></a>
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+  <div>
+    <form action="" method="get" class="form-inline"
+      style="display: inline-block; margin-top: 10px; margin-left: 10px;">
+      <input type="text" class="form-control" name="searchname" placeholder="Search">
+      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Config Management <span>&nbsp >
+          </span></a></b>
+
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'document' %}">Document <span>&nbsp >
+          </span></a></b>
+    </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-            <a href="#addcl_DocumentModal" class="btn btn-success" data-toggle="modal"><span>Add New Document</span></a>
+      {% if permission.confi_m_a == "on" or permission == None %}
+      <a href="#addcl_DocumentModal" class="btn btn-success" data-toggle="modal"><span>Add New Document</span></a>
+      {% endif %}
+      {% if permission.confi_m_d == "on" or permission == None %}
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
       {% endif %}
     </div>

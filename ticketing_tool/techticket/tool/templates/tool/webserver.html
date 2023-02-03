@@ -57,11 +57,15 @@
           </span></a></b>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'webserver' %}">Web Server</a></b>
     </form>
-    <div style="display: inline-block; position: relative; left: 46%;">
-      <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
-        <span>Back to New CI</span></a>
+    <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+      <!-- <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
+        <span>Back to New CI</span></a> -->
+      {% if permission.confi_m_a == "on" or permission == None %}
       <a href="#addcl_Web_serverModal" class="btn btn-success" data-toggle="modal"><span>Add New Web Server</span></a>
+      {% endif %}
+      {% if permission.confi_m_d == "on" or permission == None %}
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+      {% endif %}
     </div>
   </div>
   <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
@@ -84,41 +88,42 @@
         <th>System</th>
         <th>Path</th>
         <th>Description</th>
-
+        {% if permission.confi_m_e == "on" or permission == None %}
+        <th>Edit</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
       {% csrf_token %}
-
       {% for i in users %}
       {% if forloop.counter < 11 %} <tr id="{{i.id}}">
 
-          <td>
-            <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
-          </td>
+        <td>
+          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+        </td>
 
-          <td>{{i.id}}</td>
-          <td>{{i.ch_wsname}}</td>
-          <td>{{i.ch_organization}}</td>
-          <td>{{i.ch_status}}</td>
-          <td>{{i.ch_business_criticality}}</td>
-          <td>{{i.dt_move_to_production_date}}</td>
-          <td>{{i.ch_software}}</td>
-          <td>{{i.ch_software_license}}</td>
-          <td>{{i.ch_system}}</td>
-          <td>{{i.ch_path}}</td>
-          <td>{{i.txt_description}}</td>
-          {% if permission.confi_m_e == "on" or permission == None %}
-          <td>
-            <a href="#editcl_Web_serverModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
-                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-          </td>
-          {% endif %}
-          </tr>
-          {% endif %}
-          {% endfor %}
-      </tbody>
-    </table>
+        <td>{{i.id}}</td>
+        <td>{{i.ch_wsname}}</td>
+        <td>{{i.ch_organization}}</td>
+        <td>{{i.ch_status}}</td>
+        <td>{{i.ch_business_criticality}}</td>
+        <td>{{i.dt_move_to_production_date}}</td>
+        <td>{{i.ch_software}}</td>
+        <td>{{i.ch_software_license}}</td>
+        <td>{{i.ch_system}}</td>
+        <td>{{i.ch_path}}</td>
+        <td>{{i.txt_description}}</td>
+        {% if permission.confi_m_e == "on" or permission == None %}
+        <td>
+          <a href="#editcl_Web_serverModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+              class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+        </td>
+        {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+  </table>
 
 
   {% if users.has_other_pages %}
@@ -146,18 +151,18 @@
 
 
 
-    <div id="addcl_Web_serverModal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
-          <form action="{% url 'wsAdd' %}" method="post">
-            {% csrf_token %}
-            <div class="modal-header">
-              <h4 class="modal-title">Add New Web Server</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
+  <div id="addcl_Web_serverModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+        <form action="{% url 'wsAdd' %}" method="post">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h4 class="modal-title">Add New Web Server</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
 
-            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-              <!-- <div class="form-group">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <!-- <div class="form-group">
 
               <label>ID</label>
               <input name="id" type="text" class="form-control">
@@ -240,7 +245,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
 
-            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
 
             <div class="form-group">
               <label>ID</label>

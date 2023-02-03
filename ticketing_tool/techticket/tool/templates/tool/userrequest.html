@@ -157,7 +157,7 @@
             class="material-icons">delete</i> <span>Delete User Request</span></a>
 </div> -->
 
-<style>
+<!-- <style>
     ul {
         list-style: none;
         margin: 0;
@@ -242,7 +242,7 @@
         padding: 3px 10px;
         border-radius: 45%;
     }
-</style>
+</style> -->
 <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
     <div>
         <form action="" method="get" class="form-inline"
@@ -250,7 +250,6 @@
             <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
             <input type="submit" class="btn btn-primary " value="Search by Status"><br>
            <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
-      
            <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'userrequest' %}">Incident Management</a></b>
         </form>
         <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
@@ -309,7 +308,11 @@
                 <td>{{i.dt_escalation_date}}</td>
                 <td>{{i.ch_service}}</td>
                 <td>{{i.txt_description}}</td>
-                <td>{{i.ch_agent}}</td>
+                {% if i.ch_assign_agent == "Deallocate" %}
+                <td>Not Assign</td>
+                {% else %}
+                <td>{{i.ch_assign_agent}}</td>
+                {% endif %}
                 {% if permission.inci_m_e == "on" or permission == None %}
                 <td>
                     <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
