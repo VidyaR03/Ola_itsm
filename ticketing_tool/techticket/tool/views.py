@@ -589,7 +589,6 @@ def ADD(request):
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_team = cl_Team.objects.filter(
             ch_teamname=request.POST.get('ch_team_name')).first()
-        print(ch_team)
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
         ch_person_location = str.capitalize(
             request.POST.get('ch_person_location'))
@@ -1454,6 +1453,33 @@ def escalate_notify(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.all()
     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
+
+
+
+##########Approve Change for change management###########
+def send_approval_Mail_UR(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        change_approve = cl_User_request.objects.filter(id=list_id[0]).first()
+        subject = 'Welcome to Olatech Solutions'
+        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
+        sender = settings.EMAIL_HOST_USER
+        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
+        send_mail(subject, message, sender, recepient, fail_silently=False)
+    return render(request, 'tool/approve_change.html')   
+
+
+##########Approve Change for change management###########
+def send_approval_Mail_UR(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        change_approve = cl_User_request.objects.filter(id=list_id[0]).first()
+        subject = 'Welcome to Olatech Solutions'
+        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
+        sender = settings.EMAIL_HOST_USER
+        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
+        send_mail(subject, message, sender, recepient, fail_silently=False)
+    return render(request, 'tool/approve_change.html')   
 
 
 #######################################################

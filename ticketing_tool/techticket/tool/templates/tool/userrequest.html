@@ -264,6 +264,8 @@
             <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal">
                 <span>Assign User Request</span></a>
             {% endif %}
+            <button type="submit" id="approve_btn" class="btn btn-info">Approve Request</button>
+
         </div>
     </div>
 
@@ -777,8 +779,8 @@
       }
     }); 
   </script>
-  <!-- For Approve Change -->
-  <script>
+<!-- For Approve Change -->
+<script>
     $(document).ready(function () {
       $('#approve_btn').click(function () {
         if (confirm('Are You Sure You Want to Approve Change?')) {
@@ -793,7 +795,7 @@
             console.log(id)
             var p = document.getElementById('select_person').value     
             $.ajax({
-              url: "{% url 'sendMail' %}",
+              url: "{% url 'sendMailUR' %}",
               method: "POST",
               data: {
                 id,

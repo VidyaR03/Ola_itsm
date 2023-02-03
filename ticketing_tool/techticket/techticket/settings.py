@@ -172,7 +172,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 #default parameter for olateh web server
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 EMAIL_PORT = 465
 EMAIL_HOST = 'mail.supremecluster.com'
 EMAIL_HOST_USER = 'ankush.n@olatechs.com'
