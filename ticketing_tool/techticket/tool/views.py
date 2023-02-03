@@ -1,15 +1,17 @@
+import random
+import time
+import datetime
+from datetime import *
+from .forms import *
+from io import BytesIO
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from tool.models import cl_Location, cl_Service, cl_Software
 from django.contrib.auth import authenticate, login, logout
-import random
-import datetime
-import time
 from django.http import JsonResponse
 from tool.models import cl_New_organization
 from django.db.models import Q
-from .forms import *
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -19,15 +21,12 @@ from django.template.loader import get_template
 from django.core.exceptions import BadRequest
 from django.http import FileResponse
 from django.shortcuts import render
-from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.core.mail import send_mail
 from xhtml2pdf import pisa
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
-
 from django.utils import timezone
-from datetime import *
 from django.contrib.auth.decorators import login_required
 from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
@@ -44,37 +43,14 @@ def home(request):
     # print(user.ch_user_role)
     return render(request, 'tool/dashboard.html',context)
 
+
 @login_required(login_url='/login_render/')
 def dashboard(request):
-    # print(request.COOKIES['sessionid'])
     return render(request, 'tool/dashboard.html')
 
 
 def login_render(request):
     return render(request, 'tool/login.html')
-
-
-def servicenav(request):
-    return render(request, 'tool/servicenav.html')
-
-def systemnav(request):
-    return render(request, 'tool/systemnav.html')
-
-
-def sysconfienav(request):
-    return render(request, 'tool/sysconfinav.html')
-
-
-def sysconfiauth(request):
-    return render(request, 'tool/sysconfiauth.html')
-
-
-def admuser(request):
-    return render(request, 'tool/admuser.html')
-
-
-def integrationav(request):
-    return render(request, 'tool/integrationav.html')
 
 
 def registerPage(request):
@@ -85,27 +61,31 @@ def registerPage(request):
             form.save()
             user = form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + user)
-
             return redirect('login')
-
     context = {'form': form}
     return render(request, 'tool/register.html', context)
 
 
 def adminloginPage(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        request.session["username"] = request.POST.get('username')
         password = request.POST.get('password')
+        username = request.session["username"]
         admin = authenticate(request, username=username, password=password)
         if admin is not None:
             login(request, admin)
-            admin_name = "Mangesh"
+            admin_name = request.session["username"]
             adminaction = "Login on Web_page"
             event ="event"
             resultcode = "200"
             user_activity(admin_name, adminaction, event, resultcode)
             return redirect('home')
         else:
+            admin_name = request.session["username"]
+            adminaction = "Trying to login"
+            event ="fail to login"
+            resultcode = "401"
+            user_activity(admin_name, adminaction, event, resultcode)
             messages.info(request, 'Username OR Password is incorrect')
     return redirect('home')
 
@@ -165,7 +145,6 @@ def LogsDelete(request):
 def document(request):
     doc = cl_Document.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(doc, 10)
     try:
         users = paginator.page(page)
@@ -173,7 +152,6 @@ def document(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
@@ -213,6 +191,11 @@ def DocAdd(request):
             disc_Attachment = Attachment
         )
         doc.save()
+        admin_name = request.session["username"]
+        adminaction = "Addition of Documents"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('document')
     return render(request, 'tool/document.html')
 
@@ -237,7 +220,6 @@ def DocUpdate(request, id):
             txt_description = request.POST.get('txt_description')
             txt_text = request.POST.get('txt_text')
             url_URL = request.POST.get('url_URL')
-      
             doc = cl_Document(
                 id=id,
                 ch_name=ch_name,
@@ -247,12 +229,15 @@ def DocUpdate(request, id):
                 txt_text=txt_text,
                 url_URL=url_URL,
                 disc_Attachment = attachment_name,
-        
             )
             doc.save()
+            admin_name = request.session["username"]
+            adminaction = "Update Documents"
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
         # return render(request, 'tool/document.html')
-
         else:
             ch_name=request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
@@ -359,21 +344,16 @@ def Location(request):
 
 
 @login_required(login_url='/login_render/')
-
 def LADD(request):
     if request.method == "POST":
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
-
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        print('organization :', ch_organization)
-
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
         ch_status = request.POST.get('ch_status')
-
         loc = cl_Location(
             ch_location_name=ch_location_name,
             txt_address=txt_address,
@@ -384,13 +364,17 @@ def LADD(request):
             ch_status=ch_status,
         )
         loc.save()
+        admin_name = request.session["username"]
+        adminaction = "Addition of location"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('location')
     return render(request, 'tool/location.html')
 
 
 
 @login_required(login_url='/login_render/')
-
 def LEdit(request):
     loc = cl_Location.objects.all()
     context = {
@@ -399,9 +383,7 @@ def LEdit(request):
     return render(request, 'tool/location.html', context)
 
 
-
 @login_required(login_url='/login_render/')
-
 def LUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -412,7 +394,6 @@ def LUpdate(request, id):
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
         ch_status = request.POST.get('ch_status')
-
         loc = cl_Location(
             id=id,
             ch_location_name=ch_location_name,
@@ -424,6 +405,11 @@ def LUpdate(request, id):
             ch_status=ch_status,
         )
         loc.save()
+        admin_name = request.session["username"]
+        adminaction = "Location Updated"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('location')
     return redirect(request, 'tool/location.html')
 
@@ -432,10 +418,14 @@ def LUpdate(request, id):
 def LDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             loc = cl_Location.objects.filter(id=i).first()
             loc.delete()
+            admin_name = request.session["username"]
+            adminaction = "Login on Web_page"
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
 
     context = {
         'loc': loc,
@@ -444,11 +434,9 @@ def LDelete(request):
 
 
 @login_required(login_url='/login_render/')
-
 def new_organization(request):
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(org, 10)
     try:
         users = paginator.page(page)
@@ -456,7 +444,6 @@ def new_organization(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -466,9 +453,9 @@ def new_organization(request):
 
 
 @login_required(login_url='/login_render/')
-
 def OrgADD(request):
     if request.method == "POST":
+        id = request.POST.get('id')
         ch_name = str.capitalize(request.POST.get('ch_name'))
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
@@ -482,13 +469,16 @@ def OrgADD(request):
             ch_delivery_model=ch_delivery_model,
         )
         org.save()
+        admin_name = request.session["username"]
+        adminaction = "Addition of organization"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('new_organization')
     return render(request, 'tool/neworganization.html')
 
 
-
 @login_required(login_url='/login_render/')
-
 def OrgEdit(request):
     org = cl_New_organization.objects.all()
     context = {
@@ -499,22 +489,21 @@ def OrgEdit(request):
 
 
 @login_required(login_url='/login_render/')
-
-def OrgUpdate(request):
+def OrgUpdate(request, id):
     if request.method == "POST":
+        id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
         ch_parent = request.POST.get('ch_parent')
         ch_delivery_model = request.POST.get('ch_delivery_model')
-
         org = cl_New_organization(
+            id = id,
             ch_name=ch_name,
             ch_code=ch_code,
             ch_status=ch_status,
             ch_parent=ch_parent,
             ch_delivery_model=ch_delivery_model,
-
         )
         org.save()
         return redirect('new_organization')
@@ -522,13 +511,14 @@ def OrgUpdate(request):
 
 
 @login_required(login_url='/login_render/')
-
 def OrgDelete(request):
     org = cl_New_organization.objects.filter()
     org.delete()
-    context = {
-        'org': org,
-    }
+    admin_name = request.session["username"]
+    adminaction = "Delete Organization"
+    event ="event"
+    resultcode = "200"
+    user_activity(admin_name, adminaction, event, resultcode)
     return redirect('new_organization')
 
 
@@ -537,7 +527,6 @@ def client(request):
     per = cl_Person.objects.all()
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(per, 10)
     try:
         users = paginator.page(page)
@@ -545,18 +534,11 @@ def client(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
     return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users})
-
-
-#     context={
-#         'per':per,
-#     }
-#     return render(request,'tool/client.html',context)
 
 
 @login_required(login_url='/login_render/')
@@ -580,7 +562,6 @@ def ADD(request):
         e_person_email = str.lower(request.POST.get('e_person_email'))
         ch_person_phone = request.POST.get('ch_person_phone')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
-
         per = cl_Person(
             ch_person_firstname=ch_person_firstname,
             ch_person_lastname=ch_person_lastname,
@@ -596,19 +577,13 @@ def ADD(request):
             ch_person_mobilenumber=ch_person_mobilenumber,
         )
         per.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of persion"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
     return render(request, 'tool/client.html')
-
-
-
-@login_required(login_url='/login_render/')
-
-def Edit(request):
-    per = cl_Person.objects.all()
-    context = {
-        'per': per,
-    }
-    return render(request, 'tool/client.html', context)
 
 
 # @login_required(login_url='/login_render/')
@@ -627,7 +602,6 @@ def Update(request, id):
         e_person_email = request.POST.get('e_person_email')
         ch_person_phone = request.POST.get('ch_person_phone')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
-
         per = cl_Person(
             id=id,
             ch_person_firstname=ch_person_firstname,
@@ -644,21 +618,28 @@ def Update(request, id):
             ch_person_mobilenumber=ch_person_mobilenumber,
         )
         per.save()
+        admin_name = request.session["username"]
+        adminaction = "update the persion"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
     return render(request, 'tool/client.html')
 
 
 # @login_required(login_url='/login_render/')
 def Delete(request):
-   if request.method == "POST":
+    if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             per = cl_Person.objects.filter(id=i).first()
             per.delete()
-            context = {
-                'per': per,
-            }
+        admin_name = request.session["username"]
+        adminaction = "delete the persion"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
 
 ########### Document #####################
@@ -666,7 +647,6 @@ def Delete(request):
 def document(request):
     doc = cl_Document.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(doc, 10)
     try:
         users = paginator.page(page)
@@ -678,12 +658,10 @@ def document(request):
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
-    
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             doc = cl_Document.objects.filter(ch_name__icontains=q)        
-
     context = {
         'doc': doc,
         'users':users
@@ -715,30 +693,26 @@ def DocAdd(request):
             disc_Attachment = Attachment
         )
         doc.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of documents"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('document')
     return render(request, 'tool/document.html')
 
-
-def DocEdit(request,id):
-    doc = cl_Document.objects.filter(id=id).first()
-    context = {
-        'doc': doc,
-    }
-    return render(request, 'tool/document.html', context)
 
 def DocUpdate(request, id):
     if request.method == "POST":
         discl = cl_Document.objects.filter(id = id).first()
         attachment_name = request.POST.get('disc_Attachment')
         if discl.disc_Attachment == attachment_name:
-            # id = request.POST.get('id')
             ch_name = request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
             ch_version = request.POST.get('ch_version')
             txt_description = request.POST.get('txt_description')
             txt_text = request.POST.get('txt_text')
             url_URL = request.POST.get('url_URL')
-      
             doc = cl_Document(
                 id=id,
                 ch_name=ch_name,
@@ -748,12 +722,14 @@ def DocUpdate(request, id):
                 txt_text=txt_text,
                 url_URL=url_URL,
                 disc_Attachment = attachment_name,
-        
             )
             doc.save()
+            admin_name = request.session["username"]
+            adminaction = "update the documents"
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
-        # return render(request, 'tool/document.html')
-
         else:
             ch_name=request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
@@ -776,6 +752,11 @@ def DocUpdate(request, id):
                 disc_Attachment = Attachment,
             )
             doc.save()
+            admin_name = request.session["username"]
+            adminaction = "update the persion"
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
     return render(request, 'tool/document.html')
 
@@ -787,22 +768,27 @@ def DocDelete(request):
         for i in list_id:
             doc = cl_Document.objects.filter(id=i)
             doc.delete()
-    context = {
-        'doc': doc,
-    }
+        admin_name = request.session["username"]
+        adminaction = "update the documents"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
     return redirect('document')
 
 
 def DeleteAttachedPDF(request,id):
-    print('function called')
     id = request.GET['id']
     doc = cl_Document.objects.filter(id = id).first()
     file_to_delete = str(doc.disc_Attachment)
     media_path = settings.MEDIA_ROOT
     file_path = os.path.join(media_path, file_to_delete)
-    print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
+        admin_name = request.session["username"]
+        adminaction = "removing the file"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return HttpResponse(request, 'tool/document.html')
     else:
         return HttpResponse(request, 'tool/document.html')
@@ -826,7 +812,6 @@ def render_to_pdf(template_src, context_dict={}):
 def software(request):
     soft = cl_Software.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(soft, 10)
     try:
         users = paginator.page(page)
@@ -834,8 +819,6 @@ def software(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
-   
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -847,8 +830,6 @@ def softAdd(request):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
-        # ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        # print('organization :',ch_organization)
         ch_vendor = request.POST.get('ch_vendor')
         chversion = request.POST.get('chversion')
         ch_type = request.POST.get('ch_type')
@@ -860,16 +841,13 @@ def softAdd(request):
             ch_type=ch_type,
         )
         soft.save()
+        admin_name = request.session["username"]
+        adminaction = "Add the software"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('software')
     return render(request, 'tool/software.html')
-
-
-def softEdit(request):
-    soft = cl_Software.objects.all()
-    context = {
-        'soft': soft,
-    }
-    return render(request, 'tool/software.html', context)
 
 
 def softUpdate(request, id):
@@ -887,20 +865,27 @@ def softUpdate(request, id):
             ch_type=ch_type,
         )
         soft.save()
+        admin_name = request.session["username"]
+        adminaction = "update the persion"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('software')
     return redirect(request, 'tool/software.html')
 
 
 def softDelete(request):
-   if request.method == "POST":
+    if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             soft = cl_Software.objects.filter(id=i).first()
             soft.delete()
-            context = {
-                'soft': soft,
-            }
+        admin_name = request.session["username"]
+        adminaction = "Delete the software"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('software')
 
 
@@ -917,7 +902,6 @@ def team(request):
         tem = cl_Team.objects.all()
         org = cl_New_organization.objects.all()
         page = request.GET.get('page', 1)
-
         paginator = Paginator(tem, 10)
         try:
             users = paginator.page(page)
@@ -925,18 +909,15 @@ def team(request):
             users = paginator.page(1)
         except EmptyPage:
             users = paginator.page(paginator.num_pages)
-
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
     return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users})
 
 
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def TADD(request):
     if request.method == "POST":
-        # id = request.POST.get('id')
-        print('organization :',request.POST.get('ch_organization'))
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.filter(
@@ -946,8 +927,6 @@ def TADD(request):
         b_team_notification = request.POST.get('b_team_notification')
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
-
-            # id=id,
             ch_teamname=ch_teamname,
             ch_teamstatus=ch_teamstatus,
             ch_organization=ch_organization,
@@ -957,24 +936,17 @@ def TADD(request):
             ch_team_function=ch_team_function,
         )
         tem.save()
+        admin_name = request.session["username"]
+        adminaction = "Addition of team"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('team')
     return render(request, 'tool/service.html')
 
 
 
 @login_required(login_url='/login_render/')
-
-def TEdit(request):
-    tem = cl_Team.objects.all()
-    context = {
-        'tem': tem,
-    }
-    return render(request, 'tool/service.html', context)
-
-
-
-@login_required(login_url='/login_render/')
-
 def TUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -996,32 +968,35 @@ def TUpdate(request, id):
             ch_team_function=ch_team_function,
         )
         tem.save()
+        admin_name = request.session["username"]
+        adminaction = "update the team"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('team')
     return render(request, 'tool/service.html')
 
 # @login_required(login_url='/login_render/')
 def TDelete(request):
-   if request.method == "POST":
+    if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             tem = cl_Team.objects.filter(id=i).first()
             tem.delete()
-            context = {
-                'tem': tem,
-            }
+            admin_name = request.session["username"]
+            adminaction = "Delete the team"
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
         return redirect('team')
 
 
-
- 
 ################### New channge   #############################
-
 @login_required(login_url='/login_render/')
 def newchange(request):
     nchange = cl_New_change.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(nchange, 10)
     try:
         users = paginator.page(page)
@@ -1042,7 +1017,6 @@ def newchange(request):
 @login_required(login_url='/login_render/')
 def CADD(request):
     if request.method == "POST":
-
         print('organization :', request.POST.get('ch_organization'))
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -1067,20 +1041,15 @@ def CADD(request):
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description = txt_description,
-
         )
         nchange.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of new changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
     return render(request, 'tool/newchange.html')
-
-
-@login_required(login_url='/login_render/')
-def CEdit(request):
-    nchange = cl_New_change.objects.all()
-    context = {
-        'nchange': nchange,
-    }
-    return render(request, 'tool/newchange.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -1119,6 +1088,11 @@ def CUpdate(request, id):
 
         )
         nchange.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of new changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
     return render(request, 'tool/newchange.html')
 
@@ -1131,9 +1105,11 @@ def CDelete(request):
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.delete()
-            context = {
-                'nchange': nchange,
-            }
+        admin_name = request.session["username"]
+        adminaction = "Delete the changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
 
 
@@ -1142,8 +1118,6 @@ def assign_changeModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        print(list_id)
-        print(p_Emp_id)
         per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
@@ -1155,10 +1129,14 @@ def assign_changeModal(request):
             sender = settings.EMAIL_HOST_USER
             recepient = per.e_person_email,
             send_mail(subject, message, sender, [
-                      recepient], fail_silently=False)
+                    recepient], fail_silently=False)
         except:
             print('email not send')
-
+        admin_name = request.session["username"]
+        adminaction = "assign the changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         nchange = cl_New_change.objects.all()
         context = {
             'nchange': nchange,
@@ -1169,16 +1147,13 @@ def assign_changeModal(request):
 
 #############################################################
 
-##########Approve Change############333
+##########Approve Change###########
 def send_approval_Mail(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
-
-        print(change_approve.txt_description)
         subject = 'Welcome to Olatech Solutions'
         message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
-        print(message)
         sender = settings.EMAIL_HOST_USER
         recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
         send_mail(subject, message, sender, recepient, fail_silently=False)
@@ -1190,9 +1165,7 @@ def send_approval_Mail(request):
 @login_required(login_url='/login_render/')
 def user_request(request):
     ur = cl_User_request.objects.all()
-
     page = request.GET.get('page', 1)
-
     paginator = Paginator(ur, 10)
     try:
         users = paginator.page(page)
@@ -1206,13 +1179,13 @@ def user_request(request):
         if q != None:
             ur = cl_User_request.objects.filter(ch_status__icontains=q)
         escalated_ur = escalation(ur)
-
         context = {
             'ur': ur,
             'escalated_ur': escalated_ur,
             'users':users
             }
         return render(request, 'tool/userrequest.html', context)
+
 
 def escalation(ur):
     escalated_ur = []
@@ -1259,7 +1232,6 @@ def UADD(request):
             ch_impact=ch_impact,
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
-
             dt_start_date =dt_start_date,
             dt_updated_date =dt_updated_date,
             dt_escalation_date = dt_escalation_date,
@@ -1271,6 +1243,11 @@ def UADD(request):
 
         )
         ur.save()
+        admin_name = request.session["username"]
+        adminaction = "addtion of user request"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html')
 
@@ -1300,12 +1277,10 @@ def UUpdate(request, id):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')
         dt_start_date = request.POST.get('dt_start_date')
-        dt_end_date = request.POST.get('dt_end_date')
+        dt_updated_date = request.POST.get('dt_updated_date')
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
-        # dt_tto = request.POST.get('ch_tto')
-        # dt_ttr=request.POST.get('ch_tto')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
@@ -1320,33 +1295,33 @@ def UUpdate(request, id):
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
             dt_start_date=dt_start_date,
-            dt_end_date=dt_end_date,
+            dt_updated_date=dt_updated_date,
             ch_service=ch_service,
             ch_service_subcategory=ch_service_subcategory,
             ch_parent_request=ch_parent_request,
-            # dt_tto=dt_tto,
-            # dt_ttr=dt_ttr,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
         )
         ur.save()
-        # print(ur)
+        admin_name = request.session["username"]
+        adminaction = "update the user request"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
 
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html')
 
 
 @login_required(login_url='/login_render/')
-def UDelete(request):
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')
-        print(list_id)
-        for i in list_id:
-            ur = cl_User_request.objects.filter(id=i).first()
-            ur.delete()
-    context = {
-        'ur': ur,
-    }
+def UDelete(request, id):
+    ur = cl_User_request.objects.filter(id=id)
+    ur.delete()
+    admin_name = request.session["username"]
+    adminaction = "deletion of user request"
+    event ="event"
+    resultcode = "200"
+    user_activity(admin_name, adminaction, event, resultcode)
     return redirect('userrequest')
 
 
@@ -1362,7 +1337,6 @@ def escalate_notify(request):
 def customer_contract(request):
     cust = cl_Customer_contract.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(cust, 10)
     try:
         users = paginator.page(page)
@@ -1370,7 +1344,6 @@ def customer_contract(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1381,9 +1354,6 @@ def customer_contract(request):
 @login_required(login_url='/login_render/')
 def SCADD(request):
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'
-        # id = request.POST.get('id')
-
         ch_cname = request.POST.get('ch_cname')
         ch_ccustomer = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -1399,7 +1369,6 @@ def SCADD(request):
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
         cust = cl_Customer_contract(
-            # id=id,
             ch_cname=ch_cname,
             ch_ccustomer=ch_ccustomer,
             ch_status=ch_status,
@@ -1414,8 +1383,11 @@ def SCADD(request):
             txt_description=txt_description,
         )
         cust.save()
-        # print(nchange)
-
+        admin_name = request.session["username"]
+        adminaction = "addition of customer"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('customercontract')
     return render(request, 'tool/scustomer_contract.html')
 
@@ -1452,7 +1424,6 @@ def SCUpdate(request, id):
         txt_description = request.POST.get('txt_description')
         cust = cl_Customer_contract(
             id=id,
-
             ch_cname=ch_cname,
             ch_ccustomer=ch_ccustomer,
             ch_status=ch_status,
@@ -1467,10 +1438,7 @@ def SCUpdate(request, id):
             txt_description=txt_description,
         )
         cust.save()
-
-        # print(nchange)
         return redirect('customercontract')
-
     return render(request, 'tool/scustomer_contract.html')
 
 
@@ -1493,7 +1461,6 @@ def SCDelete(request):
 def provider_contract(request):
     pro = cl_Providercontract.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(pro, 10)
     try:
         users = paginator.page(page)
@@ -1501,7 +1468,6 @@ def provider_contract(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
@@ -1527,9 +1493,7 @@ def SPADD(request):
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
         ch_sla = request.POST.get('ch_sla')
-
         pro = cl_Providercontract(
-            # id=id,
             ch_pname=ch_pname,
             ch_customer=ch_customer,
             ch_status=ch_status,
@@ -1545,8 +1509,11 @@ def SPADD(request):
             ch_sla=ch_sla,
         )
         pro.save()
-        # print(nchange)
-
+        admin_name = request.session["username"]
+        adminaction = "deletion of user request"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('providercontract')
 
     return render(request, 'tool/sprovidercontract.html')
@@ -1571,17 +1538,14 @@ def SPUpdate(request, id):
         # print('o_id = ',org_id)
         # ch_organization = org_id
         id = request.POST.get('id')
-
         print('organization :', request.POST.get('ch_organization'))
         ch_pname = request.POST.get('ch_pname')
         ch_customer = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
         ch_pcprovider = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1590,7 +1554,6 @@ def SPUpdate(request, id):
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
         ch_sla = request.POST.get('ch_sla')
-
         pro = cl_Providercontract(
             id=id,
             ch_pname=ch_pname,
@@ -1634,7 +1597,6 @@ def SPDelete(request):
 def servicefamilies(request):
     sf = cl_Servicefamilies.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(sf, 10)
     try:
         users = paginator.page(page)
@@ -1642,7 +1604,6 @@ def servicefamilies(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -1717,7 +1678,6 @@ def SFDelete(request):
 def sservice(request):
     ser = cl_Service.objects.all()
     page = request.GET.get('page', 1)
-
     paginator = Paginator(ser, 10)
     try:
         users = paginator.page(page)
@@ -2419,23 +2379,16 @@ def csvimport(request):
     """
     if request.method == "POST":
         # disc_Attachment = request.POST.get('disc_Attachment')
-        
         try:
             Attachment = request.FILES['disc_Attachment']
         except:
             Attachment = 'annonymous.pdf'
-
         csv = CSV_import(
-            
             disc_Attachment = Attachment
         )
         csv.save()
         return redirect('csvimport')
     return render(request, 'tool/add_file1.html')
-
-
-
-
 
 
 def csv_edit(request, id):
@@ -2446,7 +2399,6 @@ def csv_edit(request, id):
     return render(request, 'tool/edit_file.html', context)    
 
 
-   
 def csv_update(request, id):
     """
     It is view function for the additon of new users
@@ -2455,33 +2407,23 @@ def csv_update(request, id):
         discl = CSV_import.objects.filter(Id = id).first()
         attachment_name = request.POST.get('disc_Attachment')
         if discl.disc_Attachment == attachment_name:
-            
-
             csv = CSV_import(
                 Id=id,
-                 disc_Attachment = attachment_name
-               
-        
+                disc_Attachment = attachment_name
             )
             csv.save()
             return redirect('csvimport')
         else:
-          
-            
             try:
                 Attachment = request.FILES['disc_Attachment']
             except:
                 Attachment = 'annonymous.pdf'
-
             csv = CSV_import (
-               
                 disc_Attachment = Attachment
             )
             csv.save()
             return redirect('csvimport')
     return render(request, 'tool/edit_file.html')
-
-
 
 
 def DeleteCSVAttachedPDF(request):
@@ -2648,4 +2590,28 @@ def add_new_user(request):
         user.save()
         return redirect('user_display')
     return render(request, 'tool/user.html')
-    
+
+
+# =============================================================================
+
+def servicenav(request):
+    return render(request, 'tool/servicenav.html')
+
+def systemnav(request):
+    return render(request, 'tool/systemnav.html')
+
+
+def sysconfienav(request):
+    return render(request, 'tool/sysconfinav.html')
+
+
+def sysconfiauth(request):
+    return render(request, 'tool/sysconfiauth.html')
+
+
+def admuser(request):
+    return render(request, 'tool/admuser.html')
+
+
+def integrationav(request):
+    return render(request, 'tool/integrationav.html')

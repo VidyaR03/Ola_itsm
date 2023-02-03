@@ -100,11 +100,9 @@
   {% endif %}
 </ul>
 {% endif %}
-
     <div id="addcl_PersonModal" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
-
           <form action="{% url 'add' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -123,7 +121,6 @@
                 <input name="ch_person_lastname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-
                 <label>Organization:<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
@@ -138,7 +135,6 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label></label>
                 <input name="ch_team" type="text" class="form-control" required>
-
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -155,9 +151,6 @@
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <!--start of right half -->
-
-
-
               <div class="form-group">
                 <label>Function</label>
                 <input name="ch_person_function" type="text" class="form-control">
@@ -185,7 +178,6 @@
                   required>
               </div>
             </div>
-
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
               <input type="submit" class="btn btn-success" value="Add">
@@ -194,7 +186,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- Edit Modal HTML -->
