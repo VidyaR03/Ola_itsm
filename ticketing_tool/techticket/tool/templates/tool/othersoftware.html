@@ -82,291 +82,291 @@
         <th>Path</th>
         <th>Description</th>
 
-      </tr>
-    </thead>
-    <tbody>
-      {% csrf_token %}
+        </tr>
+      </thead>
+      <tbody>
+        {% csrf_token %}
 
-      {% for i in users %}
-      {% if forloop.counter < 11 %}
-      <tr id="{{i.id}}">
+        {% for i in users %}
+        {% if forloop.counter < 11 %} <tr id="{{i.id}}">
 
-        <td>
-          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
-        </td>
+          <td>
+            <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+          </td>
 
-        <td>{{i.id}}</td>
-        <td>{{i.ch_osname}}</td>
-        <td>{{i.ch_organization}}</td>
-        <td>{{i.ch_status}}</td>
-        <td>{{i.ch_business_criticality}}</td>
-        <td>{{i.dt_move_to_production_date}}</td>
-        <td>{{i.ch_software}}</td>
-        <td>{{i.ch_software_license}}</td>
-        <td>{{i.ch_system}}</td>
-        <td>{{i.ch_path}}</td>
-        <td>{{i.txt_description}}</td>
-        <td>
-          <a href="#editcl_Other_softwareModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
-              class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-         
-        </td>
-      </tr>
+          <td>{{i.id}}</td>
+          <td>{{i.ch_osname}}</td>
+          <td>{{i.ch_organization}}</td>
+          <td>{{i.ch_status}}</td>
+          <td>{{i.ch_business_criticality}}</td>
+          <td>{{i.dt_move_to_production_date}}</td>
+          <td>{{i.ch_software}}</td>
+          <td>{{i.ch_software_license}}</td>
+          <td>{{i.ch_system}}</td>
+          <td>{{i.ch_path}}</td>
+          <td>{{i.txt_description}}</td>
+          {% if permission.confi_m_e == "on" or permission == None %}
+          <td>
+            <a href="#editcl_Other_softwareModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+          </td>
+          {% endif %}
+          </tr>
+          {% endif %}
+
+          {% endfor %}
+      </tbody>
+    </table>
+
+
+
+    {% if users.has_other_pages %}
+    <ul class="pagination">
+      {% if users.has_previous %}
+      <li><a href="{% url 'other_software' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
       {% endif %}
-
-      {% endfor %}
-    </tbody>
-  </table>
-
-             
-
-{% if users.has_other_pages %}
-<ul class="pagination">
-  {% if users.has_previous %}
-    <li><a href="{% url 'other_software' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&laquo;</span></li>
-  {% endif %}
-  {% for i in users.paginator.page_range %}
-    {% if users.number == i %}
+      {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
       <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    {% else %}
+      {% else %}
       <li><a href="{% url 'other_software' %}?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if users.has_next %}
+      <li><a href="{% url 'other_software' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
     {% endif %}
-  {% endfor %}
-  {% if users.has_next %}
-    <li><a href="{% url 'other_software' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&raquo;</span></li>
-  {% endif %}
-</ul>
-{% endif %}
 
 
 
 
-  <div id="addcl_Other_softwareModal" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
-        <form action="{% url 'osAdd' %}" method="post">
-          {% csrf_token %}
-          <div class="modal-header">
-            <h4 class="modal-title">Add Other Software</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-            <!-- <div class="form-group">
+    <div id="addcl_Other_softwareModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+          <form action="{% url 'osAdd' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h4 class="modal-title">Add Other Software</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+              <!-- <div class="form-group">
               <label>ID</label>
               <input name="id" type="text" class="form-control">
             </div> -->
-            <div class="form-group">
-              <label>Name</label>
-              <input name="ch_osname" type="text" class="form-control" required>
+              <div class="form-group">
+                <label>Name</label>
+                <input name="ch_osname" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Organization<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_organization" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
+                  aria-invalid="false">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Business Criticality</label>
+                <select name="ch_business_criticality" type="text" class="form-control" required>
+                  <option value="High">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Moveto Production Date</label>
+                <input class="form-control" type="date" id="dt_move_to_production_date"
+                  name="dt_move_to_production_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                <span class="validity"></span>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Organization<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <input name="ch_organization" type="text" class="form-control" required>
+            <div class="modal-body" style="width: 330px; display: inline-block;">
+              <div class="form-group">
+                <label>Software<a href="{% url 'software' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_software" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Software License</label>
+                <input name="ch_software_license" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>System</label>
+                <input name="ch_system" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Path</label>
+                <input name="ch_path" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input name="txt_description" type="text" class="form-control">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Status</label>
-              <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+              <input type="submit" class="btn btn-success" value="Add">
             </div>
-            <div class="form-group">
-              <label>Business Criticality</label>
-              <select name="ch_business_criticality" type="text" class="form-control" required>
-                <option value="High">High</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label >Moveto Production Date</label>
-              <input class="form-control" type="date" id="dt_move_to_production_date"  name="dt_move_to_production_date" required
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-              <span class="validity"></span>
-            </div>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;">
-            <div class="form-group">
-              <label>Software<a href="{% url 'software' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <input name="ch_software" type="text" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Software License</label>
-              <input name="ch_software_license" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>System</label>
-              <input name="ch_system" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Path</label>
-              <input name="ch_path" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <input name="txt_description" type="text" class="form-control">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-success" value="Add">
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- Edit Modal HTML -->
-  {% for i in os %}
-  <div id="editcl_Other_softwareModal-{{forloop.counter}}" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
-        <form action="/osUpdate/{{i.id}}" method="post">
-          {% csrf_token %}
-          <div class="modal-header">
-            <h4 class="modal-title">Edit </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-            <div class="form-group">
-              <label>ID</label>
-              <input name="id" value="{{i.id}}" type="text" class="form-control">
+    <!-- Edit Modal HTML -->
+    {% for i in os %}
+    <div id="editcl_Other_softwareModal-{{forloop.counter}}" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+          <form action="/osUpdate/{{i.id}}" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h4 class="modal-title">Edit </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="form-group">
-              <label>Name</label>
-              <input name="ch_osname" value="{{i.ch_osname}}" type="text" class="form-control" required>
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+              <div class="form-group">
+                <label>ID</label>
+                <input name="id" value="{{i.id}}" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Name</label>
+                <input name="ch_osname" value="{{i.ch_osname}}" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Organization<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
+                  aria-label="Default select example" aria-invalid="false">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Business Criticality</label>
+                <select name="ch_business_criticality" value="{{i.ch_business_criticality}}" type="text"
+                  class="form-control" required>
+                  <option value="High">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Moveto Production Date</label>
+                <input class="form-control" type="date" id="dt_move_to_production_date"
+                  value="{{i.dt_move_to_production_date}}" name="dt_move_to_production_date" required
+                  pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                <span class="validity"></span>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Organization<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <input name="ch_organization"  value="{{i.ch_organization}}" type="text" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Status</label>
-              <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Business Criticality</label>
-              <select name="ch_business_criticality" value="{{i.ch_business_criticality}}" type="text"
-                class="form-control" required>
-                <option value="High">High</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label >Moveto Production Date</label>
-              <input class="form-control" type="date" id="dt_move_to_production_date" value="{{i.dt_move_to_production_date}}"   name="dt_move_to_production_date" required
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-              <span class="validity"></span>
-            </div>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;">
+            <div class="modal-body" style="width: 330px; display: inline-block;">
 
-            <div class="form-group">
-              <label>Software<a href="{% url 'software' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <input name="ch_software" value="{{i.ch_software}}" type="text" class="form-control" required>
+              <div class="form-group">
+                <label>Software<a href="{% url 'software' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <input name="ch_software" value="{{i.ch_software}}" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Software License</label>
+                <input name="ch_software_license" value="{{i.ch_software_license}}" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>System</label>
+                <input name="ch_system" value="{{i.ch_system}}" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Path</label>
+                <input name="ch_path" value="{{i.ch_path}}" type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
+              </div>
             </div>
-            <div class="form-group">
-              <label>Software License</label>
-              <input name="ch_software_license" value="{{i.ch_software_license}}" type="text" class="form-control">
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+              <input type="submit" class="btn btn-info" value="Update">
             </div>
-            <div class="form-group">
-              <label>System</label>
-              <input name="ch_system" value="{{i.ch_system}}" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Path</label>
-              <input name="ch_path" value="{{i.ch_path}}" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-info" value="Update">
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  {% endfor %}
-  
- 
-<!--  Multiple Delete  -->
-<script>
-  $(document).ready(function () {
-      $('#delete_btn').click(function () {
-        if (confirm('Are You Sure You Want to Delete User?')) {
-          var id = [];
-          var csrf = $('input[name=csrfmiddlewaretoken]').val();
-          $(':checkbox:checked').each(function (i) {
-            id[i] = $(this).val()
-  
-          })
-          if (id.length === 0) {
-            alert("please select user Which u want to delete?")
-          } else {
-            console.log(id)
-            $.ajax({
-              url: "{% url 'osDelete' %}",
-              method: "POST",
-              data: {
-                id,
-                csrfmiddlewaretoken: csrf
-              },
-              success: function (response) {
-                alert("success")
-                location.reload();
-                for (var i = 0; i < id.length; i++) {
-                  var error = $(response).find('#error_text')
-                  var error_class = $(error).attr('class')
-                  $('#error').addClass(error_class)
-                  $('#error').text(error.text())
-                  $('tr#' + id[i] + '').fadeOut('slow');
-                }
-              },
+    {% endfor %}
+
+
+    <!--  Multiple Delete  -->
+    <script>
+      $(document).ready(function () {
+        $('#delete_btn').click(function () {
+          if (confirm('Are You Sure You Want to Delete User?')) {
+            var id = [];
+            var csrf = $('input[name=csrfmiddlewaretoken]').val();
+            $(':checkbox:checked').each(function (i) {
+              id[i] = $(this).val()
+
             })
+            if (id.length === 0) {
+              alert("please select user Which u want to delete?")
+            } else {
+              console.log(id)
+              $.ajax({
+                url: "{% url 'osDelete' %}",
+                method: "POST",
+                data: {
+                  id,
+                  csrfmiddlewaretoken: csrf
+                },
+                success: function (response) {
+                  alert("success")
+                  location.reload();
+                  for (var i = 0; i < id.length; i++) {
+                    var error = $(response).find('#error_text')
+                    var error_class = $(error).attr('class')
+                    $('#error').addClass(error_class)
+                    $('#error').text(error.text())
+                    $('tr#' + id[i] + '').fadeOut('slow');
+                  }
+                },
+              })
+            }
           }
-        }
+        })
       })
-    })
-  
-  </script>
-  
-  <script>
-    $('#select-all').click(function (event) {
-      if (this.checked) {
-        // Iterate each checkbox
-        $(':checkbox').each(function () {
-          this.checked = true;
-  
-        });
-      } else {
-        $(':checkbox').each(function () {
-          this.checked = false;
-        });
-      }
-    }); 
-  </script>
-  
-  
-  {% endblock content %}
-  
+
+    </script>
+
+    <script>
+      $('#select-all').click(function (event) {
+        if (this.checked) {
+          // Iterate each checkbox
+          $(':checkbox').each(function () {
+            this.checked = true;
+
+          });
+        } else {
+          $(':checkbox').each(function () {
+            this.checked = false;
+          });
+        }
+      }); 
+    </script>
+
+
+    {% endblock content %}

@@ -101,9 +101,9 @@
     </tbody>
   </table>
 
- 
-  {% if users.has_other_pages %}
-  <ul class="pagination">
+
+    {% if users.has_other_pages %}
+    <ul class="pagination">
       {% if users.has_previous %}
       <li><a href="{% url 'new_organization' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
       {% else %}
@@ -121,8 +121,8 @@
       {% else %}
       <li class="disabled"><span>&raquo;</span></li>
       {% endif %}
-  </ul>
-  {% endif %}
+    </ul>
+    {% endif %}
 
 
   <div id="addcl_New_organizationModal" class="modal fade">

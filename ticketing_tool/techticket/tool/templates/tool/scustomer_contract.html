@@ -61,12 +61,16 @@
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'servicenav' %}">Service Management <span>&nbsp > </span></a></b>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'customercontract' %}">Customer Contract <span>&nbsp > </span></a></b>
     </form>
-
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+      {% if permission.serv_m_a == "on" or permission == None %}
       <a href="#addcl_Customer_contractModal" class="btn btn-success" data-toggle="modal">
         <span>Add Customer Contract</span></a>
-        <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+      {% endif %}
 
+      {% if permission.serv_m_d == "on" or permission == None %}
+      <a href="#deletecl_Customer_contractModal/{{i.id }} " class="btn btn-danger" data-toggle="modal"
+        onclick="removeSelectedRow();"><span>Delete</span></a>
+      {% endif %}
     </div>
     <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
       <!-- <table id="table" border="1">
@@ -91,7 +95,9 @@
         <th>Cost Currency</th>
         <th>Billing Frequency</th>
         <th>Description</th>
-        <!-- <th>Mobile Number</th> -->
+        {% if permission.serv_m_e == "on" or permission == None %}
+        <th>Edit</th>
+        {% endif %}
       </tr>
       </thead>
       <tbody>
@@ -114,41 +120,42 @@
           <td>{{i.i_cost_currency}}</td>
           <td>{{i.i_billing_frequency}}</td>
           <td>{{i.txt_description}}</td>
-          <!-- <td>{{i.ch_person_mobilenumber}}</td> -->
+          {% if permission.serv_m_e == "on" or permission == None %}
           <td>
             <a href="#editcl_Customer_contractModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
             <!-- <a href="#deletecl_New_changeModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> -->
           </td>
+          {% endif %}
         </tr>
-        {% endif %}
-        {% endfor %}
+          {% endif %}
+          {% endfor %}
       </tbody>
     </table>
-    
 
-  {% if users.has_other_pages %}
-  <ul class="pagination">
-    {% if users.has_previous %}
+
+    {% if users.has_other_pages %}
+    <ul class="pagination">
+      {% if users.has_previous %}
       <li><a href="{% url 'customercontract' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in users.paginator.page_range %}
-      {% if users.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="{% url 'customercontract' %}?page={{ i }}">{{ i }}</a></li>
+      <li class="disabled"><span>&laquo;</span></li>
       {% endif %}
-    {% endfor %}
-    {% if users.has_next %}
+      {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <li><a href="{% url 'customercontract' %}?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if users.has_next %}
       <li><a href="{% url 'customercontract' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-    {% else %}
+      {% else %}
       <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
     {% endif %}
-  </ul>
-  {% endif %}
 
     <div id="addcl_Customer_contractModal" class="modal fade">
       <div class="modal-dialog">

@@ -4,7 +4,8 @@
 
 <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
   <div>
-    <form action="" method="get" class="form-inline"  style="display: inline-block; margin-top: 10px; margin-left: 10px;">
+    <form action="" method="get" class="form-inline"
+      style="display: inline-block; margin-top: 10px; margin-left: 10px;">
       <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
       <input type="submit" class="btn btn-primary " value="Search by Status"><br>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>
@@ -12,7 +13,11 @@
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       <a href="#addcl_New_changeModal" class="btn btn-success" data-toggle="modal"><span>Add New Change</span></a>
+      {% endif %}
+      {% if permission.ch_m_d == "on" or permission == None %}
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete Change</button>
+      {% endif %}
+      {% if permission.ch_m_assign == "on" or permission == None %}
       <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal"><span>Assign Change</span></a>
       <button type="submit" id="approve_btn" class="btn btn-primary">Approve Request</button>
     </div>
@@ -38,14 +43,16 @@
       <th>Fallback Plan</th>
       <th>Description</th>
       <th>Agent</th>
+      {% if permission.ch_m_e == "on" or permission == None %}
       <th>Edit</th>
+      {% endif %}
+
     </tr>
     </thead>
     <tbody>
       {% csrf_token %}
       {% for i in users %}
-      {% if forloop.counter < 11 %}      
-      <tr id="{{i.id}}">
+      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
@@ -61,37 +68,38 @@
         <td>{{i.txt_fallback_plan}}</td>
         <td>{{i.txt_description}}</td>
         <td>{{i.ch_assign_agent}}</td>
+        {% if permission.ch_m_e == "on" or permission == None %}
         <td>
           <a href="#editcl_New_changeModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         </td>
-      </tr>
-      {% endif %}
-
-      {% endfor %}
+        {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
     </tbody>
   </table>
 
 
   {% if users.has_other_pages %}
   <ul class="pagination">
-      {% if users.has_previous %}
-      <li><a href="{% url 'newchange' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-      {% endif %}
-      {% for i in users.paginator.page_range %}
-      {% if users.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-      <li><a href="{% url 'newchange' %}?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-      {% endfor %}
-      {% if users.has_next %}
-      <li><a href="{% url 'newchange' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
+    {% if users.has_previous %}
+    <li><a href="{% url 'newchange' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+    {% if users.number == i %}
+    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+    <li><a href="{% url 'newchange' %}?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+    <li><a href="{% url 'newchange' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
   </ul>
   {% endif %}
 
@@ -122,10 +130,13 @@
               <label>Status</label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
-                <option value="Assign">Assign</option>
-                <option value="Pending">Pending</option>
-                <option value="Close">Close</option>
-                <option value="Approve">Approve</option>
+                <option value="New">New</option>
+                <option value="Approval_Awaited">Approval Awaited</option>
+                <option value="Approved">Approved</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+                <option value="Reopend">Reopend</option>
               </select>
             </div>
             <div class="form-group">
@@ -400,7 +411,7 @@
           alert("please select Change Which u want to assign?")
         } else {
           console.log(id)
-          var p = document.getElementById('select_person').value     
+          var p = document.getElementById('select_person').value
           $.ajax({
             url: "{% url 'sendMail' %}",
             method: "POST",
@@ -426,8 +437,5 @@
     })
   })
 </script>
-
-
-<!-- </html> -->
 
 {% endblock content %}

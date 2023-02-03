@@ -58,9 +58,15 @@
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'service' %}">Service <span>&nbsp > </span></a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+      {% if permission.serv_m_a == "on" or permission == None %}
       <a href="#addcl_ServiceModal" class="btn btn-success" data-toggle="modal"><span>Add Service</span></a>
-      <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
-
+      {% endif %}
+      
+      {% if permission.serv_m_d == "on" or permission == None %}
+      <a href="#deletecl_ServiceModal/{{i.id }} " class="btn btn-danger" data-toggle="modal"
+        onclick="removeSelectedRow();">
+        <span>Delete </span></a>
+      {% endif %}
     </div>
     
     <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
@@ -77,13 +83,12 @@
         <th>Service Family</th>
         <th>Status</th>
         <th>Description</th>
-        <!-- <th>Mobile Number</th> -->
+        {% if permission.serv_m_e == "on" or permission == None %}
+        <th>Edit</th>
+        {% endif %}
+
       </tr>
       </thead>
-      <!-- <div>
-
-      <button onclick="removeSelectedRow();">Remove</button>
-    </div> -->
       <tbody>
         {% for i in users %}
         {% if forloop.counter < 11 %}
@@ -97,13 +102,15 @@
           <td>{{i.ch_service_family}}</td>
           <td>{{i.ch_status}}</td>
           <td>{{i.txt_description}}</td>
-          <!-- <td>{{i.ch_person_mobilenumber}}</td> -->
+          {% if permission.serv_m_e == "on" or permission == None %}
           <td>
             <a href="#editcl_ServiceModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
             <!-- <a href="#deletecl_New_changeModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> -->
           </td>
+          {% endif %}
+
         </tr>
         {% endif %}
 

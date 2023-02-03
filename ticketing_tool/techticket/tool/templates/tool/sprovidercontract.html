@@ -135,27 +135,27 @@
         </tbody>
     </table>
 
-    {% if users.has_other_pages %}
-    <ul class="pagination">
-      {% if users.has_previous %}
-        <li><a href="{% url 'providercontract' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-      {% else %}
-        <li class="disabled"><span>&laquo;</span></li>
-      {% endif %}
-      {% for i in users.paginator.page_range %}
-        {% if users.number == i %}
-          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-        {% else %}
-          <li><a href="{% url 'providercontract' %}?page={{ i }}">{{ i }}</a></li>
+        {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li><a href="{% url 'providercontract' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="{% url 'providercontract' %}?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li><a href="{% url 'providercontract' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
         {% endif %}
-      {% endfor %}
-      {% if users.has_next %}
-        <li><a href="{% url 'providercontract' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-      {% else %}
-        <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
-    </ul>
-    {% endif %}
 
 
 
@@ -255,99 +255,105 @@
         </div>
     </div>
 
-    <!-- Edit Modal HTML -->
-    {% for i in pro %}
-    <div id="editcl_ProvidercontractModal-{{forloop.counter}}" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="/spupdate/{{i.id}}" method="post">
-                    {% csrf_token %}
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <input name="id" value="{{i.id}}" type="text" class="form-control">
+        <!-- Edit Modal HTML -->
+        {% for i in pro %}
+        <div id="editcl_ProvidercontractModal-{{forloop.counter}}" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/spupdate/{{i.id}}" method="post">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>ID</label>
+                                <input name="id" value="{{i.id}}" type="text" class="form-control">
+                            </div>
 
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input name="ch_pname"      value="{{i.ch_pname}}" type="text" class="form-control">
-                          </div>
-                        <div class="form-group">
-                          <label>Customer<a href="{% url 'new_organization' %}">
-                              <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                          <input name="ch_organization"  value="{{i.ch_organization}}" type="text" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                          <label>Status</label>
-                          <select name="ch_status"   value="{{i.ch_status}}" type="text" class="form-control" aria-label="Default select example"
-                            aria-invalid="false">
-                            <option value="Assign">Assign</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Close">Close</option>
-                            <option value="Approve">Approve</option>
-                          </select>
-                        </div>
-                        <div class="form-group">
-                          <label>Contract Type</label>
-                          <input name="ch_contract_type" value="{{i.ch_contract_type}}"  type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Provider</label>
-                          <input name="ch_organization" value="{{i.ch_organization}}"  type="text" class="form-control">
-                        </div>
-                        Start Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
-                        <!-- <div class="form-group">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input name="ch_pname" value="{{i.ch_pname}}" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Customer<a href="{% url 'new_organization' %}">
+                                        <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
+                                <input name="ch_organization" value="{{i.ch_organization}}" type="text"
+                                    class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
+                                    aria-label="Default select example" aria-invalid="false">
+                                    <option value="Assign">Assign</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Close">Close</option>
+                                    <option value="Approve">Approve</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Contract Type</label>
+                                <input name="ch_contract_type" value="{{i.ch_contract_type}}" type="text"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Provider</label>
+                                <input name="ch_organization" value="{{i.ch_organization}}" type="text"
+                                    class="form-control">
+                            </div>
+                            Start Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"><br>
+                            <!-- <div class="form-group">
                           <label for="bday">Start Date</label>
                           <input class="form-control" type="date" id="dt_start_date" name="dt_start_date" value="{{i.dt_start_date}}" required
                             pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
                           <span class="validity"></span>
                         </div> -->
-                        <div class="form-group">
-                          <label for="bday">End Date</label>
-                          <input class="form-control" type="date" id="dt_end_date" name="dt_end_date"  value="{{i.dt_end_date}}" required
-                            pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                          <span class="validity"></span>
+                            <div class="form-group">
+                                <label for="bday">End Date</label>
+                                <input class="form-control" type="date" id="dt_end_date" name="dt_end_date"
+                                    value="{{i.dt_end_date}}" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+                                <span class="validity"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Cost Unit</label>
+                                <input name="i_cost_unit" value="{{i.i_cost_unit}}" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Cost</label>
+                                <input name="i_cost" value="{{i.i_cost}}" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Cost Currency</label>
+                                <input name="i_cost_currency" value="{{i.i_cost_currency}}" type="text"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Billing Frequency</label>
+                                <input name="i_billing_frequency" value="{{i.i_billing_frequency}}" type="text"
+                                    class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input name="txt_description" value="{{i.txt_description}}" type="text"
+                                    class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>SLA</label>
+                                <input name="ch_sla" value="{{i.ch_sla}}" type="text" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group">
-                          <label>Cost Unit</label>
-                          <input name="i_cost_unit" value="{{i.i_cost_unit}}"  type="text" class="form-control">
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-info" value="Update">
                         </div>
-                        <div class="form-group">
-                          <label>Cost</label>
-                          <input name="i_cost" value="{{i.i_cost}}"  type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Cost Currency</label>
-                            <input name="i_cost_currency" value="{{i.i_cost_currency}}"  type="text" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <label>Billing Frequency</label>
-                            <input name="i_billing_frequency" value="{{i.i_billing_frequency}}"   type="text" class="form-control">
-                          </div>
-            
-                          <div class="form-group">
-                            <label>Description</label>
-                            <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
-                          </div>
-                      
-                          <div class="form-group">
-                            <label>SLA</label>
-                            <input name="ch_sla" value="{{i.ch_sla}}" type="text" class="form-control">
-                          </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-info" value="Update">
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
 
     <!-- Multiple delete -->
 <script>
@@ -406,4 +412,4 @@
   </script>
   
 
-{% endblock content %}
+        {% endblock content %}

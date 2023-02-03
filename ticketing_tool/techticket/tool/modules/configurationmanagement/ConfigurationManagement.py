@@ -3,30 +3,43 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from tool.models import *
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required(login_url='/login_render/')
 def configuration(request):
-    return render(request, 'tool/configurationmanagement.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/configurationmanagement.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def configurationmanagement_copy(request):
-    return render(request, 'tool/configurationmanagement_COPY.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/configurationmanagement_COPY.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def contact(request):
-    return render(request, 'tool/contact.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/contact.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def software(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     soft = cl_Software.objects.all()
     context = {
         'soft': soft,
+        'permission':permission
     }
     return render(request, 'tool/software.html', context)
 
 
+@login_required(login_url='/login_render/')
 def softAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
@@ -44,18 +57,23 @@ def softAdd(request):
         )
         soft.save()
         return redirect('software')
-    return render(request, 'tool/software.html')
+    return render(request, 'tool/software.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def softEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     soft = cl_Software.objects.all()
     context = {
         'soft': soft,
+        'permission':permission
     }
     return render(request, 'tool/software.html', context)
 
 
+@login_required(login_url='/login_render/')
 def softUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
@@ -71,31 +89,36 @@ def softUpdate(request, id):
         )
         soft.save()
         return redirect('software')
-    return redirect(request, 'tool/software.html')
+    return redirect(request, 'tool/software.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def softDelete(request, id):
     soft = cl_Software.objects.filter(id=id)
     soft.delete()
-    context = {
-        'soft': soft,
-    }
     return redirect('software')
 
 
+@login_required(login_url='/login_render/')
 def newci(request):
-    return render(request, 'tool/newci.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/newci.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def document(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
     context = {
         'doc': doc,
+        'permission':permission
     }
     return render(request, 'tool/document.html', context)
 
 
+@login_required(login_url='/login_render/')
 def DocAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -118,18 +141,23 @@ def DocAdd(request):
         )
         doc.save()
         return redirect('document')
-    return render(request, 'tool/document.html')
+    return render(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DocEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
     context = {
         'doc': doc,
+        'permission':permission
     }
     return render(request, 'tool/document.html', context)
 
 
+@login_required(login_url='/login_render/')
 def DocUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -152,30 +180,21 @@ def DocUpdate(request, id):
         )
         doc.save()
         return redirect('document')
-    return redirect(request, 'tool/document.html')
+    return redirect(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DocDelete(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.filter(id=id)
     doc.delete()
-    context = {
-        'doc': doc,
-    }
     return redirect('document')
 
-# def software(request):
-#     form=SoftwareForm()
-#     if request.method=='POST':
-#         form=SoftwareForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Data Add Successfully")
-#     context={'form':form}
-#     return render(request, 'tool/software.html',context)
 
 
-
+@login_required(login_url='/login_render/')
 def application_solution(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     appso = cl_Application_solution.objects.all()
     page = request.GET.get('page', 1)
 
@@ -191,10 +210,12 @@ def application_solution(request):
         if q != None:
             appso = cl_Application_solution.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/application_solution.html', {'appso': appso,'users':users})
+    return render(request, 'tool/application_solution.html', {'appso': appso,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def appAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -214,18 +235,23 @@ def appAdd(request):
         )
         appso.save()
         return redirect('application')
-    return render(request, 'tool/application_solution.html')
+    return render(request, 'tool/application_solution.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def appEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     appso = cl_Application_solution.objects.all()
     context = {
         'appso': appso,
+        'permission':permission
     }
     return render(request, 'tool/application_solution.html', context)
 
 
+@login_required(login_url='/login_render/')
 def appUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -245,25 +271,24 @@ def appUpdate(request, id):
         )
         appso.save()
         return redirect('application')
-    return render(request, 'tool/application_solution.html')
+    return render(request, 'tool/application_solution.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def appDelete(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             appso = cl_Application_solution.objects.filter(id=i).first()
             appso.delete()
-            context = {
-                'appso': appso,
-            }
     return redirect('application')
 
 
 ############ Delivery Model #############
 
-
+# @login_required(login_url='/login_render/')
 # def delivery_model(request):
 #     form = DeliverymodelForm()
 #     if request.method == 'POST':AutoField(primary_key=True) 
@@ -277,8 +302,9 @@ def appDelete(request):
 
  ########## Business Processs #############
 
-
+@login_required(login_url='/login_render/')
 def business_process(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     buss = cl_Business_process.objects.all()
     page = request.GET.get('page', 1)
 
@@ -294,10 +320,12 @@ def business_process(request):
         if q != None:
             buss = cl_Business_process.objects.filter(
                 ch_business_name__icontains=q)
-    return render(request, 'tool/business_process.html', {'buss': buss,'users':users})
+    return render(request, 'tool/business_process.html', {'buss': buss,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bussAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
@@ -317,21 +345,26 @@ def bussAdd(request):
             dt_move_to_production_date=dt_move_to_production_date,
             txt_description=txt_description,
         )
-        print(buss)
+        # print(buss)
         buss.save()
         return redirect('businessprocess')
-    return render(request, 'tool/business_process.html')
+    return render(request, 'tool/business_process.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bussEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     buss = cl_Business_process.objects.all()
     context = {
         'buss': buss,
+        'permission':permission
     }
     return render(request, 'tool/business_process.html', context)
 
 
+@login_required(login_url='/login_render/')
 def bussUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
@@ -352,9 +385,10 @@ def bussUpdate(request, id):
         )
         buss.save()
         return redirect('businessprocess')
-    return render(request, 'tool/business_process.html')
+    return render(request, 'tool/business_process.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bussDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -362,16 +396,15 @@ def bussDelete(request):
         for i in list_id:
             buss = cl_Business_process.objects.filter(id=i).first()
             buss.delete()
-            context = {
-                'buss': buss,
-            }
         return redirect('businessprocess')
 
 
 
 ############# NewDB ###############
 
+@login_required(login_url='/login_render/')
 def newdb_server(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     db = cl_Newdb_server.objects.all()
     page = request.GET.get('page', 1)
 
@@ -387,10 +420,12 @@ def newdb_server(request):
         if q != None:
             db = cl_Newdb_server.objects.filter(
                ch_dbname__icontains=q)
-    return render(request, 'tool/newdb_server.html', {'db': db,'users':users})
+    return render(request, 'tool/newdb_server.html', {'db': db,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def dbAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
@@ -419,18 +454,23 @@ def dbAdd(request):
         )
         db.save()
         return redirect('newdb')
-    return render(request, 'tool/newdb_server.html')
+    return render(request, 'tool/newdb_server.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def dbEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     db = cl_Newdb_server.objects.all()
     context = {
         'db': db,
+        'permission':permission
     }
     return render(request, 'tool/newdb_server.html', context)
 
 
+@login_required(login_url='/login_render/')
 def dbUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
@@ -459,9 +499,10 @@ def dbUpdate(request, id):
         )
         db.save()
         return redirect('newdb')
-    return render(request, 'tool/newdb_server.html')
+    return render(request, 'tool/newdb_server.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def dbDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -469,14 +510,13 @@ def dbDelete(request):
         for i in list_id:
             db = cl_Newdb_server.objects.filter(id=i).first()
             db.delete()
-            context = {
-                'db': db,
-            }
     return redirect('newdb')
 
 ######### Data Base Schema #####
 
+@login_required(login_url='/login_render/')
 def dataschema(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     schema = cl_Database_schema.objects.all()
     page = request.GET.get('page', 1)
 
@@ -491,15 +531,13 @@ def dataschema(request):
         q = request.GET.get('searchname')
         if q != None:
             schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
-    return render(request, 'tool/database_schema.html', {'schema': schema,'users':users})
+    return render(request, 'tool/database_schema.html', {'schema': schema,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DSADD(request):
-    if request.method == "POST":
-        # id = request.POST.get('id')
-        print(id)
-
-        
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":     
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))    
 
@@ -519,22 +557,24 @@ def DSADD(request):
             txt_description=txt_description,
         )
         schema.save()
-        print(schema)
-
         return redirect('databaseschema')
+    return render(request, 'tool/database_schema.html',{'permission':permission})
 
-    return render(request, 'tool/database_schema.html')
 
-
+@login_required(login_url='/login_render/')
 def DSEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     schema = cl_Database_schema.objects.all()
     context = {
         'schema': schema,
+        'permission':permission
     }
     return render(request, 'tool/database_schema.html', context)
 
 
+@login_required(login_url='/login_render/')
 def DSUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')        
         ch_organization = cl_New_organization.objects.get(
@@ -555,9 +595,10 @@ def DSUpdate(request, id):
         )
         schema.save()
         return redirect('databaseschema')
-    return render(request, 'tool/database_schema.html')
+    return render(request, 'tool/database_schema.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DSDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -565,16 +606,15 @@ def DSDelete(request):
         for i in list_id:
             schema = cl_Database_schema.objects.filter(id=i).first()
             schema.delete()
-            context = {
-                'schema': schema,
-            }
     return redirect('databaseschema')
 
 
 
 ############## Middleware ##########
 
+@login_required(login_url='/login_render/')
 def middlewareinstance(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     mi = cl_Middleware_instance.objects.all()
     page = request.GET.get('page', 1)
 
@@ -589,14 +629,13 @@ def middlewareinstance(request):
         q = request.GET.get('searchname')
         if q != None:
             mi = cl_Middleware_instance.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/middleware_instance.html', {'mi': mi,'users':users})
+    return render(request, 'tool/middleware_instance.html', {'mi': mi,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def MADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
-
-        print(id)
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))        
         ch_miname = request.POST.get('ch_miname')
@@ -614,22 +653,24 @@ def MADD(request):
             txt_description=txt_description,
         )
         mi.save()
-        
-
         return redirect('middlewareinstance')
+    return render(request, 'tool/middleware_instance.html',{'permission':permission})
 
-    return render(request, 'tool/middleware_instance.html')
 
-
+@login_required(login_url='/login_render/')
 def MEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     mi = cl_Middleware_instance.objects.all()
     context = {
         'mi': mi,
+        'permission':permission
     }
     return render(request, 'tool/middleware_instance.html', context)
 
 
+@login_required(login_url='/login_render/')
 def MUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_miname = request.POST.get('ch_miname')
@@ -650,9 +691,10 @@ def MUpdate(request, id):
         )
         mi.save()
         return redirect('middlewareinstance')
-    return render(request, 'tool/middleware_instance.html')
+    return render(request, 'tool/middleware_instance.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def MDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -660,16 +702,15 @@ def MDelete(request):
         for i in list_id:
             mi = cl_Middleware_instance.objects.filter(id=i).first()
             mi.delete()
-            context = {
-                'mi': mi,
-            }
     return redirect('middlewareinstance')
 
 
 
 ##################  New Middleware  ##########
 
+@login_required(login_url='/login_render/')
 def new_middleware(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     middle = cl_New_middleware.objects.all()
     page = request.GET.get('page', 1)
 
@@ -684,10 +725,12 @@ def new_middleware(request):
         q = request.GET.get('searchname')
         if q != None:
             middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
-    return render(request, 'tool/new_middleware.html', {'middle': middle,'users':users})
+    return render(request, 'tool/new_middleware.html', {'middle': middle,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def MWAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -717,18 +760,23 @@ def MWAdd(request):
         )
         middle.save()
         return redirect('newmiddleware')
-    return render(request, 'tool/new_middleware.html')
+    return render(request, 'tool/new_middleware.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def MWEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     middle = cl_New_middleware.objects.all()
     context = {
         'middle': middle,
+        'permission':permission
     }
     return render(request, 'tool/new_middleware.html', context)
 
 
+@login_required(login_url='/login_render/')
 def MWUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -757,9 +805,10 @@ def MWUpdate(request, id):
         )
         middle.save()
         return redirect('newmiddleware')
-    return render(request, 'tool/new_middleware.html')
+    return render(request, 'tool/new_middleware.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def MWDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -767,15 +816,14 @@ def MWDelete(request):
         for i in list_id:
             middle = cl_New_middleware.objects.filter(id=i).first()
             middle.delete()
-            context = {
-                'middle': middle,
-            }
     return redirect('newmiddleware')
 
  
 ######### Other Software ###########
 
+@login_required(login_url='/login_render/')
 def other_software(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     os = cl_Other_software.objects.all()
     page = request.GET.get('page', 1)
 
@@ -791,10 +839,12 @@ def other_software(request):
         if q != None:
             os = cl_Other_software.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/othersoftware.html', {'os': os,'users':users})
+    return render(request, 'tool/othersoftware.html', {'os': os,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -823,18 +873,23 @@ def osAdd(request):
         )
         os.save()
         return redirect('other_software')
-    return render(request, 'tool/othersoftware.html')
+    return render(request, 'tool/othersoftware.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     os = cl_Other_software.objects.all()
     context = {
         'os': os,
+        'permission':permission
     }
     return render(request, 'tool/othersoftware.html', context)
 
 
+@login_required(login_url='/login_render/')
 def osUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -863,9 +918,10 @@ def osUpdate(request, id):
         )
         os.save()
         return redirect('other_software')
-    return render(request, 'tool/othersoftware.html')
+    return render(request, 'tool/othersoftware.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -873,16 +929,14 @@ def osDelete(request):
         for i in list_id:
             os = cl_Other_software.objects.filter(id=i).first()
             os.delete()
-            context = {
-                'os': os,
-            }
     return redirect('other_software')
 
 
 ############ Web App ############
 
-
+@login_required(login_url='/login_render/')
 def web_application(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     wa = cl_Web_application.objects.all()
     page = request.GET.get('page', 1)
 
@@ -898,10 +952,12 @@ def web_application(request):
         if q != None:
             wa = cl_Web_application.objects.filter(
                 ch_waname__icontains=q)
-    return render(request, 'tool/webapplication.html', {'wa': wa,'users':users})
+    return render(request, 'tool/webapplication.html', {'wa': wa,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def waAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -925,18 +981,23 @@ def waAdd(request):
         )
         wa.save()
         return redirect('webapplication')
-    return render(request, 'tool/webapplication.html')
+    return render(request, 'tool/webapplication.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def wsEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     wa = cl_Web_application.objects.all()
     context = {
         'wa': wa,
+        'permission':permission
     }
     return render(request, 'tool/webapplication.html', context)
 
 
+@login_required(login_url='/login_render/')
 def waUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_waname = request.POST.get('ch_waname')
@@ -961,9 +1022,10 @@ def waUpdate(request, id):
         )
         wa.save()
         return redirect('webapplication')
-    return render(request, 'tool/webapplication.html')
+    return render(request, 'tool/webapplication.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def waDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -971,9 +1033,7 @@ def waDelete(request):
         for i in list_id:
             wa = cl_Web_application.objects.filter(id=i).first()
             wa.delete()
-            context = {
-                'wa': wa,
-            }
+
     return redirect('webapplication')
 
 ########## OS License ######
@@ -982,7 +1042,9 @@ def waDelete(request):
 
 ########## network Device ######
 
+@login_required(login_url='/login_render/')
 def networkdevice(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     nd = cl_Network_device.objects.all()
     page = request.GET.get('page', 1)
 
@@ -998,10 +1060,12 @@ def networkdevice(request):
         if q != None:
             nd = cl_Network_device.objects.filter(
                 ch_ndname__icontains=q)
-    return render(request, 'tool/network_device.html', {'nd': nd,'users':users})
+    return render(request, 'tool/network_device.html', {'nd': nd,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ndAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_ndname = request.POST.get('ch_ndname')
@@ -1045,18 +1109,23 @@ def ndAdd(request):
         )
         nd.save()
         return redirect('networkdevice')
-    return render(request, 'tool/network_device.html')
+    return render(request, 'tool/network_device.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ndEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     nd = cl_Network_device.objects.all()
     context = {
         'nd': nd,
+        'permission':permission
     }
     return render(request, 'tool/network_device.html', context)
 
 
+@login_required(login_url='/login_render/')
 def ndUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_ndname = request.POST.get('ch_ndname')
@@ -1100,9 +1169,10 @@ def ndUpdate(request, id):
         )
         nd.save()
         return redirect('networkdevice')
-    return render(request, 'tool/network_device.html')
+    return render(request, 'tool/network_device.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ndDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -1110,14 +1180,13 @@ def ndDelete(request):
         for i in list_id:
             nd = cl_Network_device.objects.filter(id=i).first()
             nd.delete()
-            context = {
-                'nd': nd,
-            }
     return redirect('networkdevice')
 
 ########## Network Type #########
 
+@login_required(login_url='/login_render/')
 def network_type(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     nt = cl_network_type.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1132,10 +1201,12 @@ def network_type(request):
         q = request.GET.get('searchname')
         if q != None:
             nt = cl_network_type.objects.filter(ch_nname__icontains=q)
-    return render(request, 'tool/network_type.html', {'nt': nt,'users':users})
+    return render(request, 'tool/network_type.html', {'nt': nt,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ntAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         print(id)
@@ -1147,43 +1218,45 @@ def ntAdd(request):
         nt.save()
       
         return redirect('network_type')
-    return render(request, 'tool/network_type.html')
+    return render(request, 'tool/network_type.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ntEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     nt = cl_network_type.objects.all()
     context = {
         'nt': nt,
+        'permission':permission
     }
     return render(request, 'tool/network_type.html', context)
 
 
+@login_required(login_url='/login_render/')
 def ntUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_nname = request.POST.get('ch_nname')
-
         nt = cl_network_type(
             id=id,
             ch_nname=ch_nname,
-
         )
         nt.save()
         return redirect('network_type')
-    return render(request, 'tool/network_type.html')
+    return render(request, 'tool/network_type.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def ntDelete(request, id):
     nt = cl_network_type.objects.filter(id=id)
     nt.delete()
-    context = {
-        'nt': nt,
-    }
     return redirect('network_type')
 
 
-
+@login_required(login_url='/login_render/')
 def os_family(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     osf = cl_os_family.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1198,10 +1271,12 @@ def os_family(request):
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_family.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_family.html', {'osf': osf,'users':users})
+    return render(request, 'tool/os_family.html', {'osf': osf,'users':users, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osfAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         print(id)
@@ -1214,44 +1289,46 @@ def osfAdd(request):
         osf.save()
         print(osf)
         return redirect('os_family')
-    return render(request, 'tool/os_family.html')
+    return render(request, 'tool/os_family.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osfEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     osf = cl_os_family.objects.all()
     context = {
         'osf': osf,
+        'permission':permission
     }
     return render(request, 'tool/os_family.html', context)
 
 
+@login_required(login_url='/login_render/')
 def osfUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_fname = request.POST.get('ch_fname')
-
         osf = cl_os_family(
             id=id,
             ch_fname=ch_fname,
-
         )
         osf.save()
         return redirect('os_family')
-    return render(request, 'tool/os_family.html')
+    return render(request, 'tool/os_family.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osfDelete(request, id):
     osf = cl_os_family.objects.filter(id=id)
     osf.delete()
-    context = {
-        'osf': osf,
-    }
     return redirect('os_family')
 
 
 
-
+@login_required(login_url='/login_render/')
 def os_version(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     osv = cl_os_version.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1266,18 +1343,18 @@ def os_version(request):
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_version.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_version.html', {'osv': osv,'users':users})
+    return render(request, 'tool/os_version.html', {'osv': osv,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osvAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        print(id)
         ch_osname = request.POST.get('ch_osname')
         ch_fname = cl_os_family.objects.get(
             ch_fname=request.POST.get('ch_fname'))
         
-
         osv = cl_os_version(
             id=id,
             ch_osname=ch_osname,
@@ -1286,46 +1363,48 @@ def osvAdd(request):
         osv.save()
         print(osv)
         return redirect('os_version')
-    return render(request, 'tool/os_version.html')
+    return render(request, 'tool/os_version.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osvEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     osv = cl_os_version.objects.all()
     context = {
         'osv': osv,
+        'permission':permission
     }
     return render(request, 'tool/os_version.html', context)
 
 
+@login_required(login_url='/login_render/')
 def osvUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_osname = request.POST.get('ch_osname')
         ch_fname = cl_os_family.objects.get(
             ch_fname=request.POST.get('ch_fname'))
-
         osv = cl_os_version(
             id=id,
             ch_osname=ch_osname,
             ch_fname=ch_fname,
-
-
         )
         osv.save()
         return redirect('os_version')
-    return render(request, 'tool/os_version.html')
+    return render(request, 'tool/os_version.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def osvDelete(request, id):
     osv = cl_os_version.objects.filter(id=id)
     osv.delete()
-    context = {
-        'osv': osv,
-    }
     return redirect('os_version')
 
 
+@login_required(login_url='/login_render/')
 def os_license(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ol = cl_os_license.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1341,10 +1420,13 @@ def os_license(request):
         if q != None:
             ol = cl_os_license.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/os_license.html', {'ol': ol,'users':users})
+    return render(request, 'tool/os_license.html', {'ol': ol,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def olAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -1371,10 +1453,12 @@ def olAdd(request):
         )
         ol.save()
         return redirect('os_license')
-    return render(request, 'tool/os_license.html')
+    return render(request, 'tool/os_license.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def olEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ol = cl_os_license.objects.all()
     context = {
         'ol': ol,
@@ -1382,7 +1466,9 @@ def olEdit(request):
     return render(request, 'tool/os_license.html', context)
 
 
+@login_required(login_url='/login_render/')
 def olUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -1409,26 +1495,25 @@ def olUpdate(request, id):
         )
         ol.save()
         return redirect('os_license')
-    return render(request, 'tool/os_license.html')
+    return render(request, 'tool/os_license.html',{'permission':permission})
 
 
 
-def olDelete(request, id):
+@login_required(login_url='/login_render/')
+def olDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             ol = cl_os_license.objects.filter(id=i).first()
             ol.delete()
-            context = {
-                'ol': ol,
-            }
     return redirect('os_license')
 
 
 
-
+@login_required(login_url='/login_render/')
 def brand(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     brand = cl_Brand.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1443,34 +1528,40 @@ def brand(request):
         q = request.GET.get('searchname')
         if q != None:
             brand = cl_Brand.objects.filter(ch_brandname__icontains=q)
-    return render(request, 'tool/brand.html', {'brand': brand,'users':users})
+    return render(request, 'tool/brand.html', {'brand': brand,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bnAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         print(id)
         ch_brandname = request.POST.get('ch_brandname')
         brand = cl_Brand(
-            # id=id,
             ch_brandname=ch_brandname,
         )
         brand.save()
         print(brand)
         return redirect('brand')
 
-    return render(request, 'tool/brand.html')
+    return render(request, 'tool/brand.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bnEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     brand = cl_Brand.objects.all()
     context = {
         'brand': brand,
+        'permission':permission
     }
     return render(request, 'tool/brand.html', context)
 
 
+@login_required(login_url='/login_render/')
 def bnUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_brandname = request.POST.get('ch_brandname')
@@ -1482,19 +1573,19 @@ def bnUpdate(request, id):
         )
         brand.save()
         return redirect('brand')
-    return render(request, 'tool/brand.html')
+    return render(request, 'tool/brand.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def bnDelete(request, id):
     brand = cl_Brand.objects.filter(id=id)
     brand.delete()
-    context = {
-        'brand': brand,
-    }
     return redirect('brand')
 
 
+@login_required(login_url='/login_render/')
 def cmodel(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     model = cl_model.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1509,10 +1600,13 @@ def cmodel(request):
         q = request.GET.get('searchname')
         if q != None:
             model = cl_model.objects.filter(ch_modelname__icontains=q)
-    return render(request, 'tool/model.html', {'model': model,'users':users})
+    return render(request, 'tool/model.html', {'model': model,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def mdAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         print(id)
@@ -1530,18 +1624,24 @@ def mdAdd(request):
         print(model)
         return redirect('cmodel')
 
-    return render(request, 'tool/model.html')
+    return render(request, 'tool/model.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def mdEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     model = cl_model.objects.all()
     context = {
         'model': model,
+        'permission':permission
     }
     return render(request, 'tool/model.html', context)
 
 
+@login_required(login_url='/login_render/')
 def mdUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_modelname = request.POST.get('ch_modelname')
@@ -1556,19 +1656,19 @@ def mdUpdate(request, id):
         )
         model.save()
         return redirect('cmodel')
-    return render(request, 'tool/model.html')
+    return render(request, 'tool/model.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def mdDelete(request, id):
     model = cl_model.objects.filter(id=id)
     model.delete()
-    context = {
-        'model': model,
-    }
     return redirect('cmodel')
 
 
+@login_required(login_url='/login_render/')
 def iosver(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     iv = cl_ios_version.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1583,10 +1683,13 @@ def iosver(request):
         q = request.GET.get('searchname')
         if q != None:
             iv = cl_ios_version.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/ios_version.html', {'iv': iv,'users':users})
+    return render(request, 'tool/ios_version.html', {'iv': iv,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def ivAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         print(id)
@@ -1602,19 +1705,25 @@ def ivAdd(request):
         iv.save()
         print(iv)
         return redirect('iosver')
+    return render(request, 'tool/ios_version.html',{'permission':permission})
 
-    return render(request, 'tool/ios_version.html')
 
 
+@login_required(login_url='/login_render/')
 def ivEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     iv = cl_ios_version.objects.all()
     context = {
         'iv': iv,
+        'permission':permission
     }
     return render(request, 'tool/ios_version.html', context)
 
 
+
+@login_required(login_url='/login_render/')
 def ivUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_iosname = request.POST.get('ch_iosname')
@@ -1629,28 +1738,23 @@ def ivUpdate(request, id):
         )
         iv.save()
         return redirect('iosver')
-    return render(request, 'tool/ios_version.html')
+    return render(request, 'tool/ios_version.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def ivDelete(request, id):
     iv = cl_ios_version.objects.filter(id=id)
     iv.delete()
-    context = {
-        'iv': iv,
-    }
     return redirect('iosver')
-
-
-
-
-
-
 
 
 
 ############ Server ############
 
+@login_required(login_url='/login_render/')
 def server(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     se = cl_Server.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1666,13 +1770,14 @@ def server(request):
         if q != None:
             se = cl_Server.objects.filter(
                 ch_sname__icontains=q)
-    return render(request, 'tool/server.html', {'se': se,'users':users})
+    return render(request, 'tool/server.html', {'se': se,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def serverAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-
-        # id = request.POST.get('id')   
         ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_sname = request.POST.get('ch_sname')
         ch_status = request.POST.get('ch_status')
@@ -1719,18 +1824,24 @@ def serverAdd(request):
         )
         se.save()
         return redirect('server')
-    return render(request, 'tool/server.html')
+    return render(request, 'tool/server.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def serverEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     se = cl_Server.objects.all()
     context = {
         'se': se,
+        'permission':permission
     }
     return render(request, 'tool/server.html', context)
 
 
+@login_required(login_url='/login_render/')
 def serverUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -1779,9 +1890,11 @@ def serverUpdate(request, id):
         )
         se.save()
         return redirect('server')
-    return render(request, 'tool/server.html')
+    return render(request, 'tool/server.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def serverDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -1789,15 +1902,14 @@ def serverDelete(request):
         for i in list_id:
             se = cl_Server.objects.filter(id=i).first()
             se.delete()
-            context = {
-                'se': se,
-            }
     return redirect('server')
 
 
 ############## Web Server ################
 
+@login_required(login_url='/login_render/')
 def web_server(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ws = cl_Web_server.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1812,10 +1924,13 @@ def web_server(request):
         q = request.GET.get('searchname')
         if q != None:
             ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
-    return render(request, 'tool/webserver.html', {'ws': ws,'users':users})
+    return render(request, 'tool/webserver.html', {'ws': ws,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def wsAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -1844,18 +1959,25 @@ def wsAdd(request):
         )
         ws.save()
         return redirect('webserver')
-    return render(request, 'tool/webserver.html')
+    return render(request, 'tool/webserver.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def wsEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ws = cl_Web_server.objects.all()
     context = {
         'ws': ws,
+        'permission':permission
     }
     return render(request, 'tool/webserver.html', context)
 
 
+
+@login_required(login_url='/login_render/')
 def wsUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -1884,9 +2006,11 @@ def wsUpdate(request, id):
         )
         ws.save()
         return redirect('webserver')
-    return render(request, 'tool/webserver.html')
+    return render(request, 'tool/webserver.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def wsDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -1894,18 +2018,14 @@ def wsDelete(request):
         for i in list_id:
             ws = cl_Web_server.objects.filter(id=i).first()
             ws.delete()
-            context = {
-                'ws': ws,
-            }
     return redirect('webserver')
-
-
-
 
 
 ######## PC Software ######
 
+@login_required(login_url='/login_render/')
 def pc_software(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     pc = cl_Pc_software.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1920,10 +2040,13 @@ def pc_software(request):
         q = request.GET.get('searchname')
         if q != None:
             pc = cl_Pc_software.objects.filter(ch_pcname_icontains=q)
-    return render(request, 'tool/pc_software.html', {'pc': pc,'users':users})
+    return render(request, 'tool/pc_software.html', {'pc': pc,'users':users, 'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def pcAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -1952,18 +2075,25 @@ def pcAdd(request):
         )
         pc.save()
         return redirect('pcsoftware')
-    return render(request, 'tool/pc_software.html')
+    return render(request, 'tool/pc_software.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def pcEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     pc = cl_Pc_software.objects.all()
     context = {
         'pc': pc,
+        'permission':permission
     }
     return render(request, 'tool/pc_software.html', context)
 
 
+
+@login_required(login_url='/login_render/')
 def pcUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
@@ -1992,9 +2122,11 @@ def pcUpdate(request, id):
         )
         pc.save()
         return redirect('pcsoftware')
-    return render(request, 'tool/pc_software.html')
+    return render(request, 'tool/pc_software.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def pcDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -2002,7 +2134,4 @@ def pcDelete(request):
         for i in list_id:
             pc = cl_Pc_software.objects.filter(id=i).first()
             pc.delete()
-            context = {
-                'pc': pc,
-            }
     return redirect('pcsoftware')

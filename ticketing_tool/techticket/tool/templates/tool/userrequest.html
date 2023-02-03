@@ -254,11 +254,17 @@
            <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'userrequest' %}">Incident Management</a></b>
         </form>
         <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+            {% if permission.inci_m_a == "on" or permission == None %}
             <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal">
                 <span>Add New User Request</span></a>
+            {% endif %}
+            {% if permission.inci_m_d == "on" or permission == None %}
             <button type="submit" id="delete_btn" class="btn btn-danger">Delete User Request</button>
+            {% endif %}
+            {% if permission.inci_m_assign == "on" or permission == None %}
             <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal">
                 <span>Assign User Request</span></a>
+            {% endif %}
         </div>
     </div>
 
@@ -281,7 +287,9 @@
                 <th>Service</th>
                 <th>Description</th>
                 <th>Agent</th>
+                {% if permission.inci_m_e == "on" or permission == None %}
                 <th>Edit</th>
+                {% endif %}
 
             </tr>
         </thead>
@@ -302,41 +310,41 @@
                 <td>{{i.ch_service}}</td>
                 <td>{{i.txt_description}}</td>
                 <td>{{i.ch_agent}}</td>
+                {% if permission.inci_m_e == "on" or permission == None %}
                 <td>
                     <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                             class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                    <!-- <a href="#deletecl_User_requestModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
-                            class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> -->
                 </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
+                {% endif %}
+                </tr>
+                {% endif %}
+                {% endfor %}
         </tbody>
     </table>
 
 
 
-  {% if users.has_other_pages %}
-  <ul class="pagination">
-      {% if users.has_previous %}
-      <li><a href="{% url 'userrequest' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-      {% endif %}
-      {% for i in users.paginator.page_range %}
-      {% if users.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-      <li><a href="{% url 'userrequest' %}?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-      {% endfor %}
-      {% if users.has_next %}
-      <li><a href="{% url 'userrequest' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
-  </ul>
-  {% endif %}
+    {% if users.has_other_pages %}
+    <ul class="pagination">
+        {% if users.has_previous %}
+        <li><a href="{% url 'userrequest' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in users.paginator.page_range %}
+        {% if users.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="{% url 'userrequest' %}?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if users.has_next %}
+        <li><a href="{% url 'userrequest' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
 
     <!-- Add Modal HTML -->
     <div id="addcl_User_requestModal" class="modal fade">

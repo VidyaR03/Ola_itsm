@@ -1082,12 +1082,16 @@ class roles(models.Model):
     ch_m_e=models.CharField(max_length = 50, null=True, default='off')
     ch_m_d=models.CharField(max_length = 50, null=True, default='off')
     ch_m_v=models.CharField(max_length = 50, null=True, default='off')
+    ch_m_approve=models.CharField(max_length = 50, null=True, default='off')
+    ch_m_assign=models.CharField(max_length = 50, null=True, default='off')
 
     # incident management
     inci_m_a=models.CharField(max_length = 50, null=True, default='off')
     inci_m_d=models.CharField(max_length = 50, null=True, default='off')
     inci_m_e=models.CharField(max_length = 50, null=True, default='off')
     inci_m_v=models.CharField(max_length = 50, null=True, default='off')
+    inci_m_approve=models.CharField(max_length = 50, null=True, default='off')
+    inci_m_assign=models.CharField(max_length = 50, null=True, default='off')
 
     # configuration management
     confi_m_a=models.CharField(max_length = 50, null=True, default='off')
@@ -1137,7 +1141,7 @@ class adminuser(AbstractUser):
     email = models.EmailField(unique=True)
     ch_user_role = models.ForeignKey(
         roles, on_delete=models.CASCADE, null=True, blank=True)
-    ch_user_expirydate = models.DateTimeField(max_length=100, null=True)
+    # ch_user_expirydate = models.DateField(max_length=100, null=True)
     ch_user_mobilenumber = models.IntegerField(max_length=15, null=True)
 
     object=CustomUserManager()

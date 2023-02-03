@@ -2,7 +2,8 @@
 {% load static %}
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0,"> -->
 	<!-- <link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/> -->
 	<title>ITSM</title>
 
@@ -62,6 +63,8 @@
 					</span>
 				</a>
 			</li>
+
+			{% if permission.ch_m_a == "on" or permission.ch_m_e == "on" or permission.ch_m_d == "on" or permission.ch_m_v == "on" or permission.ch_m_approve == "on" or permission.ch_m_assign == "on" or permission == None %}
 			<li class="sidebar-nav-item" id="newchange_id">
 				<a href="/newchange" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -70,7 +73,9 @@
 					<span style="font-weight: bold;">Change Management</span>
 				</a>
 			</li>
+			{% endif %}
 
+			{% if permission.inci_m_a == "on" or permission.inci_m_e == "on" or permission.inci_m_d == "on" or permission.inci_m_v == "on" or permission.inci_m_approve == "on" or permission.inci_m_assign == "on" or permission == None %}
 			<li  class="sidebar-nav-item" id="userrequest_id">
 				<a href="/userrequest" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -80,7 +85,9 @@
 					<span style="font-weight: bold;">Incident Management</span>
 				</a>
 			</li>
+			{% endif %}
 
+			{% if permission.confi_m_a == "on" or permission.confi_m_e == "on" or permission.confi_m_d == "on" or permission.confi_m_v == "on" or permission == None %}
 			<li  class="sidebar-nav-item"  onclick="show_confi_menu()" id="configuration_id">
 				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -102,6 +109,10 @@
 					<a class="menus" href="{% url 'software' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Software Catlog</a>
 				</div>
 			</li>
+			{% endif %}
+
+
+			{% if permission.serv_m_a == "on" or permission.serv_m_e == "on" or permission.serv_m_d == "on" or permission.serv_m_v == "on" or permission == None %}
 			<li  class="sidebar-nav-item" id="servicenav_id" >
 				<a href="/servicenav" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -110,6 +121,10 @@
 					<span style="font-weight: bold;">Service Management</span>
 				</a>
 			</li>
+			{% endif %}
+
+
+			{% if permission.user_m_a == "on" or permission.user_m_e == "on" or permission.user_m_d == "on" or permission.user_m_v == "on" or permission == None %}
 			<li  class="sidebar-nav-item" id="user_id" onclick="show_User_menu()" >
 				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -129,7 +144,9 @@
 					<a class="menus" href="{% url 'role_display' %}" style="display: block;"><i class="fas fa-chevron-right"></i> Role</a>
 				</div>
 			</li>
+			{% endif %}
 
+			{% if permission.setting_a == "on" or permission.setting_e == "on" or permission.setting_d == "on" or permission.setting_v == "on" or permission == None %}
 			<li  class="sidebar-nav-item" id="settings_id"  onclick="show_setting_menu()" >
 				<label class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
@@ -161,14 +178,18 @@
 					<a class="menus" href="{% url 'new_organization' %}" style="display: block;"><i class="fas fa-chevron-right"></i>Data Administration</a>
 				</div>
 			</li>
+			{% endif %}
+
+			{% if permission.history_a == "on" or permission.history_e == "on" or permission.history_d == "on" or permission.history_v == "on" or permission == None %}
 			<li  class="sidebar-nav-item" id="logs_id">
 				<a href="/logs" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
 					<i class="fas fa-file"></i>
 					</div>
-					<span>History</span>
+					<span style="font-weight: bold;">History</span>
 				</a>
 			</li>
+			{% endif %}
 		</ul>
 	</div>
 	<!-- end sidebar -->
@@ -267,15 +288,6 @@
 		document.getElementById('User_menu').style.display = 'none'
 	}
 </script>
-
-<!-- <script>
-	user = document.getElementById('current_user').value
-	console.log(document.getElementById('settings_id'))
-
-	if (user === "mangesh") {
-		document.getElementById("settings_id").style.display = 'none'
-	}
-</script> -->
 
 </body>
 </html>

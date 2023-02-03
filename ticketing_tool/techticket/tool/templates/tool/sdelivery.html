@@ -77,10 +77,12 @@
         <th>Name</th>
         <th>Organization</th>
         <th>Description</th>
-        <!-- <th>Mobile Number</th> -->
+        {% if permission.serv_m_e == "on" or permission == None %}
+        <th>Edit</th>
+        {% endif %}
       </tr>
-    </thead>
-    <!-- <div>
+      </thead>
+      <!-- <div>
 
       <button onclick="removeSelectedRow();">Remove</button>
     </div> -->
@@ -101,39 +103,40 @@
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           <!-- <a href="#deletecl_New_changeModal-{{forloop.counter}}" class="delete" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a> -->
-        </td>
-      </tr>
-      {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+          {% endif %}
 
-      {% endfor %}
-    </tbody>
-  </table>
+          {% endfor %}
+      </tbody>
+    </table>
 
 
 
- 
 
-  {% if users.has_other_pages %}
-  <ul class="pagination">
-    {% if users.has_previous %}
+
+    {% if users.has_other_pages %}
+    <ul class="pagination">
+      {% if users.has_previous %}
       <li><a href="{% url 'servicedelivery' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in users.paginator.page_range %}
-      {% if users.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="{% url 'servicedelivery' %}?page={{ i }}">{{ i }}</a></li>
+      <li class="disabled"><span>&laquo;</span></li>
       {% endif %}
-    {% endfor %}
-    {% if users.has_next %}
+      {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <li><a href="{% url 'servicedelivery' %}?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if users.has_next %}
       <li><a href="{% url 'servicedelivery' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-    {% else %}
+      {% else %}
       <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
     {% endif %}
-  </ul>
-  {% endif %}
 
 
   <div id="addcl_ServicedeliveryModal" class="modal fade">
@@ -150,68 +153,68 @@
               <label>ID</label>
               <input name="id" type="text" class="form-control" >
             </div> -->
-            <div class="form-group">
+              <div class="form-group">
                 <label>Name</label>
                 <input name="ch_sdname" type="text" class="form-control">
               </div>
-            <div class="form-group">
-              <label>Organization<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-              <input name="ch_organization" type="text" class="form-control" required>
+              <div class="form-group">
+                <label>Organization<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
+                <input name="ch_organization" type="text" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <input name="txt_description" type="text" class="form-control">
+              </div>
             </div>
-           
-            <div class="form-group">
-              <label>Description</label>
-              <input name="txt_description" type="text" class="form-control" >
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+              <input type="submit" class="btn btn-success" value="Add">
             </div>
-          </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-success" value="Add">
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Edit Modal HTML -->
-  {% for i in sd %}
-  <div id="editcl_ServicedeliveryModal-{{forloop.counter}}" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form action="/sdupdate/{{i.id}}" method="post">
-          {% csrf_token %}
-          <div class="modal-header">
-            <h4 class="modal-title">Edit </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>ID</label>
-              <input name="id"   value="{{i.id}}" type="text" class="form-control" >
+    <!-- Edit Modal HTML -->
+    {% for i in sd %}
+    <div id="editcl_ServicedeliveryModal-{{forloop.counter}}" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/sdupdate/{{i.id}}" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h4 class="modal-title">Edit </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="form-group">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>ID</label>
+                <input name="id" value="{{i.id}}" type="text" class="form-control">
+              </div>
+              <div class="form-group">
                 <label>Name</label>
                 <input name="ch_sdname" value="{{i.ch_sdname}}" type="text" class="form-control">
               </div>
-            <div class="form-group">
-              <label>Provider<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-              <input name="ch_organization"  value="{{i.ch_organization}}" type="text" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
-            </div>
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-info" value="Update">
-          </div>
-        </form>
+              <div class="form-group">
+                <label>Provider<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
+                <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
+              </div>
+              <div class="modal-footer">
+                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                <input type="submit" class="btn btn-info" value="Update">
+              </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 
  
 <!-- </body> -->
@@ -270,5 +273,5 @@
   });
 </script>
 
-{% endblock content %}
-<!-- </html> -->
+    {% endblock content %}
+    <!-- </html> -->

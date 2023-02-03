@@ -17,7 +17,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 from django.template.loader import get_template
-# from django.views import View
 from django.core.exceptions import BadRequest
 from django.http import FileResponse
 from django.shortcuts import render
@@ -35,25 +34,64 @@ from tool.modules.user_logs.user_activity_log import *
 
 @login_required(login_url='/login_render/')
 def home(request):
-    # print(request.COOKIES['sessionid'])
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(email=request.user).first()
     context = {
-        'user': user
+        'user': user,
+        'permission':permission
     }
-    # print(user.ch_user_role)
     return render(request, 'tool/dashboard.html',context)
+
 
 
 @login_required(login_url='/login_render/')
 def dashboard(request):
-    return render(request, 'tool/dashboard.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/dashboard.html',{'permission':permission})
 
 
 def login_render(request):
     return render(request, 'tool/login.html')
 
 
+@login_required(login_url='/login_render/')
+def servicenav(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/servicenav.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def systemnav(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/systemnav.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def sysconfienav(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/sysconfinav.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def sysconfiauth(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/sysconfiauth.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def admuser(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/admuser.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def integrationav(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/integrationav.html',{'permission':permission})
+
+
 def registerPage(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -62,9 +100,11 @@ def registerPage(request):
             user = form.cleaned_data.get('username')
             messages.success(request, 'Account was created for ' + user)
             return redirect('login')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/register.html', context)
-
 
 def adminloginPage(request):
     if request.method == 'POST':
@@ -74,7 +114,10 @@ def adminloginPage(request):
         admin = authenticate(request, username=username, password=password)
         if admin is not None:
             login(request, admin)
-            admin_name = request.session["username"]
+            request.session['user_name'] = admin.email
+            role_id = admin.ch_user_role_id
+            request.session['user_role'] = role_id
+            admin_name = "Mangesh"
             adminaction = "Login on Web_page"
             event ="event"
             resultcode = "200"
@@ -89,60 +132,36 @@ def adminloginPage(request):
             messages.info(request, 'Username OR Password is incorrect')
     return redirect('home')
 
-# def userloginPage(request):
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             user_name = "Mangesh"
-#             useraction = "Login on Web_page"
-#             event ="event"
-#             resultcode = "200"
-#             user_activity(user_name, useraction, event, resultcode)
-#             return redirect('home')
-#         else:
-#             messages.info(request, 'Username OR Password is incorrect')
-#     return redirect('home')
 
-
+@login_required(login_url='/login_render/')
 def logoutUser(request):
     logout(request)
     return render(request, 'tool/login.html')
 
 
+@login_required(login_url='/login_render/')
 def landingPage(request):
-    return render(request, 'tool/login.html')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    return render(request, 'tool/login.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def view_logs(request):
     """
     This function create views of log
     """
-
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     log = user_activity_log.objects.all()
-    context = {"log" : log}
+    context = {
+        "log" : log,
+        'permission':permission
+        }
     return render(request, 'tool/logs.html', context)
 
 
-def LogsDelete(request):
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')
-        print(list_id)
-        for i in list_id:
-            log = user_activity_log.objects.filter(id=i).first()
-            log.delete()
-
-    context = {
-        'log': log,
-    }
-    return redirect('logs')    
-
-# @login_required(login_url='/login_render/')
-
-
+@login_required(login_url='/login_render/')
 def document(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(doc, 10)
@@ -161,14 +180,16 @@ def document(request):
             doc = cl_Document.objects.filter(ch_name__icontains=q)        
     context = {
         'doc': doc,
-        'users':users
+        'users':users,
+        'permission':permission
     }
     return render(request, 'tool/document.html', context)
 
 
+@login_required(login_url='/login_render/')
 def DocAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=request.POST.get('ch_organization'))
@@ -181,7 +202,6 @@ def DocAdd(request):
         except:
             Attachment = 'annonymous.pdf'
         doc = cl_Document(
-            # id=id,
             ch_name=ch_name,
             ch_organization=ch_organization,
             ch_version=ch_version,
@@ -197,23 +217,27 @@ def DocAdd(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('document')
-    return render(request, 'tool/document.html')
+    return render(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DocEdit(request,id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.filter(id=id).first()
     context = {
         'doc': doc,
+        'permission':permission
     }
     return render(request, 'tool/document.html', context)
 
 
+@login_required(login_url='/login_render/')
 def DocUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         discl = cl_Document.objects.filter(id = id).first()
         attachment_name = request.POST.get('disc_Attachment')
         if discl.disc_Attachment == attachment_name:
-            # id = request.POST.get('id')
             ch_name = request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
             ch_version = request.POST.get('ch_version')
@@ -237,7 +261,7 @@ def DocUpdate(request, id):
             resultcode = "200"
             user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
-        # return render(request, 'tool/document.html')
+
         else:
             ch_name=request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
@@ -261,9 +285,10 @@ def DocUpdate(request, id):
             )
             doc.save()
             return redirect('document')
-    return render(request, 'tool/document.html')
+    return render(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DocDelete(request,id):
     doc = cl_Document.objects.filter(id=id)
     if request.method == "POST":
@@ -272,14 +297,12 @@ def DocDelete(request,id):
         for i in list_id:
             doc = cl_Document.objects.filter(id=i).first()
             doc.delete()
-    doc.delete()
-    context = {
-        'doc': doc,
-    }
     return redirect('document')
 
 
+@login_required(login_url='/login_render/')
 def DeleteAttachedPDF(request,id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     print('function called')
     id = request.GET['id']
     doc = cl_Document.objects.filter(id = id).first()
@@ -289,9 +312,9 @@ def DeleteAttachedPDF(request,id):
     print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
-        return HttpResponse(request, 'tool/document.html')
+        return HttpResponse(request, 'tool/document.html',{'permission':permission})
     else:
-        return HttpResponse(request, 'tool/document.html')
+        return HttpResponse(request, 'tool/document.html',{'permission':permission})
 
 
 
@@ -306,7 +329,6 @@ def render_to_pdf(template_src, context_dict={}):
 
 
 
-
 class ViewAttachedPDF(View):
 	def get(self, request, path):
             media_path = settings.MEDIA_ROOT
@@ -315,10 +337,11 @@ class ViewAttachedPDF(View):
             return FileResponse(open(file_path, 'rb'), content_type='application/')
 
 
-
 ############## Location ##########
 
+@login_required(login_url='/login_render/')
 def Location(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     loc = cl_Location.objects.all()
     page = request.GET.get('page', 1)
 
@@ -337,7 +360,8 @@ def Location(request):
 
     context = {
         'loc': loc,
-        'users':users
+        'users':users,
+        'permission':permission
     }
     return render(request, 'tool/location.html', context)
 
@@ -345,6 +369,7 @@ def Location(request):
 
 @login_required(login_url='/login_render/')
 def LADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
@@ -370,21 +395,24 @@ def LADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('location')
-    return render(request, 'tool/location.html')
+    return render(request, 'tool/location.html',{'permission':permission})
 
 
 
 @login_required(login_url='/login_render/')
 def LEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     loc = cl_Location.objects.all()
     context = {
         'loc': loc,
+        'permission':permission
     }
     return render(request, 'tool/location.html', context)
 
 
 @login_required(login_url='/login_render/')
 def LUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_location_name = request.POST.get('ch_location_name')
@@ -411,30 +439,25 @@ def LUpdate(request, id):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('location')
-    return redirect(request, 'tool/location.html')
+    return redirect(request, 'tool/location.html',{'permission':permission})
 
 
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def LDelete(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         for i in list_id:
             loc = cl_Location.objects.filter(id=i).first()
             loc.delete()
-            admin_name = request.session["username"]
-            adminaction = "Login on Web_page"
-            event ="event"
-            resultcode = "200"
-            user_activity(admin_name, adminaction, event, resultcode)
+        return redirect('location')
+    return redirect(request, 'tool/location.html',{'permission':permission})
 
-    context = {
-        'loc': loc,
-    }
-    return redirect('location')
 
 
 @login_required(login_url='/login_render/')
 def new_organization(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(org, 10)
@@ -448,12 +471,13 @@ def new_organization(request):
         q = request.GET.get('searchname')
         if q != None:
             org = cl_New_organization.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/neworganization.html', {'org': org,'users':users})
+    return render(request, 'tool/neworganization.html', {'org': org,'users':users,'permission':permission})
 
 
 
 @login_required(login_url='/login_render/')
 def OrgADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = str.capitalize(request.POST.get('ch_name'))
@@ -475,21 +499,24 @@ def OrgADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('new_organization')
-    return render(request, 'tool/neworganization.html')
+    return render(request, 'tool/neworganization.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def OrgEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     org = cl_New_organization.objects.all()
     context = {
         'org': org,
+        'permission':permission
     }
     return render(request, 'tool/neworganization.html', context)
 
 
 
 @login_required(login_url='/login_render/')
-def OrgUpdate(request, id):
+def OrgUpdate(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -507,23 +534,19 @@ def OrgUpdate(request, id):
         )
         org.save()
         return redirect('new_organization')
-    return render(request, 'tool/neworganization.html')
+    return render(request, 'tool/neworganization.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def OrgDelete(request):
     org = cl_New_organization.objects.filter()
     org.delete()
-    admin_name = request.session["username"]
-    adminaction = "Delete Organization"
-    event ="event"
-    resultcode = "200"
-    user_activity(admin_name, adminaction, event, resultcode)
     return redirect('new_organization')
 
 
 @login_required(login_url='/login_render/')
 def client(request):    
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     per = cl_Person.objects.all()
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
@@ -538,11 +561,12 @@ def client(request):
         q = request.GET.get('searchname')
         if q != None:
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
-    return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users})
+    return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def ADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_person_firstname = str.capitalize(
             request.POST.get('ch_person_firstname'))
@@ -583,11 +607,23 @@ def ADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
-    return render(request, 'tool/client.html')
+    return render(request, 'tool/client.html',{'permission':permission})
 
 
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
+def Edit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    per = cl_Person.objects.all()
+    context = {
+        'per': per,
+        'permission':permission
+    }
+    return render(request, 'tool/client.html', context)
+
+
+@login_required(login_url='/login_render/')
 def Update(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_person_firstname = request.POST.get('ch_person_firstname')
@@ -624,27 +660,27 @@ def Update(request, id):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
-    return render(request, 'tool/client.html')
+    return render(request, 'tool/client.html',{'permission':permission})
 
 
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def Delete(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             per = cl_Person.objects.filter(id=i).first()
             per.delete()
-        admin_name = request.session["username"]
-        adminaction = "delete the persion"
-        event ="event"
-        resultcode = "200"
-        user_activity(admin_name, adminaction, event, resultcode)
         return redirect('client')
+    return render(request, 'tool/client.html',{'permission':permission})
+
 
 ########### Document #####################
 
+@login_required(login_url='/login_render/')
 def document(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(doc, 10)
@@ -664,13 +700,16 @@ def document(request):
             doc = cl_Document.objects.filter(ch_name__icontains=q)        
     context = {
         'doc': doc,
-        'users':users
+        'users':users,
+        'permission':permission
     }
     return render(request, 'tool/document.html', context)
 
+
+@login_required(login_url='/login_render/')
 def DocAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
             ch_name=request.POST.get('ch_organization'))
@@ -683,7 +722,6 @@ def DocAdd(request):
         except:
             Attachment = 'annonymous.pdf'
         doc = cl_Document(
-            # id=id,
             ch_name=ch_name,
             ch_organization=ch_organization,
             ch_version=ch_version,
@@ -699,10 +737,23 @@ def DocAdd(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('document')
-    return render(request, 'tool/document.html')
+    return render(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
+def DocEdit(request,id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    doc = cl_Document.objects.filter(id=id).first()
+    context = {
+        'doc': doc,
+        'permission':permission
+    }
+    return render(request, 'tool/document.html', context)
+
+
+@login_required(login_url='/login_render/')
 def DocUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         discl = cl_Document.objects.filter(id = id).first()
         attachment_name = request.POST.get('disc_Attachment')
@@ -730,6 +781,7 @@ def DocUpdate(request, id):
             resultcode = "200"
             user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
+        
         else:
             ch_name=request.POST.get('ch_name')
             ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
@@ -758,25 +810,25 @@ def DocUpdate(request, id):
             resultcode = "200"
             user_activity(admin_name, adminaction, event, resultcode)
             return redirect('document')
-    return render(request, 'tool/document.html')
+    return render(request, 'tool/document.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DocDelete(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         print(list_id)
         for i in list_id:
             doc = cl_Document.objects.filter(id=i)
             doc.delete()
-        admin_name = request.session["username"]
-        adminaction = "update the documents"
-        event ="event"
-        resultcode = "200"
-        user_activity(admin_name, adminaction, event, resultcode)
     return redirect('document')
 
 
+@login_required(login_url='/login_render/')
 def DeleteAttachedPDF(request,id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    print('function called')
     id = request.GET['id']
     doc = cl_Document.objects.filter(id = id).first()
     file_to_delete = str(doc.disc_Attachment)
@@ -791,8 +843,7 @@ def DeleteAttachedPDF(request,id):
         user_activity(admin_name, adminaction, event, resultcode)
         return HttpResponse(request, 'tool/document.html')
     else:
-        return HttpResponse(request, 'tool/document.html')
-
+        return HttpResponse(request, 'tool/document.html',{'permission':permission})
 
 
 def render_to_pdf(template_src, context_dict={}):
@@ -805,11 +856,11 @@ def render_to_pdf(template_src, context_dict={}):
 	return None
 
 
+################### Software #####################
 
-###################  Software #####################
-
-
+@login_required(login_url='/login_render/')
 def software(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     soft = cl_Software.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(soft, 10)
@@ -819,14 +870,17 @@ def software(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
+   
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             soft = cl_Software.objects.filter(ch_teamname__icontains=q)
-        return render(request, 'tool/software.html', {'soft': soft,'users':users})
+        return render(request, 'tool/software.html', {'soft': soft,'users':users,'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def softAdd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
@@ -847,10 +901,23 @@ def softAdd(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('software')
-    return render(request, 'tool/software.html')
+    return render(request, 'tool/software.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
+def softEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    soft = cl_Software.objects.all()
+    context = {
+        'soft': soft,
+        'permission':permission
+    }
+    return render(request, 'tool/software.html', context)
+
+
+@login_required(login_url='/login_render/')
 def softUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
@@ -871,9 +938,10 @@ def softUpdate(request, id):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('software')
-    return redirect(request, 'tool/software.html')
+    return redirect(request, 'tool/software.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def softDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -889,15 +957,12 @@ def softDelete(request):
         return redirect('software')
 
 
-
-
-
-
 ################### Team ######################
 
 
-# @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def team(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "GET":
         tem = cl_Team.objects.all()
         org = cl_New_organization.objects.all()
@@ -912,12 +977,15 @@ def team(request):
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
-    return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users})
+    return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
+@login_required(login_url='/login_render/')
 def TADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
+        print('organization :',request.POST.get('ch_organization'))
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.filter(
@@ -942,12 +1010,25 @@ def TADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('team')
-    return render(request, 'tool/service.html')
+    return render(request, 'tool/service.html',{'permission':permission})
+
+
+
+@login_required(login_url='/login_render/')
+def TEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    tem = cl_Team.objects.all()
+    context = {
+        'tem': tem,
+        'permission':permission
+    }
+    return render(request, 'tool/service.html', context)
 
 
 
 @login_required(login_url='/login_render/')
 def TUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
@@ -974,9 +1055,10 @@ def TUpdate(request, id):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('team')
-    return render(request, 'tool/service.html')
+    return render(request, 'tool/service.html',{'permission':permission})
 
-# @login_required(login_url='/login_render/')
+
+@login_required(login_url='/login_render/')
 def TDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
@@ -992,9 +1074,11 @@ def TDelete(request):
         return redirect('team')
 
 
+ 
 ################### New channge   #############################
 @login_required(login_url='/login_render/')
 def newchange(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     nchange = cl_New_change.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(nchange, 10)
@@ -1011,11 +1095,12 @@ def newchange(request):
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person,'users':users})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def CADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         print('organization :', request.POST.get('ch_organization'))
         ch_organization = cl_New_organization.objects.get(
@@ -1049,11 +1134,23 @@ def CADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
-    return render(request, 'tool/newchange.html')
+    return render(request, 'tool/newchange.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def CEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    nchange = cl_New_change.objects.all()
+    context = {
+        'nchange': nchange,
+        'permission':permission
+    }
+    return render(request, 'tool/newchange.html', context)
 
 
 @login_required(login_url='/login_render/')
 def CUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
@@ -1068,7 +1165,6 @@ def CUpdate(request, id):
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = nchange.dt_start_date
-        # dt_start_date = request.POST.get('dt_start_date')
         dt_Updated_date = request.POST.get('dt_Updated_date')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
@@ -1085,7 +1181,6 @@ def CUpdate(request, id):
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description=txt_description,
-
         )
         nchange.save()
         admin_name = request.session["username"]
@@ -1094,7 +1189,7 @@ def CUpdate(request, id):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
-    return render(request, 'tool/newchange.html')
+    return render(request, 'tool/newchange.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1115,6 +1210,7 @@ def CDelete(request):
 
 @login_required(login_url='/login_render/')
 def assign_changeModal(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
@@ -1140,30 +1236,32 @@ def assign_changeModal(request):
         nchange = cl_New_change.objects.all()
         context = {
             'nchange': nchange,
+            'permission':permission
         }
     return render(request, 'tool/tassign.html', context)
 
 
+########## Approve Change ############
 
-#############################################################
-
-##########Approve Change###########
+@login_required(login_url='/login_render/')
 def send_approval_Mail(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
         subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
+        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
         sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
+        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
         send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html')    
+    return render(request, 'tool/approve_change.html',{'permission':permission})
 
 
-#############################################################
+######################### Incident Mangement ####################################
 
 @login_required(login_url='/login_render/')
 def user_request(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(ur, 10)
@@ -1182,9 +1280,11 @@ def user_request(request):
         context = {
             'ur': ur,
             'escalated_ur': escalated_ur,
-            'users':users
+            'users':users,
+            'permission':permission
             }
         return render(request, 'tool/userrequest.html', context)
+
 
 
 def escalation(ur):
@@ -1199,6 +1299,7 @@ def escalation(ur):
 
 @login_required(login_url='/login_render/')
 def UADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         print(id)
@@ -1206,7 +1307,6 @@ def UADD(request):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         fk_caller = cl_Person.objects.get(
             ch_person_firstname=str.capitalize(request.POST.get('ch_Person')))
-        # fk_caller = request.POST.get('ch_Person')
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -1240,7 +1340,6 @@ def UADD(request):
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
-
         )
         ur.save()
         admin_name = request.session["username"]
@@ -1249,20 +1348,23 @@ def UADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('userrequest')
-    return render(request, 'tool/userrequest.html')
+    return render(request, 'tool/userrequest.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def UEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.all()
     context = {
         'ur': ur,
+        'permission':permission
     }
     return render(request, 'tool/userrequest.html', context)
 
 
 @login_required(login_url='/login_render/')
 def UUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.get(
@@ -1310,11 +1412,12 @@ def UUpdate(request, id):
         user_activity(admin_name, adminaction, event, resultcode)
 
         return redirect('userrequest')
-    return render(request, 'tool/userrequest.html')
+    return render(request, 'tool/userrequest.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def UDelete(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.filter(id=id)
     ur.delete()
     admin_name = request.session["username"]
@@ -1327,14 +1430,16 @@ def UDelete(request, id):
 
 @login_required(login_url='/login_render/')
 def escalate_notify(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.all()
-    return render(request, 'tool/userrequest.html', {'ur': ur})
+    return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
 
 #######################################################
 
 @login_required(login_url='/login_render/')
 def customer_contract(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     cust = cl_Customer_contract.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(cust, 10)
@@ -1348,11 +1453,12 @@ def customer_contract(request):
         q = request.GET.get('searchstatus')
         if q != None:
             cust = cl_Customer_contract.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/scustomer_contract.html', {'cust': cust,'users':users})
+    return render(request, 'tool/scustomer_contract.html', {'cust': cust,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SCADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_cname = request.POST.get('ch_cname')
         ch_ccustomer = cl_New_organization.objects.get(
@@ -1389,20 +1495,23 @@ def SCADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('customercontract')
-    return render(request, 'tool/scustomer_contract.html')
+    return render(request, 'tool/scustomer_contract.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SCEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     cust = cl_Customer_contract.objects.all()
     context = {
         'cust': cust,
+        'permission':permission
     }
     return render(request, 'tool/scustomer_contract.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SCUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
@@ -1439,7 +1548,7 @@ def SCUpdate(request, id):
         )
         cust.save()
         return redirect('customercontract')
-    return render(request, 'tool/scustomer_contract.html')
+    return render(request, 'tool/scustomer_contract.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1459,6 +1568,7 @@ def SCDelete(request):
 
 @login_required(login_url='/login_render/')
 def provider_contract(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     pro = cl_Providercontract.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(pro, 10)
@@ -1472,11 +1582,12 @@ def provider_contract(request):
         q = request.GET.get('searchstatus')
         if q != None:
             pro = cl_Customer_contract.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/sprovidercontract.html', {'pro': pro,'users':users})
+    return render(request, 'tool/sprovidercontract.html', {'pro': pro,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SPADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_pname = request.POST.get('ch_pname')
         ch_customer = cl_New_organization.objects.get(
@@ -1515,28 +1626,27 @@ def SPADD(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('providercontract')
-
-    return render(request, 'tool/sprovidercontract.html')
+    return render(request, 'tool/sprovidercontract.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SPEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     pro = cl_Providercontract.objects.all()
     context = {
         'pro': pro,
+        'permission':permission
     }
     return render(request, 'tool/sprovidercontract.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SPUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        # print('o_id = ',org_id)
-        # ch_organization = org_id
         id = request.POST.get('id')
         print('organization :', request.POST.get('ch_organization'))
         ch_pname = request.POST.get('ch_pname')
@@ -1571,11 +1681,8 @@ def SPUpdate(request, id):
             ch_sla=ch_sla,
         )
         pro.save()
-        # print(nchange)
-
         return redirect('providercontract')
-
-    return render(request, 'tool/sprovidercontract.html')
+    return render(request, 'tool/sprovidercontract.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1595,6 +1702,7 @@ def SPDelete(request):
 
 @login_required(login_url='/login_render/')
 def servicefamilies(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sf = cl_Servicefamilies.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(sf, 10)
@@ -1611,52 +1719,51 @@ def servicefamilies(request):
 
     context = {
         'sf': sf,
-        'users':users
+        'users':users,
+        'permission':permission
     }
     return render(request, 'tool/sservicefamily.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SFADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-
         ch_sname = request.POST.get('ch_sname')
-
         sf = cl_Servicefamilies(
             id=id,
             ch_sname=ch_sname,
-
-
         )
         sf.save()
         return redirect('servicefamilies')
-    return render(request, 'tool/sservicefamily..html')
+    return render(request, 'tool/sservicefamily.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SFEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sf = cl_Servicefamilies.objects.all()
     context = {
         'sf': sf,
+        'permission':permission
     }
     return render(request, 'tool/sservicefamily.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SFUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_sname = request.POST.get('ch_sname')
-
         sf = cl_Servicefamilies(
             id=id,
             ch_sname=ch_sname,
-
         )
         sf.save()
         return redirect('servicefamilies')
-    return redirect(request, 'tool/sservicefamily.html')
+    return redirect(request, 'tool/sservicefamily.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1676,6 +1783,7 @@ def SFDelete(request):
 
 @login_required(login_url='/login_render/')
 def sservice(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ser = cl_Service.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(ser, 10)
@@ -1690,13 +1798,13 @@ def sservice(request):
         q = request.GET.get('searchstatus')
         if q != None:
             ser = cl_Service.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/sservice.html', {'ser': ser,'users':users})
+    return render(request, 'tool/sservice.html', {'ser': ser,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SSADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'
         id = request.POST.get('id')
 
         ch_ssname = request.POST.get('ch_ssname')
@@ -1716,29 +1824,30 @@ def SSADD(request):
             txt_description=txt_description,
         )
         ser.save()
-        # print(nchange)
         return redirect('service')
 
-    return render(request, 'tool/sservice.html')
+    return render(request, 'tool/sservice.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SSEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ser = cl_Service.objects.all()
     context = {
         'ser': ser,
+        'permission':permission
     }
     return render(request, 'tool/sservice.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SSUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
     if request.method == "POST":
         id = request.POST.get('id')
-
         ch_ssname = request.POST.get('ch_ssname')
         ch_sprovider = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -1753,14 +1862,10 @@ def SSUpdate(request, id):
             ch_service_family=ch_service_family,
             ch_status=ch_status,
             txt_description=txt_description,
-
         )
         ser.save()
-
-        # print(nchange)
         return redirect('service')
-
-    return render(request, 'tool/sservice.html')
+    return render(request, 'tool/sservice.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1777,10 +1882,12 @@ def SSDelete(request):
     }
     return redirect('service')
 
+######################################################
 
 
 @login_required(login_url='/login_render/')
 def service_subcategory(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sub = cl_Service_subcategory.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1796,15 +1903,13 @@ def service_subcategory(request):
         q = request.GET.get('searchstatus')
         if q != None:
             sub = cl_Service_subcategory.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/service_subcategory.html', {'sub': sub,'users':users})
+    return render(request, 'tool/service_subcategory.html', {'sub': sub,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'
-        # id = request.POST.get('id')
-
         ch_subname = request.POST.get('ch_subname')
         ch_sservice = cl_Service.objects.get(
             ch_ssname=request.POST.get('ch_sservice'))
@@ -1812,7 +1917,6 @@ def SADD(request):
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
         sub = cl_Service_subcategory(
-            # id=id,
             ch_subname=ch_subname,
             ch_sservice=ch_sservice,
             ch_status=ch_status,
@@ -1820,23 +1924,24 @@ def SADD(request):
             txt_description=txt_description,
         )
         sub.save()
-        # print(nchange)
-
         return redirect('service_subcategory')
-    return render(request, 'tool/service_subcategory.html')
+    return render(request, 'tool/service_subcategory.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sub = cl_Service_subcategory.objects.all()
     context = {
         'sub': sub,
+        'permission':permission
     }
     return render(request, 'tool/service_subcategory.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
@@ -1858,11 +1963,8 @@ def SUpdate(request, id):
             txt_description=txt_description,
         )
         sub.save()
-
-        # print(nchange)
         return redirect('service_subcategory')
-
-    return render(request, 'tool/service_subcategory.html')
+    return render(request, 'tool/service_subcategory.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1880,8 +1982,11 @@ def SDelete(request):
     return redirect('service_subcategory')
 
 
+##############################################
+
 @login_required(login_url='/login_render/')
 def sla(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sl = cl_Sla.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1896,43 +2001,42 @@ def sla(request):
         q = request.GET.get('searchstatus')
         if q != None:
             sl = cl_Sla.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/ssla.html', {'sl': sl,'users':users})
+    return render(request, 'tool/ssla.html', {'sl': sl,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SLADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'
-        # id = request.POST.get('id')
-
         ch_slname = request.POST.get('ch_slname')
         ch_slaprovider = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         txt_description = request.POST.get('txt_description')
 
         sl = cl_Sla(
-            # id=id,
             ch_slname=ch_slname,
             ch_slaprovider=ch_slaprovider,
             txt_description=txt_description
         )
         sl.save()
-        # print(nchange)
         return redirect('sla')
-    return render(request, 'tool/ssla.html')
+    return render(request, 'tool/ssla.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SLEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sl = cl_Sla.objects.all()
     context = {
         'sl': sl,
+        'permission':permission
     }
     return render(request, 'tool/ssla.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SLUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
@@ -1949,11 +2053,8 @@ def SLUpdate(request, id):
             txt_description=txt_description
         )
         sl.save()
-
-        # print(nchange)
         return redirect('sla')
-
-    return render(request, 'tool/ssla.html')
+    return render(request, 'tool/ssla.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1970,9 +2071,11 @@ def SLDelete(request):
     }
     return redirect('sla')
 
+################################################
 
 @login_required(login_url='/login_render/')
 def SLT(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     slt = cl_Slt.objects.all()
     page = request.GET.get('page', 1)
 
@@ -1986,15 +2089,16 @@ def SLT(request):
 
     context = {
         'slt': slt,
-        'users':users
+        'users':users,
+        'permission':permission
     }
     return render(request, 'tool/sslt.html', context)
 
 
 @login_required(login_url='/login_render/')
 def STADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id =  request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_priority = request.POST.get('ch_priority')
         ch_request_type = request.POST.get('ch_request_type')
@@ -2003,31 +2107,32 @@ def STADD(request):
         ch_unit = request.POST.get('ch_unit')
 
         slt = cl_Slt(
-            # id = id,
             ch_name=ch_name,
             ch_priority=ch_priority,
             ch_request_type=ch_request_type,
             ch_metric=ch_metric,
             ch_value=ch_value,
             ch_unit=ch_unit,
-
         )
         slt.save()
         return redirect('slt')
-    return render(request, 'tool/slt.html')
+    return render(request, 'tool/slt.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SLTEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     slt = cl_Slt.objects.all()
     context = {
         'slt': slt,
+        'permission':permission
     }
     return render(request, 'tool/slt.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SLTUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
@@ -2048,7 +2153,7 @@ def SLTUpdate(request, id):
         )
         slt.save()
         return redirect('slt')
-    return redirect(request, 'tool/slt.html')
+    return redirect(request, 'tool/slt.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2068,6 +2173,7 @@ def SLTDelete(request):
 
 @login_required(login_url='/login_render/')
 def servicedelivery(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sd = cl_Servicedelivery.objects.all()
     page = request.GET.get('page', 1)
 
@@ -2083,51 +2189,47 @@ def servicedelivery(request):
         q = request.GET.get('searchname')
         if q != None:
             sd = cl_Servicedelivery.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/sdelivery.html', {'sd': sd,'users':users})
+    return render(request, 'tool/sdelivery.html', {'sd': sd,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SDADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # org_id = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'
-        # id = request.POST.get('id')
-
         ch_sdname = request.POST.get('ch_sdname')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         txt_description = request.POST.get('txt_description')
 
         sd = cl_Servicedelivery(
-            # id=id,
             ch_sdname=ch_sdname,
             ch_organization=ch_organization,
             txt_description=txt_description
         )
         sd.save()
-        # print(nchange)
-
         return redirect('servicedelivery')
-
-    return render(request, 'tool/sdelivery.html')
+    return render(request, 'tool/sdelivery.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SDEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     sd = cl_Servicedelivery.objects.all()
     context = {
         'sd': sd,
+        'permission':permission
     }
     return render(request, 'tool/sdelivery.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SDUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
     if request.method == "POST":
         id = request.POST.get('id')
-
         ch_sdname = request.POST.get('ch_sdname')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -2137,14 +2239,10 @@ def SDUpdate(request, id):
             ch_sdname=ch_sdname,
             ch_organization=ch_organization,
             txt_description=txt_description
-
         )
         sd.save()
-
-        # print(nchange)
         return redirect('servicedelivery')
-
-    return render(request, 'tool/sdelivery.html')
+    return render(request, 'tool/sdelivery.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2165,63 +2263,82 @@ def SDDelete(request):
 
 @login_required(login_url='/login_render/')
 def synchro_data_source(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = SyncrodataForm()
     if request.method == 'POST':
         form = SyncrodataForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/sysconfisynchro.html', context)
 
 
 @login_required(login_url='/login_render/')
 def oauth_google(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = OauthgoogleForm()
     if request.method == 'POST':
         form = OauthgoogleForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/authgoogle.html', context)
 
 
 @login_required(login_url='/login_render/')
 def oauth_mazuree(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = OauthmazureeForm()
     if request.method == 'POST':
         form = OauthmazureeForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/authmazure.html', context)
 
 
 @login_required(login_url='/login_render/')
 def ldapuser(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = LdapuserForm()
     if request.method == 'POST':
         form = LdapuserForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/ldapuser.html', context)
 
 
 @login_required(login_url='/login_render/')
 def externaluser(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ext = cl_Externaluser.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             ext = cl_Externaluser.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/externaluser.html', {'ext': ext})
+    return render(request, 'tool/externaluser.html', {'ext': ext, 'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def extADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_person = cl_Person.objects.get(
             ch_person_firstname=request.POST.get('ch_person'))
@@ -2240,18 +2357,23 @@ def extADD(request):
         )
         ext.save()
         return redirect('externaluser')
-    return render(request, 'tool/externaluser.html')
+    return render(request, 'tool/externaluser.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def extEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     ext = cl_Externaluser.objects.all()
     context = {
         'ext': ext,
+        'permission':permission
     }
     return render(request, 'tool/externaluser.html', context)
 
 
+@login_required(login_url='/login_render/')
 def extUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     Function for update change_information
     """
@@ -2275,131 +2397,167 @@ def extUpdate(request, id):
         )
         ext.save()
         return redirect('externaluser')
-    return render(request, 'tool/externaluser.html')
-
-
-def extDelete(request, id):
-    ext = cl_Externaluser.objects.get(id=id)
-    ext.delete()
-    context = {
-        'ext': ext,
-    }
-    return redirect('externaluser')
+    return render(request, 'tool/externaluser.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
+def extDelete(request, id):
+    ext = cl_Externaluser.objects.get(id=id)
+    ext.delete()
+    return redirect('externaluser')
+
+#################################################
+
+@login_required(login_url='/login_render/')
 def itsmuser(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = ItsmuserForm()
     if request.method == 'POST':
         form = ItsmuserForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/itsmuser.html', context)
 
 
 @login_required(login_url='/login_render/')
 def slacknoti(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = SlacknotiForm()
     if request.method == 'POST':
         form = SlacknotiForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Data Add Successfully")
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/slacknoti.html', context)
 
 
 @login_required(login_url='/login_render/')
 def micronoti(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = MicronotiForm()
     if request.method == 'POST':
         form = MicronotiForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Data Add Successfully')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/micronoti.html', context)
 
 
 @login_required(login_url='/login_render/')
 def webhook(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = WebhookForm()
     if request.method == 'POST':
         form = WebhookForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Data Add Successfully')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/webhook.html', context)
 
 
 @login_required(login_url='/login_render/')
 def googlechat(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = GooglechatForm()
     if request.method == 'POST':
         form = GooglechatForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Data Add Successfully')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/googlechat.html', context)
 
 
 @login_required(login_url='/login_render/')
 def rocketchat(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = RocketchatForm()
     if request.method == 'POST':
         form = RocketchatForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Data Add Successfully')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/rocketchat.html', context)
 
 
 @login_required(login_url='/login_render/')
 def itsmwebhook(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     form = ItsmwebhookForm()
     if request.method == 'POST':
         form = ItsmwebhookForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Data Add Successfully')
-    context = {'form': form}
+    context = {
+        'form': form,
+        'permission':permission
+        }
     return render(request, 'tool/itsmwebhook.html', context)
+
 
  ############ CSV ###############
 
-
+@login_required(login_url='/login_render/')
 def csvimport(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     It is view function for the additon of new users
     """
     if request.method == "POST":
-        # disc_Attachment = request.POST.get('disc_Attachment')
+        # disc_Attachment = request.POST.get('disc_Attachment')     
         try:
             Attachment = request.FILES['disc_Attachment']
         except:
             Attachment = 'annonymous.pdf'
-        csv = CSV_import(
+
+        csv = CSV_import(      
             disc_Attachment = Attachment
         )
         csv.save()
         return redirect('csvimport')
-    return render(request, 'tool/add_file1.html')
+    return render(request, 'tool/add_file1.html',{'permission':permission})
 
 
+
+@login_required(login_url='/login_render/')
 def csv_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     csv = CSV_import.objects.filter(Id = id).first
     context = {
         'csv': csv,
+        'permission':permission
     }
     return render(request, 'tool/edit_file.html', context)    
 
 
+@login_required(login_url='/login_render/')
 def csv_update(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     """
     It is view function for the additon of new users
     """
@@ -2409,11 +2567,11 @@ def csv_update(request, id):
         if discl.disc_Attachment == attachment_name:
             csv = CSV_import(
                 Id=id,
-                disc_Attachment = attachment_name
+                 disc_Attachment = attachment_name        
             )
             csv.save()
             return redirect('csvimport')
-        else:
+        else: 
             try:
                 Attachment = request.FILES['disc_Attachment']
             except:
@@ -2423,10 +2581,12 @@ def csv_update(request, id):
             )
             csv.save()
             return redirect('csvimport')
-    return render(request, 'tool/edit_file.html')
+    return render(request, 'tool/edit_file.html',{'permission':permission})
 
 
+@login_required(login_url='/login_render/')
 def DeleteCSVAttachedPDF(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     id = request.GET['id']
     csv = CSV_import.objects.filter(Id = id).first()
     file_to_delete = str(csv.disc_Attachment)
@@ -2435,13 +2595,13 @@ def DeleteCSVAttachedPDF(request):
     print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
-        return HttpResponse(request, 'tool/edit_file.html')
+        return HttpResponse(request, 'tool/edit_file.html',{'permission':permission})
     else:
-        return HttpResponse(request, 'tool/edit_file.html')
+        return HttpResponse(request, 'tool/edit_file.html',{'permission':permission})
 
 
 
-
+@login_required(login_url='/login_render/')
 def render_to_pdf(template_src, context_dict={}):
 	template = get_template(template_src)
 	html  = template.render(context_dict)
@@ -2455,8 +2615,9 @@ def render_to_pdf(template_src, context_dict={}):
 
 #####################ROLE Management###########################
 
-
+@login_required(login_url='/login_render/')
 def role_display(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "GET":
         role = roles.objects.all()
         q = request.GET.get('searchrole')
@@ -2464,12 +2625,14 @@ def role_display(request):
             role = roles.objects.filter(role_name__icontains=q)        
         context = {
             'role': role,
+            'permission':permission
         }
         return render(request, 'tool/roles.html', context)
 
 
-
+@login_required(login_url='/login_render/')
 def role_add(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         role_name = request.POST.get('role_name')
 
@@ -2477,11 +2640,15 @@ def role_add(request):
         ch_m_e = request.POST.get('ch_m_e')
         ch_m_d = request.POST.get('ch_m_d')
         ch_m_v = request.POST.get('ch_m_v')
+        ch_m_approve = request.POST.get('ch_m_approve')
+        ch_m_assign = request.POST.get('ch_m_assign')
 
         inci_m_a = request.POST.get('inci_m_a') 
         inci_m_e = request.POST.get('inci_m_e')
         inci_m_d = request.POST.get('inci_m_d')
         inci_m_v = request.POST.get('inci_m_v')
+        inci_m_approve = request.POST.get('inci_m_approve')
+        inci_m_assign = request.POST.get('inci_m_assign')
 
         confi_m_a = request.POST.get('confi_m_a') 
         confi_m_e = request.POST.get('confi_m_e')
@@ -2508,7 +2675,6 @@ def role_add(request):
         history_d = request.POST.get('history_d')
         history_v = request.POST.get('history_v')
 
-
         role = roles (
         role_name = role_name,
 
@@ -2516,11 +2682,15 @@ def role_add(request):
         ch_m_e = ch_m_e,
         ch_m_d = ch_m_d,
         ch_m_v = ch_m_v,
+        ch_m_approve = ch_m_approve,
+        ch_m_assign = ch_m_assign,
 
         inci_m_a = inci_m_a, 
         inci_m_e = inci_m_e,
         inci_m_d = inci_m_d,
         inci_m_v = inci_m_v,
+        inci_m_approve = inci_m_approve,
+        inci_m_assign = inci_m_assign,
 
         confi_m_a = confi_m_a, 
         confi_m_e = confi_m_e,
@@ -2549,13 +2719,108 @@ def role_add(request):
         )
         role.save()
         return redirect('role_display')
-    return render(request, 'tool/roles.html')
+    return render(request, 'tool/roles.html',{'permission':permission})
+
+@login_required(login_url='/login_render/')
+def role_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        role_name = request.POST.get('role_name')
+
+        ch_m_a = request.POST.get('ch_m_a') 
+        ch_m_e = request.POST.get('ch_m_e')
+        ch_m_d = request.POST.get('ch_m_d')
+        ch_m_v = request.POST.get('ch_m_v')
+        ch_m_approve = request.POST.get('ch_m_approve')
+        ch_m_assign = request.POST.get('ch_m_assign')
+
+        inci_m_a = request.POST.get('inci_m_a') 
+        inci_m_e = request.POST.get('inci_m_e')
+        inci_m_d = request.POST.get('inci_m_d')
+        inci_m_v = request.POST.get('inci_m_v')
+        inci_m_approve = request.POST.get('inci_m_approve')
+        inci_m_assign = request.POST.get('inci_m_assign')
+
+        confi_m_a = request.POST.get('confi_m_a') 
+        confi_m_e = request.POST.get('confi_m_e')
+        confi_m_d = request.POST.get('confi_m_d')
+        confi_m_v = request.POST.get('confi_m_v')
+
+        serv_m_a = request.POST.get('serv_m_a') 
+        serv_m_e = request.POST.get('serv_m_e')
+        serv_m_d = request.POST.get('serv_m_d')
+        serv_m_v = request.POST.get('serv_m_v')
+
+        user_m_a = request.POST.get('user_m_a') 
+        user_m_e = request.POST.get('user_m_e')
+        user_m_d = request.POST.get('user_m_d')
+        user_m_v = request.POST.get('user_m_v')
+
+        setting_a = request.POST.get('setting_a') 
+        setting_e = request.POST.get('setting_e')
+        setting_d = request.POST.get('setting_d')
+        setting_v = request.POST.get('setting_v')
+
+        history_a = request.POST.get('history_a') 
+        history_e = request.POST.get('history_e')
+        history_d = request.POST.get('history_d')
+        history_v = request.POST.get('history_v')
+
+        role = roles (
+        id = id,
+        role_name = role_name,
+
+        ch_m_a = ch_m_a, 
+        ch_m_e = ch_m_e,
+        ch_m_d = ch_m_d,
+        ch_m_v = ch_m_v,
+        ch_m_approve = ch_m_approve,
+        ch_m_assign = ch_m_assign,
+
+        inci_m_a = inci_m_a, 
+        inci_m_e = inci_m_e,
+        inci_m_d = inci_m_d,
+        inci_m_v = inci_m_v,
+        inci_m_approve = inci_m_approve,
+        inci_m_assign = inci_m_assign,
+
+        confi_m_a = confi_m_a, 
+        confi_m_e = confi_m_e,
+        confi_m_d = confi_m_d,
+        confi_m_v = confi_m_v,
+
+        serv_m_a = serv_m_a, 
+        serv_m_e = serv_m_e,
+        serv_m_d = serv_m_d,
+        serv_m_v = serv_m_v,
+
+        user_m_a = user_m_a, 
+        user_m_e = user_m_e,
+        user_m_d = user_m_d,
+        user_m_v = user_m_v,
+
+        setting_a = setting_a, 
+        setting_e = setting_e,
+        setting_d = setting_d,
+        setting_v = setting_v,
+
+        history_a = history_a, 
+        history_e = history_e,
+        history_d = history_d,
+        history_v = history_v,
+        )
+        role.save()
+        return redirect('role_display')
+    return render(request, 'tool/roles.html',{'permission':permission})
 
 
+#############################################
 
+@login_required(login_url='/login_render/')
 def user_display(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "GET":
-        user = adminuser.objects.all()
+        user = adminuser.objects.exclude(ch_user_role_id=None)
         role = roles.objects.all()
         q = request.GET.get('searchrole')
         if q != None:
@@ -2563,11 +2828,13 @@ def user_display(request):
         context = {
             'user': user,
             'role': role,
+            'permission':permission
         }
         return render(request, 'tool/user.html', context)
 
-
+@login_required(login_url='/login_render/')
 def add_new_user(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_user_firstname = request.POST.get('ch_user_firstname')
         ch_user_lastname = request.POST.get('ch_user_lastname')
@@ -2575,7 +2842,7 @@ def add_new_user(request):
         ch_user_password = request.POST.get('ch_user_password')
         ch_user_role = roles.objects.get(
             role_name=request.POST.get('role_name'))
-        ch_user_expirydate = request.POST.get('ch_user_expirydate')
+        # ch_user_expirydate = request.POST.get('ch_user_expirydate')
         ch_user_mobilenumber = request.POST.get('ch_user_mobilenumber')
 
         user = adminuser(
@@ -2583,13 +2850,28 @@ def add_new_user(request):
             last_name=ch_user_lastname,
             email=ch_user_email,
             ch_user_role=ch_user_role,
-            ch_user_expirydate=ch_user_expirydate,
+            # ch_user_expirydate=ch_user_expirydate,
             ch_user_mobilenumber = ch_user_mobilenumber,
         )
         user.set_password(ch_user_password)
         user.save()
         return redirect('user_display')
-    return render(request, 'tool/user.html')
+    return render(request, 'tool/user.html',{'permission':permission})
+
+
+
+@login_required(login_url='/login_render/')
+def user_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    user = adminuser.objects.filter(id=id).first()
+    print(user.ch_user_role)
+    if request.method == "POST":
+        ch_user_updated_role = roles.objects.get(
+            role_name=request.POST.get('role_name'))
+        user.ch_user_role = ch_user_updated_role
+        user.save()
+        return redirect('user_display')
+    return render(request, 'tool/user.html',{'permission':permission})
 
 
 # =============================================================================

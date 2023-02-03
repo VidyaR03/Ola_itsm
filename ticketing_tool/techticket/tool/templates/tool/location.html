@@ -44,9 +44,9 @@
         </div>
     </div> -->
 
-    <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
-        <div>
-            <form action="" method="get" class="form-inline"
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+    <div>
+        <form action="" method="get" class="form-inline"
             style="display: inline-block; margin-top: 10px; margin-left: 10px;">
                 <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
                 <input type="submit" class="btn btn-primary" value="Search"><br>
@@ -107,28 +107,28 @@
         </tbody>
     </table>
 
-    
-  {% if users.has_other_pages %}
-  <ul class="pagination">
-    {% if users.has_previous %}
-      <li><a href="{% url 'location' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in users.paginator.page_range %}
-      {% if users.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-        <li><a href="{% url 'location' %}?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if users.has_next %}
-      <li><a href="{% url 'location' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-  </ul>
-  {% endif %}
+
+        {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li><a href="{% url 'location' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li><a href="{% url 'location' %}?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li><a href="{% url 'location' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+            {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
 
 
     <!-- Add Modal HTML -->
@@ -253,62 +253,60 @@
             </div>
             </form>
         </div>
-    </div>
- </div>
-    {% endfor %}
-</body>
-<!-- Delete Location -->
-<script>
-    $(document).ready(function () {
-        $('#delete_btn').click(function () {
-            if (confirm('Are You Sure You Want to Delete User?')) {
-                var id = [];
-                var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function (i) {
-                    id[i] = $(this).val()
+        {% endfor %}
+        </body>
+        <!-- Delete Location -->
+        <script>
+            $(document).ready(function () {
+                $('#delete_btn').click(function () {
+                    if (confirm('Are You Sure You Want to Delete User?')) {
+                        var id = [];
+                        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                        $(':checkbox:checked').each(function (i) {
+                            id[i] = $(this).val()
+                        })
+                        if (id.length === 0) {
+                            alert("please select user Which u want to delete?")
+                        } else {
+                            console.log(id)
+                            $.ajax({
+                                url: "{% url 'ldelete' %}",
+                                method: "POST",
+                                data: {
+                                    id,
+                                    csrfmiddlewaretoken: csrf
+                                },
+                                success: function (response) {
+                                    alert("success")
+                                    location.reload();
+                                    for (var i = 0; i < id.length; i++) {
+                                        var error = $(response).find('#error_text')
+                                        var error_class = $(error).attr('class')
+                                        $('#error').addClass(error_class)
+                                        $('#error').text(error.text())
+                                        $('tr#' + id[i] + '').fadeOut('slow');
+                                    }
+                                },
+                            })
+                        }
+                    }
                 })
-                if (id.length === 0) {
-                    alert("please select user Which u want to delete?")
+            })
+        </script>
+        <script>
+            $('#select-all').click(function (event) {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function () {
+                        this.checked = true;
+                    });
                 } else {
-                    console.log(id)
-                    $.ajax({
-                        url: "{% url 'ldelete' %}",
-                        method: "POST",
-                        data: {
-                            id,
-                            csrfmiddlewaretoken: csrf
-                        },
-                        success: function (response) {
-                            alert("success")
-                            location.reload();
-                            for (var i = 0; i < id.length; i++) {
-                                var error = $(response).find('#error_text')
-                                var error_class = $(error).attr('class')
-                                $('#error').addClass(error_class)
-                                $('#error').text(error.text())
-                                $('tr#' + id[i] + '').fadeOut('slow');
-                            }
-                        },
-                    })
+                    $(':checkbox').each(function () {
+                        this.checked = false;
+                    });
                 }
-            }
-        })
-    })
-</script>
-<script>
-    $('#select-all').click(function (event) {
-        if (this.checked) {
-            // Iterate each checkbox
-            $(':checkbox').each(function () {
-                this.checked = true;
             });
-        } else {
-            $(':checkbox').each(function () {
-                this.checked = false;
-            });
-        }
-    });
-</script>
-<!-- </html> -->
+        </script>
+        <!-- </html> -->
 
-{% endblock content %}
+        {% endblock content %}
