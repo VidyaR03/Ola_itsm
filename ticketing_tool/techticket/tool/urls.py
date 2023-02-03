@@ -18,7 +18,7 @@ urlpatterns = [
     
     #Url for person form
     path('add', views.ADD, name='add'),
-    path('edit', views.Edit, name='edit'),
+    # path('edit', views.Edit, name='edit'),
     path('update/<str:id>', views.Update, name='update'),
     path('delete/', views.Delete, name='delete'),
     path("client/", views.client,name='client'),
@@ -26,14 +26,14 @@ urlpatterns = [
     #Url For New Change
     path("newchange/", views.newchange, name='newchange'),
     path('cadd', views.CADD, name='cadd'),
-    path('cedit', views.CEdit, name='cedit'),
+    # path('cedit', views.CEdit, name='cedit'),
     path('cupdate/<str:id>', views.CUpdate, name='cupdate'),
     path('cdelete', views.CDelete, name='cdelete'),
     path('assign_change', views.assign_changeModal, name='assign_change'),
 
     #Url For Team form
     path('tadd', views.TADD, name='tadd'),
-    path('tedit', views.TEdit, name='tedit'),
+    # path('tedit', views.TEdit, name='tedit'),
     path('tupdate/<str:id>', views.TUpdate, name='tupdate'),
     path('tdelete/', views.TDelete, name='tdelete'),
     path("team/", views.team, name='team'),
@@ -42,16 +42,15 @@ urlpatterns = [
 
     path("contact/", views.contact, name='contact'),
     path("newci/", views.newci, name='newci'),
-   
-     
+
     #Url for Loction form
     path("location/", views.Location,name='location'),
     path('ladd', views.LADD, name='ladd'),
-    path('ledit', views.LEdit, name='ledit'),
+    # path('ledit', views.LEdit, name='ledit'),
     path('lupdate/<str:id>', views.LUpdate, name='lupdate'),
     path('ldelete/', views.LDelete, name='ldelete'),
           
-     #Url for Organization
+    #Url for Organization
     path("new_organization/", views.new_organization,name='new_organization'),
     path('OrgADD', views.OrgADD, name='OrgADD'),
     path('OrgEdit', views.OrgEdit, name='OrgEdit'),
@@ -59,7 +58,7 @@ urlpatterns = [
     path('OrgDelete/<str:id>', views.OrgDelete, name='OrgDelete'),
           
     
-     #url for document
+    #url for document
     path("document/", views.document, name='document'),
     path('DocAdd', views.DocAdd, name='DocAdd'),
     path('DocEdit', views.DocEdit, name='DocEdit'),
@@ -69,7 +68,7 @@ urlpatterns = [
     path('show_attched_pdf/<str:path>', views.ViewAttachedPDF.as_view(), name="show_attched_pdf"),
 
 
-     # Url Software
+    # Url Software
     path("software/", views.software, name='software'),
     path('softAdd', views.softAdd, name='softAdd'),
     path('softEdit', views.softEdit, name='softEdit'),
@@ -91,7 +90,7 @@ urlpatterns = [
     path('appUpdate/<str:id>', views.appUpdate, name='appUpdate'),
     path('appDelete/', views.appDelete, name='appDelete'),
 
-   
+  
     #Url for New DB
     path("newdb/", views.newdb_server, name='newdb'),
     path('dbAdd', views.dbAdd, name='dbAdd'),
@@ -99,16 +98,16 @@ urlpatterns = [
     path('dbUpdate/<str:id>', views.dbUpdate, name='dbUpdate'),
     path('dbDelete/', views.dbDelete, name='dbDelete'),
     
-   
-   #Url for DB Schema   
+  
+  #Url for DB Schema   
     path("databaseschema/", views.dataschema, name='databaseschema'),
     path('DSADD', views.DSADD, name='DSADD'),
     path('DSEdit', views.DSEdit, name='DSEdit'),
     path('DSUpdate/<str:id>', views.DSUpdate, name='DSUpdate'),
     path('DSDelete/', views.DSDelete, name='DSDelete'),
     
-   
-   
+  
+  
     #Url for Pc SOftware  
     path("pcsoftware/", views.pc_software, name='pcsoftware'),
     path('pcAdd', views.pcAdd, name='pcAdd'),
@@ -139,15 +138,15 @@ urlpatterns = [
     path('MEdit', views.MEdit, name='MEdit'),
     path('MUpdate/<str:id>', views.MUpdate, name='MUpdate'),
     path('MDelete/', views.MDelete, name='MDelete'),
-     
-     #URL for Network Type
+    
+    #URL for Network Type
     path("network_type/", views.network_type,name='network_type'),
     path('ntAdd', views.ntAdd, name='ntAdd'),
     path('ntEdit', views.ntEdit, name='ntEdit'),
     path('ntUpdate/<str:id>', views.ntUpdate, name='ntUpdate'),
     path('ntDelete/<str:id>', views.ntDelete, name='ntDelete'),
 
-     #URL for OS Family
+    #URL for OS Family
     path("os_family/", views.os_family,name='os_family'),
     path('osfAdd', views.osfAdd, name='osfAdd'),
     path('osfEdit', views.osfEdit, name='osfEdit'),
@@ -155,7 +154,7 @@ urlpatterns = [
     path('osfDelete/<str:id>', views.osfDelete, name='osfDelete'),
 
 
-     #URL for Brand Type
+    #URL for Brand Type
     path("brand/", views.brand,name='brand'),
     path('bnAdd', views.bnAdd, name='bnAdd'),
     path('bnEdit', views.bnEdit, name='bnEdit'),
@@ -172,7 +171,6 @@ urlpatterns = [
 
 
   #Url Path for IOS Version
-
     path("iosver/", views.iosver,name='iosver'),
     path('ivAdd', views.ivAdd, name='ivAdd'),
     path('ivEdit', views.ivEdit, name='ivEdit'),
@@ -188,8 +186,7 @@ urlpatterns = [
     path('osvDelete/<str:id>', views.osvDelete, name='osvDelete'),
     path('sendMail', views.send_approval_Mail, name='sendMail'),
 
-    
-   
+
     #URL For Network Device
     path("networkdevice/", views.networkdevice,name='networkdevice'),
     path('ndAdd', views.ndAdd, name='ndAdd'),
@@ -231,7 +228,7 @@ urlpatterns = [
     path('scupdate/<str:id>', views.SCUpdate, name='scupdate'),
     path('scdelete', views.SCDelete, name='scdelete'),
     
-     #Url for provider contract
+    #Url for provider contract
 
     path("providercontract/", views.provider_contract, name='providercontract'),
     path('spadd', views.SPADD, name='spadd'),

@@ -595,7 +595,9 @@ class cl_Pc_software(models.Model):
 
 
 class cl_User_request(models.Model):
-    """Models which create the table for User Request"""
+    """
+    Models which create the table for User Request
+    """
     id = models.AutoField(primary_key=True, editable=False)
     fk_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
@@ -609,7 +611,7 @@ class cl_User_request(models.Model):
     ch_urgency = models.CharField(max_length=100, null=True)
     ch_priority = models.CharField(max_length=100, null=True)
     dt_start_date = models.DateTimeField(default=datetime.now)
-    dt_updated_date = models.DateTimeField(default=datetime.now)
+    dt_updated_date = models.DateTimeField(default=datetime.now, null=True, blank=True)
     dt_escalation_date = models.DateTimeField(default=datetime.now)
     ch_service = models.CharField(max_length=100, null=True)
     ch_service_subcategory = models.CharField(max_length=100, null=True)
@@ -626,7 +628,9 @@ class cl_User_request(models.Model):
 
 
 class cl_New_change(models.Model):
-    """Models which create the table for New Change"""
+    """
+    Models which create the table for New Change
+    """
     id = models.AutoField(primary_key=True, editable=False)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)

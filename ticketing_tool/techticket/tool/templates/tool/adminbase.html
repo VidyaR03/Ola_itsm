@@ -34,7 +34,6 @@
 				<!-- <h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3> -->
 				<h3 style="margin-right: 20px;">Hello, {{ request.user.first_name }}</h3>
 				<input type="text" style="display: none;" id="current_user" value="{{ request.user.first_name }}" >
-
 				<div class="avt dropdown">
 					<img src="{% static 'images/admin.png' %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
 					<ul id="user-menu" class="dropdown-menu" style="position: relative; left: 30px;">
@@ -63,7 +62,6 @@
 					</span>
 				</a>
 			</li>
-
 			<li class="sidebar-nav-item" id="newchange_id">
 				<a href="/newchange" class="sidebar-nav-link" style="text-decoration: none;">
 					<div>
