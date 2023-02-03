@@ -325,10 +325,14 @@ urlpatterns = [
     # for user role 
     path("role_display", views.role_display, name='role_display'),
     path("role_add", views.role_add, name='role_add'),
+    path("role_edit/<str:id>", views.role_edit, name='role_edit'),
+
 
     # for user  
     path("user_display", views.user_display, name='user_display'),
     path("add_new_user", views.add_new_user, name='add_new_user'),
+    path("user_edit/<str:id>", views.user_edit, name='user_edit'),
+
 
     #url for system configuration
     path("synchro_data_source/", views.synchro_data_source,name='synchro_data_source'),

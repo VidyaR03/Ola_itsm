@@ -54,11 +54,13 @@
       <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'middlewareinstance' %}">Middleware Instance</a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-      <a href="{% url 'newci' %}" class="btn btn-primary" data-toggle="modal">
-        <span>Back to New CI</span></a>
+      {% if permission.confi_m_a == "on" or permission == None %}
       <a href="#addcl_Middleware_instanceModal" class="btn btn-success" data-toggle="modal">
         <span>Add New MI</span></a>
+      {% endif %}
+      {% if permission.confi_m_d == "on" or permission == None %}
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+      {% endif %}
     </div>
     <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
       <thead>
@@ -76,14 +78,16 @@
           <th>Business Criticality</th>
           <th>Move To Production Date</th>
           <th>Description</th>
+          {% if permission.confi_m_e == "on" or permission == None %}
+          <th>Edit</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
         {% csrf_token %}
 
         {% for i in users %}
-        {% if forloop.counter < 11 %}
-        <tr id="{{i.id}}">
+        {% if forloop.counter < 11 %} <tr id="{{i.id}}">
           <td>
             <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
           </td>
@@ -94,38 +98,40 @@
           <td>{{i.ch_business_criticality}}</td>
           <td>{{i.dt_move_to_production_date}}</td>
           <td>{{i.txt_description}}</td>
+          {% if permission.confi_m_e == "on" or permission == None %}
           <td>
             <a href="#editcl_Middleware_instanceModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
-        </tr>
-        {% endif %}
-        {% endfor %}
+          {% endif %}
+          </tr>
+          {% endif %}
+          {% endfor %}
       </tbody>
     </table>
-           
 
-{% if users.has_other_pages %}
-<ul class="pagination">
-  {% if users.has_previous %}
-    <li><a href="{% url 'middlewareinstance' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&laquo;</span></li>
-  {% endif %}
-  {% for i in users.paginator.page_range %}
-    {% if users.number == i %}
+
+    {% if users.has_other_pages %}
+    <ul class="pagination">
+      {% if users.has_previous %}
+      <li><a href="{% url 'middlewareinstance' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
       <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    {% else %}
+      {% else %}
       <li><a href="{% url 'middlewareinstance' %}?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if users.has_next %}
+      <li><a href="{% url 'middlewareinstance' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
     {% endif %}
-  {% endfor %}
-  {% if users.has_next %}
-    <li><a href="{% url 'middlewareinstance' %}?page={{ users.next_page_number }}">&raquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&raquo;</span></li>
-  {% endif %}
-</ul>
-{% endif %}
 
 
     <div id="addcl_Middleware_instanceModal" class="modal fade">
