@@ -98,10 +98,10 @@
                 <label>Role:<a href="{% url 'role_add' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <select class="form-control" name="role_name" id="role_name">
+                <select class="form-control" name="role_name" id="role_name" style="min-height:30px;min-width:280px;">
                   {% for i in role %}
                   <option value="{{i.role_name}}">{{i.role_name}}</option>
-                  {% endfor %}
+                  {% endfor %style="min-height:30px;min-width:280px;"}
                 </select>
               </div>
               <!-- <div class="form-group">

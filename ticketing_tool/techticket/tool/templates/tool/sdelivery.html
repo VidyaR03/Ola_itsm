@@ -156,15 +156,20 @@
                 <input name="ch_sdname" type="text" class="form-control">
               </div>
               <div class="form-group">
-                <label>Organization<a href="{% url 'new_organization' %}">
-                    <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                <input name="ch_organization" type="text" class="form-control" required>
+                <label>Organization:<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
               </div>
-
-              <div class="form-group">
-                <label>Description</label>
-                <input name="txt_description" type="text" class="form-control">
-              </div>
+  
+              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
+           
+            <div class="form-group">
+              <label>Description</label>
+              <input name="txt_description" type="text" class="form-control" >
             </div>
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

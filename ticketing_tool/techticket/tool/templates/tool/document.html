@@ -142,14 +142,14 @@
 
     <div id="addcl_DocumentModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="{% url 'DocAdd' %}" method="post" enctype='multipart/form-data'>
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Add Documents</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <!-- <div class="form-group">
                 <label>ID</label>
                 <input name="id" type="text" class="form-control" >
@@ -159,19 +159,27 @@
                 <input name="ch_name" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization<a href="{% url 'new_organization' %}">
+                <label>Organization:<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_organization" type="text" class="form-control" required>
-              </div>
+                </div>    
+                <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;">
+                  {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
+            <!-- </div> -->
               <div class="form-group">
                 <label>Version</label>
                 <input name="ch_version" type="text" class="form-control">
               </div>
+            
               <div class="form-group">
                 <label>Description</label>
                 <input name="txt_description" type="text" class="form-control">
               </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>Text</label>
                 <input name="txt_text" type="text" class="form-control">

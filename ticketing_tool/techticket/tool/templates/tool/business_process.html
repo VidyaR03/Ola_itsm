@@ -152,11 +152,16 @@
                 <input name="ch_business_name" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization<a href="{% url 'new_organization' %}">
+                <label>Organization:<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_organization" type="text" class="form-control" required>
               </div>
+  
+              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
                 <label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"

@@ -166,10 +166,14 @@
                                 <input name="txt_address" value="{{i.txt_address}}" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Organization<a href="{% url 'new_organization' %}">
+                                <label>Organization:<a href="{% url 'new_organization' %}">
                                         <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                                     </a></label>
-                                <input name="ch_organization" type="text" class="form-control" required>
+                                  <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:brnd;">
+                                {% for i in org %}
+                              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                              {% endfor %}
+                            </select>
                             </div>
                             <div class="form-group">
                                 <label>City</label>
