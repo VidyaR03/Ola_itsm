@@ -155,24 +155,28 @@
                 <label>Name</label>
                 <input name="ch_subname" type="text" class="form-control">
               </div>
-              <div class="form-group">
-                <label>Service<a href="{% url 'service' %}">
-                    <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                <input name="ch_sservice" type="text" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label>Status</label>
-                <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
-                  aria-invalid="false">
-                  <option value="Assign">Assign</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Close">Close</option>
-                  <option value="Approve">Approve</option>
-                </select>
-              </div>
+            <div class="form-group">
+              <label>Service<a href="{% url 'service' %}">
+                  <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
             </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;">
+            <select name="ch_sservice" id="ch_sservice" style="min-height:30px;min-width:280px;">
+              {% for i in ser %}
+              <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
+              {% endfor %}
+          </select>
+            
+            <div class="form-group">
+              <label>Status</label>
+              <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option value="Assign">Assign</option>
+                <option value="Pending">Pending</option>
+                <option value="Close">Close</option>
+                <option value="Approve">Approve</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;"> 
 
               <div class="form-group">
                 <label>Request Type</label>

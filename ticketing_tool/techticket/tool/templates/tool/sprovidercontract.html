@@ -176,10 +176,16 @@
                                 <input name="ch_pname" type="text" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>Customer<a href="{% url 'new_organization' %}">
-                                        <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                                <input name="ch_organization" type="text" class="form-control" required>
-                            </div>
+                                <label>Customer:<a href="{% url 'new_organization' %}">
+                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                  </a></label>
+                              </div>
+              
+                          <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:150px;">
+                            {% for i in org %}
+                            <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                            {% endfor %}
+                          </select>
                             <div class="form-group">
                                 <label>Status</label>
                                 <select name="ch_status" type="text" class="form-control"
@@ -195,10 +201,16 @@
                                 <input name="ch_contract_type" type="text" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>Provider<a href="{% url 'new_organization' %}">
-                                        <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                                <input name="ch_organization" type="text" class="form-control" required>
-                            </div>
+                                <label>Provider:<a href="{% url 'new_organization' %}">
+                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                  </a></label>
+                              </div>
+              
+                          <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
+                            {% for i in org %}
+                            <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                            {% endfor %}
+                          </select>
                             <div class="form-group">
                                 <label for="bday">Start Date</label>
                                 <input class="form-control" type="date" id='current_date'

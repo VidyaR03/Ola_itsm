@@ -362,15 +362,28 @@
                     <!--start of left half -->
                     <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
                         <div class="form-group">
-                            <label>Organization<a href="{% url 'new_organization' %}">
-                                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                </a></label>
-                            <input class="form-control" name="ch_organization" type="text" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Caller</label>
-                            <input class="form-control" name="ch_Person" type="text" required>
-                        </div>
+                            <label>Organization:<a href="{% url 'new_organization' %}">
+                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                              </a></label>
+                         </div>     
+                              <select name="ch_organization" id="fk_organization"style="min-height:30px;min-width:280px;">
+                                {% for i in org %}
+                              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                              {% endfor %}
+                            </select>
+                          <!-- </div> -->
+                          <div class="form-group">
+                            <label>Caller:<a href="{% url 'client' %}">
+                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                              </a></label>
+                           </div>   
+                              <select name="ch_caller" id="fk_caller"style="min-height:30px;min-width:280px;">
+                                {% for i in per1 %}
+                                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
+                              {% endfor %}
+                            </select>
+                          <!-- </div> -->
+                       
                         <div class="form-group">
                             <label>Status</label>
                             <select name="ch_status" type="text" class="form-control"

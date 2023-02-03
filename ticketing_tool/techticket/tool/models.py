@@ -235,7 +235,7 @@ class cl_Team(models.Model):
 
 class cl_Person(models.Model):
     """Models which create table for Person Information"""
-    id = models.AutoField(primary_key=True, editable=False)
+    # id = models.AutoField(primary_key=True, editable=False)
     id = models.AutoField(primary_key=True, editable=False)
     ch_person_firstname = models.CharField(max_length=100, null=True)
     ch_person_lastname = models.CharField(max_length=100, null=True)
@@ -764,7 +764,7 @@ class cl_Servicedelivery(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     ch_sdname = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
-        cl_New_organization, related_name='cl_new_organization', on_delete=models.CASCADE, null=True, blank=True)
+        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
 
     def __str__(self):

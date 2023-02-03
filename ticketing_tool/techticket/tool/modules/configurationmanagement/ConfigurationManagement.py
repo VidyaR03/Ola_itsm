@@ -30,8 +30,11 @@ def contact(request):
 def software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     soft = cl_Software.objects.all()
+    org = cl_New_organization.objects.all()
+
     context = {
         'soft': soft,
+        'org':org,
         'permission':permission
     }
     return render(request, 'tool/software.html', context)
@@ -196,6 +199,8 @@ def DocDelete(request, id):
 def application_solution(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     appso = cl_Application_solution.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(appso, 10)
@@ -210,7 +215,7 @@ def application_solution(request):
         if q != None:
             appso = cl_Application_solution.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/application_solution.html', {'appso': appso,'users':users,'permission':permission})
+    return render(request, 'tool/application_solution.html', {'appso': appso,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -219,8 +224,8 @@ def appAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
@@ -306,6 +311,8 @@ def appDelete(request):
 def business_process(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     buss = cl_Business_process.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(buss, 10)
@@ -320,7 +327,7 @@ def business_process(request):
         if q != None:
             buss = cl_Business_process.objects.filter(
                 ch_business_name__icontains=q)
-    return render(request, 'tool/business_process.html', {'buss': buss,'users':users,'permission':permission})
+    return render(request, 'tool/business_process.html', {'buss': buss,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -329,8 +336,8 @@ def bussAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -406,6 +413,8 @@ def bussDelete(request):
 def newdb_server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     db = cl_Newdb_server.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(db, 10)
@@ -420,7 +429,7 @@ def newdb_server(request):
         if q != None:
             db = cl_Newdb_server.objects.filter(
                ch_dbname__icontains=q)
-    return render(request, 'tool/newdb_server.html', {'db': db,'users':users, 'permission':permission})
+    return render(request, 'tool/newdb_server.html', {'db': db,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -429,8 +438,8 @@ def dbAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -518,6 +527,9 @@ def dbDelete(request):
 def dataschema(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     schema = cl_Database_schema.objects.all()
+    org = cl_New_organization.objects.all()
+    server = cl_Newdb_server.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(schema, 10)
@@ -531,15 +543,15 @@ def dataschema(request):
         q = request.GET.get('searchname')
         if q != None:
             schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
-    return render(request, 'tool/database_schema.html', {'schema': schema,'users':users, 'permission':permission})
+    return render(request, 'tool/database_schema.html', {'schema': schema,'server':server,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def DSADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":     
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))    
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()   
 
         ch_dsname = request.POST.get('ch_dsname')        
         ch_db_server =cl_Newdb_server.objects.get(ch_dbname=request.POST.get('ch_db_server'))
@@ -616,6 +628,9 @@ def DSDelete(request):
 def middlewareinstance(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     mi = cl_Middleware_instance.objects.all()
+    org = cl_New_organization.objects.all()
+    middle = cl_New_middleware.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(mi, 10)
@@ -629,17 +644,17 @@ def middlewareinstance(request):
         q = request.GET.get('searchname')
         if q != None:
             mi = cl_Middleware_instance.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/middleware_instance.html', {'mi': mi,'users':users, 'permission':permission})
+    return render(request, 'tool/middleware_instance.html', {'mi': mi,'middle':middle,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def MADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))        
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()       
         ch_miname = request.POST.get('ch_miname')
-        ch_middleware = cl_New_middleware.objects.get(ch_midname=request.POST.get('ch_middleware'))
+        ch_middleware = cl_New_middleware.objects.filter(ch_midname=request.POST.get('ch_middleware')).first()
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
@@ -712,6 +727,9 @@ def MDelete(request):
 def new_middleware(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     middle = cl_New_middleware.objects.all()
+    org = cl_New_organization.objects.all()
+    soft = cl_Software.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(middle, 10)
@@ -725,7 +743,7 @@ def new_middleware(request):
         q = request.GET.get('searchname')
         if q != None:
             middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
-    return render(request, 'tool/new_middleware.html', {'middle': middle,'users':users, 'permission':permission})
+    return render(request, 'tool/new_middleware.html', {'middle': middle,'soft':soft,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -733,14 +751,14 @@ def MWAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_midname = request.POST.get('ch_midname')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        # ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get( 'dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
@@ -825,6 +843,9 @@ def MWDelete(request):
 def other_software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     os = cl_Other_software.objects.all()
+    org = cl_New_organization.objects.all()
+    soft = cl_Software.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(os, 10)
@@ -839,7 +860,7 @@ def other_software(request):
         if q != None:
             os = cl_Other_software.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/othersoftware.html', {'os': os,'users':users, 'permission':permission})
+    return render(request, 'tool/othersoftware.html', {'os': os,'soft':soft,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -847,13 +868,13 @@ def osAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_osname = request.POST.get('ch_osname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
@@ -938,6 +959,9 @@ def osDelete(request):
 def web_application(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     wa = cl_Web_application.objects.all()
+    org = cl_New_organization.objects.all()
+    sweb = cl_Web_server.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(wa, 10)
@@ -952,7 +976,7 @@ def web_application(request):
         if q != None:
             wa = cl_Web_application.objects.filter(
                 ch_waname__icontains=q)
-    return render(request, 'tool/webapplication.html', {'wa': wa,'users':users,'permission':permission})
+    return render(request, 'tool/webapplication.html', {'wa': wa,'sweb':sweb,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -960,11 +984,11 @@ def waAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))  
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
 
         ch_waname = request.POST.get('ch_waname')
-        ch_webserver = cl_Web_server.objects.get(ch_wsname=request.POST.get('ch_webserver'))
+        ch_webserver = cl_Web_server.objects.filter(ch_wsname=request.POST.get('ch_webserver')).first()
         url_website = request.POST.get('url_website')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -1046,6 +1070,12 @@ def waDelete(request):
 def networkdevice(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     nd = cl_Network_device.objects.all()
+    org = cl_New_organization.objects.all()
+    nttype = cl_network_type.objects.all()
+    brnd = cl_Brand.objects.all()
+    model = cl_model.objects.all()
+    ios = cl_ios_version.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(nd, 10)
@@ -1060,7 +1090,7 @@ def networkdevice(request):
         if q != None:
             nd = cl_Network_device.objects.filter(
                 ch_ndname__icontains=q)
-    return render(request, 'tool/network_device.html', {'nd': nd,'users':users,'permission':permission})
+    return render(request, 'tool/network_device.html', {'nd': nd,'org':org,'users':users,'nttype':nttype,'brnd':brnd,'model':model,'ios':ios,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1069,14 +1099,14 @@ def ndAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_ndname = request.POST.get('ch_ndname')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        ch_organization = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_organization')).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
-        ch_network_type = cl_network_type.objects.get(ch_nname=request.POST.get('ch_network_type'))
-        ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
-        ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
-        i_ios_version = cl_ios_version.objects.get(ch_iosname=request.POST.get('i_ios_version'))
+        ch_network_type = cl_network_type.objects.filter(ch_nname=request.POST.get('ch_network_type')).first()
+        ch_brand = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brand')).first()
+        ch_model = cl_model.objects.filter(ch_modelname=request.POST.get('ch_model')).first()
+        i_ios_version = cl_ios_version.objects.filter(ch_iosname=request.POST.get('i_ios_version')).first()
         i_management_ip = request.POST.get('i_management_ip')
         ch_ram = request.POST.get('ch_ram')
         i_rack_unit = request.POST.get('i_rack_unit')
@@ -1188,6 +1218,8 @@ def ndDelete(request):
 def network_type(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     nt = cl_network_type.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(nt, 10)
@@ -1201,7 +1233,7 @@ def network_type(request):
         q = request.GET.get('searchname')
         if q != None:
             nt = cl_network_type.objects.filter(ch_nname__icontains=q)
-    return render(request, 'tool/network_type.html', {'nt': nt,'users':users,'permission':permission})
+    return render(request, 'tool/network_type.html', {'nt': nt,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1258,6 +1290,8 @@ def ntDelete(request, id):
 def os_family(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     osf = cl_os_family.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(osf, 10)
@@ -1271,7 +1305,7 @@ def os_family(request):
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_family.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_family.html', {'osf': osf,'users':users, 'permission':permission})
+    return render(request, 'tool/os_family.html', {'osf': osf,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1330,6 +1364,8 @@ def osfDelete(request, id):
 def os_version(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     osv = cl_os_version.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(osv, 10)
@@ -1343,7 +1379,7 @@ def os_version(request):
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_version.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_version.html', {'osv': osv,'users':users,'permission':permission})
+    return render(request, 'tool/os_version.html', {'osv': osv,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1406,6 +1442,8 @@ def osvDelete(request, id):
 def os_license(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ol = cl_os_license.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(ol, 10)
@@ -1420,7 +1458,7 @@ def os_license(request):
         if q != None:
             ol = cl_os_license.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/os_license.html', {'ol': ol,'users':users, 'permission':permission})
+    return render(request, 'tool/os_license.html', {'ol': ol,'org':org,'users':users, 'permission':permission})
 
 
 
@@ -1431,8 +1469,8 @@ def olAdd(request):
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_version = cl_os_version.objects.get(ch_osname=request.POST.get('ch_version'))
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_usage_limit = request.POST.get('ch_usage_limit')
         ch_perpetual = request.POST.get('ch_perpetual')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1515,6 +1553,8 @@ def olDelete(request):
 def brand(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     brand = cl_Brand.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(brand, 10)
@@ -1528,7 +1568,7 @@ def brand(request):
         q = request.GET.get('searchname')
         if q != None:
             brand = cl_Brand.objects.filter(ch_brandname__icontains=q)
-    return render(request, 'tool/brand.html', {'brand': brand,'users':users,'permission':permission})
+    return render(request, 'tool/brand.html', {'brand': brand,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1587,6 +1627,10 @@ def bnDelete(request, id):
 def cmodel(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     model = cl_model.objects.all()
+    org = cl_New_organization.objects.all()
+    brnd = cl_Brand.objects.all()
+
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(model, 10)
@@ -1600,7 +1644,7 @@ def cmodel(request):
         q = request.GET.get('searchname')
         if q != None:
             model = cl_model.objects.filter(ch_modelname__icontains=q)
-    return render(request, 'tool/model.html', {'model': model,'users':users, 'permission':permission})
+    return render(request, 'tool/model.html', {'model': model,'brnd':brnd,'users':users,'org':org, 'permission':permission})
 
 
 
@@ -1611,8 +1655,8 @@ def mdAdd(request):
         # id = request.POST.get('id')
         print(id)
         ch_modelname = request.POST.get('ch_modelname')
-        ch_brandname = cl_Brand.objects.get(
-            ch_brandname=request.POST.get('ch_brandname'))
+        ch_brandname = cl_Brand.objects.filter(
+            ch_brandname=request.POST.get('ch_brandname')).first()
 
         model = cl_model(
             # id=id,
@@ -1670,6 +1714,10 @@ def mdDelete(request, id):
 def iosver(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     iv = cl_ios_version.objects.all()
+    org = cl_New_organization.objects.all()
+    brnd = cl_Brand.objects.all()
+
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(iv, 10)
@@ -1683,7 +1731,7 @@ def iosver(request):
         q = request.GET.get('searchname')
         if q != None:
             iv = cl_ios_version.objects.filter(ch_name__icontains=q)
-    return render(request, 'tool/ios_version.html', {'iv': iv,'users':users, 'permission':permission})
+    return render(request, 'tool/ios_version.html', {'iv': iv,'users':users,'org':org,'brnd':brnd, 'permission':permission})
 
 
 
@@ -1694,8 +1742,8 @@ def ivAdd(request):
         # id = request.POST.get('id')
         print(id)
         ch_iosname = request.POST.get('ch_iosname')
-        ch_brandname = cl_Brand.objects.get(
-            ch_brandname=request.POST.get('ch_brandname'))
+        ch_brandname = cl_Brand.objects.filter(
+            ch_brandname=request.POST.get('ch_brandname')).first()
 
         iv = cl_ios_version(
             # id=id,
@@ -1756,6 +1804,8 @@ def ivDelete(request, id):
 def server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     se = cl_Server.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(se, 10)
@@ -1770,7 +1820,7 @@ def server(request):
         if q != None:
             se = cl_Server.objects.filter(
                 ch_sname__icontains=q)
-    return render(request, 'tool/server.html', {'se': se,'users':users, 'permission':permission})
+    return render(request, 'tool/server.html', {'se': se,'users':users,'org':org, 'permission':permission})
 
 
 
@@ -1778,7 +1828,7 @@ def server(request):
 def serverAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        ch_organization = cl_New_organization.objects.get(ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_sname = request.POST.get('ch_sname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
@@ -1911,6 +1961,8 @@ def serverDelete(request):
 def web_server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ws = cl_Web_server.objects.all()
+    org = cl_New_organization.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(ws, 10)
@@ -1924,7 +1976,7 @@ def web_server(request):
         q = request.GET.get('searchname')
         if q != None:
             ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
-    return render(request, 'tool/webserver.html', {'ws': ws,'users':users, 'permission':permission})
+    return render(request, 'tool/webserver.html', {'ws': ws,'users':users,'org':org, 'permission':permission})
 
 
 
@@ -1932,8 +1984,8 @@ def web_server(request):
 def wsAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         # id = request.POST.get('id')
         ch_wsname = request.POST.get('ch_wsname')
         ch_status = request.POST.get('ch_status')
@@ -2027,6 +2079,9 @@ def wsDelete(request):
 def pc_software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     pc = cl_Pc_software.objects.all()
+    org = cl_New_organization.objects.all()
+    soft = cl_Software.objects.all()
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(pc, 7)
@@ -2040,7 +2095,7 @@ def pc_software(request):
         q = request.GET.get('searchname')
         if q != None:
             pc = cl_Pc_software.objects.filter(ch_pcname_icontains=q)
-    return render(request, 'tool/pc_software.html', {'pc': pc,'users':users, 'permission':permission})
+    return render(request, 'tool/pc_software.html', {'pc': pc,'soft':soft,'users':users,'org':org, 'permission':permission})
 
 
 
@@ -2049,13 +2104,13 @@ def pcAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_pcname = request.POST.get('ch_pcname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
@@ -2085,6 +2140,7 @@ def pcEdit(request):
     pc = cl_Pc_software.objects.all()
     context = {
         'pc': pc,
+        
         'permission':permission
     }
     return render(request, 'tool/pc_software.html', context)

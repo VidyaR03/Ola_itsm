@@ -180,11 +180,16 @@
                 <input name="ch_ndname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization<a href="{% url 'new_organization' %}">
+                <label>Organization:<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_organization" type="text" class="form-control" required>
               </div>
+  
+              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
                 <label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
@@ -209,26 +214,42 @@
                 <label>Network Type<a href="{% url 'network_type' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_network_type" type="text" class="form-control">
               </div>
+              <select name="ch_network_type" id="ch_network_type" style="min-height:30px;min-width:280px;">
+                {% for i in nttype %}
+                <option value="{{i.ch_nname}}">{{i.ch_nname}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
                 <label>Brand<a href="{% url 'brand' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_brand" type="text" class="form-control">
               </div>
+              <select name="ch_brand" id="ch_brand" style="min-height:30px;min-width:280px;">
+                {% for i in brnd %}
+                <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
                 <label>Model<a href="{% url 'cmodel' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="ch_model" type="text" class="form-control">
               </div>
+              <select name="ch_model" id="ch_model" style="min-height:30px;min-width:280px;">
+                {% for i in model %}
+                <option value="{{i.ch_modelname}}">{{i.ch_modelname}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
                 <label>IOS Version<a href="{% url 'iosver' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <input name="i_ios_version" type="text" class="form-control">
               </div>
+              <select name="i_ios_version" id="i_ios_version" style="min-height:30px;min-width:280px;">
+                {% for i in ios %}
+                <option value="{{i.ch_iosname}}">{{i.ch_iosname}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">

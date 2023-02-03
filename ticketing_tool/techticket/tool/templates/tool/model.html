@@ -140,11 +140,15 @@
               <input name="ch_modelname" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Brand Name<a href="{% url 'brand' %}">
-                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-              </a></label>
-              <input name="ch_brandname" type="text" class="form-control" required>
+              <label>Brand<a href="{% url 'brand' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
             </div>
+            <select name="ch_brand" id="ch_brand" style="min-height:30px;min-width:280px;">
+              {% for i in brnd %}
+              <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
+              {% endfor %}
+            </select>
           
           </div>
           <div class="modal-footer">
