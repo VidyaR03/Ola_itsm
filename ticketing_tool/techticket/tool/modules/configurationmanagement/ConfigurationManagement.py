@@ -199,6 +199,11 @@ def DocDelete(request, id):
 def application_solution(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     appso = cl_Application_solution.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            appso = cl_Application_solution.objects.filter(ch_name__icontains=q)
+
     org = cl_New_organization.objects.all()
 
     page = request.GET.get('page', 1)
@@ -210,11 +215,7 @@ def application_solution(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            appso = cl_Application_solution.objects.filter(
-                ch_name__icontains=q)
+   
     return render(request, 'tool/application_solution.html', {'appso': appso,'org':org,'users':users,'permission':permission})
 
 
@@ -311,6 +312,10 @@ def appDelete(request):
 def business_process(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     buss = cl_Business_process.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchbusinessname')
+        if q != None:
+            buss = cl_Business_process.objects.filter(ch_business_name__icontains=q)
     org = cl_New_organization.objects.all()
 
     page = request.GET.get('page', 1)
@@ -322,11 +327,7 @@ def business_process(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchbusinessname')
-        if q != None:
-            buss = cl_Business_process.objects.filter(
-                ch_business_name__icontains=q)
+    
     return render(request, 'tool/business_process.html', {'buss': buss,'org':org,'users':users,'permission':permission})
 
 
@@ -413,6 +414,10 @@ def bussDelete(request):
 def newdb_server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     db = cl_Newdb_server.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            db = cl_Newdb_server.objects.filter(ch_dbname__icontains=q)
     org = cl_New_organization.objects.all()
 
     page = request.GET.get('page', 1)
@@ -424,11 +429,7 @@ def newdb_server(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            db = cl_Newdb_server.objects.filter(
-               ch_dbname__icontains=q)
+   
     return render(request, 'tool/newdb_server.html', {'db': db,'org':org,'users':users, 'permission':permission})
 
 
@@ -527,6 +528,11 @@ def dbDelete(request):
 def dataschema(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     schema = cl_Database_schema.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
+            
     org = cl_New_organization.objects.all()
     server = cl_Newdb_server.objects.all()
 
@@ -539,10 +545,7 @@ def dataschema(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            schema = cl_Database_schema.objects.filter(ch_dsname__icontains=q)
+    
     return render(request, 'tool/database_schema.html', {'schema': schema,'server':server,'org':org,'users':users, 'permission':permission})
 
 
@@ -628,6 +631,11 @@ def DSDelete(request):
 def middlewareinstance(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     mi = cl_Middleware_instance.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            mi = cl_Middleware_instance.objects.filter(ch_miname__icontains=q)
+
     org = cl_New_organization.objects.all()
     middle = cl_New_middleware.objects.all()
 
@@ -640,10 +648,7 @@ def middlewareinstance(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            mi = cl_Middleware_instance.objects.filter(ch_name__icontains=q)
+
     return render(request, 'tool/middleware_instance.html', {'mi': mi,'middle':middle,'org':org,'users':users, 'permission':permission})
 
 
@@ -651,9 +656,10 @@ def middlewareinstance(request):
 def MADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
+        ch_miname = request.POST.get('ch_miname')
+
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()       
-        ch_miname = request.POST.get('ch_miname')
         ch_middleware = cl_New_middleware.objects.filter(ch_midname=request.POST.get('ch_middleware')).first()
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -727,6 +733,10 @@ def MDelete(request):
 def new_middleware(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     middle = cl_New_middleware.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
     org = cl_New_organization.objects.all()
     soft = cl_Software.objects.all()
 
@@ -739,10 +749,7 @@ def new_middleware(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            middle = cl_New_middleware.objects.filter(ch_midname__icontains=q)
+
     return render(request, 'tool/new_middleware.html', {'middle': middle,'soft':soft,'org':org,'users':users, 'permission':permission})
 
 
@@ -751,10 +758,11 @@ def MWAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
+        ch_midname = request.POST.get('ch_midname')
+
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        ch_midname = request.POST.get('ch_midname')
-        # ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
+        # # ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get( 'dt_move_to_production_date')
@@ -797,9 +805,10 @@ def MWUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
+        ch_midname = request.POST.get('ch_midname')
+
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_midname = request.POST.get('ch_midname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -843,6 +852,11 @@ def MWDelete(request):
 def other_software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     os = cl_Other_software.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            os = cl_Other_software.objects.filter(ch_osname__icontains=q)
+
     org = cl_New_organization.objects.all()
     soft = cl_Software.objects.all()
 
@@ -855,11 +869,7 @@ def other_software(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            os = cl_Other_software.objects.filter(
-                ch_name__icontains=q)
+   
     return render(request, 'tool/othersoftware.html', {'os': os,'soft':soft,'org':org,'users':users, 'permission':permission})
 
 
@@ -959,6 +969,10 @@ def osDelete(request):
 def web_application(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     wa = cl_Web_application.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            wa = cl_Web_application.objects.filter(ch_waname__icontains=q)
     org = cl_New_organization.objects.all()
     sweb = cl_Web_server.objects.all()
 
@@ -971,11 +985,7 @@ def web_application(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            wa = cl_Web_application.objects.filter(
-                ch_waname__icontains=q)
+   
     return render(request, 'tool/webapplication.html', {'wa': wa,'sweb':sweb,'org':org,'users':users,'permission':permission})
 
 
@@ -1837,6 +1847,10 @@ def ivDelete(request, id):
 def server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     se = cl_Server.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            se = cl_Server.objects.filter(ch_sname__icontains=q)
     org = cl_New_organization.objects.all()
 
     page = request.GET.get('page', 1)
@@ -1994,6 +2008,11 @@ def serverDelete(request):
 def web_server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ws = cl_Web_server.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
+
     org = cl_New_organization.objects.all()
 
     page = request.GET.get('page', 1)
@@ -2005,10 +2024,7 @@ def web_server(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            ws = cl_Web_server.objects.filter(ch_wsname__icontains=q)
+   
     return render(request, 'tool/webserver.html', {'ws': ws,'users':users,'org':org, 'permission':permission})
 
 
@@ -2112,6 +2128,11 @@ def wsDelete(request):
 def pc_software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     pc = cl_Pc_software.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            pc = cl_Pc_software.objects.filter(ch_pcname__icontains=q)
+
     org = cl_New_organization.objects.all()
     soft = cl_Software.objects.all()
 
@@ -2124,10 +2145,7 @@ def pc_software(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            pc = cl_Pc_software.objects.filter(ch_pcname_icontains=q)
+    
     return render(request, 'tool/pc_software.html', {'pc': pc,'soft':soft,'users':users,'org':org, 'permission':permission})
 
 
@@ -2137,9 +2155,10 @@ def pcAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
+        ch_pcname = request.POST.get('ch_pcname')
+
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        ch_pcname = request.POST.get('ch_pcname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -2185,9 +2204,10 @@ def pcUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
+        ch_pcname = request.POST.get('ch_pcname')
+
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_pcname = request.POST.get('ch_pcname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
