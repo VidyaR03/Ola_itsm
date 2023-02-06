@@ -123,6 +123,8 @@ urlpatterns = [
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/', views.UDelete, name='udelete'),
     path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+    path('sendMailUR', views.send_approval_Mail_UR, name='sendMailUR'),
+
 
     
     #URL For new middleware
@@ -185,6 +187,7 @@ urlpatterns = [
     path('osvUpdate/<str:id>', views.osvUpdate, name='osvUpdate'),
     path('osvDelete/<str:id>', views.osvDelete, name='osvDelete'),
     path('sendMail', views.send_approval_Mail, name='sendMail'),
+
 
 
     #URL For Network Device

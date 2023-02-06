@@ -1070,6 +1070,11 @@ def waDelete(request):
 def networkdevice(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     nd = cl_Network_device.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            nd = cl_Network_device.objects.filter(ch_ndname__icontains=q)
+
     org = cl_New_organization.objects.all()
     nttype = cl_network_type.objects.all()
     brnd = cl_Brand.objects.all()
@@ -1085,11 +1090,7 @@ def networkdevice(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            nd = cl_Network_device.objects.filter(
-                ch_ndname__icontains=q)
+   
     return render(request, 'tool/network_device.html', {'nd': nd,'org':org,'users':users,'nttype':nttype,'brnd':brnd,'model':model,'ios':ios,'permission':permission})
 
 
@@ -1220,6 +1221,11 @@ def network_type(request):
     nt = cl_network_type.objects.all()
     org = cl_New_organization.objects.all()
 
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            nt = cl_network_type.objects.filter(ch_nname__icontains=q)
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(nt, 10)
@@ -1291,6 +1297,11 @@ def os_family(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     osf = cl_os_family.objects.all()
     org = cl_New_organization.objects.all()
+
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            osf = cl_os_family.objects.filter(ch_fname__icontains=q)
 
     page = request.GET.get('page', 1)
 
@@ -1365,6 +1376,11 @@ def os_version(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     osv = cl_os_version.objects.all()
     org = cl_New_organization.objects.all()
+
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            osv = cl_os_version.objects.filter(ch_osname__icontains=q)
 
     page = request.GET.get('page', 1)
 
@@ -1444,6 +1460,10 @@ def os_license(request):
     ol = cl_os_license.objects.all()
     org = cl_New_organization.objects.all()
 
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            ol = cl_os_license.objects.filter(ch_name__icontains=q)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(ol, 10)
@@ -1555,6 +1575,10 @@ def brand(request):
     brand = cl_Brand.objects.all()
     org = cl_New_organization.objects.all()
 
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            brand = cl_Brand.objects.filter(ch_brandname__icontains=q)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(brand, 10)
@@ -1630,6 +1654,11 @@ def cmodel(request):
     org = cl_New_organization.objects.all()
     brnd = cl_Brand.objects.all()
 
+
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            model = cl_model.objects.filter(ch_modelname__icontains=q)
 
     page = request.GET.get('page', 1)
 
@@ -1718,6 +1747,10 @@ def iosver(request):
     brnd = cl_Brand.objects.all()
 
 
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            iv = cl_ios_version.objects.filter(ch_iosname__icontains=q)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(iv, 10)
