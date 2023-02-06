@@ -7,10 +7,9 @@ from io import BytesIO
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from tool.models import cl_Location, cl_Service, cl_Software
+from tool.models import cl_Location, cl_Service, cl_Software,cl_New_organization
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from tool.models import cl_New_organization
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
