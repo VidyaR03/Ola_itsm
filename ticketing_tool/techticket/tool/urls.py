@@ -161,7 +161,9 @@ urlpatterns = [
     path('bnAdd', views.bnAdd, name='bnAdd'),
     path('bnEdit', views.bnEdit, name='bnEdit'),
     path('bnUpdate/<str:id>', views.bnUpdate, name='bnUpdate'),
-    path('bnDelete/<str:id>', views.bnDelete, name='bnDelete'),
+    path('bnDelete/', views.bnDelete, name='bnDelete'),
+
+    
 
     
       #URL for Model Type

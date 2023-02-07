@@ -1651,10 +1651,19 @@ def bnUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def bnDelete(request, id):
-    brand = cl_Brand.objects.filter(id=id)
-    brand.delete()
+def bnDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            brand = cl_Brand.objects.filter(id=i).first()
+            brand.delete()
     return redirect('brand')
+
+
+
+
+
 
 
 @login_required(login_url='/login_render/')
@@ -1786,7 +1795,7 @@ def ivAdd(request):
         print(id)
         ch_iosname = request.POST.get('ch_iosname')
         ch_brandname = cl_Brand.objects.filter(
-            ch_brandname=request.POST.get('ch_brandname')).first()
+            ch_brandname=request.POST.get('ch_brand')).first()
 
         iv = cl_ios_version(
             # id=id,
@@ -1834,10 +1843,16 @@ def ivUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def ivDelete(request, id):
-    iv = cl_ios_version.objects.filter(id=id)
-    iv.delete()
+def ivDelete(request):    
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            nd = cl_ios_version.objects.filter(id=i).first()
+            nd.delete()
     return redirect('iosver')
+   
+  
 
 
 

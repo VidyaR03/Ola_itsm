@@ -80,9 +80,8 @@
         <th>Name</th>
         <th>Provider</th>
         <th>Description</th>
-        {% if permission.serv_m_e == "on" or permission == None %}
         <th>Edit</th>
-        {% endif %}
+        <!-- <th>Mobile Number</th> -->
       </tr>
       </thead>
       <tbody>
@@ -193,18 +192,21 @@
               </div>
               <div class="form-group">
                 <label>Name</label>
-                <input name="ch_slname" value="{{i.ch_slname}}" type="text" class="form-control">
+                <input name="ch_slname" type="text" value="{{i.ch_slname}}" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Provider<a href="{% url 'new_organization' %}">
-                    <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+                <label>Provider:<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                  <input name="ch_slaprovider" type="text" value="{{i.ch_slaprovider}}" class="form-control" required>
+
               </div>
+  
               <div class="form-group">
                 <label>Description</label>
-                <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">
+                <input name="txt_description"  value="{{i.txt_description}}"  type="text" class="form-control" >
               </div>
-            </div>
+            
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
               <input type="submit" class="btn btn-info" value="Update">
@@ -215,7 +217,8 @@
     </div>
     {% endfor %}
 
-    <!-- </body> -->
+
+    
     <script>
 
       $(document).ready(function () {

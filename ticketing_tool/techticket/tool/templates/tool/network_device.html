@@ -94,7 +94,6 @@
       </thead>
       <tbody>
         {% csrf_token %}
-
         {% for i in users %}
         {% if forloop.counter < 11 %} <tr id="{{i.id}}">
 

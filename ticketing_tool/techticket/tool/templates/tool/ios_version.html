@@ -70,15 +70,15 @@
     </thead>
     <tbody>
      
+     
       {% for i in users %}
       {% if forloop.counter < 11 %}
       <tr>
-        <td>
-          <span class="custom-checkbox">
-            <input type="checkbox" id="checkbox1" name="options[]" value="1">
-            <label for="checkbox1"></label>
-          </span>
-        </td>
+        
+          <tr id="{{i.id}}">
+            <td>
+              <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+            </td>
         <td>{{i.id}}</td>
         <td>{{i.ch_iosname}}</td>
         <td>{{i.ch_brandname}}</td>

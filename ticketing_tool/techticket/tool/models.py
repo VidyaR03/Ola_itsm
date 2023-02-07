@@ -361,7 +361,7 @@ class cl_Delivery_model(models.Model):
     txt_description = models.TextField()
 
     def __str__(self):
-        return self.name
+        return self.ch_application_name
 
     class Meta:
         db_table = 'cl_Delivery_model'

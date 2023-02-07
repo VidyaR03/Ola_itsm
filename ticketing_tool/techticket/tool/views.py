@@ -596,7 +596,7 @@ def ADD(request):
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
         ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+            ch_name=request.POST.get('ch_organization')).first()
         ch_team = cl_Team.objects.filter(
             ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
@@ -652,7 +652,7 @@ def Update(request, id):
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.get(ch_teamname=str.capitalize(request.POST.get('ch_teamname')))
+        ch_team = cl_Team.objects.get(ch_teamname=request.POST.get('ch_team'))
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -688,7 +688,7 @@ def Update(request, id):
 
 @login_required(login_url='/login_render/')
 def Delete(request):
-     permission = roles.objects.filter(id=request.session['user_role']).first()
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         for i in list_id:
@@ -1765,7 +1765,7 @@ def servicefamilies(request):
         q = request.GET.get('searchname')
         if q != None:
             sf = cl_Servicefamilies.objects.filter(ch_sname__icontains=q)
-            
+
     page = request.GET.get('page', 1)
     paginator = Paginator(sf, 10)
     try:
@@ -2053,7 +2053,7 @@ def sla(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
    
-    return render(request, 'tool/ssla.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
+    return render(request, 'tool/team.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2072,7 +2072,7 @@ def SLADD(request):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/ssla.html',{'permission':permission})
+    return render(request, 'tool/team.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2083,7 +2083,7 @@ def SLEdit(request):
         'sl': sl,
         'permission':permission
     }
-    return render(request, 'tool/ssla.html', context)
+    return render(request, 'tool/team.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -2106,7 +2106,7 @@ def SLUpdate(request, id):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/ssla.html',{'permission':permission})
+    return render(request, 'tool/team.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2225,11 +2225,12 @@ def SLTDelete(request):
 def servicedelivery(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sd = cl_Servicedelivery.objects.all()
+    org = cl_New_organization.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
             sd = cl_Servicedelivery.objects.filter(ch_sdname__icontains=q)
-    org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
 
     paginator = Paginator(sd, 10)
