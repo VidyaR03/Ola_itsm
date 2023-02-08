@@ -494,7 +494,7 @@ def new_organization(request):
 def OrgADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_name = str.capitalize(request.POST.get('ch_name'))
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
@@ -1823,10 +1823,10 @@ def servicefamilies(request):
 def SFADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_sname = request.POST.get('ch_sname')
         sf = cl_Servicefamilies(
-            id=id,
+            # id=id,
             ch_sname=ch_sname,
         )
         sf.save()
@@ -1897,7 +1897,7 @@ def sservice(request):
 def SSADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
 
         ch_ssname = request.POST.get('ch_ssname')
         ch_sprovider = cl_New_organization.objects.filter(
@@ -1908,7 +1908,7 @@ def SSADD(request):
         txt_description = request.POST.get('txt_description')
 
         ser = cl_Service(
-            id=id,
+            # id=id,
             ch_ssname=ch_ssname,
             ch_sprovider=ch_sprovider,
             ch_service_family=ch_service_family,

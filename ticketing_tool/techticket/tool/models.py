@@ -20,6 +20,7 @@ from .managers import CustomUserManager
 
 class cl_New_organization(models.Model):
     """Models which creates table for New Organization"""
+    id = models.AutoField(primary_key=True, editable=False)
     ch_name = models.CharField(max_length=100, null=True)
     ch_code = models.CharField(max_length=100, null=True)
     ch_status = models.CharField(max_length=50, null=True)
@@ -129,7 +130,7 @@ class cl_model(models.Model):
 ##### Os Family ####
 
 class cl_os_family(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_fname = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -142,7 +143,7 @@ class cl_os_family(models.Model):
 ##### OS_Version ####3
 
 class cl_os_version(models.Model):
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
+    id = models.AutoField(primary_key=True, editable=False)
     ch_osname = models.CharField(max_length=100, null=True)
     ch_fname = models.ForeignKey(
         cl_os_family, on_delete=models.CASCADE, null=True, blank=True)
@@ -157,8 +158,7 @@ class cl_os_version(models.Model):
 
 class cl_Servicefamilies(models.Model):
     """Models which create the table for Provider Contract"""
-    id = models.CharField(primary_key=True, editable=False, max_length=10)
-
+    id = models.AutoField(primary_key=True, editable=False)
     ch_sname = models.CharField(max_length=100, null=True)
 
     def __str__(self):

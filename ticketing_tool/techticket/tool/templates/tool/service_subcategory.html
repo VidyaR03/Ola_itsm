@@ -71,6 +71,12 @@
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
       {% endif %}
     </div>
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
 
     <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
       <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);" >
@@ -139,7 +145,7 @@
 
     <div id="addcl_Service_subcategoryModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; left: 30%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="{% url 'sadd' %}" method="POST">
             {% csrf_token %}
             <div class="modal-header">
@@ -147,22 +153,30 @@
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+                <div class="form-group">
+                <label>ID</label>
+                <input name="id" type="text" class="form-control" readonly >
+              </div>
               <div class="form-group">
-                <label>Name</label>
-                <input name="ch_subname" type="text" class="form-control">
+                <span class="required-field"></span><label>Name</label>
+                <input name="ch_subname" type="text" class="form-control" required>
               </div>
             <div class="form-group">
-              <label>Service<a href="{% url 'service' %}">
+              <span class="required-field"></span><label>Service<a href="{% url 'service' %}">
                   <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-            </div>
             <select name="ch_sservice" id="ch_sservice" style="min-height:30px;min-width:280px;">
               {% for i in ser %}
               <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
               {% endfor %}
-          </select>
+            </select>
+            </div>
+
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;"> 
+
             
             <div class="form-group">
-              <label>Status</label>
+              <span class="required-field"></span><label>Status</label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="Assign">Assign</option>
@@ -171,11 +185,10 @@
                 <option value="Approve">Approve</option>
               </select>
             </div>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;"> 
+          
 
               <div class="form-group">
-                <label>Request Type</label>
+                <span class="required-field"></span><label>Request Type</label>
                 <select name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
                   <option value="Incident">Incident</option>
@@ -184,8 +197,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Description</label>
-                <input name="txt_description" type="text" class="form-control">
+                <span class="required-field"></span><label>Description</label>
+                <input name="txt_description" type="text" class="form-control" required>
               </div>
             </div>
             <div class="modal-footer">
@@ -201,14 +214,14 @@
     {% for i in sub %}
     <div id="editcl_Service_subcategoryModal-{{forloop.counter}}" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="/supdate/{{i.id}}" method="post">
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Edit </h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
                 <label>ID</label>
                 <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -222,6 +235,8 @@
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
                 <input name="ch_sservice" value="{{i.ch_sservice}}" type="text" class="form-control" required>
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;"> 
 
               <div class="form-group">
                 <label>Status</label>
