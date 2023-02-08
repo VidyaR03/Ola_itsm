@@ -54,6 +54,7 @@
       {% csrf_token %}
       {% for i in users %}
       {% if forloop.counter < 11 %} 
+      
       <tr id="{{i.id}}">
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
@@ -113,7 +114,7 @@
 </style>
     <div id="addcl_PersonModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 11%; bottom: 50%;">
           <form action="{% url 'add' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -140,7 +141,7 @@
                 <label>Organization<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <select name="ch_organization" id="ch_organization"  style="min-height:30px;min-width:280px;" style="min-height:30px;min-width:280px;" required>
+                <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required  style="min-height:30px;min-width:280px;" style="min-height:30px;min-width:280px;" required>
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
@@ -151,12 +152,11 @@
                 <label>Team<a href="{% url 'team'%}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                  <select name="ch_team_name" id="ch_team_name" style="min-height:30px;min-width:280px;"  style="min-height:30px;min-width:280px;" required>
-                    {% for i in teaam11 %}
+                  <select name="ch_team_name" id="ch_team_name" style="min-height:30px;min-width:280px;" required>
+                    {% for i in team1 %}
                     <option value="{{i.ch_teamname}}">{{i.ch_teamname}}</option>
                     {% endfor %}
-                  </select> 
-              
+                  </select>              
                 </div>
               <div class="form-group">
                 <span class="required-field"></span>
@@ -312,7 +312,31 @@
   </div>
 </div>
 {% endfor %}
-
+<!-- Delete Modal HTML -->
+{% for i in per %}
+<div id="deletecl_PersonModal-{{forloop.counter}}" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h4 class="modal-title">Delete </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete these Records?</p>
+          <p class="text-warning"><small>{{i.firstname}} Information are delete?</small></p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+      <a href="/delete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+{% endfor %}
+</body>
 <script>
   $(document).ready(function () {
     // Activate tooltip
@@ -338,6 +362,9 @@
   });
 </script>
 
+
+
+</body>
 <script>
   $(document).ready(function () {
     $('#delete_btn').click(function () {
