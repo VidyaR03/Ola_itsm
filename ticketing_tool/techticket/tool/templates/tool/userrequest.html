@@ -261,7 +261,7 @@
             <button type="submit" id="delete_btn" class="btn btn-danger">Delete User Request</button>
             {% endif %}
             {% if permission.inci_m_assign == "on" or permission == None %}
-            <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal">
+            <a href="#assign_URModal" class="btn btn-primary" data-toggle="modal">
                 <span>Assign User Request</span></a>
             {% endif %}
             <button type="submit" id="approve_btn" class="btn btn-info">Approve Request</button>
@@ -668,6 +668,47 @@
 </div>
 {% endfor %}
 
+
+  <!-- Assign Change form -->
+  <div id="assign_URModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 400px; position: relative; left: 15%;">
+        <div class="modal-header">
+          <h4 class="modal-title">Assign Change</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Team</label>
+            <select name="ch_status" type="text" id="select_team" class="form-control"
+              aria-label="Default select example" aria-invalid="false">
+              <option selected>Select Team to Assign Change</option>
+              {% for team in allteam %}
+              <option value="{{team.ch_teamname}}">{{team.ch_teamname}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!-- for team person from that team -->
+          <div class="form-group">
+            <label>Person</label>
+            <select name="ch_status" id="select_person" type="text" class="form-control"
+              aria-label="Default select example" aria-invalid="false">
+              <option selected>Select Person to Assign Change</option>
+              {% for person in team_person %}
+              <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
+                {{person.ch_person_firstname}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" id="assign_btn" class="btn btn-primary">Assign</button>
+            <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
     $(document).ready(function () {
         $(".notification-drop .item").on('click', function () {
@@ -675,7 +716,6 @@
         });
     });
 </script>
-<!-- </body>
 
 
 </html> -->
@@ -724,19 +764,19 @@
   <script>
     $(document).ready(function () {
       $('#assign_btn').click(function () {
-        if (confirm('Are You Sure You Want to Assign Change?')) {
+        if (confirm('Are You Sure You Want to Assign UR?')) {
           var id = [];
           var csrf = $('input[name=csrfmiddlewaretoken]').val();
           $(':checkbox:checked').each(function (i) {
             id[i] = $(this).val()
           })
           if (id.length === 0) {
-            alert("please select Change Which u want to assign?")
+            alert("please select UR Which u want to assign?")
           } else {
             console.log(id)
             var p = document.getElementById('select_person').value
             $.ajax({
-              url: "{% url 'assign_change' %}",
+              url: "{% url 'assign_UR' %}",
               method: "POST",
               data: {
                 id,
@@ -780,23 +820,20 @@
 <script>
     $(document).ready(function () {
       $('#approve_btn').click(function () {
-        if (confirm('Are You Sure You Want to Approve Change?')) {
+        if (confirm('Are You Sure You Want to Approve UR?')) {
           var id = [];
           var csrf = $('input[name=csrfmiddlewaretoken]').val();
           $(':checkbox:checked').each(function (i) {
             id[i] = $(this).val()
           })
           if (id.length === 0) {
-            alert("please select Change Which u want to assign?")
+            alert("please select UR Which u want to Approve?")
           } else {
-            console.log(id)
-            var p = document.getElementById('select_person').value     
             $.ajax({
               url: "{% url 'sendMailUR' %}",
               method: "POST",
               data: {
                 id,
-                p,
                 csrfmiddlewaretoken: csrf
               },
               success: function (response) {

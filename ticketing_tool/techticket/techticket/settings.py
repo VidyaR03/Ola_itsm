@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'tool',
-    
+    'tool',    
 ]
 
 MIDDLEWARE = [
@@ -72,10 +71,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "techticket.wsgi.application"
-
-CRONJOBS = [
-    ('*/5 * * * *', 'myapp.cron.my_code')
-]
 
 
 # Database
@@ -153,37 +148,24 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'tool/attachments')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Flag to expire session on browser close
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# #default parameter for mail
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST='smtp.gmail.com'
-# EMAIL_HOST_USER = 'securesally@gmail.com'
-# EMAIL_HOST_PASSWORD = 'uylgaixacmdwdguc'
-# EMAIL_PORT=587
-# EMAIL_USE_TLS=True
-# EMAIL_USE_SSL=False
-
-
 
 #default parameter for olateh web server
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_PORT = 465
+# EMAIL_HOST = 'mail.supremecluster.com'
+# EMAIL_HOST_USER = 'ankush.n@olatechs.com'
+# EMAIL_HOST_PASSWORD = 'Contact@1234'
+# EMAIL_USE_SSL=True
 
 
-EMAIL_PORT = 465
-EMAIL_HOST = 'mail.supremecluster.com'
-EMAIL_HOST_USER = 'ankush.n@olatechs.com'
-EMAIL_HOST_PASSWORD = '******'
+EMAIL_HOST = ""
+EMAIL_PORT = ""
 EMAIL_USE_SSL=True
-
-# CRONJOBS = [
-#     ('*/1 * * * * ', 'tool.views.home')
-# ]
-
-# CRONTAB_COMMAND_SUFFIX = '2>&1'
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 
