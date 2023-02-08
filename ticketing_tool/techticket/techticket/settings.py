@@ -178,7 +178,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 EMAIL_PORT = 465
 EMAIL_HOST = 'mail.supremecluster.com'
 EMAIL_HOST_USER = 'ankush.n@olatechs.com'
-EMAIL_HOST_PASSWORD = 'Contact@1234'
+EMAIL_HOST_PASSWORD = '******'
 EMAIL_USE_SSL=True
 
 # CRONJOBS = [
