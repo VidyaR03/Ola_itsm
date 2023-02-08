@@ -61,6 +61,12 @@
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
       {% endif %}
     </div>
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
     <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
       <thead>
         <tr>
@@ -129,6 +135,8 @@
     </ul>
     {% endif %}
 
+    {% for i in org %}
+
 
     <div id="addcl_New_organizationModal" class="modal fade">
       <div class="modal-dialog">
@@ -142,14 +150,14 @@
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
                 <label>ID</label>
-                <input name="id" type="text" class="form-control">
+                <input name="id"  value="{{i.id}}" type="text" class="form-control" readonly>
               </div>
               <div class="form-group">
-                <label> Name</label>
+                <span class="required-field"></span><label>Name</label>
                 <input name="ch_name" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Code</label>
+                <span class="required-field"></span><label>Code</label>
                 <input name="ch_code" type="text" class="form-control" required>
               </div>
             </div>
@@ -163,12 +171,12 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Parent</label>
-                <input name="ch_parent" type="text" class="form-control">
+                <span class="required-field"></span><label>Parent</label>
+                <input name="ch_parent" type="text" class="form-control"required>
               </div>
               <div class="form-group">
-                <label>Delivery Model</label>
-                <input name="ch_delivery_model" type="text" class="form-control">
+                <span class="required-field"></span><label>Delivery Model</label>
+                <input name="ch_delivery_model" type="text" class="form-control" required>
               </div>
             </div>
             <div class="modal-footer">
@@ -179,6 +187,8 @@
         </div>
       </div>
     </div>
+    {% endfor %}
+
     <!-- Edit Modal HTML -->
     {% for i in org %}
     <div id="editcl_New_organizationModal-{{forloop.counter}}" class="modal fade">

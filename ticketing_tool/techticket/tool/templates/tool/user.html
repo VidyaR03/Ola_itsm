@@ -22,6 +22,12 @@
       <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
       {% endif %}
     </div>
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
     <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
       <thead>
         <tr>
@@ -81,11 +87,11 @@
                 <input name="ch_user_firstname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Last Name</label>
+                <span class="required-field"></span><label>Last Name</label>
                 <input name="ch_user_lastname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Email</label>
+                <span class="required-field"></span><label>Email</label>
                 <input name="ch_user_email" type="email" class="form-control">
               </div>
               <div class="form-group">
