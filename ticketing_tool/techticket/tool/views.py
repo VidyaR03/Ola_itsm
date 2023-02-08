@@ -1272,7 +1272,7 @@ def assign_changeModal(request):
     return render(request, 'tool/tassign.html', context)
 
 
-########## Approve Change ############
+########## Approve Change IM ############
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
@@ -1486,17 +1486,6 @@ def send_approval_Mail_UR(request):
     return render(request, 'tool/approve_change.html')   
 
 
-##########Approve Change for change management###########
-def send_approval_Mail_UR(request):
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')
-        change_approve = cl_User_request.objects.filter(id=list_id[0]).first()
-        subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
-        sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
-        send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html')   
 
 
 #######################################################
@@ -2053,7 +2042,7 @@ def sla(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
    
-    return render(request, 'tool/team.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
+    return render(request, 'tool/ssla.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2072,7 +2061,7 @@ def SLADD(request):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/team.html',{'permission':permission})
+    return render(request, 'tool/ssla.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2083,7 +2072,7 @@ def SLEdit(request):
         'sl': sl,
         'permission':permission
     }
-    return render(request, 'tool/team.html', context)
+    return render(request, 'tool/ssla.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -2106,7 +2095,7 @@ def SLUpdate(request, id):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/team.html',{'permission':permission})
+    return render(request, 'tool/ssla.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
