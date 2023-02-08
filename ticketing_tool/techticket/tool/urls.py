@@ -30,6 +30,7 @@ urlpatterns = [
     path('cupdate/<str:id>', views.CUpdate, name='cupdate'),
     path('cdelete', views.CDelete, name='cdelete'),
     path('assign_change', views.assign_changeModal, name='assign_change'),
+    path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
 
     #Url For Team form
     path('tadd', views.TADD, name='tadd'),
@@ -124,6 +125,8 @@ urlpatterns = [
     path('udelete/', views.UDelete, name='udelete'),
     path('escalate_notify', views.escalate_notify, name='escalate_notify'),
     path('sendMailUR', views.send_approval_Mail_UR, name='sendMailUR'),
+    path('assign_UR', views.assign_URModal, name='assign_UR'),
+
 
 
     
@@ -350,6 +353,16 @@ urlpatterns = [
     path("admuser/", views.admuser,name='admuser'),
     path("itsmuser/", views.itsmuser,name='itsmuser'),
     path("idapuser/", views.ldapuser,name='idapuser'),
+
+    #url for Email Notification
+    path("email_display", views.email_display,name='email_display'),
+    path("add_new_email/", views.add_new_email,name='add_new_email'),
+    path("email_edit/<str:id>", views.email_edit,name='email_edit'),
+
+    #url for SMS Notification
+    path("sms_display", views.sms_display,name='sms_display'),
+    path("add_new_sms/", views.add_new_sms,name='add_new_sms'),
+    path("sms_edit/<str:id>", views.sms_edit,name='sms_edit'),
 
 
     #URL for External User

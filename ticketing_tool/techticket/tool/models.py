@@ -1141,10 +1141,40 @@ class adminuser(AbstractUser):
     email = models.EmailField(unique=True)
     ch_user_role = models.ForeignKey(
         roles, on_delete=models.CASCADE, null=True, blank=True)
-    # ch_user_expirydate = models.DateField(max_length=100, null=True)
     ch_user_mobilenumber = models.IntegerField(max_length=15, null=True)
 
     object=CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS=[]
+
+
+class email_notifier(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    host = models.CharField(max_length=255)
+    port = models.IntegerField()
+    use_SSL = models.BooleanField()
+    host_user = models.CharField(max_length=255)
+    host_password = models.CharField(max_length=255)
+    message = models.CharField(max_length=200)
+
+    # SMTP_server = models.CharField(max_length=100)
+    # SMTP_port = models.IntegerField(max_length=100)
+    # sender_email = models.EmailField(max_length=100)
+    # sender_email_password = models.CharField(max_length=100)
+    # message = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'email_notifier'
+
+
+class sms_notifier(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    url = models.CharField(max_length=100)
+    sender_sms_password = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
+    sender = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'sms_notifier'

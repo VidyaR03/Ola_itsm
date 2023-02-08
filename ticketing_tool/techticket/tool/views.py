@@ -28,6 +28,9 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
+from django.conf import settings
+
+# from settings import ready
 
 
 
@@ -315,7 +318,6 @@ def DeleteAttachedPDF(request,id):
     file_to_delete = str(doc.disc_Attachment)
     media_path = settings.MEDIA_ROOT
     file_path = os.path.join(media_path, file_to_delete)
-    print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
         return HttpResponse(request, 'tool/document.html',{'permission':permission})
@@ -338,7 +340,6 @@ class ViewAttachedPDF(View):
 	def get(self, request, path):
             media_path = settings.MEDIA_ROOT
             file_path = os.path.join(media_path, path)
-            print(file_path)
             return FileResponse(open(file_path, 'rb'), content_type='application/')
 
 
@@ -385,9 +386,7 @@ def LADD(request):
 
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-
-        print('organization :', ch_organization)
-
+        
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
@@ -596,9 +595,8 @@ def ADD(request):
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
         ch_organization = cl_New_organization.objects.filter(
-            ch_name=request.POST.get('ch_organization')).first()
-        ch_team = cl_Team.objects.filter(
-            ch_teamname=request.POST.get('ch_team_name')).first()
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
         ch_person_location = str.capitalize(
             request.POST.get('ch_person_location'))
@@ -652,7 +650,7 @@ def Update(request, id):
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.get(ch_teamname=request.POST.get('ch_team'))
+        ch_team = cl_Team.objects.get(ch_teamname=request.POST.get('ch_teamname'))
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -1011,7 +1009,6 @@ def team(request):
 def TADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        print('organization :',request.POST.get('ch_organization'))
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.filter(
@@ -1125,15 +1122,23 @@ def newchange(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-   
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person,'users':users,'permission':permission,'org':org,'call':call})
+    if request.method == "GET":
+        allteam = cl_Team.objects.all()
+        # team_person = cl_Person.objects.all()
+    q = request.GET.get('searchstatus')
+    if q != None:
+        nchange = cl_New_change.objects.filter(ch_status__icontains=q)
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call})
 
+def get_people_by_team(request):
+    team_id = request.GET.get('teamId')
+    people = cl_Person.objects.filter(ch_team_id=team_id)
+    return JsonResponse([{'id': person.id, 'name': person.ch_person_firstname} for person in people], safe=False)
 
 @login_required(login_url='/login_render/')
 def CADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        print('organization :', request.POST.get('ch_organization'))
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
 
@@ -1201,6 +1206,7 @@ def CUpdate(request, id):
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
         txt_description = request.POST.get('txt_description')
+        ch_assign_agent = nchange.ch_assign_agent
         nchange = cl_New_change(
             id=id,
             ch_organization=ch_organization,
@@ -1213,6 +1219,7 @@ def CUpdate(request, id):
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description=txt_description,
+            ch_assign_agent=ch_assign_agent
         )
         nchange.save()
         admin_name = request.session["username"]
@@ -1238,25 +1245,25 @@ def CDelete(request):
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
 
-
 @login_required(login_url='/login_render/')
 def assign_changeModal(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
             nchange.save()
         try:
+            mail_sender()
             subject = 'Welcome to Olatech Solutions'
             message = 'Hope you are enjoying your Olatech Services'
             sender = settings.EMAIL_HOST_USER
-            recepient = per.e_person_email,
-            send_mail(subject, message, sender, [
-                    recepient], fail_silently=False)
+            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            send_mail(subject, message, sender, recepient, fail_silently=False)
         except:
             print('email not send')
         admin_name = request.session["username"]
@@ -1272,12 +1279,21 @@ def assign_changeModal(request):
     return render(request, 'tool/tassign.html', context)
 
 
-########## Approve Change IM ############
+def mail_sender():
+    mail_host = email_notifier.objects.filter(id=1).first()
+    settings.EMAIL_HOST = mail_host.host
+    settings.EMAIL_PORT = mail_host.port
+    settings.EMAIL_USE_SSL=True
+    settings.EMAIL_HOST_USER = mail_host.host_user
+    settings.EMAIL_HOST_PASSWORD = mail_host.host_passwordhost_password
+
+########## Approve Change ############
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
+        mail_sender()
         list_id = request.POST.getlist('id[]')
         change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
         subject = 'Welcome to Olatech Solutions'
@@ -1301,9 +1317,8 @@ def user_request(request):
             ur = cl_User_request.objects.filter(ch_service__icontains=q)
         # escalated_ur = escalation(ur)
     org = cl_New_organization.objects.all()
-    per1 = cl_Person.objects.all()
-
-
+    allteam = cl_Team.objects.all()
+    team_person = cl_Person.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(ur, 10)
     try:
@@ -1319,10 +1334,10 @@ def user_request(request):
             'users':users,
             'permission':permission,
             'org':org,
-            'per1':per1
-        }
+            'allteam':allteam,
+            'team_person':team_person
+            }
     return render(request, 'tool/userrequest.html', context)
-
 
 
 def escalation(ur):
@@ -1340,7 +1355,6 @@ def UADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        print(id)
         fk_organization = cl_New_organization.objects.filter(
             ch_name=request.POST.get('ch_organization')).first()
         fk_caller = cl_Person.objects.filter(
@@ -1472,20 +1486,53 @@ def escalate_notify(request):
     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
 
-
-##########Approve Change for change management###########
-def send_approval_Mail_UR(request):
+@login_required(login_url='/login_render/')
+def assign_URModal(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        change_approve = cl_User_request.objects.filter(id=list_id[0]).first()
+        p_Emp_id = request.POST.get('p')
+        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
+        
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_assign_agent = per.ch_person_firstname
+            ur.save()
+        try:
+            mail_sender()
+            subject = 'Welcome to Olatech Solutions'
+            message = 'Hope you are enjoying your Olatech Services IN UR'
+            sender = settings.EMAIL_HOST_USER
+            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        admin_name = request.session["username"]
+        adminaction = "assign the changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
+        ur = cl_User_request.objects.all()
+        context = {
+            'ur': ur,
+            'permission':permission
+        }
+    return render(request, 'tool/tassign.html', context)
+
+@login_required(login_url='/login_render/')
+def send_approval_Mail_UR(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        mail_sender()
+        list_id = request.POST.getlist('id[]')
+        ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
         subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Discription : "{change_approve.txt_description}" '
+        message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
         sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com', 'kajal.p@olatechs.com']
+        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
         send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html')   
-
-
+    return render(request, 'tool/approve_change.html',{'permission':permission})
+ 
 
 
 #######################################################
@@ -1699,7 +1746,6 @@ def SPUpdate(request, id):
     """
     if request.method == "POST":
         id = request.POST.get('id')
-        print('organization :', request.POST.get('ch_organization'))
         ch_pname = request.POST.get('ch_pname')
         ch_customer = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -2627,7 +2673,6 @@ def DeleteCSVAttachedPDF(request):
     file_to_delete = str(csv.disc_Attachment)
     media_path = settings.MEDIA_ROOT
     file_path = os.path.join(media_path, file_to_delete)
-    print(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
         return HttpResponse(request, 'tool/edit_file.html',{'permission':permission})
@@ -2898,7 +2943,6 @@ def add_new_user(request):
 def user_edit(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(id=id).first()
-    print(user.ch_user_role)
     if request.method == "POST":
         ch_user_updated_role = roles.objects.get(
             role_name=request.POST.get('role_name'))
@@ -2906,6 +2950,167 @@ def user_edit(request, id):
         user.save()
         return redirect('user_display')
     return render(request, 'tool/user.html',{'permission':permission})
+
+
+###################### Notification Menu ###############################
+
+@login_required(login_url='/login_render/')
+def email_display(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "GET":
+        emails = email_notifier.objects.all()
+        q = request.GET.get('searchname')
+        if q != None:
+            emails = email_notifier.objects.filter(name_icontains=q)        
+    context = {
+            'emails': emails,
+            'permission':permission
+        }
+    return render(request, 'tool/email_notifier.html', context)
+
+@login_required(login_url='/login_render/')
+def add_new_email(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        # name = request.POST.get('name')
+        # host = request.POST.get('SMTP_server')
+        # port = request.POST.get('SMTP_port')
+        # use_SSL = True
+        # host_user = request.POST.get('sender_email')
+        # host_password = request.POST.get('sender_email_password')
+        # message = request.POST.get('message')
+
+        email = email_notifier(
+            name = request.POST.get('name'),
+            host = request.POST.get('SMTP_server'),
+            port = request.POST.get('SMTP_port'),
+            use_SSL = "True",
+            host_user = request.POST.get('sender_email'),
+            host_password = request.POST.get('sender_email_password'),
+            message = request.POST.get('message')
+        )
+        email.save()
+        return redirect('email_display')
+    return render(request, 'tool/email_notifier.html',{'permission':permission})
+
+# @login_required(login_url='/login_render/')
+# def add_new_email(request):
+#     permission = roles.objects.filter(id=request.session['user_role']).first()
+#     if request.method == "POST":
+#         name = request.POST.get('name')
+#         SMTP_server = request.POST.get('SMTP_server')
+#         SMTP_port = request.POST.get('SMTP_port')
+#         sender_email = request.POST.get('sender_email')
+#         sender_email_password = request.POST.get('sender_email_password')
+#         message = request.POST.get('message')
+
+#         email = email_notifier(
+#             name=name,
+#             SMTP_server=SMTP_server,
+#             SMTP_port=SMTP_port,
+#             sender_email=sender_email,
+#             sender_email_password=sender_email_password,
+#             message = message
+#         )
+#         email.save()
+#         return redirect('email_display')
+#     return render(request, 'tool/email_notifier.html',{'permission':permission})
+
+
+
+@login_required(login_url='/login_render/')
+def email_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        email = email_notifier.objects.filter(id=id).first()
+        # name = request.POST.get('name')
+        # SMTP_server = request.POST.get('SMTP_server')
+        # SMTP_port = request.POST.get('SMTP_port')
+        # sender_email = request.POST.get('sender_email')
+        # sender_email_password = request.POST.get('sender_email_password')
+        # message = request.POST.get('message')
+
+        email = email_notifier(
+            id=id,
+            name = request.POST.get('name'),
+            host = request.POST.get('SMTP_server'),
+            port = request.POST.get('SMTP_port'),
+            use_SSL = "True",
+            host_user = request.POST.get('sender_email'),
+            host_password = request.POST.get('sender_email_password'),
+            message = request.POST.get('message')
+        )
+        email.save()
+        return redirect('email_display')
+    return render(request, 'tool/email_notifier.html',{'permission':permission})
+
+####################################################################
+
+
+@login_required(login_url='/login_render/')
+def sms_display(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "GET":
+        sms = sms_notifier.objects.all()
+        q = request.GET.get('searchname')
+        if q != None:
+            sms = sms_notifier.objects.filter(name_icontains=q)        
+    context = {
+            'sms': sms,
+            'permission':permission
+        }
+    return render(request, 'tool/sms_notifier.html', context)
+
+
+@login_required(login_url='/login_render/')
+def add_new_sms(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        name = request.POST.get('name')
+        url = request.POST.get('url')
+        sender_sms_password = request.POST.get('sender_sms_password')
+        description = request.POST.get('description')
+        username = request.POST.get('username')
+        sender = request.POST.get('sender')
+
+        sms = sms_notifier(
+            name=name,
+            url=url,
+            sender_sms_password=sender_sms_password,
+            description=description,
+            username=username,
+            sender = sender
+        )
+        sms.save()
+        return redirect('sms_display')
+    return render(request, 'tool/sms_notifier.html',{'permission':permission})
+
+
+
+@login_required(login_url='/login_render/')
+def sms_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        name = request.POST.get('name')
+        url = request.POST.get('url')
+        sender_sms_password = request.POST.get('sender_sms_password')
+        description = request.POST.get('description')
+        username = request.POST.get('username')
+        sender = request.POST.get('sender')
+
+        sms = sms_notifier(
+            id=id,
+            name=name,
+            url=url,
+            sender_sms_password=sender_sms_password,
+            description=description,
+            username=username,
+            sender = sender
+        )
+        sms.save()
+        return redirect('sms_display')
+    return render(request, 'tool/sms_notifier.html',{'permission':permission})
+
 
 
 # =============================================================================
