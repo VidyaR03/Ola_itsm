@@ -594,7 +594,8 @@ def ADD(request):
             request.POST.get('ch_person_firstname'))
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
-        ch_organization = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
         ch_person_location = str.capitalize(
@@ -647,10 +648,12 @@ def Update(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_person_firstname = request.POST.get('ch_person_firstname')
-        ch_person_lastname = request.POST.get('ch_person_lastname')
+        ch_person_firstname = str.capitalize(
+            request.POST.get('ch_person_firstname'))
+        ch_person_lastname = str.capitalize(
+            request.POST.get('ch_person_lastname'))
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.get(ch_teamname=request.POST.get('ch_teamname'))
+        ch_team = cl_Team.objects.get(ch_teamname= request.POST.get('ch_team'))
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -1362,8 +1365,7 @@ def UADD(request):
         id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.filter(
             ch_name=request.POST.get('ch_organization')).first()
-        fk_caller = cl_Person.objects.filter(
-            ch_person_firstname=request.POST.get('ch_caller')).first()
+        fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')

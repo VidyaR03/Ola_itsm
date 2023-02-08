@@ -71,10 +71,9 @@
 
       {% for i in users %}
       {% if forloop.counter < 11 %}      
-      <tr>
+      <tr id="{{i.id}}">
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
-
         </td>
         <td>{{i.id}}</td>
         <td>{{i.ch_fname}}</td>
@@ -113,6 +112,14 @@
   </ul>
   {% endif %}
 
+
+  <style>
+    .required-field::before {
+    content: "*";
+    color: red;
+    }
+  </style>
+
   <div id="addcl_os_familyModal" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -128,6 +135,7 @@
               <input name="id" type="text" class="form-control">
             </div>
             <div class="form-group">
+              <span class="required-field"></span>
               <label> Name</label>
               <input name="ch_fname" type="text" class="form-control" required>
             </div>
@@ -189,7 +197,7 @@
         } else {
           console.log(id)
           $.ajax({
-            url: "{% url 'appDelete' %}",
+            url: "{% url 'osfDelete' %}",
             method: "POST",
             data: {
               id,

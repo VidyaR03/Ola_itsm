@@ -53,7 +53,8 @@
     <tbody>
       {% csrf_token %}
       {% for i in users %}
-      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+      {% if forloop.counter < 11 %} 
+      <tr id="{{i.id}}">
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
@@ -104,7 +105,12 @@
 </ul>
 {% endif %}
 
-
+<style>
+  .required-field::before {
+  content: "*";
+  color: red;
+  }
+</style>
     <div id="addcl_PersonModal" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
@@ -115,35 +121,45 @@
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+              <!-- <div class="form-group">
+                <label>ID</label>
+                <input name="id" value="{{i.id}}" type="text" class="form-control">
+              </div> -->
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>First Name</label>
                 <input name="ch_person_firstname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Last Name</label>
                 <input name="ch_person_lastname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization:<a href="{% url 'new_organization' %}">
+                <span class="required-field"></span>
+                <label>Organization<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                <select name="ch_organization" id="ch_organization"  style="min-height:30px;min-width:280px;">
+                <select name="ch_organization" id="ch_organization"  style="min-height:30px;min-width:280px;" style="min-height:30px;min-width:280px;" required>
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
                 </select>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Team<a href="{% url 'team'%}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                  </a></label></label>
-                  <select name="ch_team_name" id="ch_team"  style="min-height:30px;min-width:280px;">
-                    {% for i in team1 %}
+                  </a></label>
+                  <select name="ch_team_name" id="ch_team_name" style="min-height:30px;min-width:280px;"  style="min-height:30px;min-width:280px;" required>
+                    {% for i in teaam11 %}
                     <option value="{{i.ch_teamname}}">{{i.ch_teamname}}</option>
                     {% endfor %}
                   </select> 
-              </div>
+              
+                </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Status</label>
                 <select name="ch_person_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
@@ -152,44 +168,42 @@
                 </select>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Location</label>
-                <input name="ch_person_location" type="text" class="form-control">
+                <input name="ch_person_location" type="text" class="form-control" required>
               </div>
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <!--start of right half -->
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Function</label>
-                <input name="ch_person_function" type="text" class="form-control">
+                <input name="ch_person_function" type="text" class="form-control" required>
               </div>
-              <!-- <div class="form-group">
-                <label>Manager</label>
-                <input name="ch_manager" type="text" class="form-control">
-              </div> -->
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Manager</label>
-                <select name="ch_manager" id="ch_manager" style="min-height:30px;min-width:280px;">
-                  <option value="None">Select Manager</option>
-                  {% for j in per %}
-                    <option value="{{j.ch_person_firstname}}">{{j.ch_person_firstname}} {{j.ch_person_lastname}}</option>
-                  {% endfor %}
-                </select>
+                <input name="ch_manager" type="text" class="form-control" required>
               </div>
               
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Employee Number</label>
-                <input name="ch_employee_number" type="text" class="form-control">
+                <input name="ch_employee_number" type="text" class="form-control" required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Email</label>
-                <input name="e_person_email" type="text" class="form-control">
+                <input name="e_person_email" type="text" class="form-control" required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Phone</label>
                 <input name="ch_person_phone" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
                   required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Mobile Number</label>
                 <input name="ch_person_mobilenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
                   required>
@@ -206,6 +220,9 @@
   </div>
 
 
+
+
+
 <!-- Edit Modal HTML -->
 {% for i in per %}
 <div id="editcl_PersonModal-{{forloop.counter}}" class="modal fade">
@@ -217,7 +234,7 @@
           <h4 class="modal-title">Edit Person</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
-        <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+        <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;" required>
           <div class="form-group">
             <label>ID</label>
             <input name="id" value="{{i.id}}" type="text" class="form-control">

@@ -135,7 +135,14 @@
             {% endif %}
         </ul>
         {% endif %}
+           
 
+        <style>
+            .required-field::before {
+            content: "*";
+            color: red;
+            }
+          </style>
 
         <!-- Add Modal HTML -->
         <div id="addcl_LocationModal" class="modal fade">
@@ -153,42 +160,48 @@
                             <input name="id" type="text" class="form-control" required>
                         </div> -->
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>Name</label>
                                 <input name="ch_location_name" type="text" value="{{i.ch_location_name}}"
                                     class="form-control" required>
                             </div>
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>Address</label>
                                 <input name="txt_address" value="{{i.txt_address}}" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Organization:<a href="{% url 'new_organization' %}">
-                                        <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                    </a></label>
-                                  <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:brnd;">
-                                {% for i in org %}
-                              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                              {% endfor %}
-                            </select>
-                            </div>
+                                <span class="required-field"></span><label>Organization  <a href="{% url 'new_organization' %}">
+                                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                  </a></label>
+                                  <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;" required>
+                                    {% for i in org %}
+                                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>City</label>
                                 <input name="ch_city" type="text" value="{{i.ch_city}}" class="form-control" required>
                             </div>
                         </div>
                         <div class="modal-body" style="width: 330px; display: inline-block;">
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>Pincode</label>
                                 <input name="i_pincode" type="text" value="{{i.i_pincode}}" class="form-control"
                                     data-msg="Please enter 6 digit number" pattern="[0-9 ]+" minlength="6" maxlength="6"
                                     required>
                             </div>
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>Country</label>
                                 <input name="ch_country" type="text" value="{{i.ch_country}}" class="form-control"
                                     required>
                             </div>
                             <div class="form-group">
+                                <span class="required-field"></span>
                                 <label>Status</label>
                                 <select name="ch_status" type="text" class="form-control"
                                     aria-label="Default select example" aria-invalid="false">

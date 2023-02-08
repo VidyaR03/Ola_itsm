@@ -131,9 +131,16 @@
     {% endif %}
 
 
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
+
     <div id="addcl_Middleware_instanceModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="{% url 'MADD' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -143,40 +150,37 @@
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <!-- <div class="form-group">
               <label>ID</label>
-              <input name="id" type="text" class="form-control">
+              <input name="id" type="text" class="form-control" readonly>
             </div> -->
               <div class="form-group">
-                <label>Name</label>
+                <span class="required-field"></span><label>Name</label>
                 <input name="ch_miname" type="text" class="form-control" required>
               </div>
 
               <div class="form-group">
-                <label>Organization:<a href="{% url 'new_organization' %}">
-                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                  </a></label>
-              </div>
-  
-              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:brnd;">
-                {% for i in org %}
-                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                {% endfor %}
-              </select>
+                  <span class="required-field"></span><label>Organization  <a href="{% url 'new_organization' %}">
+                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                    </a></label>
+                    <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;" required>
+                      {% for i in org %}
+                    <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
               <div class="form-group">
-                <label>Middleware<a href="{% url 'newmiddleware' %}">
+                <span class="required-field"></span><label>Middleware<a href="{% url 'newmiddleware' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-              </div>
-    
-              
-                <select name="ch_middleware" id="ch_middleware" style="min-height:30px;min-width:brnd;">
+                <select name="ch_middleware" id="ch_middleware" style="min-height:30px;min-width:280px;"required>
                   {% for i in middle %}
                   <option value="{{i.ch_midname}}">{{i.ch_midname}}</option>
                   {% endfor %}
                 </select>
+              </div>
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
-                <label>Business Criticality</label>
+                <span class="required-field"></span><label>Business Criticality</label>
                 <select name="ch_business_criticality" type="text" class="form-control" required>
                   <option value="High">High</option>
                   <option value="Low">Low</option>
@@ -185,14 +189,14 @@
               </div>
 
               <div class="form-group">
-                <label>Move to Production Date</label>
+                <span class="required-field"></span><label>Move to Production Date</label>
                 <input class="form-control" type="date" id="dt_move_to_production_date"
                   name="dt_move_to_production_date" required>
                 <span class="validity"></span>
               </div>
 
               <div class="form-group">
-                <label>Description</label>
+                <span class="required-field"></span><label>Description</label>
                 <input name="txt_description" type="text" class="form-control">
               </div>
 

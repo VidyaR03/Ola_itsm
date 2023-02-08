@@ -1292,9 +1292,13 @@ def ntUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def ntDelete(request, id):
-    nt = cl_network_type.objects.filter(id=id)
-    nt.delete()
+def ntDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            nt = cl_network_type.objects.filter(id=i).first()
+            nt.delete()
     return redirect('network_type')
 
 
@@ -1370,9 +1374,13 @@ def osfUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def osfDelete(request, id):
-    osf = cl_os_family.objects.filter(id=id)
-    osf.delete()
+def osfDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            nd = cl_os_family.objects.filter(id=i).first()
+            nd.delete()
     return redirect('os_family')
 
 
@@ -1382,6 +1390,8 @@ def os_version(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     osv = cl_os_version.objects.all()
     org = cl_New_organization.objects.all()
+    osf = cl_os_family.objects.all()
+
 
     if request.method == "GET":
         q = request.GET.get('searchname')
@@ -1401,7 +1411,7 @@ def os_version(request):
         q = request.GET.get('searchfname')
         if q != None:
             osf = cl_os_version.objects.filter(ch_fname__icontains=q)
-    return render(request, 'tool/os_version.html', {'osv': osv,'org':org,'users':users,'permission':permission})
+    return render(request, 'tool/os_version.html', {'osv': osv,'org':org,'users':users,'permission':permission,'osf':osf})
 
 
 @login_required(login_url='/login_render/')
@@ -1410,8 +1420,7 @@ def osvAdd(request):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_osname = request.POST.get('ch_osname')
-        ch_fname = cl_os_family.objects.get(
-            ch_fname=request.POST.get('ch_fname'))
+        ch_fname = cl_os_family.objects.filter(ch_fname=request.POST.get('ch_fname')).first()
         
         osv = cl_os_version(
             id=id,
@@ -1454,9 +1463,13 @@ def osvUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def osvDelete(request, id):
-    osv = cl_os_version.objects.filter(id=id)
-    osv.delete()
+def osvDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            osv = cl_os_version.objects.filter(id=i).first()
+            osv.delete()
     return redirect('os_version')
 
 
@@ -1465,6 +1478,8 @@ def os_license(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ol = cl_os_license.objects.all()
     org = cl_New_organization.objects.all()
+    osv = cl_os_version.objects.all()
+
 
     if request.method == "GET":
         q = request.GET.get('searchname')
@@ -1484,7 +1499,7 @@ def os_license(request):
         if q != None:
             ol = cl_os_license.objects.filter(
                 ch_name__icontains=q)
-    return render(request, 'tool/os_license.html', {'ol': ol,'org':org,'users':users, 'permission':permission})
+    return render(request, 'tool/os_license.html', {'ol': ol,'org':org,'users':users, 'permission':permission,'osv':osv})
 
 
 
@@ -1494,7 +1509,7 @@ def olAdd(request):
     if request.method == "POST":
         # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
-        ch_version = cl_os_version.objects.get(ch_osname=request.POST.get('ch_version'))
+        ch_version = cl_os_version.objects.filter(ch_osname=request.POST.get('ch_version')).first()
         ch_organization = cl_New_organization.objects.filter(
             ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_usage_limit = request.POST.get('ch_usage_limit')
@@ -1699,8 +1714,7 @@ def mdAdd(request):
         # id = request.POST.get('id')
         print(id)
         ch_modelname = request.POST.get('ch_modelname')
-        ch_brandname = cl_Brand.objects.filter(
-            ch_brandname=request.POST.get('ch_brandname')).first()
+        ch_brandname = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brandname')).first()
 
         model = cl_model(
             # id=id,
@@ -1748,9 +1762,13 @@ def mdUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def mdDelete(request, id):
-    model = cl_model.objects.filter(id=id)
-    model.delete()
+def mdDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            model = cl_model.objects.filter(id=i).first()
+            model.delete()
     return redirect('cmodel')
 
 
@@ -1863,6 +1881,16 @@ def server(request):
         if q != None:
             se = cl_Server.objects.filter(ch_sname__icontains=q)
     org = cl_New_organization.objects.all()
+    osf = cl_os_family.objects.all()
+    brnd = cl_Brand.objects.all()
+    model = cl_model.objects.all()
+    osv = cl_os_version.objects.all()
+    ol = cl_os_license.objects.all()
+
+
+
+
+
 
     page = request.GET.get('page', 1)
 
@@ -1878,7 +1906,7 @@ def server(request):
         if q != None:
             se = cl_Server.objects.filter(
                 ch_sname__icontains=q)
-    return render(request, 'tool/server.html', {'se': se,'users':users,'org':org, 'permission':permission})
+    return render(request, 'tool/server.html', {'se': se,'users':users,'org':org, 'permission':permission,'osf':osf,'brnd':brnd,'model':model,'osv':osv,'ol':ol})
 
 
 
@@ -1891,12 +1919,12 @@ def serverAdd(request):
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         ch_location = request.POST.get('ch_location')
-        ch_os_family =  cl_os_family.objects.get(ch_fname=request.POST.get('ch_os_family'))
-        ch_brand = cl_Brand.objects.get(ch_brandname=request.POST.get('ch_brand'))
-        ch_model = cl_model.objects.get(ch_modelname=request.POST.get('ch_model'))
-        i_os_version = cl_os_version.objects.get(ch_osname=request.POST.get('i_os_version'))
+        ch_os_family =  cl_os_family.objects.filter(ch_fname=request.POST.get('ch_os_family')).first()
+        ch_brand = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brand')).first()
+        ch_model = cl_model.objects.filter(ch_modelname=request.POST.get('ch_model')).first()
+        i_os_version = cl_os_version.objects.filter(ch_osname=request.POST.get('i_os_version')).first()
         i_management_ip = request.POST.get('i_management_ip')
-        i_os_license = cl_os_license.objects.get(ch_name=request.POST.get('i_os_license'))
+        i_os_license = cl_os_license.objects.filter(ch_name=request.POST.get('i_os_license')).first()
         ch_ram = request.POST.get('ch_ram')
         ch_cpu = request.POST.get('ch_cpu')
         i_rack_unit = request.POST.get('i_rack_unit')

@@ -84,7 +84,6 @@
       {% for i in users %}
       {% if forloop.counter < 11 %}       
       <tr id="{{i.id}}">
-
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
@@ -135,11 +134,16 @@
   </ul>
   {% endif %}
 
-
+  <style>
+    .required-field::before {
+    content: "*";
+    color: red;
+    }
+  </style>
 
   <div id="addcl_os_licenseModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+      <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
         <form action="{% url 'olAdd' %}" method="post">
           {% csrf_token %}
           <div class="modal-header">
@@ -152,62 +156,74 @@
               <input name="id" type="text" class="form-control">
             </div> -->
             <div class="form-group">
+              <span class="required-field"></span>
               <label>Name</label>
               <input name="ch_name" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Version<a href="{% url 'os_version' %}">
+              <span class="required-field"></span>
+              <label>OS Version<a href="{% url 'os_version' %}">
                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-              </a></label>
-              <input name="ch_version" type="text" class="form-control" required>
+                </a></label>
+              <select name="ch_version" id="ch_version" style="min-height:30px;min-width:280px;" required>
+              {% for i in osv %}
+              <option value="{{i.ch_osname}}">{{i.ch_osname}}</option>
+              {% endfor %}
+              </select>
             </div>
 
             <div class="form-group">
-              <label>Organization<a href="{% url 'new_organization' %}">
+              <span class="required-field"></span> <label>Organization<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <input name="ch_organization" type="text" class="form-control" required>
+             <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+              {% for i in org %}
+              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+              {% endfor %}
+             </select>
             </div>
             <div class="form-group">
+              <span class="required-field"></span>
               <label>Usages Limit</label>
-              <input name="ch_usage_limit" type="text" class="form-control">
+              <input name="ch_usage_limit" type="text" class="form-control" required>
             </div>
             <div class="form-group">
+              <span class="required-field"></span>
               <label>Prepetual</label>
-              <input name="ch_perpetual" type="text" class="form-control">
+              <input name="ch_perpetual" type="text" class="form-control" required>
              </div>
           </div>
 
-          <div class="modal-body" style="width: 330px; display: inline-block;">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <!--start of right half -->
-
-
-          
-          
-
            <div class="form-group">
+            <span class="required-field"></span>
             <label> Start Date</label>
             <input class="form-control" type="date" id="dt_start_date" name="dt_start_date" required>
             <span class="validity"></span>
            </div>
 
            <div class="form-group">
+            <span class="required-field"></span>
             <label>End Date</label>
             <input class="form-control" type="date" id="dt_end_date" name="dt_end_date" required>
             <span class="validity"></span>
            </div>
-          <div class="form-group">
+
+           <div class="form-group">
+           <span class="required-field"></span>
             <label>Key</label>
-            <input name="ch_key" type="text" class="form-control">
-          </div>
+            <input name="ch_key" type="text" class="form-control" required>
+           </div>
 
 
-          <div class="form-group">
+           <div class="form-group">
+            <span class="required-field"></span>
             <label>Description</label>
-            <input name="txt_description" type="text" class="form-control">
-          </div>
+            <input name="txt_description" type="text" class="form-control" required>
+           </div>
 
-        </div>
+          </div>
         <div class="modal-footer">
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
           <input type="submit" class="btn btn-success" value="Add">
@@ -311,7 +327,7 @@
         } else {
           console.log(id)
           $.ajax({
-            url: "{% url 'appDelete' %}",
+            url: "{% url 'olDelete' %}",
             method: "POST",
             data: {
               id,
