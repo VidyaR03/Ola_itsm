@@ -7,10 +7,9 @@ from io import BytesIO
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from tool.models import cl_Location, cl_Service, cl_Software
+from tool.models import cl_Location, cl_Service, cl_Software,cl_New_organization
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from tool.models import cl_New_organization
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -172,6 +171,10 @@ def LogsDelete(request):
 def document(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            doc = cl_Document.objects.filter(ch_name__icontains=q) 
     page = request.GET.get('page', 1)
     paginator = Paginator(doc, 10)
     try:
@@ -183,10 +186,7 @@ def document(request):
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            doc = cl_Document.objects.filter(ch_name__icontains=q)        
+           
     context = {
         'doc': doc,
         'users':users,
@@ -348,6 +348,11 @@ class ViewAttachedPDF(View):
 def Location(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     loc = cl_Location.objects.all()
+    
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            loc = cl_Location.objects.filter(ch_location_name__icontains=q)
     page = request.GET.get('page', 1)
     org = cl_New_organization.objects.all()
 
@@ -360,10 +365,6 @@ def Location(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            org = cl_New_organization.objects.filter(ch_location_name__icontains=q)
 
     context = {
         'loc': loc,
@@ -471,6 +472,12 @@ def LDelete(request):
 def new_organization(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     org = cl_New_organization.objects.all()
+     
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            org = cl_New_organization.objects.filter(ch_name__icontains=q)
+
     page = request.GET.get('page', 1)
     paginator = Paginator(org, 10)
     try:
@@ -479,10 +486,7 @@ def new_organization(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            org = cl_New_organization.objects.filter(ch_name__icontains=q)
+   
     return render(request, 'tool/neworganization.html', {'org': org,'users':users,'permission':permission})
 
 
@@ -551,8 +555,12 @@ def OrgUpdate(request):
 
 @login_required(login_url='/login_render/')
 def OrgDelete(request):
-    org = cl_New_organization.objects.filter()
-    org.delete()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        for i in list_id:
+            org = cl_New_organization.objects.filter(id=i).first()
+            org.delete()
     return redirect('new_organization')
 
 
@@ -561,6 +569,11 @@ def client(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     per = cl_Person.objects.all()
     org = cl_New_organization.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
+
     team1 =cl_Team.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(per, 10)
@@ -570,10 +583,7 @@ def client(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
+
     return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users,'permission':permission,'team1':team1})
 
 
@@ -586,7 +596,7 @@ def ADD(request):
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
         ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+            ch_name=request.POST.get('ch_organization')).first()
         ch_team = cl_Team.objects.filter(
             ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
@@ -642,7 +652,7 @@ def Update(request, id):
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.get(ch_teamname=str.capitalize(request.POST.get('ch_teamname')))
+        ch_team = cl_Team.objects.get(ch_teamname=request.POST.get('ch_team'))
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -694,6 +704,11 @@ def Delete(request):
 def document(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     doc = cl_Document.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            doc = cl_Document.objects.filter(ch_name__icontains=q)
+
     page = request.GET.get('page', 1)
     org = cl_New_organization.objects.all()
 
@@ -708,11 +723,8 @@ def document(request):
 
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
-            entry.disc_Attachment = 'No File'
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            doc = cl_Document.objects.filter(ch_name__icontains=q)        
+            entry.disc_Attachment = 'No File'       
+
     context = {
         'doc': doc,
         'users':users,
@@ -876,6 +888,10 @@ def render_to_pdf(template_src, context_dict={}):
 def software(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     soft = cl_Software.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            soft = cl_Software.objects.filter(ch_sofname__icontains=q)
     page = request.GET.get('page', 1)
     paginator = Paginator(soft, 10)
     try:
@@ -885,11 +901,7 @@ def software(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
    
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            soft = cl_Software.objects.filter(ch_teamname__icontains=q)
-        return render(request, 'tool/software.html', {'soft': soft,'users':users,'permission':permission})
+    return render(request, 'tool/software.html', {'soft': soft,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -979,7 +991,12 @@ def team(request):
     if request.method == "GET":
         tem = cl_Team.objects.all()
         org = cl_New_organization.objects.all()
+        q = request.GET.get('searchname')
+        if q != None:
+            tem = cl_Team.objects.filter(ch_teamname__icontains=q)
+
         page = request.GET.get('page', 1)
+ 
         paginator = Paginator(tem, 10)
         try:
             users = paginator.page(page)
@@ -987,9 +1004,6 @@ def team(request):
             users = paginator.page(1)
         except EmptyPage:
             users = paginator.page(paginator.num_pages)
-        q = request.GET.get('searchname')
-        if q != None:
-            tem = cl_Team.objects.filter(ch_teamname__icontains=q)
     return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users,'permission':permission})
 
 
@@ -1091,6 +1105,13 @@ def TDelete(request):
 def newchange(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     nchange = cl_New_change.objects.all()
+    if request.method == "GET":
+        allteam = cl_Team.objects.all()
+        team_person = cl_Person.objects.all()
+        q = request.GET.get('searchstatus')
+        if q != None:
+            nchange = cl_New_change.objects.filter(ch_status__icontains=q)
+
     page = request.GET.get('page', 1)
     org = cl_New_organization.objects.all()
     call = cl_Person.objects.all()
@@ -1104,12 +1125,7 @@ def newchange(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        allteam = cl_Team.objects.all()
-        team_person = cl_Person.objects.all()
-    q = request.GET.get('searchstatus')
-    if q != None:
-        nchange = cl_New_change.objects.filter(ch_status__icontains=q)
+   
     return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam, 'team_person': team_person,'users':users,'permission':permission,'org':org,'call':call})
 
 
@@ -1278,6 +1294,12 @@ def send_approval_Mail(request):
 def user_request(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ur = cl_User_request.objects.all()
+    escalated_ur = escalation(ur)
+    if request.method == "GET":
+        q = request.GET.get('searchservice')
+        if q != None:
+            ur = cl_User_request.objects.filter(ch_service__icontains=q)
+        # escalated_ur = escalation(ur)
     org = cl_New_organization.objects.all()
     per1 = cl_Person.objects.all()
 
@@ -1290,21 +1312,16 @@ def user_request(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        ur = cl_User_request.objects.all()
-        q = request.GET.get('searchstatus')
-        if q != None:
-            ur = cl_User_request.objects.filter(ch_status__icontains=q)
-        escalated_ur = escalation(ur)
-        context = {
+   
+    context = {
             'ur': ur,
             'escalated_ur': escalated_ur,
             'users':users,
             'permission':permission,
             'org':org,
             'per1':per1
-            }
-        return render(request, 'tool/userrequest.html', context)
+        }
+    return render(request, 'tool/userrequest.html', context)
 
 
 
@@ -1488,6 +1505,11 @@ def send_approval_Mail_UR(request):
 def customer_contract(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     cust = cl_Customer_contract.objects.all()
+    
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            cust = cl_Customer_contract.objects.filter(ch_cname__icontains=q)
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(cust, 10)
@@ -1497,10 +1519,6 @@ def customer_contract(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchstatus')
-        if q != None:
-            cust = cl_Customer_contract.objects.filter(ch_status__icontains=q)
     return render(request, 'tool/scustomer_contract.html', {'cust': cust,'org':org,'users':users,'permission':permission})
 
 
@@ -1743,6 +1761,11 @@ def SPDelete(request):
 def servicefamilies(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sf = cl_Servicefamilies.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            sf = cl_Servicefamilies.objects.filter(ch_sname__icontains=q)
+
     page = request.GET.get('page', 1)
     paginator = Paginator(sf, 10)
     try:
@@ -1751,10 +1774,7 @@ def servicefamilies(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            sf = cl_Servicefamilies.objects.filter(ch_sname__icontains=q)
+ 
 
     context = {
         'sf': sf,
@@ -1821,6 +1841,10 @@ def sservice(request):
     ser = cl_Service.objects.all()
     org = cl_New_organization.objects.all()
     sfamily = cl_Servicefamilies.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            ser = cl_Service.objects.filter( ch_ssname__icontains=q)
     page = request.GET.get('page', 1)
     paginator = Paginator(ser, 10)
     try:
@@ -1830,10 +1854,7 @@ def sservice(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        q = request.GET.get('searchstatus')
-        if q != None:
-            ser = cl_Service.objects.filter(ch_status__icontains=q)
+   
     return render(request, 'tool/sservice.html', {'ser': ser,'sfamily':sfamily,'org':org,'users':users,'permission':permission})
 
 
@@ -1921,6 +1942,11 @@ def service_subcategory(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sub = cl_Service_subcategory.objects.all()
     ser = cl_Service.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            sub = cl_Service_subcategory.objects.filter(ch_subname__icontains=q)
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(sub, 10)
@@ -1931,10 +1957,7 @@ def service_subcategory(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        q = request.GET.get('searchstatus')
-        if q != None:
-            sub = cl_Service_subcategory.objects.filter(ch_status__icontains=q)
+    
     return render(request, 'tool/service_subcategory.html', {'sub': sub,'ser':ser,'users':users, 'permission':permission})
 
 
@@ -2015,6 +2038,10 @@ def SDelete(request):
 def sla(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sl = cl_Sla.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            sl = cl_Sla.objects.filter(ch_slname__icontains=q)
     org = cl_New_organization.objects.all()
     page = request.GET.get('page', 1)
 
@@ -2025,11 +2052,8 @@ def sla(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchstatus')
-        if q != None:
-            sl = cl_Sla.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/ssla.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
+   
+    return render(request, 'tool/team.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2048,7 +2072,7 @@ def SLADD(request):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/ssla.html',{'permission':permission})
+    return render(request, 'tool/team.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2059,7 +2083,7 @@ def SLEdit(request):
         'sl': sl,
         'permission':permission
     }
-    return render(request, 'tool/ssla.html', context)
+    return render(request, 'tool/team.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -2082,7 +2106,7 @@ def SLUpdate(request, id):
         )
         sl.save()
         return redirect('sla')
-    return render(request, 'tool/ssla.html',{'permission':permission})
+    return render(request, 'tool/team.html',{'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -2098,8 +2122,16 @@ def SLDelete(request):
 
 @login_required(login_url='/login_render/')
 def SLT(request):
+    
+
     permission = roles.objects.filter(id=request.session['user_role']).first()
     slt = cl_Slt.objects.all()
+         
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            slt = cl_Slt.objects.filter(ch_name__icontains=q)
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(slt, 10)
@@ -2109,7 +2141,7 @@ def SLT(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-
+   
     context = {
         'slt': slt,
         'users':users,
@@ -2195,6 +2227,10 @@ def servicedelivery(request):
     sd = cl_Servicedelivery.objects.all()
     org = cl_New_organization.objects.all()
 
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            sd = cl_Servicedelivery.objects.filter(ch_sdname__icontains=q)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(sd, 10)
@@ -2205,10 +2241,6 @@ def servicedelivery(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            sd = cl_Servicedelivery.objects.filter(ch_name__icontains=q)
     return render(request, 'tool/sdelivery.html', {'sd': sd,'org':org,'users':users, 'permission':permission})
 
 

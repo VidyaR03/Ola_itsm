@@ -55,7 +55,7 @@ urlpatterns = [
     path('OrgADD', views.OrgADD, name='OrgADD'),
     path('OrgEdit', views.OrgEdit, name='OrgEdit'),
     path('OrgUpdate/<str:id>', views.OrgUpdate, name='OrgUpdate'),
-    path('OrgDelete/<str:id>', views.OrgDelete, name='OrgDelete'),
+    path('OrgDelete/', views.OrgDelete, name='OrgDelete'),
           
     
     #url for document
@@ -161,7 +161,9 @@ urlpatterns = [
     path('bnAdd', views.bnAdd, name='bnAdd'),
     path('bnEdit', views.bnEdit, name='bnEdit'),
     path('bnUpdate/<str:id>', views.bnUpdate, name='bnUpdate'),
-    path('bnDelete/<str:id>', views.bnDelete, name='bnDelete'),
+    path('bnDelete/', views.bnDelete, name='bnDelete'),
+
+    
 
     
       #URL for Model Type
