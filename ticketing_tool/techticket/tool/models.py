@@ -861,7 +861,6 @@ class cl_Ldapuser(models.Model):
 class cl_Externaluser(models.Model):
     """Models which create the table for External User"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_person = models.ForeignKey(
         cl_Person, on_delete=models.CASCADE)
     ch_person_lastname = models.CharField(max_length=100, null=True)
