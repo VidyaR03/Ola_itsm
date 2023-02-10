@@ -312,6 +312,7 @@
                 {% else %}
                 <td>{{i.ch_assign_agent}}</td>
                 {% endif %}
+                
                 {% if permission.inci_m_e == "on" or permission == None %}
                 <td>
                     <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i

@@ -20,7 +20,7 @@ urlpatterns = [
     path('add', views.ADD, name='add'),
     # path('edit', views.Edit, name='edit'),
     path('update/<str:id>', views.Update, name='update'),
-    path('delete/', views.Delete, name='delete'),
+    path('delete_person/', views.Delete, name='delete_person'),
     path("client/", views.client,name='client'),
 
     #Url For New Change
@@ -325,7 +325,7 @@ urlpatterns = [
      #url for slt
     path("slt/", views.SLT,name='slt'),
     path('sltadd', views.STADD, name='sltadd'),
-    path('sltedit', views.SLTEdit, name='sltedit'),
+    # path('sltedit', views.SLTEdit, name='sltedit'),
     path('sltupdate/<str:id>', views.SLTUpdate, name='sltupdate'),
     path('sltdelete', views.SLTDelete, name='sltdelete'),
 
@@ -345,7 +345,6 @@ urlpatterns = [
     #url for system configuration
     path("synchro_data_source/", views.synchro_data_source,name='synchro_data_source'),
     path("sysconfinav/", views.sysconfienav,name='sysconfinav'),
-    path("authgoogle/", views.oauth_google,name='authgoogle'),
     path("authmazure/", views.oauth_mazuree,name='authmazure'),
     path("sysconfiauth/", views.sysconfiauth,name='sysconfiauth'),
 
@@ -358,6 +357,7 @@ urlpatterns = [
     path("email_display", views.email_display,name='email_display'),
     path("add_new_email/", views.add_new_email,name='add_new_email'),
     path("email_edit/<str:id>", views.email_edit,name='email_edit'),
+
 
     #url for SMS Notification
     path("sms_display", views.sms_display,name='sms_display'),
@@ -383,5 +383,22 @@ urlpatterns = [
     path("googlechat/", views.googlechat,name='googlechat'),
     path("rocketchat/", views.rocketchat,name='rocketchat'),
     path("itsmwebhook/", views.itsmwebhook,name='itsmwebhook'),
+
+
+
+    path("systemsynchro/", views.systemsynchro,name='systemsynchro'),
+    path('synadd', views.synadd, name='synadd'),
+    path('synedit', views.synedit, name='synedit'),
+    path('synupdate/<str:id>', views.synupdate, name='synupdate'),
+    path('syndelete', views.syndelete, name='syndelete'),
+
+
+
+    path("authgoogle/", views.authgoogle,name='authgoogle'),
+    path('oauthadd', views.oauthadd, name='oauthadd'),
+    path('oauthedit', views.oauthedit, name='oauthedit'),
+    path('oauthupdate/<str:id>', views.oauthupdate, name='oauthupdate'),
+    path('oauthdelete', views.oauthdelete, name='oauthdelete'),
+    
    
     ]+ static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)

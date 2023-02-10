@@ -594,15 +594,15 @@ def ADD(request):
             request.POST.get('ch_person_firstname'))
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
-        ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_organization = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
         ch_person_location = str.capitalize(
-            request.POST.get('ch_person_location'))
+            request.POST.get('ch_person_location')) 
         ch_person_function = str.capitalize(
             request.POST.get('ch_person_function'))
-        ch_manager = str.capitalize(request.POST.get('ch_manager'))
+        ch_manager = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_manager')).first()
+        # ch_manager = request.POST.get('ch_manager')
         ch_employee_number = str.upper(request.POST.get('ch_employee_number'))
         e_person_email = str.lower(request.POST.get('e_person_email'))
         ch_person_phone = request.POST.get('ch_person_phone')
@@ -654,7 +654,7 @@ def Update(request, id):
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
-        ch_manager = request.POST.get('ch_manager')
+        ch_manager = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_manager')).first()
         ch_employee_number = request.POST.get('ch_employee_number')
         e_person_email = request.POST.get('e_person_email')
         ch_person_phone = request.POST.get('ch_person_phone')
@@ -1264,6 +1264,7 @@ def assign_changeModal(request):
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            return JsonResponse({'result': 'success'})
         except:
             print('email not send')
         admin_name = request.session["username"]
@@ -1281,27 +1282,31 @@ def assign_changeModal(request):
 
 def mail_sender():
     mail_host = email_notifier.objects.filter(id=1).first()
-    settings.EMAIL_HOST = mail_host.host
-    settings.EMAIL_PORT = mail_host.port
-    settings.EMAIL_USE_SSL=True
-    settings.EMAIL_HOST_USER = mail_host.host_user
-    settings.EMAIL_HOST_PASSWORD = mail_host.host_passwordhost_password
+    if mail_host != None:
+        settings.EMAIL_HOST = mail_host.host
+        settings.EMAIL_PORT = mail_host.port
+        settings.EMAIL_USE_SSL=True
+        settings.EMAIL_HOST_USER = mail_host.host_user
+        settings.EMAIL_HOST_PASSWORD = mail_host.host_password
+
 
 ########## Approve Change ############
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        mail_sender()
-        list_id = request.POST.getlist('id[]')
-        change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
-        subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
-        sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
-        send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html',{'permission':permission})
+        try:
+            mail_sender()
+            list_id = request.POST.getlist('id[]')
+            change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
+            subject = 'Welcome to Olatech Solutions'
+            message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
+            sender = settings.EMAIL_HOST_USER
+            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            raise Exception('Please Configure Email Sender Details')
+    # return render(request, 'tool/approve_change.html',{'permission':permission})
 
 
 ######################### Incident Mangement ####################################
@@ -2157,8 +2162,6 @@ def SLDelete(request):
 
 @login_required(login_url='/login_render/')
 def SLT(request):
-    
-
     permission = roles.objects.filter(id=request.session['user_role']).first()
     slt = cl_Slt.objects.all()
          
@@ -2209,28 +2212,28 @@ def STADD(request):
     return render(request, 'tool/slt.html',{'permission':permission})
 
 
-@login_required(login_url='/login_render/')
-def SLTEdit(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
-    slt = cl_Slt.objects.all()
-    context = {
-        'slt': slt,
-        'permission':permission
-    }
-    return render(request, 'tool/slt.html', context)
+# @login_required(login_url='/login_render/')
+# def SLTEdit(request):
+#     permission = roles.objects.filter(id=request.session['user_role']).first()
+#     slt = cl_Slt.objects.all()
+#     context = {
+#         'slt': slt,
+#         'permission':permission
+#     }
+#     return render(request, 'tool/slt.html', context)
 
 
 @login_required(login_url='/login_render/')
 def SLTUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_priority = request.POST.get('ch_priority')
         ch_request_type = request.POST.get('ch_request_type')
         ch_metric = request.POST.get('ch_metric')
         ch_value = request.POST.get('ch_value')
         ch_unit = request.POST.get('ch_unit')
+        print(id)
 
         slt = cl_Slt(
             id=id,
@@ -2356,22 +2359,6 @@ def synchro_data_source(request):
         'permission':permission
         }
     return render(request, 'tool/sysconfisynchro.html', context)
-
-
-@login_required(login_url='/login_render/')
-def oauth_google(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
-    form = OauthgoogleForm()
-    if request.method == 'POST':
-        form = OauthgoogleForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Data Add Successfully")
-    context = {
-        'form': form,
-        'permission':permission
-        }
-    return render(request, 'tool/authgoogle.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -3149,3 +3136,265 @@ def admuser(request):
 def integrationav(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     return render(request, 'tool/integrationav.html',{'permission':permission})
+
+
+
+################### Synchronization Data Source   #############################
+@login_required(login_url='/login_render/')
+def systemsynchro(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    syn = cl_Synchro_data_source.objects.all()
+    if request.method == "GET":
+        q = request.GET.get('searchstatus')
+        if q != None:
+            syn = cl_Synchro_data_source.objects.filter(ch_status__icontains=q)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(syn, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    return render(request, 'tool/sysconfisynchro.html', {'syn': syn,'users':users, 'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def synadd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        ch_name = request.POST.get('ch_name')
+        ch_status = request.POST.get('ch_status')
+        txt_description = request.POST.get('txt_description')
+        ch_target_class = request.POST.get('ch_target_class')
+        ch_user = request.POST.get('ch_user')
+        ch_contact_notify = request.POST.get('ch_contact_notify')
+        url_icon_hyperlink = request.POST.get('url_icon_hyperlink')
+        url_Application_hyperlink = request.POST.get('url_Application_hyperlink')
+        ch_data_table = request.POST.get('ch_data_table')
+        ch_reconciliation_policy = request.POST.get('ch_reconciliation_policy')
+        ch_action_on_zero = request.POST.get('ch_action_on_zero')
+        ch_action_on_one = request.POST.get('ch_action_on_one')
+        ch_action_on_many = request.POST.get('ch_action_on_many')
+        ch_users_allowed = request.POST.get('ch_users_allowed')
+        ch_update_rules = request.POST.get('ch_update_rules')
+        ch_delete_policy = request.POST.get('ch_delete_policy')
+        dt_full_load_interval = request.POST.get('dt_full_load_interval')
+        dt_retention_duration = request.POST.get('dt_retention_duration')
+        syn = cl_Synchro_data_source(
+            ch_name=ch_name,
+            ch_status=ch_status,
+            txt_description=txt_description,
+            ch_target_class=ch_target_class,
+            ch_user=ch_user,
+            ch_contact_notify=ch_contact_notify,
+            url_icon_hyperlink=url_icon_hyperlink,
+            url_Application_hyperlink=url_Application_hyperlink,
+            ch_data_table = ch_data_table,
+            ch_reconciliation_policy=ch_reconciliation_policy,
+            ch_action_on_zero=ch_action_on_zero,
+            ch_action_on_one=ch_action_on_one,
+            ch_action_on_many=ch_action_on_many,
+            ch_users_allowed=ch_users_allowed,
+            ch_update_rules=ch_update_rules,
+            ch_delete_policy=ch_delete_policy,
+            dt_full_load_interval=dt_full_load_interval,
+            dt_retention_duration = dt_retention_duration,
+        )
+        syn.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of new changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
+        return redirect('systemsynchro')
+    return render(request, 'tool/sysconfisynchro.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def synedit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    syn = cl_Synchro_data_source.objects.all()
+    context = {
+        'syn': syn,
+        'permission':permission
+    }
+    return render(request, 'tool/sysconfisynchro.html', context)
+
+
+@login_required(login_url='/login_render/')
+def synupdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    """
+    Function for update change_information
+    """
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_name = request.POST.get('ch_name')
+        ch_status = request.POST.get('ch_status')
+        txt_description = request.POST.get('txt_description')
+        ch_target_class = request.POST.get('ch_target_class')
+        ch_user = request.POST.get('ch_user')
+        ch_contact_notify = request.POST.get('ch_contact_notify')
+        url_icon_hyperlink = request.POST.get('url_icon_hyperlink')
+        url_Application_hyperlink = request.POST.get('url_Application_hyperlink')
+        ch_data_table = request.POST.get('ch_data_table')
+        ch_reconciliation_policy = request.POST.get('ch_reconciliation_policy')
+        ch_action_on_zero = request.POST.get('ch_action_on_zero')
+        ch_action_on_one = request.POST.get('ch_action_on_one')
+        ch_action_on_many = request.POST.get('ch_action_on_many')
+        ch_users_allowed = request.POST.get('ch_users_allowed')
+        ch_update_rules = request.POST.get('ch_update_rules')
+        ch_delete_policy = request.POST.get('ch_delete_policy')
+        dt_full_load_interval = request.POST.get('dt_full_load_interval')
+        dt_retention_duration = request.POST.get('dt_retention_duration')
+        syn = cl_Synchro_data_source(
+            id = id,
+            ch_name=ch_name,
+            ch_status=ch_status,
+            txt_description=txt_description,
+            ch_target_class=ch_target_class,
+            ch_user=ch_user,
+            ch_contact_notify=ch_contact_notify,
+            url_icon_hyperlink=url_icon_hyperlink,
+            url_Application_hyperlink=url_Application_hyperlink,
+            ch_data_table = ch_data_table,
+            ch_reconciliation_policy=ch_reconciliation_policy,
+            ch_action_on_zero=ch_action_on_zero,
+            ch_action_on_one=ch_action_on_one,
+            ch_action_on_many=ch_action_on_many,
+            ch_users_allowed=ch_users_allowed,
+            ch_update_rules=ch_update_rules,
+            ch_delete_policy=ch_delete_policy,
+            dt_full_load_interval=dt_full_load_interval,
+            dt_retention_duration = dt_retention_duration,
+        )
+        syn.save()
+        admin_name = request.session["username"]
+        adminaction = "addition of new changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
+        return redirect('systemsynchro')
+    return render(request, 'tool/sysconfisynchro.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def syndelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            syn = cl_Synchro_data_source.objects.filter(id=i).first()
+            syn.delete()
+        admin_name = request.session["username"]
+        adminaction = "Delete the changes"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
+        return redirect('systemsynchro')
+
+
+
+
+######Delivery Model Views##############
+
+@login_required(login_url='/login_render/')
+def authgoogle(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    oauthg =  cl_Oauth_google.objects.all()
+    if request.method == "GET":
+        oauthg = cl_Oauth_google.objects.all()
+        q = request.GET.get('searchstatus')
+        if q != None:
+            oauthg = cl_Oauth_google.objects.filter(ch_status__icontains=q)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(oauthg, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    return render(request, 'tool/authgoogle.html', {'oauthg': oauthg, 'permission':permission,'users':users})
+
+@login_required(login_url='/login_render/')
+def oauthadd(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        e_login = request.POST.get('e_login')
+        ch_status = request.POST.get('ch_status')
+        ch_provider = request.POST.get('ch_provider')
+        txt_description = request.POST.get('txt_description')
+        ch_client_id = request.POST.get('ch_client_id')
+        ch_client_secret = request.POST.get('ch_client_secret')
+        ch_scope = request.POST.get('ch_scope')
+        ch_advanced_scope = request.POST.get('ch_advanced_scope')
+        ch_used_smtp = request.POST.get('ch_used_smtp')
+        oauthg = cl_Oauth_google(
+            e_login=e_login,
+            ch_status=ch_status,
+            ch_provider=ch_provider,
+            txt_description=txt_description,
+            ch_client_id = ch_client_id,
+            ch_client_secret=ch_client_secret,
+            ch_scope=ch_scope,
+            ch_advanced_scope = ch_advanced_scope,
+            ch_used_smtp = ch_used_smtp,
+        )
+        oauthg.save()
+        return redirect('authgoogle')
+    return render(request, 'tool/authgoogle.html',{'permission':permission})
+
+@login_required(login_url='/login_render/')
+def oauthedit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    oauthg =  cl_Oauth_google.objects.all()
+    context = {
+        'oauthg': oauthg,
+        'permission':permission
+    }
+    return render(request, 'tool/authgoogle.html', context)
+
+@login_required(login_url='/login_render/')
+def oauthupdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    """
+    Function for update change_information
+    """
+    if request.method == "POST":
+        id = request.POST.get('id')
+        e_login = request.POST.get('e_login')
+        ch_status = request.POST.get('ch_status')
+        ch_provider = request.POST.get('ch_provider')
+        txt_description = request.POST.get('txt_description')
+        ch_client_id = request.POST.get('ch_client_id')
+        ch_client_secret = request.POST.get('ch_client_secret')
+        ch_scope = request.POST.get('ch_scope')
+        ch_advanced_scope = request.POST.get('ch_advanced_scope')
+        ch_used_smtp = request.POST.get('ch_used_smtp')
+        oauthg = cl_Oauth_google(
+            id = id,
+            e_login=e_login,
+            ch_status=ch_status,
+            ch_provider=ch_provider,
+            txt_description=txt_description,
+            ch_client_id = ch_client_id,
+            ch_client_secret=ch_client_secret,
+            ch_scope=ch_scope,
+            ch_advanced_scope = ch_advanced_scope,
+            ch_used_smtp = ch_used_smtp,
+        )
+        oauthg.save()
+        return redirect('authgoogle')
+    return render(request, 'tool/authgoogle.html',{'permission':permission})
+
+@login_required(login_url='/login_render/')
+def oauthdelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            oauthg = cl_Oauth_google.objects.filter(id=i).first()
+            oauthg.delete()
+    return redirect('authgoogle')
+
+

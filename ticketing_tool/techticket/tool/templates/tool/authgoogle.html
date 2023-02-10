@@ -1,24 +1,344 @@
 {% extends 'tool/adminbase.html' %}
 {% load static %}
 {% block content %}
-
-<div class="container" style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
-  <div>
-    <h3>Auth Google</h3>
-
-    <form action="" method="post">
-      {% csrf_token %}
-      {{form}}
-
-      <button class="btn btn-primary" type="submit">Create</button>
-      <input class="btn btn-primary" type="reset" value="Cancel">
-
-    </form>
-    <div>
-      {% for msg in messages %}
-      {{ msg }}
-      {% endfor %}
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Contract</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CVarela+Round">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static '/css/person.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <div class="container">
+    <div class="row">
+      <div class="text-right">
+        <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
+        <a href="{% url 'slt' %}" class="btn btn-primary" role="button">View List</a>
+        <a href="{% url 'servicenav' %}" class="btn btn-primary" role="button">Back</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE147;</i>
+          <span>Hello, {{request.user}} Logout</span></a>
+        {{my_filter.form}}
+      </div>
     </div>
   </div>
-</div>
-{% endblock content %}
+</head>
+<body>
+  <div class="container" style="margin-top:30px;">
+    <div class="row" style="margin-top: 5px;">
+      <div class="col-xl-12">
+        <form action="" method="get" class="form-inline">
+          <input type="text" class="form-control" name="searchstatus" placeholder="Search by Status">
+          <input type="submit" class="btn btn-success" value="Search by Status">
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="text-right"> -->
+<!-- <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+  <div>
+    <form action="" method="get" class="form-inline"
+      style="display: inline-block; margin-top: 10px; margin-left: 10px;">
+      <input type="text" class="form-control" name="searchperson" placeholder="Search by Person">
+      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Settings
+          <span>&nbsp > </span></a></b>
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'sysconfiauth' %}">OAuth Client <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'sysconfiauth' %}">OAuth Client Google <span>&nbsp >
+    </form>
+    <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+      {% if permission.serv_m_a == "on" or permission == None %}
+      <a href="#addcl_Oauth_googleModal" class="btn btn-success" data-toggle="modal">
+        <span>Add Oauth Google Client</span></a>
+      {% endif %}
+      {% if permission.serv_m_d == "on" or permission == None %}
+      <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+      {% endif %}
+    </div> -->
+<div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
+  <div>
+    <form action="" method="get" class="form-inline"
+      style="display: inline-block; margin-top: 10px; margin-left: 10px;">
+      <input type="text" class="form-control" name="searchstatus" placeholder="Search By Login">
+      <input type="submit" class="btn btn-primary" value="Search By Login"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Settings <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'sysconfiauth' %}">OAuth Client
+          <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'authgoogle' %}">OAuth Client
+          Google</a></b>
+    </form>
+    <div style="display: inline-block; position: relative;margin-bottom: 1px; left: 55.5%;">
+      {% if permission.confi_m_a == "on" or permission == None %}
+      <a href="#addcl_Oauth_googleModal" class="btn btn-success" data-toggle="modal"><span>Add OAuth Client</span></a>
+      {% endif %}
+      {% if permission.confi_m_d == "on" or permission == None %}
+      <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
+      {% endif %}
+    </div>
+  </div>
+  <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
+    <thead>
+      <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
+        <th>
+        </th>
+        <th>ID</th>
+        <th>Login</th>
+        <th>Status</th>
+        <th>Provider</th>
+        <th>Description</th>
+        <th>Client Id</th>
+        <th>Client Secret</th>
+        <th>Scoop</th>
+        <th>Advanced Scoop</th>
+        <th>Used Smpt</th>
+        {% if permission.serv_m_e == "on" or permission == None %}
+        <th>Edit</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in users %}
+      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+        <td>
+          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
+        </td>
+        <td>{{i.id}}</td>
+        <td>{{i.e_login}}</td>
+        <td>{{i.ch_status}}</td>
+        <td>{{i.ch_provider}}</td>
+        <td>{{i.txt_description}}</td>
+        <td>{{i.ch_client_id}}</td>
+        <td>{{i.ch_client_secret}}</td>
+        <td>{{i.ch_scope}}</td>
+        <td>{{i.ch_advanced_scope}}</td>
+        <td>{{i.ch_used_smtp}}</td>
+        {% if permission.serv_m_e == "on" or permission == None %}
+        <td>
+          <a href="#editcl_Oauth_googleModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+              class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+        </td>
+        {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+  </table>
+
+  {% if users.has_other_pages %}
+  <ul class="pagination">
+    {% if users.has_previous %}
+    <li><a href="{% url 'authgoogle' %}?page={{ users.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+    {% if users.number == i %}
+    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+    <li><a href="{% url 'authgoogle' %}?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+    <li><a href="{% url 'authgoogle' %}?page={{ users.next_page_number }}">&raquo;</a></li>
+    {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+  {% endif %}
+
+  <div id="addcl_Oauth_googleModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px; position: relative; left: 30%; bottom: 50%;">
+        <form action="{% url 'oauthadd' %}" method="POST">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h4 class="modal-title">Add Data</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <!-- <div class="form-group">
+              <label>ID</label>
+              <input name="id"  type="text" class="form-control" >
+            </div> -->
+            <div class="form-group">
+              <label>Login</label>
+              <input name="e_login" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <input name="ch_status" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Provider</label>
+              <input name="ch_provider" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <input name="txt_description" type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
+            <div class="form-group">
+              <label>Client Id</label>
+              <input name="ch_client_id" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Client Secrete</label>
+              <input name="ch_client_secret" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Scoop</label>
+              <input name="ch_scope" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Advanced Scoop</label>
+              <input name="ch_advanced_scope" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Used Smpt</label>
+              <input name="ch_used_smtp" type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Add">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Edit Modal HTML -->
+  {% for i in oauthg %}
+  <div id="editcl_Oauth_googleModal-{{forloop.counter}}" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px; position: relative; left: 30%; bottom: 50%;">
+        <form action="/oauthupdate/{{i.id}}" method="post">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h4 class="modal-title">Edit </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <div class="form-group">
+              <label>ID</label>
+              <input name="id" value="{{i.id}}" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Login</label>
+              <input name="e_login" value="{{i.e_login}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Provider</label>
+              <input name="ch_provider" value="{{i.ch_provider}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
+            <div class="form-group">
+              <label>Client Id</label>
+              <input name="ch_client_id" value="{{i.ch_client_id}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Client Secrete</label>
+              <input name="ch_client_secret" value="{{i.ch_client_secret}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Scoop</label>
+              <input name="ch_scope" value="{{i.ch_scope}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Advanced Scoop</label>
+              <input name="ch_advanced_scope" value="{{i.ch_advanced_scope}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Used Smpt</label>
+              <input name="ch_used_smtp" value="{{i.ch_used_smtp}}" type="text" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-info" value="Update">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <script>
+    $(document).ready(function () {
+      $('#delete_btn').click(function () {
+        if (confirm('Are You Sure You Want to Delete User?')) {
+          var id = [];
+          var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          $(':checkbox:checked').each(function (i) {
+            id[i] = $(this).val()
+          })
+          if (id.length === 0) {
+            alert("please select user Which u want to delete?")
+          } else {
+            console.log(id)
+            $.ajax({
+              url: "{% url 'oauthdelete' %}",
+              method: "POST",
+              data: {
+                id,
+                csrfmiddlewaretoken: csrf
+              },
+              success: function (response) {
+                alert("success")
+                location.reload();
+                for (var i = 0; i < id.length; i++) {
+                  var error = $(response).find('#error_text')
+                  var error_class = $(error).attr('class')
+                  $('#error').addClass(error_class)
+                  $('#error').text(error.text())
+                  $('tr#' + id[i] + '').fadeOut('slow');
+                }
+              },
+            })
+          }
+        }
+      })
+    })
+  </script>
+  <script>
+    $('#select-all').click(function (event) {
+      if (this.checked) {
+        // Iterate each checkbox
+        $(':checkbox').each(function () {
+          this.checked = true;
+        });
+      } else {
+        $(':checkbox').each(function () {
+          this.checked = false;
+        });
+      }
+    });
+  </script>
+  {% endblock content %}
+  <!-- </html> -->

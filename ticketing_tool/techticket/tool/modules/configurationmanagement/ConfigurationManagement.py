@@ -44,15 +44,11 @@ def software(request):
 def softAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
-        # ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))
-        # print('organization :',ch_organization)
         ch_vendor = request.POST.get('ch_vendor')
         chversion = request.POST.get('chversion')
         ch_type = request.POST.get('ch_type')
         soft = cl_Software(
-            # id=id,
             ch_sofname=ch_sofname,
             ch_vendor=ch_vendor,
             chversion=chversion,

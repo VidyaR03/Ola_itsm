@@ -1,17 +1,10 @@
-from email.policy import default
 from enum import unique
 from operator import mod
-from optparse import Option
 from re import M
 from django.db import models
-import uuid
 from datetime import datetime
-from django.db.models import Max
-from django.db.models import Max
 from django.conf import settings
 import os
-
-from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
@@ -235,7 +228,6 @@ class cl_Team(models.Model):
 
 class cl_Person(models.Model):
     """Models which create table for Person Information"""
-    # id = models.AutoField(primary_key=True, editable=False)
     id = models.AutoField(primary_key=True, editable=False)
     ch_person_firstname = models.CharField(max_length=100, null=True)
     ch_person_lastname = models.CharField(max_length=100, null=True)
@@ -244,7 +236,7 @@ class cl_Person(models.Model):
     ch_person_status = models.CharField(max_length=100, null=True)
     ch_person_location = models.CharField(max_length=100, null=True)
     ch_person_function = models.CharField(max_length=100, null=True)
-    ch_manager = models.CharField(max_length=100, null=True)
+    ch_manager = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_employee_number = models.CharField(max_length=100, null=True)
     e_person_email = models.EmailField(null=True)
     ch_person_phone = models.CharField(max_length=100, null=True)

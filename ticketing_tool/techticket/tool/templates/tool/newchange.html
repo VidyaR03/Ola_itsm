@@ -70,7 +70,11 @@
         <td>{{i.ch_parent_change}}</td>
         <td>{{i.txt_fallback_plan}}</td>
         <td>{{i.txt_description}}</td>
-        <td>{{i.ch_assign_agent}}</td>
+        {% if i.ch_assign_agent == "Deallocated" %}
+          <td>Not Assign</td>
+        {% else %}
+          <td>{{i.ch_assign_agent}}</td>
+        {% endif %}
         {% if permission.ch_m_e == "on" or permission == None %}
         <td>
           <a href="#editcl_New_changeModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
@@ -467,18 +471,17 @@
               id,
               csrfmiddlewaretoken: csrf
             },
-            success: function (response) {
-              alert("success")
-              location.reload();
-              for (var i = 0; i < id.length; i++) {
-                var error = $(response).find('#error_text')
-                var error_class = $(error).attr('class')
-                $('#error').addClass(error_class)
-                $('#error').text(error.text())
-                $('tr#' + id[i] + '').fadeOut('slow');
+            error:function(response) {
+              if (data.result === 'success') {
+                alert("Approval Mail Send Succefully...!")
+                location.reload();
               }
-            },
-          })
+              else {
+                alert("Fail..! Please Configure Email Sender Details")
+                location.reload();
+              }
+            }
+          });
         }
       }
     })

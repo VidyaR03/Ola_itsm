@@ -17,7 +17,7 @@
           </span></a></b>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'client' %}">Person</a></b>
     </form>
-    <div style="display: inline-block; position: relative;margin-bottom: 1px; left: 55.5%;">
+    <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       {% if permission.confi_m_a == "on" or permission == None %}
       <a href="#addcl_PersonModal" class="btn btn-success" data-toggle="modal"><span>Add New Person</span></a>
       {% endif %}
@@ -103,9 +103,11 @@
   {% endif %}
 </ul>
 {% endif %}
+
+
     <div id="addcl_PersonModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
           <form action="{% url 'add' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -132,7 +134,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Team:<a href="{% url 'team'%}">
+                <label>Team<a href="{% url 'team'%}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label></label>
                   <select name="ch_team_name" id="ch_team"  style="min-height:30px;min-width:280px;">
@@ -160,10 +162,20 @@
                 <label>Function</label>
                 <input name="ch_person_function" type="text" class="form-control">
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Manager</label>
                 <input name="ch_manager" type="text" class="form-control">
+              </div> -->
+              <div class="form-group">
+                <label>Manager</label>
+                <select name="ch_manager" id="ch_manager" style="min-height:30px;min-width:280px;">
+                  <option value="None">Select Manager</option>
+                  {% for j in per %}
+                    <option value="{{j.ch_person_firstname}}">{{j.ch_person_firstname}} {{j.ch_person_lastname}}</option>
+                  {% endfor %}
+                </select>
               </div>
+              
               <div class="form-group">
                 <label>Employee Number</label>
                 <input name="ch_employee_number" type="text" class="form-control">
@@ -198,7 +210,7 @@
 {% for i in per %}
 <div id="editcl_PersonModal-{{forloop.counter}}" class="modal fade">
   <div class="modal-dialog">
-    <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+    <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
       <form action="/update/{{i.id}}" method="post">
         {% csrf_token %}
         <div class="modal-header">
@@ -242,17 +254,19 @@
         </div>
         <div class="modal-body" style="width: 330px; display: inline-block;">
           <!--start of right half -->
-
-
           <div class="form-group">
             <label>Function</label>
             <input name="ch_person_function" value="{{i.ch_person_function}}" type="text" class="form-control">
           </div>
-          <!--start of right half -->
           <div class="form-group">
-            <label>Manager</label>
-            <input name="ch_manager" value="{{i.ch_manager}}" type="text" class="form-control">
-          </div>
+            <label>Manager</label>  
+            <select name="ch_manager" id="ch_manager" style="min-height:30px;min-width:280px;">
+              <option value="None">Select Manager</option>
+              {% for j in per %}
+                <option value="{{j.ch_person_firstname}}">{{j.ch_person_firstname}} {{j.ch_person_lastname}}</option>
+              {% endfor %}
+            </select>
+          </div>       
           <div class="form-group">
             <label>Employee Number</label>
             <input name="ch_employee_number" value="{{i.ch_employee_number}}" type="text" class="form-control">
@@ -281,31 +295,7 @@
   </div>
 </div>
 {% endfor %}
-<!-- Delete Modal HTML -->
-{% for i in per %}
-<div id="deletecl_PersonModal-{{forloop.counter}}" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <h4 class="modal-title">Delete </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete these Records?</p>
-          <p class="text-warning"><small>{{i.firstname}} Information are delete?</small></p>
-        </div>
-    </div>
-    <div class="modal-footer">
-      <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-      <a href="/delete/{{i.id}}" type="submit" class="btn btn-danger">Delete</a>
-    </div>
-    </form>
-  </div>
-</div>
-</div>
-{% endfor %}
-<!-- </body> -->
+
 <script>
   $(document).ready(function () {
     // Activate tooltip
@@ -331,9 +321,6 @@
   });
 </script>
 
-
-
-</body>
 <script>
   $(document).ready(function () {
     $('#delete_btn').click(function () {
@@ -342,14 +329,14 @@
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
         $(':checkbox:checked').each(function (i) {
           id[i] = $(this).val()
-
         })
+        // console.log(id.length)
         if (id.length === 0) {
           alert("please select user Which u want to delete?")
         } else {
           console.log(id)
           $.ajax({
-            url: "{% url 'delete' %}",
+            url: "{% url 'delete_person' %}",
             method: "POST",
             data: {
               id,
@@ -371,15 +358,14 @@
       }
     })
   })
-
 </script>
+
 <script>
   $('#select-all').click(function (event) {
     if (this.checked) {
       // Iterate each checkbox
       $(':checkbox').each(function () {
         this.checked = true;
-
       });
     } else {
       $(':checkbox').each(function () {
