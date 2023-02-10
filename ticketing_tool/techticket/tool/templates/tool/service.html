@@ -98,10 +98,17 @@
     </ul>
     {% endif %}
 
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
+
   <!-- Add Team Data -->
   <div id="addcl_TeamModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 700px; position: relative; left: 50%; bottom: 50%;">
+      <div class="modal-content" style="width: 700px; position: relative; left: 10%; bottom: 50%;">
         <form action="{% url 'tadd' %}" method="post">
           {% csrf_token %}
           <div class="modal-header">
@@ -110,11 +117,15 @@
           </div>
           <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
-              <label>Team Name</label>
+              <label>ID</label>
+              <input name="id" value="{{i.id}}" type="text" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+              <span class="required-field"></span><label>Team Name</label>
               <input name="ch_teamname" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Status</label>
+              <span class="required-field"></span><label>Status</label>
               <select name="ch_teamstatus" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="Active">Active</option>
@@ -125,13 +136,13 @@
               <label>Organization:<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-                <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
-                  {% for i in org %}
-                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                  {% endfor %}
-                </select>
             </div>
 
+            <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
+              {% for i in org %}
+              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+              {% endfor %}
+            </select>
             <!-- </div> -->
 
           </div>
@@ -139,26 +150,26 @@
           <div class="modal-body" style="width: 330px; display: inline-block;">
              
           <div class="form-group">
-            <label>Email</label>
-            <input name="e_team_emailfield" type="text" class="form-control">
+            <span class="required-field"></span>  <label>Email</label>
+            <input name="e_team_emailfield" type="text" class="form-control" required>
           </div>
             <div class="form-group">
-              <label>Mobile Number</label>
+              <span class="required-field"></span>  <label>Mobile Number</label>
               <input name="i_team_phonenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
                 required>
             </div>
 
             <div class="form-group">
-              <label>Notification</label>
+              <span class="required-field"></span><label>Notification</label>
               <select name="b_team_notification" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
+                aria-invalid="false" required>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Function</label>
-              <input name="ch_team_function" type="text" class="form-control">
+              <span class="required-field"></span><label>Function</label>
+              <input name="ch_team_function" type="text" class="form-control" required>
             </div>
           </div>
           <div class="modal-footer">

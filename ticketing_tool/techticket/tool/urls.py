@@ -149,14 +149,14 @@ urlpatterns = [
     path('ntAdd', views.ntAdd, name='ntAdd'),
     path('ntEdit', views.ntEdit, name='ntEdit'),
     path('ntUpdate/<str:id>', views.ntUpdate, name='ntUpdate'),
-    path('ntDelete/<str:id>', views.ntDelete, name='ntDelete'),
+    path('ntDelete/', views.ntDelete, name='ntDelete'),
 
     #URL for OS Family
     path("os_family/", views.os_family,name='os_family'),
     path('osfAdd', views.osfAdd, name='osfAdd'),
     path('osfEdit', views.osfEdit, name='osfEdit'),
     path('osfUpdate/<str:id>', views.osfUpdate, name='osfUpdate'),
-    path('osfDelete/<str:id>', views.osfDelete, name='osfDelete'),
+    path('osfDelete/', views.osfDelete, name='osfDelete'),
 
 
     #URL for Brand Type
@@ -174,7 +174,7 @@ urlpatterns = [
     path('mdAdd', views.mdAdd, name='mdAdd'),
     path('mdEdit', views.mdEdit, name='mdEdit'),
     path('mdUpdate/<str:id>', views.mdUpdate, name='mdUpdate'),
-    path('mdDelete/<str:id>', views.mdDelete, name='mdDelete'),
+    path('mdDelete/', views.mdDelete, name='mdDelete'),
 
 
   #Url Path for IOS Version
@@ -190,7 +190,7 @@ urlpatterns = [
     path('osvAdd', views.osvAdd, name='osvAdd'),
     path('osvEdit', views.osvEdit, name='osvEdit'),
     path('osvUpdate/<str:id>', views.osvUpdate, name='osvUpdate'),
-    path('osvDelete/<str:id>', views.osvDelete, name='osvDelete'),
+    path('osvDelete/', views.osvDelete, name='osvDelete'),
     path('sendMail', views.send_approval_Mail, name='sendMail'),
 
 

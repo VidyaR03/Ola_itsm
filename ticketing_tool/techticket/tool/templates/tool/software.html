@@ -126,6 +126,12 @@
   </ul>
   {% endif %}
 
+  <style>
+    .required-field::before {
+    content: "*";
+    color: red;
+    }
+  </style>
 
   <div id="addcl_SoftwareModal" class="modal fade">
     <div class="modal-dialog">
@@ -142,21 +148,21 @@
                 <input name="id" type="text" class="form-control" >
               </div> -->
             <div class="form-group">
-              <label>Name</label>
+              <span class="required-field"></span><label>Name</label>
               <input name="ch_sofname" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Vendor</label>
-              <input name="ch_vendor" type="text" class="form-control">
+              <span class="required-field"></span><label>Vendor</label>
+              <input name="ch_vendor" type="text" class="form-control" required>
             </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
-              <label>Version</label>
-              <input name="chversion" type="text" class="form-control">
+              <span class="required-field"></span><label>Version</label>
+              <input name="chversion" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Type</label>
+              <span class="required-field"></span><label>Type</label>
               <select name="ch_type" type="text" class="form-control" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option value="DB Server">DB Server</option>

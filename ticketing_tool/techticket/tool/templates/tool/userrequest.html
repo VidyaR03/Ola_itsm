@@ -349,6 +349,13 @@
     </ul>
     {% endif %}
 
+
+<style>
+  .required-field::before {
+  content: "*";
+  color: red;
+  }
+</style>
     <!-- Add Modal HTML -->
     <div id="addcl_User_requestModal" class="modal fade">
         <div class="modal-dialog">
@@ -362,32 +369,34 @@
                     <!--start of left half -->
                     <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
                         <div class="form-group">
-                            <label>Organization:<a href="{% url 'new_organization' %}">
+                            <span class="required-field"></span> <label>Organization<a href="{% url 'new_organization' %}">
                                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                               </a></label>
-                         </div>     
-                              <select name="ch_organization" id="fk_organization"style="min-height:30px;min-width:280px;">
+                              <select name="ch_organization" id="fk_organization"style="min-height:30px;min-width:280px;" required>
                                 {% for i in org %}
                               <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                               {% endfor %}
                             </select>
-                          <!-- </div> -->
+                         </div>     
+                              
+                        
                           <div class="form-group">
-                            <label>Caller:<a href="{% url 'client' %}">
+                            <span class="required-field"></span> <label>Caller<a href="{% url 'client' %}">
                                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                               </a></label>
-                           </div>   
-                              <select name="ch_caller" id="fk_caller"style="min-height:30px;min-width:280px;">
+                              <select name="ch_caller" id="ch_caller"style="min-height:30px;min-width:280px;" required>
                                 {% for i in per1 %}
                                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                               {% endfor %}
                             </select>
-                          <!-- </div> -->
+                           </div>   
+                             
+                      
                        
                         <div class="form-group">
-                            <label>Status</label>
+                            <span class="required-field"></span><label>Status</label>
                             <select name="ch_status" type="text" class="form-control"
-                                aria-label="Default select example" aria-invalid="false">
+                                aria-label="Default select example" aria-invalid="false" required>
                                 <option value="Active"> Active
                                 </option>
                                 <option value="Inactive"> Inactive
@@ -397,9 +406,9 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Origin</label>
+                            <span class="required-field"></span><label>Origin</label>
                             <select name="ch_origin" type="text" class="form-control"
-                                aria-label="Default select example" aria-invalid="false">
+                                aria-label="Default select example" aria-invalid="false" required>
                                 <option value="Phone"> Phone
                                 </option>
                                 <option value="Email"> Email
@@ -411,15 +420,15 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Title</label>
+                            <span class="required-field"></span><label>Title</label>
                             <input class="form-control" name="ch_title" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Request Type</label>
+                            <span class="required-field"></span><label>Request Type</label>
                             <input class="form-control" name="ch_request_type" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Impact</label>
+                            <span class="required-field"></span><label>Impact</label>
                             <select name="ch_impact" type="text" class="form-control"
                                 aria-label="Default select example" aria-invalid="false">
                                 <option value="A deparment"> A deparment
@@ -431,7 +440,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Urgency</label>
+                            <span class="required-field"></span><label>Urgency</label>
                             <select name="ch_urgency" type="text" class="form-control"
                                 aria-label="Default select example" aria-invalid="false">
                                 <option value="Critical"> Critical
@@ -445,7 +454,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Priority</label>
+                            <span class="required-field"></span><label>Priority</label>
                             <select name="ch_priority" type="text" class="form-control"
                                 aria-label="Default select example" aria-invalid="false">
                                 <option value="Critical"> Critical
@@ -462,7 +471,7 @@
                     <div class="modal-body" style="width: 330px; display: inline-block;">
                         <!--start of right half -->
                         <div class="form-group">
-                            <label for="dt_start_date">Start Date</label>
+                            <span class="required-field"></span><label for="dt_start_date">Start Date</label>
                             <input class="form-control w-25" type="datetime-local" name="dt_start_date"
                                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
                         </div>
@@ -473,32 +482,32 @@
                             <span class="validity"></span>
                         </div>
                         <div class="form-group">
-                            <label for="dt_escalation_date">Escalate After</label>
+                            <span class="required-field"></span><label for="dt_escalation_date">Escalate After</label>
                             <input class="form-control" type="datetime-local" name="dt_escalation_date"
                                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
                         </div>
                         <div class="form-group">
-                            <label>Service</label>
-                            <input class="form-control" name="ch_service" type="text">
+                            <span class="required-field"></span><label>Service</label>
+                            <input class="form-control" name="ch_service" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Service Subcategory</label>
-                            <input class="form-control" name="ch_service_subcategory" type="text">
+                            <span class="required-field"></span><label>Service Subcategory</label>
+                            <input class="form-control" name="ch_service_subcategory" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Parent Request</label>
-                            <input class="form-control" name="ch_parent_request" type="text">
+                            <span class="required-field"></span><label>Parent Request</label>
+                            <input class="form-control" name="ch_parent_request" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Parent Change</label>
-                            <input class="form-control" name="ch_parent_change" type="text">
+                            <span class="required-field"></span><label>Parent Change</label>
+                            <input class="form-control" name="ch_parent_change" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Description</label>
-                            <input class="form-control" name="txt_description" type="text">
+                            <span class="required-field"></span> <label>Description</label>
+                            <input class="form-control" name="txt_description" type="text" required>
                         </div>
                         <div class="form-group">
-                            <label>Agent</label>
+                            <span class="required-field"></span><label>Agent</label>
                             <input class="form-control" name="ch_agent" value="Deallocated" type="text" disabled>
                         </div>
                     </div>

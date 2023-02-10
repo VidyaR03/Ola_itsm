@@ -133,7 +133,12 @@
     </ul>
     {% endif %}
 
-
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
 
 
     <div id="addcl_DocumentModal" class="modal fade">
@@ -151,44 +156,50 @@
                 <input name="id" type="text" class="form-control" >
               </div> -->
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Name</label>
                 <input name="ch_name" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization:<a href="{% url 'new_organization' %}">
+                <span class="required-field"></span>
+                <label>Organization<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                </div>    
-                <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;">
+                <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;" required>
                   {% for i in org %}
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
               </select>
-            <!-- </div> -->
+             </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Version</label>
-                <input name="ch_version" type="text" class="form-control">
+                <input name="ch_version" type="text" class="form-control" required>
               </div>
             
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Description</label>
-                <input name="txt_description" type="text" class="form-control">
+                <input name="txt_description" type="text" class="form-control" required>
               </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Text</label>
-                <input name="txt_text" type="text" class="form-control">
+                <input name="txt_text" type="text" class="form-control" required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>URL</label>
-                <input name="url_URL" value="{{i.url_URL}}" type="text" class="form-control">
+                <input name="url_URL" value="{{i.url_URL}}" type="text" class="form-control" required>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Attachments</label>
                 <p style="font-size: small; color: black;">Files allowed: PDF, XLS, DOC, ZIP</p>
                 <input type="file" id="file-selector" name="disc_Attachment" value="{{i.disc_Attachment}}"
-                  class="form-control">
+                  class="form-control" required>
               </div>
             </div>
             <div class="modal-footer">

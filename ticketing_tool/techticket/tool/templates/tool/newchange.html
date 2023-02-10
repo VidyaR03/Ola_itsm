@@ -109,7 +109,13 @@
     {% endif %}
   </ul>
   {% endif %}
+<style>
+  .required-field::before {
+	content: "*";
+	color: red;
+  }
 
+</style>
   <!-- for addition of change -->
   <div id="addcl_New_changeModal" class="modal fade">
     <div class="modal-dialog">
@@ -121,12 +127,12 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <!--start of left half -->
-          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+          <div class="modal-body" style="width: 330px; padding-left: 40px; display: inline-block;">
             <div class="form-group">
-              <label>Organization:<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              <span class="required-field"></span><label>Organization  <a href="{% url 'new_organization' %}">
+                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:150px;">
+              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
                 {% for i in org %}
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
@@ -134,19 +140,20 @@
             </div>
 
             <div class="form-group">
-              <label>Caller<a href="{% url 'client' %}">
+              <span class="required-field"></span><label>Caller<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_caller" id="ch_caller" style="min-height:30px;min-width:280px;">
+              <select name="ch_caller" id="ch_caller" style="min-height:30px;min-width:280px;" required>
                 {% for i in call %}
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
               </select>
             </div>
-            <div class="form-group">
-              <label>Status</label>
+              <div class="form-group"> 
+
+              <span class="required-field"> <label>Status</span></label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
+                aria-invalid="false" required>
                 <option value="New">New</option>
                 <option value="Approval_Awaited">Approval Awaited</option>
                 <option value="Approved">Approved</option>
@@ -157,37 +164,37 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Category</label>
-              <input name="ch_category" type="text" class="form-control">
+              <span class="required-field"></span> <label>Category</label>
+              <input name="ch_category" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Title</label>
-              <input name="ch_title" type="text" class="form-control">
+              <span class="required-field"></span><label>Title</label>
+              <input name="ch_title" type="text" class="form-control" required>
             </div>
           </div>
           <!--start of right half -->
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
-              <label for="dt_start_date">Start Date</label>
+              <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" min="now" required>
             </div>
             <div class="form-group">
-              <label for="dt_Updated_date">Updated Date</label>
+              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
               <input class="form-control w-25" id="datetimepicker2" type="datetime-local" name="dt_Updated_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
             <div class="form-group">
-              <label>Parent Change</label>
-              <input name="ch_parent_change" type="text" class="form-control">
+              <span class="required-field"></span><label>Parent Change</label>
+              <input name="ch_parent_change" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Fallback Plan</label>
-              <input name="txt_fallback_plan" type="text" class="form-control">
+              <span class="required-field"></span><label>Fallback Plan</label>
+              <input name="txt_fallback_plan" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>Description</label>
-              <input name="txt_description" type="textarea" class="form-control">
+              <span class="required-field"></span><label>Description</label>
+              <input name="txt_description" type="textarea" class="form-control" required>
             </div>
           </div>
           <div class="modal-footer">

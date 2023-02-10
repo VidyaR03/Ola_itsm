@@ -143,6 +143,13 @@
     </ul>
     {% endif %}
 
+    <style>
+      .required-field::before {
+      content: "*";
+      color: red;
+      }
+    </style>
+
     <div id="addcl_Newdb_serverModal" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
@@ -158,21 +165,23 @@
               <input name="id" type="text" class="form-control">
             </div> -->
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Name</label>
                 <input name="ch_dbname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <label>Organization:<a href="{% url 'new_organization' %}">
-                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                <span class="required-field"></span>
+                <label>Organization<a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-                </div>
-
-            <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;">
-              {% for i in org %}
-              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-              {% endfor %}
-            </select>
+                <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+                </select>
+              </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
@@ -181,6 +190,7 @@
                 </select>
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Business Criticality</label>
                 <select name="ch_business_criticality" type="text" class="form-control" required>
                   <option value="High">High</option>
@@ -190,6 +200,7 @@
               </div>
 
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Move to Production Date</label>
                 <input class="form-control" type="date" id="dt_move_to_production_date"
                   value="{{i.dt_move_to_production_date}}" name="dt_move_to_production_date" required
@@ -200,22 +211,27 @@
             <div class="modal-body" style="width: 330px; display: inline-block;">
 
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Software</label>
                 <input name="ch_software" type="text" class="form-control">
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Software License</label>
                 <input name="ch_software_license" type="text" class="form-control">
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>System</label>
                 <input name="ch_system" type="text" class="form-control">
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Path</label>
                 <input name="ch_path" type="text" class="form-control">
               </div>
               <div class="form-group">
+                <span class="required-field"></span>
                 <label>Description</label>
                 <input name="txt_description" type="text" class="form-control">
               </div>
