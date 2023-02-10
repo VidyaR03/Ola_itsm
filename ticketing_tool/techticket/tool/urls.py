@@ -20,11 +20,7 @@ urlpatterns = [
     path('add', views.ADD, name='add'),
     # path('edit', views.Edit, name='edit'),
     path('update/<str:id>', views.Update, name='update'),
-<<<<<<< HEAD
     path('delete_person/', views.Delete, name='delete_person'),
-=======
-    path('delete', views.Delete, name='delete'),
->>>>>>> 9e42e70 (removing file)
     path("client/", views.client,name='client'),
 
     #Url For New Change
