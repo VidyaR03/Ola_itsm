@@ -93,7 +93,8 @@
     <tbody>
       {% csrf_token %}
       {% for i in users %}
-      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+      {% if forloop.counter < 11 %} 
+      <tr id="{{i.id}}">
 
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
@@ -112,7 +113,7 @@
         <td>{{i.txt_description}}</td>
         {% if permission.confi_m_e == "on" or permission == None %}
         <td>
-          <a href="#editcl_Web_serverModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+          <a href="#editcl_Web_serverModal-{{i.id}}" class="edit" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         </td>
         {% endif %}
@@ -215,14 +216,15 @@
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
               <span class="required-field"></span>
-              <label>Software<a href="{% url 'software' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-            <select name="ch_software" id="ch_software" style="min-height:30px;min-width:280px;" required>
-              {% for i in soft %}
-              <option value="{{i.ch_sofname}}">{{i.ch_sofname}}</option>
-              {% endfor %}
-            </select>
+              
+                <label>Software<a href="{% url 'software' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_software" id="ch_software" style="min-height:30px;min-width:280px;" required>
+                {% for i in soft %}
+                <option value="{{i.ch_sofname}}">{{i.ch_sofname}}</option>
+                {% endfor %}
+               </select>
             </div>
             <div class="form-group">
               <span class="required-field"></span>
@@ -255,7 +257,7 @@
   </div>
   <!-- Edit Modal HTML -->
   {% for i in ws %}
-  <div id="editcl_Web_serverModal-{{forloop.counter}}" class="modal fade">
+  <div id="editcl_Web_serverModal-{{i.id}}" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
         <form action="/wsUpdate/{{i.id}}" method="post">

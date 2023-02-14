@@ -71,9 +71,10 @@
     <tbody>
       {% for i in users %}
       {% if forloop.counter < 11 %}
-      <tr>
+      <tr id="{{i.id}}">
+
         <td>
-       
+          <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
         <td>{{i.id}}</td>
         <td>{{i.ch_modelname}}</td>
@@ -203,7 +204,7 @@
         } else {
           console.log(id)
           $.ajax({
-            url: "{% url 'appDelete' %}",
+            url: "{% url 'mdDelete' %}",
             method: "POST",
             data: {
               id,

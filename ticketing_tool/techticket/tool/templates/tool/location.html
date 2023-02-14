@@ -49,7 +49,7 @@
         <form action="" method="get" class="form-inline"
             style="display: inline-block; margin-top: 10px; margin-left: 10px;">
             <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
-            <input type="submit" class="btn btn-primary" value="Search"><br>
+            <input type="submit" class="btn btn-primary" value="Search by Name"><br>
             <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard
                     <span>&nbsp > </span></a></b>
             <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Config Management <span>&nbsp >
@@ -102,7 +102,7 @@
                     <td>{{i.ch_status}}</td>
                     {% if permission.confi_m_e == "on" or permission == None %}
                     <td>
-                        <a href="#editcl_LocationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                        <a href="#editcl_LocationModal-{{i.id}}" class="edit" data-toggle="modal"><i
                                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     </td>
                     {% endif %}
@@ -135,14 +135,14 @@
             {% endif %}
         </ul>
         {% endif %}
-           
+
 
         <style>
             .required-field::before {
-            content: "*";
-            color: red;
+                content: "*";
+                color: red;
             }
-          </style>
+        </style>
 
         <!-- Add Modal HTML -->
         <div id="addcl_LocationModal" class="modal fade">
@@ -171,15 +171,17 @@
                                 <input name="txt_address" value="{{i.txt_address}}" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <span class="required-field"></span><label>Organization  <a href="{% url 'new_organization' %}">
-                                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                  </a></label>
-                                  <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;" required>
+                                <span class="required-field"></span><label>Organization <a
+                                        href="{% url 'new_organization' %}">
+                                        <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                    </a></label>
+                                <select name="ch_organization" id="ch_organization"
+                                    style="min-height:30px;min-width:280px;" required>
                                     {% for i in org %}
-                                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                                  {% endfor %}
+                                    <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                                    {% endfor %}
                                 </select>
-                              </div>
+                            </div>
                             <div class="form-group">
                                 <span class="required-field"></span>
                                 <label>City</label>
@@ -220,7 +222,7 @@
         </div>
         <!-- Edit Modal HTML -->
         {% for i in loc %}
-        <div id="editcl_LocationModal-{{forloop.counter}}" class="modal fade">
+        <div id="editcl_LocationModal-{{i.id}}" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="/lupdate/{{i.id}}" method="post">
@@ -279,60 +281,63 @@
                         </div>
                     </form>
                 </div>
-                {% endfor %}
-                </body>
-                <!-- Delete Location -->
-                <script>
-                    $(document).ready(function () {
-                        $('#delete_btn').click(function () {
-                            if (confirm('Are You Sure You Want to Delete User?')) {
-                                var id = [];
-                                var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                                $(':checkbox:checked').each(function (i) {
-                                    id[i] = $(this).val()
-                                })
-                                if (id.length === 0) {
-                                    alert("please select user Which u want to delete?")
-                                } else {
-                                    console.log(id)
-                                    $.ajax({
-                                        url: "{% url 'ldelete' %}",
-                                        method: "POST",
-                                        data: {
-                                            id,
-                                            csrfmiddlewaretoken: csrf
-                                        },
-                                        success: function (response) {
-                                            alert("success")
-                                            location.reload();
-                                            for (var i = 0; i < id.length; i++) {
-                                                var error = $(response).find('#error_text')
-                                                var error_class = $(error).attr('class')
-                                                $('#error').addClass(error_class)
-                                                $('#error').text(error.text())
-                                                $('tr#' + id[i] + '').fadeOut('slow');
-                                            }
-                                        },
-                                    })
-                                }
-                            }
-                        })
-                    })
-                </script>
-                <script>
-                    $('#select-all').click(function (event) {
-                        if (this.checked) {
-                            // Iterate each checkbox
-                            $(':checkbox').each(function () {
-                                this.checked = true;
-                            });
-                        } else {
-                            $(':checkbox').each(function () {
-                                this.checked = false;
-                            });
-                        }
-                    });
-                </script>
-                <!-- </html> -->
+            </div>
+        </div>
 
-                {% endblock content %}
+        {% endfor %}
+        </body>
+        <!-- Delete Location -->
+        <script>
+            $(document).ready(function () {
+                $('#delete_btn').click(function () {
+                    if (confirm('Are You Sure You Want to Delete User?')) {
+                        var id = [];
+                        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                        $(':checkbox:checked').each(function (i) {
+                            id[i] = $(this).val()
+                        })
+                        if (id.length === 0) {
+                            alert("please select user Which u want to delete?")
+                        } else {
+                            console.log(id)
+                            $.ajax({
+                                url: "{% url 'ldelete' %}",
+                                method: "POST",
+                                data: {
+                                    id,
+                                    csrfmiddlewaretoken: csrf
+                                },
+                                success: function (response) {
+                                    alert("success")
+                                    location.reload();
+                                    for (var i = 0; i < id.length; i++) {
+                                        var error = $(response).find('#error_text')
+                                        var error_class = $(error).attr('class')
+                                        $('#error').addClass(error_class)
+                                        $('#error').text(error.text())
+                                        $('tr#' + id[i] + '').fadeOut('slow');
+                                    }
+                                },
+                            })
+                        }
+                    }
+                })
+            })
+        </script>
+        <script>
+            $('#select-all').click(function (event) {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $(':checkbox').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+        </script>
+        <!-- </html> -->
+
+        {% endblock content %}

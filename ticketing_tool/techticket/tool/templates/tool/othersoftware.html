@@ -92,7 +92,8 @@
       <tbody>
         {% csrf_token %}
         {% for i in users %}
-        {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+        {% if forloop.counter < 11 %} 
+        <tr id="{{i.id}}">
           <td>
             <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
           </td>
@@ -110,7 +111,7 @@
           <td>{{i.txt_description}}</td>
           {% if permission.confi_m_e == "on" or permission == None %}
           <td>
-            <a href="#editcl_Other_softwareModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+            <a href="#editcl_Other_softwareModal-{{i.id}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
           {% endif %}
@@ -251,7 +252,7 @@
     </div>
     <!-- Edit Modal HTML -->
     {% for i in os %}
-    <div id="editcl_Other_softwareModal-{{forloop.counter}}" class="modal fade">
+    <div id="editcl_Other_softwareModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
           <form action="/osUpdate/{{i.id}}" method="post">

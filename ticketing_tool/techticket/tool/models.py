@@ -603,7 +603,7 @@ class cl_User_request(models.Model):
     ch_urgency = models.CharField(max_length=100, null=True)
     ch_priority = models.CharField(max_length=100, null=True)
     dt_start_date = models.DateTimeField(default=datetime.now)
-    dt_updated_date = models.DateTimeField(default=datetime.now, null=True, blank=True)
+    dt_Updated_date = models.DateTimeField(default=datetime.now)
     dt_escalation_date = models.DateTimeField(default=datetime.now)
     ch_service = models.CharField(max_length=100, null=True)
     ch_service_subcategory = models.CharField(max_length=100, null=True)

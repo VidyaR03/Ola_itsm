@@ -303,7 +303,7 @@
                 <td>{{i.fk_caller}}</td>
                 <td>{{i.ch_urgency}}</td>
                 <td>{{i.dt_start_date}}</td>
-                <td>{{i.dt_updated_date}}</td>
+                <td>{{i.dt_Updated_date}}</td>
                 <td>{{i.dt_escalation_date}}</td>
                 <td>{{i.ch_service}}</td>
                 <td>{{i.txt_description}}</td>
@@ -315,7 +315,7 @@
                 
                 {% if permission.inci_m_e == "on" or permission == None %}
                 <td>
-                    <a href="#editcl_User_requestModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                    <a href="#editcl_User_requestModal-{{i.id}}" class="edit" data-toggle="modal"><i
                             class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                 </td>
                 {% endif %}
@@ -385,7 +385,7 @@
                                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                               </a></label>
                               <select name="ch_caller" id="ch_caller"style="min-height:30px;min-width:280px;" required>
-                                {% for i in per1 %}
+                                {% for i in team_person  %}
                                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                               {% endfor %}
                             </select>
@@ -476,8 +476,8 @@
                                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
                         </div>
                         <div class="form-group">
-                            <label for="dt_updated_date">Updated Date</label>
-                            <input class="form-control" type="datetime-local" name="dt_updated_date"
+                            <label for="dt_Updated_date">Updated Date</label>
+                            <input class="form-control" type="datetime-local" name="dt_Updated_date"
                                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
                             <span class="validity"></span>
                         </div>
@@ -524,7 +524,7 @@
 
     <!-- Edit Modal HTML -->
     {% for i in ur %}
-    <div id="editcl_User_requestModal-{{forloop.counter}}" class="modal fade">
+    <div id="editcl_User_requestModal-{{i.id}}" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
                 <form action="/uupdate/{{i.id}}" method="post">
@@ -634,9 +634,9 @@
                             <span class="validity"></span>
                         </div>
                         <div class="form-group">
-                            <label for="bday">Update Date</label>
-                            <input type="date" id='current_date' value="{% now 'Y-m-d' %}" class="form-control" >
-                            <span class="validity"></span>
+                            <label for="bday"> Updated Date</label>
+                            <input class="form-control w-25" type="datetime-local"  id="datetimepicker3" value="{{i.dt_Updated_date}}" name="dt_Updated_date"
+                            required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" > 
                         </div>
                         <div class="form-group">
                             <label>Service</label>
@@ -728,7 +728,7 @@
 </script>
 
 
-</html> -->
+</html> 
 
 <!-- for delete change -->
 <script>

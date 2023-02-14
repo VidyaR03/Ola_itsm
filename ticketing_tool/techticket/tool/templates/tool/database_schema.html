@@ -45,8 +45,8 @@
   <div>
     <form action="" method="get" class="form-inline"
       style="display: inline-block; margin-top: 10px; margin-left: 10px;">
-      <input type="text" class="form-control" name="searchname" placeholder="Search">
-      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
+      <input type="submit" class="btn btn-primary" value="Search by Name"><br>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
           </span></a></b>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Confi Management <span>&nbsp >
@@ -88,7 +88,8 @@
       {% csrf_token %}
 
       {% for i in users %}
-      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+      {% if forloop.counter < 11 %} 
+      <tr id="{{i.id}}">
 
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
@@ -102,7 +103,7 @@
         <td>{{i.txt_description}}</td>
         {% if permission.confi_m_e == "on" or permission == None %}
         <td>
-          <a href="#editcl_Database_schemaModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+          <a href="#editcl_Database_schemaModal-{{i.id}}" class="edit" data-toggle="modal"><i
               class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         </td>
         {% endif %}
@@ -220,7 +221,7 @@
   </div>
   <!-- Edit Modal HTML -->
   {% for i in schema %}
-  <div id="editcl_Database_schemaModal-{{forloop.counter}}" class="modal fade">
+  <div id="editcl_Database_schemaModal-{{i.id}}" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
         <form action="/DSUpdate/{{i.id}}" method="post">

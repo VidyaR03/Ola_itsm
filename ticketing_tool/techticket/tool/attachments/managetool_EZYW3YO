@@ -1,0 +1,37 @@
+ # path for the make disclosure function 
+
+    path('make_disclosure', views.Make_Disclosure, name = 'make_disclosure'),
+    path('add_reports', views.disclosure_addition, name = 'add_reports'),
+    path('dedit/<str:id>', views.disclosure_edit, name='dedit'),
+    path('dupdate/<str:id>', views.disclosure_update, name='dupdate'),
+
+
+#  html format for search name:
+
+
+
+
+  <div class="container" style="margin-top:10px;">
+                <div class="row" style="margin-top: 3px;">
+                    <div class="col-6">
+                        <form action="" method="get" class="form-inline">
+                            <input type="text" class="form-control" style="width: min-content;display: inline;" name="searchname" placeholder="Search by Name"><br><br>
+                            <input type="submit" class="btn btn-success" value="Search ">
+                        </form>
+        
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+
+
+#  function for search name
+
+if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            user = Users.objects.filter(name__icontains=q)
+
+

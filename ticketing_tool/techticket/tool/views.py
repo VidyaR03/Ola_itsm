@@ -1374,7 +1374,7 @@ def UADD(request):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
-        dt_updated_date = request.POST.get('dt_updated_date')
+        dt_Updated_date = request.POST.get('dt_Updated_date')
         dt_escalation_date = request.POST.get('dt_escalation_date')
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
@@ -1392,7 +1392,7 @@ def UADD(request):
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
             dt_start_date =dt_start_date,
-            dt_updated_date =dt_updated_date,
+            dt_Updated_date =dt_Updated_date,
             dt_escalation_date = dt_escalation_date,
             ch_service =ch_service,
             ch_service_subcategory =ch_service_subcategory,
@@ -1438,7 +1438,7 @@ def UUpdate(request, id):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')
         dt_start_date = request.POST.get('dt_start_date')
-        dt_updated_date = request.POST.get('dt_updated_date')
+        dt_Updated_date = request.POST.get('dt_Updated_date')
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
@@ -1456,7 +1456,7 @@ def UUpdate(request, id):
             ch_urgency=ch_urgency,
             ch_priority=ch_priority,
             dt_start_date=dt_start_date,
-            dt_updated_date=dt_updated_date,
+            dt_Updated_date=dt_Updated_date,
             ch_service=ch_service,
             ch_service_subcategory=ch_service_subcategory,
             ch_parent_request=ch_parent_request,
@@ -1475,9 +1475,13 @@ def UUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def UDelete(request, id):
-    ur = cl_User_request.objects.filter(id=id)
-    ur.delete()
+def UDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            ur= cl_User_request.objects.filter(id=i).first()
+            ur.delete()
+        
     admin_name = request.session["username"]
     adminaction = "deletion of user request"
     event ="event"

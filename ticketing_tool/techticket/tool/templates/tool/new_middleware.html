@@ -107,7 +107,7 @@
           <td>{{i.txt_description}}</td>
           {% if permission.confi_m_e == "on" or permission == None %}
           <td>
-            <a href="#editcl_New_middlewareModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+            <a href="#editcl_New_middlewareModal-{{i.id}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
           {% endif %}
@@ -243,7 +243,7 @@
     </div>
     <!-- Edit Modal HTML -->
     {% for i in middle %}
-    <div id="editcl_New_middlewareModal-{{forloop.counter}}" class="modal fade">
+    <div id="editcl_New_middlewareModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
           <form action="/MWUpdate/{{i.id}}" method="post">

@@ -7,8 +7,8 @@
   <div>
     <form action="" method="get" class="form-inline"
       style="display: inline-block; margin-top: 10px; margin-left: 10px;">
-      <input type="text" class="form-control" name="searchname" placeholder="Search">
-      <input type="submit" class="btn btn-primary" value="Search"><br>
+      <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
+      <input type="submit" class="btn btn-primary" value="Search by Name"><br>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
           </span></a></b>
       <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Config Management <span>&nbsp >
@@ -74,7 +74,7 @@
         <td>{{i.ch_person_mobilenumber}}</td>
         {% if permission.confi_m_e == "on" or permission == None %}
         <td>
-          <a href="#editcl_PersonModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="material-icons"
+          <a href="#editcl_PersonModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons"
               data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         </td>
         {% endif %}
@@ -181,9 +181,14 @@
                 <input name="ch_person_function" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <span class="required-field"></span>
-                <label>Manager</label>
-                <input name="ch_manager" type="text" class="form-control" required>
+                <span class="required-field"></span><label>Manager<a href="{% url 'client' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_manager" id="ch_manager" style="min-height:30px;min-width:280px;" required>
+                  {% for i in per %}
+                  <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
+                  {% endfor %}
+                </select>
               </div>
               
               <div class="form-group">
@@ -217,7 +222,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 
 
 
@@ -225,7 +230,7 @@
 
 <!-- Edit Modal HTML -->
 {% for i in per %}
-<div id="editcl_PersonModal-{{forloop.counter}}" class="modal fade">
+<div id="editcl_PersonModal-{{i.id}}" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
       <form action="/update/{{i.id}}" method="post">
@@ -314,7 +319,7 @@
 {% endfor %}
 <!-- Delete Modal HTML -->
 {% for i in per %}
-<div id="deletecl_PersonModal-{{forloop.counter}}" class="modal fade">
+<div id="editcl_PersonModal-{{i.id}}" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <form>

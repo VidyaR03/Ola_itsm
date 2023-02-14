@@ -46,12 +46,16 @@
   <div>
     <form action="" method="get" class="form-inline"
       style="display: inline-block; margin-top: 10px; margin-left: 10px;">
-      <input type="text" class="form-control" name="searchname" placeholder="Search">
-      <input type="submit" class="btn btn-primary" value="Search"><br>
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp > </span></a></b>	
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Confi Management <span>&nbsp > </span></a></b>	
-      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'newci' %}">New CI <span>&nbsp > </span></a></b>	
-      <b><a style="text-decoration: none;"class="nav-item nav-link" href="{% url 'networkdevice' %}">Network Device</a></b>
+      <input type="text" class="form-control" name="searchname" placeholder="Search by Name">
+      <input type="submit" class="btn btn-primary" value="Search by Name"><br>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'home' %}"> Dashboard <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="#">Confi Management <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'newci' %}">New CI <span>&nbsp >
+          </span></a></b>
+      <b><a style="text-decoration: none;" class="nav-item nav-link" href="{% url 'networkdevice' %}">Network
+          Device</a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       {% if permission.confi_m_a == "on" or permission == None %}
@@ -66,7 +70,7 @@
       <thead>
         <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
           <th>
-            
+
           </th>
           <th>ID</th>
           <th>Name</th>
@@ -122,8 +126,8 @@
           <td>{{i.txt_description}}</td>
           {% if permission.confi_m_e == "on" or permission == None %}
           <td>
-            <a href="#editcl_Network_deviceModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
-                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+            <a href="#editcl_Network_deviceModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons"
+                data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 
           </td>
           {% endif %}
@@ -154,12 +158,12 @@
       {% endif %}
     </ul>
     {% endif %}
-   
+
 
     <style>
       .required-field::before {
-      content: "*";
-      color: red;
+        content: "*";
+        color: red;
       }
     </style>
 
@@ -185,13 +189,13 @@
               <div class="form-group">
                 <span class="required-field"></span>
                 <label>Organization<a href="{% url 'new_organization' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
-                {% for i in org %}
-                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                {% endfor %}
-              </select>
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                  {% for i in org %}
+                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
@@ -220,11 +224,11 @@
                 <label>Network Type<a href="{% url 'network_type' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-              <select name="ch_network_type" id="ch_network_type" style="min-height:30px;min-width:280px;" required>
-                {% for i in nttype %}
-                <option value="{{i.ch_nname}}">{{i.ch_nname}}</option>
-                {% endfor %}
-              </select>
+                <select name="ch_network_type" id="ch_network_type" style="min-height:30px;min-width:280px;" required>
+                  {% for i in nttype %}
+                  <option value="{{i.ch_nname}}">{{i.ch_nname}}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
@@ -232,33 +236,33 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_brand" id="ch_brand" style="min-height:30px;min-width:280px;" required>
-                {% for i in brnd %}
-                <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
-                {% endfor %}
+                  {% for i in brnd %}
+                  <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
                 <label>Model<a href="{% url 'cmodel' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-              <select name="ch_model" id="ch_model" style="min-height:30px;min-width:280px;" required>
-                {% for i in model %}
-                <option value="{{i.ch_modelname}}">{{i.ch_modelname}}</option>
-                {% endfor %}
-              </select>
+                <select name="ch_model" id="ch_model" style="min-height:30px;min-width:280px;" required>
+                  {% for i in model %}
+                  <option value="{{i.ch_modelname}}">{{i.ch_modelname}}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
                 <label>IOS Version<a href="{% url 'iosver' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
-              <select name="i_ios_version" id="i_ios_version" style="min-height:30px;min-width:280px;" required>
-                {% for i in ios %}
-                <option value="{{i.ch_iosname}}">{{i.ch_iosname}}</option>
-                {% endfor %}
-              </select>
-            </div>
+                <select name="i_ios_version" id="i_ios_version" style="min-height:30px;min-width:280px;" required>
+                  {% for i in ios %}
+                  <option value="{{i.ch_iosname}}">{{i.ch_iosname}}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
@@ -324,7 +328,7 @@
     </div>
     <!-- Edit Modal HTML -->
     {% for i in nd %}
-    <div id="editcl_Network_deviceModal-{{forloop.counter}}" class="modal fade">
+    <div id="editcl_Network_deviceModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
           <form action="/ndUpdate/{{i.id}}" method="post">
@@ -440,6 +444,7 @@
                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                 <input type="submit" class="btn btn-info" value="Update">
               </div>
+            </div>
           </form>
         </div>
       </div>

@@ -103,7 +103,7 @@
                     <td>{{i.txt_description}}</td>
                     {% if permission.confi_m_e == "on" or permission == None %}
                     <td>
-                        <a href="#editcl_Web_applicationModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                        <a href="#editcl_Web_applicationModal-{{i.id}}" class="edit" data-toggle="modal"><i
                                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     </td>
                     {% endif %}
@@ -213,7 +213,7 @@
         </div>
         <!-- Edit Modal HTML -->
         {% for i in wa %}
-        <div id="editcl_Web_applicationModal-{{forloop.counter}}" class="modal fade">
+        <div id="editcl_Web_applicationModal-{{i.id}}" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
                     <form action="/waUpdate/{{i.id}}" method="post">
@@ -238,10 +238,8 @@
                                     class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Web Server<a href="{% url 'webserver' %}">
-                                        <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                                    </a></label>
-                                <input name="ch_webserver" type="text" class="form-control" required>
+                                <label>Web Server</label>
+                                <input name="ch_webserver"  value="{{i.ch_webserver}}" type="text" class="form-control" required>
                             </div>
                         </div>
                         <div class="modal-body" style="width: 330px; display: inline-block;">

@@ -96,7 +96,7 @@
           <td>{{i.txt_description}}</td>
           {% if permission.confi_m_e == "on" or permission == None %}
           <td>
-            <a href="#editcl_Business_processModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+            <a href="#editcl_Business_processModal-{{i.id}}" class="edit" data-toggle="modal"><i
                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
           {% endif %}
@@ -210,7 +210,7 @@
 
     <!-- Edit Modal HTML -->
     {% for i in buss %}
-    <div id="editcl_Business_processModal-{{forloop.counter}}" class="modal fade">
+    <div id="editcl_Business_processModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
           <form action="/bussUpdate/{{i.id}}" method="post">

@@ -1714,7 +1714,7 @@ def mdAdd(request):
         # id = request.POST.get('id')
         print(id)
         ch_modelname = request.POST.get('ch_modelname')
-        ch_brandname = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brandname')).first()
+        ch_brandname = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brand')).first()
 
         model = cl_model(
             # id=id,
@@ -1784,6 +1784,7 @@ def iosver(request):
         q = request.GET.get('searchname')
         if q != None:
             iv = cl_ios_version.objects.filter(ch_iosname__icontains=q)
+
     page = request.GET.get('page', 1)
 
     paginator = Paginator(iv, 10)
@@ -1793,10 +1794,7 @@ def iosver(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    if request.method == "GET":
-        q = request.GET.get('searchname')
-        if q != None:
-            iv = cl_ios_version.objects.filter(ch_name__icontains=q)
+    
     return render(request, 'tool/ios_version.html', {'iv': iv,'users':users,'org':org,'brnd':brnd, 'permission':permission})
 
 
@@ -2047,6 +2045,8 @@ def serverDelete(request):
 def web_server(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ws = cl_Web_server.objects.all()
+    soft = cl_Software.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -2064,7 +2064,7 @@ def web_server(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
    
-    return render(request, 'tool/webserver.html', {'ws': ws,'users':users,'org':org, 'permission':permission})
+    return render(request, 'tool/webserver.html', {'ws': ws,'users':users,'org':org, 'permission':permission,'soft':soft})
 
 
 
@@ -2079,7 +2079,7 @@ def wsAdd(request):
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
