@@ -185,6 +185,8 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_manager" id="ch_manager" style="min-height:30px;min-width:280px;" required>
+                  <option value="None">Select Manager</option>
+
                   {% for i in per %}
                   <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                   {% endfor %}
