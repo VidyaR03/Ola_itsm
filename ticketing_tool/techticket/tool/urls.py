@@ -31,6 +31,8 @@ urlpatterns = [
     path('cdelete', views.CDelete, name='cdelete'),
     path('assign_change', views.assign_changeModal, name='assign_change'),
     path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
+    path("get_service_sub_by_service", views.get_service_sub_by_service, name="get_service_sub_by_service"),
+
 
     #Url For Team form
     path('tadd', views.TADD, name='tadd'),

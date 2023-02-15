@@ -530,7 +530,7 @@ def OrgEdit(request):
 
 
 @login_required(login_url='/login_render/')
-def OrgUpdate(request):
+def OrgUpdate(request,id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
@@ -1138,6 +1138,13 @@ def get_people_by_team(request):
     people = cl_Person.objects.filter(ch_team_id=team_id)
     return JsonResponse([{'id': person.id, 'name': person.ch_person_firstname} for person in people], safe=False)
 
+def get_service_sub_by_service(request):
+    service_id = request.GET.get('serviceId')
+    print(service_id)
+    subcategory = cl_Service_subcategory.objects.filter(ch_sservice_id=service_id)
+    print(subcategory)
+    return JsonResponse([{'id': cato.id, 'name': cato.ch_subname} for cato in subcategory] ,safe=False)
+
 @login_required(login_url='/login_render/')
 def CADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -1152,7 +1159,7 @@ def CADD(request):
         ch_title = request.POST.get('ch_title')
         dt_start_date = request.POST.get('dt_start_date')
         dt_Updated_date = request.POST.get('dt_Updated_date')
-        ch_parent_change = request.POST.get('ch_parent_change')
+        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
         txt_description = request.POST.get('txt_description')
         nchange = cl_New_change(
@@ -1206,7 +1213,7 @@ def CUpdate(request, id):
         ch_title = request.POST.get('ch_title')
         dt_start_date = nchange.dt_start_date
         dt_Updated_date = request.POST.get('dt_Updated_date')
-        ch_parent_change = request.POST.get('ch_parent_change')
+        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
         txt_description = request.POST.get('txt_description')
         ch_assign_agent = nchange.ch_assign_agent
@@ -1317,7 +1324,12 @@ def send_approval_Mail(request):
 @login_required(login_url='/login_render/')
 def user_request(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    ur = cl_User_request.objects.all()
+    ur = cl_User_request.objects.all()    
+    ser = cl_Service.objects.all()
+    allservice = cl_Service.objects.all()
+    ser_sub = cl_Service_subcategory.objects.all()
+    nchange = cl_New_change.objects.all()
+
     escalated_ur = escalation(ur)
     if request.method == "GET":
         q = request.GET.get('searchservice')
@@ -1343,7 +1355,11 @@ def user_request(request):
             'permission':permission,
             'org':org,
             'allteam':allteam,
-            'team_person':team_person
+            'team_person':team_person,
+            'ser':ser,
+            'allservice':allservice,
+            'ser_sub':ser_sub,
+            'nchange':nchange
             }
     return render(request, 'tool/userrequest.html', context)
 
@@ -1362,7 +1378,7 @@ def escalation(ur):
 def UADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.filter(
             ch_name=request.POST.get('ch_organization')).first()
         fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
@@ -1374,12 +1390,13 @@ def UADD(request):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
-        dt_Updated_date = request.POST.get('dt_Updated_date')
-        dt_escalation_date = request.POST.get('dt_escalation_date')
-        ch_service = request.POST.get('ch_service')
-        ch_service_subcategory = request.POST.get('ch_service_subcategory')
-        ch_parent_request = request.POST.get('ch_parent_request')
-        ch_parent_change = request.POST.get('ch_parent_change')
+        dt_updated_date = request.POST.get('dt_updated_date')
+        dt_escalation_date = request.POST.get('dt_escalation_date')     
+        ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
+        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_subname')).first()
+        ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
+        # ch_parent_request = request.POST.get('id')
+        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         txt_description = request.POST.get('txt_description')
         ur = cl_User_request(
             fk_organization=fk_organization,
@@ -1401,6 +1418,7 @@ def UADD(request):
             txt_description =txt_description,
         )
         ur.save()
+        print(ur)
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
         event ="event"
@@ -1425,7 +1443,7 @@ def UEdit(request):
 def UUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         fk_caller = cl_Person.objects.get(
@@ -1438,7 +1456,7 @@ def UUpdate(request, id):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')
         dt_start_date = request.POST.get('dt_start_date')
-        dt_Updated_date = request.POST.get('dt_Updated_date')
+        dt_updated_date = request.POST.get('dt_updated_date')
         ch_service = request.POST.get('ch_service')
         ch_service_subcategory = request.POST.get('ch_service_subcategory')
         ch_parent_request = request.POST.get('ch_parent_request')
@@ -1475,13 +1493,9 @@ def UUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def UDelete(request):
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')
-        for i in list_id:
-            ur= cl_User_request.objects.filter(id=i).first()
-            ur.delete()
-        
+def UDelete(request, id):
+    ur = cl_User_request.objects.filter(id=id)
+    ur.delete()
     admin_name = request.session["username"]
     adminaction = "deletion of user request"
     event ="event"
