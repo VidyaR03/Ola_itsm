@@ -187,8 +187,8 @@
             </div>
             <div class="form-group">
               <label>Parent Change</label>
-              <select  name="ch_parent_change_id" id="ch_parent_change" style="min-height:30px;min-width:280px;">
-              <option value='' >Select Parent Change</option>
+              <select  name="ch_parent_change_id" id="ch_parent_change_id" style="min-height:30px;min-width:280px;">
+              <option value=0 >Select Parent Change</option>
               {% for k in nchange %}
                 <option value="{{k.id}}">{{k.id}}</option>
               {% endfor %}

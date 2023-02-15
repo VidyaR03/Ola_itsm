@@ -11,6 +11,7 @@ from .managers import CustomUserManager
 
 
 
+
 class cl_New_organization(models.Model):
     """Models which creates table for New Organization"""
     id = models.AutoField(primary_key=True, editable=False)
