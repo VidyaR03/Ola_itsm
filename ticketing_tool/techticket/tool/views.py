@@ -49,7 +49,33 @@ def home(request):
 @login_required(login_url='/login_render/')
 def dashboard(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    return render(request, 'tool/dashboard.html',{'permission':permission})
+    User = cl_User_request.objects.all().count()
+    org = cl_New_organization.objects.all().count()
+    service = cl_Service.objects.all().count()
+    change = cl_New_change.objects.all().count()
+    Assign = cl_User_request.objects.filter(ch_assign_agent = 'Deallocate').count()
+    newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
+    Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
+    newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
+ 
+
+    context = {
+        'User': User,
+        'permission':permission,
+        'org':org,
+        'service':service,
+        'change':change,
+        'newopen':newopen,
+        'Assign':Assign,
+        'Assign1':Assign1,
+        'newopen1':newopen1
+
+     
+        
+
+    }
+
+    return render(request, 'tool/dashboard.html',context)
 
 
 def login_render(request):
@@ -1131,7 +1157,7 @@ def newchange(request):
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call,'team_person':team_person})
 
 def get_people_by_team(request):
     team_id = request.GET.get('teamId')
@@ -1261,7 +1287,7 @@ def assign_changeModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
         
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
