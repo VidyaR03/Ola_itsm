@@ -49,7 +49,33 @@ def home(request):
 @login_required(login_url='/login_render/')
 def dashboard(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    return render(request, 'tool/dashboard.html',{'permission':permission})
+    User = cl_User_request.objects.all().count()
+    org = cl_New_organization.objects.all().count()
+    service = cl_Service.objects.all().count()
+    change = cl_New_change.objects.all().count()
+    Assign = cl_User_request.objects.filter(ch_assign_agent = 'Deallocate').count()
+    newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
+    Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
+    newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
+ 
+
+    context = {
+        'User': User,
+        'permission':permission,
+        'org':org,
+        'service':service,
+        'change':change,
+        'newopen':newopen,
+        'Assign':Assign,
+        'Assign1':Assign1,
+        'newopen1':newopen1
+
+     
+        
+
+    }
+
+    return render(request, 'tool/dashboard.html',context)
 
 
 def login_render(request):
