@@ -1291,7 +1291,6 @@ def assign_changeModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         s= "Assigned"
-        
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
