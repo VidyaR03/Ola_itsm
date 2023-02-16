@@ -280,6 +280,7 @@
         <th>ID</th>
         <th>Organization</th>
         <th>Caller</th>
+        <th>Status</th>
         <th>Urgency</th>
         <th>Start Date</th>
         <th>Updated Date</th>
@@ -297,6 +298,8 @@
       </tr>
     </thead>
     <tbody>
+      {% csrf_token %}
+
       {% for i in users %}
       {% if forloop.counter < 11 %} <tr id="{{i.id}}">
         <td>
@@ -305,6 +308,11 @@
         <td>{{i.id}}
         <td>{{i.fk_organization}}</td>
         <td>{{i.fk_caller}}</td>
+        {% if i.ch_status == "New" %}
+        <td>New</td>
+        {% else %}
+        <td>{{i.ch_status}}</td>
+        {% endif %}
         <td>{{i.ch_urgency}}</td>
         <td>{{i.dt_start_date}}</td>
         <td>{{i.dt_updated_date}}</td>
@@ -388,19 +396,24 @@
                 {% endfor %}
               </select>
             </div>
-
             <div class="form-group">
+              <label>Status</label>
+              <input class="form-control" name="ch_status" value="New" type="text" readonly>
+            </div>
+
+            <!-- <div class="form-group">
               <label>Status</label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
-                <option value="Active"> Active
-                </option>
-                <option value="Inactive"> Inactive
-                </option>
-                <option value="New"> New
-                </option>
+                <option value="New">New</option>
+                <option value="Approval_Awaited">Approval Awaited</option>
+                <option value="Approved">Approved</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+                <option value="Reopend">Reopend</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Origin</label>
               <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
@@ -544,10 +557,10 @@
               <label>Description</label>
               <input class="form-control" name="txt_description" type="text">
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label>Agent</label>
-              <input class="form-control" name="ch_agent" value="Deallocated" type="text" disabled>
-            </div>
+              <input class="form-control" name="ch_assign_agent" value="Deallocated" type="text" disabled>
+            </div> -->
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -586,6 +599,10 @@
             </div>
             <div class="form-group">
               <label>Status</label>
+              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
+            </div>
+            <!-- <div class="form-group">
+              <label>Status</label>
               <select name="ch_status" type="text" value="{{i.ch_status}}" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option value="Active"> Active
@@ -595,7 +612,7 @@
                 <option value="New"> New
                 </option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Origin</label>
               <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
@@ -725,10 +742,10 @@
               <label>Description</label>
               <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label>Agent</label>
-              <input name="ch_agent" type="text" placeholder="Deallocate" class="form-control">
-            </div>
+              <input name="ch_assign_agent" type="text" placeholder="Deallocate" class="form-control">
+            </div> -->
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -766,16 +783,16 @@
           <label>Person</label>
           <select name="ch_status" id="select_person" type="text" class="form-control"
             aria-label="Default select example" aria-invalid="false">
-            <option selected>Select Person to Assign Change</option>
-            {% for person in team_person %}
+            <option>Select a Team First</option>
+            <!-- {% for person in team_person %}
             <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
               {{person.ch_person_firstname}}</option>
-            {% endfor %}
+            {% endfor %} -->
           </select>
         </div>
         <div class="modal-footer">
           <button type="submit" id="assign_btn" class="btn btn-primary">Assign</button>
-          <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancel</a>
+          <a href="{% url 'userrequest' %}" class="btn btn-default" role="button">Cancel</a>
         </div>
       </div>
     </div>
@@ -899,6 +916,37 @@
 
 </script>
 
+<script>
+  $("#select_team").change(function () {
+    var teamId = $(this).val();
+    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+    // Make an AJAX request to the server
+    // alert(teamId)
+    $.ajax({
+      method: "GET",
+      url: "{% url 'get_people_by_team' %}",
+      data: {
+        teamId,
+        csrfmiddlewaretoken: csrf
+      },
+      success: function (people) {
+        // Update the options of the person dropdown
+        var personSelect = $("#select_person");
+        personSelect.empty();
+        $.each(people, function (index, person) {
+          console.log(person.id, person.name)
+          personSelect.append($("<option>", {
+            id: 'select_person',
+            value: person.id,
+            text: person.name
+          }));
+        });
+      }
+    });
+  });
+
+</script>
+
 <!-- for assign change -->
 <script>
   $(document).ready(function () {
@@ -912,8 +960,9 @@
         if (id.length === 0) {
           alert("please select UR Which u want to assign?")
         } else {
-          console.log(id)
+          //console.log(id)
           var p = document.getElementById('select_person').value
+          console.log(p,"person id")
           $.ajax({
             url: "{% url 'assign_UR' %}",
             method: "POST",
@@ -978,18 +1027,17 @@
               id,
               csrfmiddlewaretoken: csrf
             },
-            success: function (response) {
-              alert("success")
+            error: function (response) {
+              if (data.result === 'success'){
+              alert("Approval Mail Send Succefully...!")
               location.reload();
-              for (var i = 0; i < id.length; i++) {
-                var error = $(response).find('#error_text')
-                var error_class = $(error).attr('class')
-                $('#error').addClass(error_class)
-                $('#error').text(error.text())
-                $('tr#' + id[i] + '').fadeOut('slow');
+              }
+              else {
+                alert("Fail..! Please Configure Email Sender Details")
+                location.reload();
               }
             },
-          })
+          });
         }
       }
     })

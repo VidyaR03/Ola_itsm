@@ -1181,6 +1181,7 @@ def CADD(request):
         ch_caller =cl_Person.objects.filter(
             ch_person_firstname=str.capitalize(request.POST.get('ch_caller'))).first()
         ch_status = request.POST.get('ch_status')
+        # ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1234,7 +1235,8 @@ def CUpdate(request, id):
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_caller =cl_Person.objects.get(
             ch_person_firstname=str.capitalize(request.POST.get('ch_caller')))
-        ch_status = request.POST.get('ch_status')
+        # ch_status = request.POST.get('ch_status')
+        ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = nchange.dt_start_date
@@ -1280,6 +1282,7 @@ def CDelete(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
+########## Assign Change For Change Management############
 
 @login_required(login_url='/login_render/')
 def assign_changeModal(request):
@@ -1287,11 +1290,13 @@ def assign_changeModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        s= "Assigned"
         
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
+            nchange.ch_status = s
             nchange.save()
         try:
             mail_sender()
@@ -1326,11 +1331,17 @@ def mail_sender():
         settings.EMAIL_HOST_PASSWORD = mail_host.host_password
 
 
-########## Approve Change ############
+########## Approve Change For Change Management############
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
     if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            nchange = cl_New_change.objects.filter(id=i).first()
+            nchange.ch_status = "Watting for Approval"
+            nchange.save()
+
         try:
             mail_sender()
             list_id = request.POST.getlist('id[]')
@@ -1488,6 +1499,8 @@ def UUpdate(request, id):
         ch_parent_request = request.POST.get('ch_parent_request')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
+        ch_assign_agent = ur.ch_assign_agent
+
         ur = cl_User_request(
             id=id,
             fk_organization=fk_organization,
@@ -1506,6 +1519,8 @@ def UUpdate(request, id):
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
+            ch_assign_agent=ch_assign_agent
+
         )
         ur.save()
         admin_name = request.session["username"]
@@ -1536,6 +1551,8 @@ def escalate_notify(request):
     ur = cl_User_request.objects.all()
     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
+########## Assign Change For User Request############
+
 
 @login_required(login_url='/login_render/')
 def assign_URModal(request):
@@ -1543,11 +1560,13 @@ def assign_URModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
-        
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+              
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
+            ur.ch_status = "Assigned"
+            
             ur.save()
         try:
             mail_sender()
@@ -1556,6 +1575,8 @@ def assign_URModal(request):
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            return JsonResponse({'result': 'success'})
+
         except:
             print('email not send')
         admin_name = request.session["username"]
@@ -1570,19 +1591,32 @@ def assign_URModal(request):
         }
     return render(request, 'tool/tassign.html', context)
 
+########## Approve Change For Incident Management############
+
 @login_required(login_url='/login_render/')
 def send_approval_Mail_UR(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        mail_sender()
         list_id = request.POST.getlist('id[]')
-        ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
-        subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
-        sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
-        send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html',{'permission':permission})
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Waiting for Approval"
+            ur.save()
+        try:
+            mail_sender()
+            list_id = request.POST.getlist('id[]')
+            ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
+            subject = 'Welcome to Olatech Solutions'
+            message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
+            sender = settings.EMAIL_HOST_USER
+            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            raise Exception('Please Configure Email Sender Details')
+        
+        # return redirect('user_request')
+
+    # return render(request, 'tool/approve_change.html',{'permission':permission})
  
 
 
