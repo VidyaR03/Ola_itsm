@@ -351,7 +351,7 @@
   document.getElementById("datetimepicker3").min = minDate;
 </script>
 
-
+<!-- for Getting people related to team change -->
 <script>
   $("#select_team").change(function () {
     var teamId = $(this).val();
@@ -377,7 +377,7 @@
             text: person.name
           }));
         });
-      }
+      },
     });
   });
 
@@ -460,7 +460,7 @@
                 $('#error').text(error.text())
                 $('tr#' + id[i] + '').fadeOut('slow');
               }
-            },
+            } 
           })
         }
       }
@@ -503,21 +503,22 @@
               id,
               csrfmiddlewaretoken: csrf
             },
-            error:function(response) {
-              if (data.result === 'success') {
-                alert("Approval Mail Send Succefully...!")
-                location.reload();
-              }
-              else {
-                alert("Fail..! Please Configure Email Sender Details")
-                location.reload();
+            success: function (response) {
+              alert("success")
+              location.reload();
+              for (var i = 0; i < id.length; i++) {
+                var error = $(response).find('#error_text')
+                var error_class = $(error).attr('class')
+                $('#error').addClass(error_class)
+                $('#error').text(error.text())
+                $('tr#' + id[i] + '').fadeOut('slow');
               }
             }
-          });
+            })
+          }
         }
-      }
+      })
     })
-  })
 </script>
 
 {% endblock content %}
