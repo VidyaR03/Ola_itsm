@@ -757,7 +757,7 @@
             aria-invalid="false">
             <option selected>Select Team to Assign Change</option>
             {% for team in allteam %}
-            <option value="{{team.ch_teamname}}">{{team.ch_teamname}}</option>
+            <option value="{{team.id}}">{{team.ch_teamname}}</option>
             {% endfor %}
           </select>
         </div>
@@ -906,7 +906,7 @@
       if (confirm('Are You Sure You Want to Assign UR?')) {
         var id = [];
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $(':checkbox:assign_btnssign_btnchecked').each(function (i) {
+        $(':checkbox:checked').each(function (i) {
           id[i] = $(this).val()
         })
         if (id.length === 0) {

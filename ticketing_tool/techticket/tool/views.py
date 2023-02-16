@@ -1157,7 +1157,7 @@ def newchange(request):
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call,'team_person':team_person})
 
 def get_people_by_team(request):
     team_id = request.GET.get('teamId')
@@ -1287,7 +1287,7 @@ def assign_changeModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
         
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
