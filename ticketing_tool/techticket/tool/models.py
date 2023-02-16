@@ -9,9 +9,6 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
 
-
-
-
 class cl_New_organization(models.Model):
     """Models which creates table for New Organization"""
     id = models.AutoField(primary_key=True, editable=False)
@@ -546,22 +543,22 @@ class cl_Server(models.Model):
 
         
 
-class cl_Service_subcategory(models.Model):
-    """Models which create the table for Provider Contract"""
-    id = models.AutoField(primary_key=True, editable=False)
+# class cl_Service_subcategory(models.Model):
+#     """Models which create the table for Provider Contract"""
+#     id = models.AutoField(primary_key=True, editable=False)
 
-    ch_subname = models.CharField(max_length=100, null=True)
-    ch_sservice = models.ForeignKey(
-        cl_Service, on_delete=models.CASCADE, null=True, blank=True)
-    ch_status = models.CharField(max_length=100, null=True)
-    ch_request_type = models.CharField(max_length=100, null=True)
-    txt_description = models.TextField()
+#     ch_subname = models.CharField(max_length=100, null=True)
+#     ch_sservice = models.ForeignKey(
+#         'cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+#     ch_status = models.CharField(max_length=100, null=True)
+#     ch_request_type = models.CharField(max_length=100, null=True)
+#     txt_description = models.TextField()
 
-    def __str__(self):
-        return self.ch_subname
+#     def __str__(self):
+#         return self.ch_subname
 
-    class Meta:
-        db_table = 'cl_Service_subcategory'
+#     class Meta:
+#         db_table = 'cl_Service_subcategory'
 
 
 ########### PC Software ###########
@@ -632,8 +629,8 @@ class cl_User_request(models.Model):
     dt_start_date = models.DateTimeField(default=datetime.now)
     dt_Updated_date = models.DateTimeField(default=datetime.now)
     dt_escalation_date = models.DateTimeField(default=datetime.now)
-    ch_service = models.ForeignKey(cl_Service, on_delete=models.CASCADE, null=True, blank=True)
-    ch_service_subcategory = models.ForeignKey(cl_Service_subcategory, on_delete=models.CASCADE, null=True, blank=True)
+    ch_service = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+    ch_service_subcategory = models.ForeignKey('cl_Service_subcategory', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_request = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_change = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
@@ -644,10 +641,6 @@ class cl_User_request(models.Model):
 
     class Meta:
         db_table = 'cl_User_request'
-
-
-
-
 
 
 class cl_Slt(models.Model):
@@ -684,6 +677,7 @@ class cl_Sla(models.Model):
 
 
 class cl_Service_subcategory(models.Model):
+
     """Models which create the table for Provider Contract"""
     id = models.AutoField(primary_key=True, editable=False)
     ch_subname = models.CharField(max_length=100, null=True)

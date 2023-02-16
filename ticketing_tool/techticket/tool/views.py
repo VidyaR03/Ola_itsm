@@ -675,10 +675,8 @@ def Update(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_person_firstname = str.capitalize(
-            request.POST.get('ch_person_firstname'))
-        ch_person_lastname = str.capitalize(
-            request.POST.get('ch_person_lastname'))
+        ch_person_firstname = request.POST.get('ch_person_firstname')
+        ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
         ch_team = cl_Team.objects.get(ch_teamname= request.POST.get('ch_team'))
         ch_person_status = request.POST.get('ch_person_status')

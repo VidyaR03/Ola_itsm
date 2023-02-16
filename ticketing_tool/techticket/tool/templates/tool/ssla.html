@@ -137,8 +137,7 @@
                   <div class="form-check" style="background-color: white; width: 450px;">
                     <input class="form-check-input" name="slt_ids" type="checkbox" value="{{ slt.id }}"
                       id="{{ slt.id }}">
-                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{
-                      slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
+                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -220,8 +219,7 @@
                   <div class="form-check" style="background-color: white; width: 450px;">
                     <input class="form-check-input" name="slt_ids" type="checkbox" value="{{ slt.id }}"
                       id="{{ slt.id }}" {% if i.slts.id %} checked {% endif %}>
-                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} :
-                      {{slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
+                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
                   </div>
                   {% endfor %}
                 </div>

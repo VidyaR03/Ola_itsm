@@ -160,10 +160,10 @@
                 <input name="ch_subname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
-                <span class="required-field"></span><label>Service<a href="{% url 'service' %}">
+                <label>Service<a href="{% url 'service' %}">
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
                 <select name="ch_sservice" class="form-control" id="ch_sservice"
-                  style="min-height:30px;min-width:280px;" required>
+                  style="min-height:30px;min-width:280px;">
                   <option selected value="">Please select Service</option>
                   {% for i in ser %}
                   <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
