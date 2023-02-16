@@ -62,7 +62,11 @@
         <td>{{i.id}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_caller}}</td>
+        {% if i.ch_status == "New" %}
+        <td>New</td>
+        {% else %}
         <td>{{i.ch_status}}</td>
+        {% endif %}
         <td>{{i.ch_category}}</td>
         <td>{{i.ch_title}}</td>
         <td>{{i.dt_start_date}}</td>
@@ -149,8 +153,13 @@
                 {% endfor %}
               </select>
             </div>
+
+            <div class="form-group">
+              <label>Status</label>
+              <input class="form-control" name="ch_status" value="New" type="text" readonly>
+            </div>
             
-            <div class="form-group"> 
+            <!-- <div class="form-group"> 
 
               <span class="required-field"> <label>Status</span></label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
@@ -163,7 +172,7 @@
                 <option value="Closed">Closed</option>
                 <option value="Reopend">Reopend</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <span class="required-field"></span> <label>Category</label>
               <input name="ch_category" type="text" class="form-control" required>
@@ -243,6 +252,10 @@
             </div>
             <div class="form-group">
               <label>Status</label>
+              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
+            </div>
+            <!-- <div class="form-group">
+              <label>Status</label>
               <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option value="New">New</option>
@@ -250,7 +263,7 @@
                 <option value="Close">Close</option>
                 <option value="Resolved">Resolved</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Category</label>
               <input name="ch_category" value="{{i.ch_category}}" type="text" class="form-control" required>

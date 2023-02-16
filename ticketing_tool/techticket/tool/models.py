@@ -644,7 +644,7 @@ class cl_User_request(models.Model):
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     fk_caller = models.ForeignKey(
         cl_Person, on_delete=models.CASCADE, null=True, blank=True)
-    ch_status = models.CharField(max_length=100, default='active')
+    ch_status = models.CharField(max_length=100, default='New')
     ch_origin = models.CharField(max_length=100, null=True)
     ch_title = models.CharField(max_length=100, null=True)
     ch_request_type = models.CharField(max_length=100, null=True)
