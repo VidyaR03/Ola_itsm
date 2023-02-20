@@ -33,7 +33,6 @@ from django.conf import settings
 # from settings import ready
 
 
-
 @login_required(login_url='/login_render/')
 def home(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
