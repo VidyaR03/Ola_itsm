@@ -315,7 +315,7 @@
         {% endif %}
         <td>{{i.ch_urgency}}</td>
         <td>{{i.dt_start_date}}</td>
-        <td>{{i.dt_updated_date}}</td>
+        <td>{{i.dt_Updated_date}}</td>
         <td>{{i.dt_escalation_date}}</td>
         <td>{{i.ch_service}}</td>
         <td>{{i.ch_service_subcategory}}</td>
@@ -480,23 +480,38 @@
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <!--start of right half -->
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" type="datetime-local" name="dt_start_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+            </div> -->
+            <div class="form-group">
+              <span class="required-field"></span><label for="dt_start_date">Start Date</label>
+              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
+            </div>
+            <div class="form-group">
+              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
+              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_Updated_date"
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
 
-            <div class="form-group">
-              <label for="dt_updated_date">Updated Date</label>
-              <input class="form-control" type="datetime-local" name="dt_updated_date"
+            <!-- <div class="form-group">
+              <label for="dt_start_date">Updated Date</label>
+              <input class="form-control w-25" type="datetime-local" name="dt_Updated_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-              <span class="validity"></span>
-            </div>
+            </div> -->
             <div class="form-group">
+              <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
+              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_escalation_date"
+              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
+            </div>
+
+            <!-- <div class="form-group">
               <label for="dt_escalation_date">Escalate After</label>
               <input class="form-control" type="datetime-local" name="dt_escalation_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
                             <label>Service</label>:<a href="{% url 'new_organization' %}">
                                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
@@ -510,7 +525,7 @@
             <div class="form-group">
               <label>Service</label>
               <select name="ch_sername" type="text" id="select_service" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
+                aria-label="Default select example" aria-invalid="false" required>
                 <option selected>Select Service</option>
                 {% for service in allservice %}
                 <option value="{{service.id}}">{{service.ch_ssname}}</option>
@@ -519,21 +534,28 @@
             </div>
             <div class="form-group">
               <label>Service Subcategory</label>
-              <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
+              <select name="ch_service_subcategory" id="select_subcategory" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
+                <option>Select a Service First</option>
+              </select>
+            </div>
+            <!-- <div class="form-group">
+              <label>Service Subcategory</label>
+              <select name="ch_subcatname" id="select_subcategory" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
                 <option selected>Select Subcategory </option>
                 {% for subcat in ser_sub %}
                 <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
                 {% endfor %}
               </select>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
                             <label>Service Subcategory</label>
                             <input class="form-control" name="ch_service_subcategory" type="text">
                         </div> -->
             <div class="form-group">
               <label>Parent Request</label>
-              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;">
+              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" >
               <option value=0 >Select Parent Request</option>
               {% for j in ur %}
                 <option value="{{j.id}}">{{j.id}}</option>
@@ -680,16 +702,29 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="bday">Start Date</label>
-              <input class="form-control" type="date" value="{{i.dt_start_date|date:'Y-m-d'}}" id="dt_start_date"
-                name="dt_start_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-              <span class="validity"></span>
+              <span class="required-field"></span><label for="dt_start_date">Start Date</label>
+              <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
+                value="{{ i.dt_start_date|date:'Y-m-d\TH:i' }}"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
             <div class="form-group">
+              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
+              <input class="form-control w-25" id="dt_Updated_date" type="datetime-local" name="dt_Updated_date"
+                value="{{ i.dt_Updated_date|date:'Y-m-d\TH:i' }}"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+            </div>
+
+            <div class="form-group">
+              <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
+              <input class="form-control w-25" id="dt_escalation_date" type="datetime-local" name="dt_escalation_date"
+                value="{{ i.dt_escalation_date|date:'Y-m-d\TH:i' }}"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+            </div>
+            <!-- <div class="form-group">
               <label for="bday">Update Date</label>
               <input type="date" id='current_date' value="{% now 'Y-m-d' %}" class="form-control">
               <span class="validity"></span>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
               <label>Service</label>
               <select name="ch_sername"  type="text" id="select_service" class="form-control"
@@ -712,8 +747,28 @@
             </div> -->
             <div class="form-group">
               <label>Service</label>
-              <select name="ch_sername" type="text" id="eselect_service" class="form-control"
+              <select name="ch_sername" type="text" id="select_service" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
+                <options selected value="{{i.ch_service}}">{{i.ch_service}}</option>
+                {% for service in allservice %}
+                <option value="{{service.id}}">{{service.ch_ssname}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Service Subcategory</label>
+              <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false">
+                <options selected value="{{i.ch_service_subcategory}}">{{i.ch_service_subcategory}}</option>
+                  {% for subcat in ser_sub %}
+                <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- <div class="form-group">
+              <label>Service</label>
+              <select name="ch_sername" type="text" id="eselect_service" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
                 <option selected>Select Service</option>
                 {% for service in allservice %}
                 <option value="{{service.id}}">{{service.ch_ssname}}</option>
@@ -722,18 +777,24 @@
             </div>
             <div class="form-group">
               <label>Service Subcategory</label>
-              <select name="ch_subname" id="eselect_subcategory" type="text" class="form-control"
+              <select name="ch_service_subcategory" id="eselect_subcategory" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
-                <option selected>Select Subcategory </option>
-                {% for subcat in ser_sub %}
-                <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
-                {% endfor %}
+                <option>Select a Service First</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Parent Request</label>
-              <input name="ch_parent_request_id" type="text" value="{{i.ch_parent_request_id}}" class="form-control" required>
+              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" class="form-control">
+              <option value=0 >Select Parent Request</option>
+              {% for j in ur %}
+                <option value="{{j.id}}">{{j.id}}</option>
+              {% endfor %}
+            </select>
             </div>
+            <!-- <div class="form-group">
+              <label>Parent Request</label>
+              <input name="ch_parent_request_id" type="text" value="{{i.ch_parent_request_id}}" class="form-control" required>
+            </div> -->
             <div class="form-group">
               <label>Parent Change</label>
               <input name="ch_parent_change_id" type="text" value="{{i.ch_parent_change_id}}" class="form-control" required>
@@ -742,10 +803,10 @@
               <label>Description</label>
               <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control" required>
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label>Agent</label>
-              <input name="ch_assign_agent" type="text" placeholder="Deallocate" class="form-control">
-            </div> -->
+              <input name="ch_assign_agent" value="{{i.ch_assign_agent}}" type="text" placeholder="Deallocate" class="form-control">
+            </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -864,16 +925,16 @@
         serviceId,
         csrfmiddlewaretoken: csrf
       },
-      success: function (cato) {
+      success: function (subcategory) {
         // Update the options of the service dropdown
-        var subcategorySelect = $("#select_subcategory");
-        subcategorySelect.empty();
-        $.each(cato, function (index, subcategory) {
-          console.log(subcategory.id, subcategory.name)
-          subcategorySelect.append($("<option>", {
+        var catoSelect = $("#select_subcategory");
+        catoSelect.empty();
+        $.each(subcategory, function (index, cato) {
+          console.log(cato.id, cato.name)
+          catoSelect.append($("<option>", {
             id: 'select_subcategory',
-            value: subcategory.id,
-            text: subcategory.name
+            value: cato.id,
+            text: cato.name
           }));
         });
       }
@@ -882,8 +943,7 @@
 
 </script>
 
-
-<!-- For service and service Subcategory Edit -->
+<!-- For service and service Subcategory -->
 <script>
   $("#eselect_service").change(function () {
     var serviceId = $(this).val();
@@ -898,16 +958,16 @@
         serviceId,
         csrfmiddlewaretoken: csrf
       },
-      success: function (cato) {
+      success: function (subcategory) {
         // Update the options of the service dropdown
-        var subcategorySelect = $("#eselect_subcategory");
-        subcategorySelect.empty();
-        $.each(cato, function (index, subcategory) {
-          console.log(subcategory.id, subcategory.name)
-          subcategorySelect.append($("<option>", {
-            id: 'select_subcategory',
-            value: subcategory.id,
-            text: subcategory.name
+        var catoSelect = $("#eselect_subcategory");
+        catoSelect.empty();
+        $.each(subcategory, function (index, cato) {
+          console.log(cato.id, cato.name)
+          catoSelect.append($("<option>", {
+            id: 'eselect_subcategory',
+            value: cato.id,
+            text: cato.name
           }));
         });
       }
@@ -915,6 +975,9 @@
   });
 
 </script>
+
+
+
 
 <script>
   $("#select_team").change(function () {
@@ -1042,6 +1105,13 @@
       }
     })
   })
+</script>
+<script>
+  var date = new Date();
+  var minDate = date.toISOString().substring(0, 16);
+  document.getElementById("datetimepicker1").min = minDate;
+  document.getElementById("datetimepicker2").min = minDate;
+  // document.getElementById("datetimepicker3").min = minDate;
 </script>
 
 

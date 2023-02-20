@@ -215,14 +215,14 @@
     {% for i in doc %}
     <div id="editcl_DocumentModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="/DocUpdate/{{i.id}}" enctype="multipart/form-data" method="post">
             {% csrf_token %}
             <div class="modal-header">
               <h4 class="modal-title">Edit Documents</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
                 <label>ID</label>
                 <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -241,6 +241,8 @@
                 <label>Version</label>
                 <input name="ch_version" value="{{i.ch_version}}" type="text" class="form-control">
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>Description</label>
                 <input name="txt_description" value="{{i.txt_description}}" type="text" class="form-control">

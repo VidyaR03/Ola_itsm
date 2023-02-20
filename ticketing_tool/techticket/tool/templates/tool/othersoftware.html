@@ -155,7 +155,7 @@
 
     <div id="addcl_Other_softwareModal" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="{% url 'osAdd' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -202,12 +202,17 @@
                 </select>
               </div>
               <div class="form-group">
+                <span class="required-field"></span><label for="dt_move_to_production_date">Move to Production Date</label>
+                <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_move_to_production_date"
+                  pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
+              </div>
+              <!-- <div class="form-group">
                 <span class="required-field"></span>
-                <label>Moveto Production Date</label>
+                <label>Move to Production Date</label>
                 <input class="form-control" type="date" id="dt_move_to_production_date"
                   name="dt_move_to_production_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" required>
                 <span class="validity"></span>
-              </div>
+              </div> -->
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
@@ -254,7 +259,7 @@
     {% for i in os %}
     <div id="editcl_Other_softwareModal-{{i.id}}" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="/osUpdate/{{i.id}}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -293,13 +298,18 @@
                   <option value="Medium">Medium</option>
                 </select>
               </div>
+              
               <div class="form-group">
-                <label>Moveto Production Date</label>
-                <input class="form-control" type="date" id="dt_move_to_production_date"
-                  value="{{i.dt_move_to_production_date}}" name="dt_move_to_production_date" required
-                  pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                <span class="validity"></span>
+                <span class="required-field"></span><label for="dt_move_to_production_date">Move to Production Date</label>
+                <input class="form-control w-25" id="dt_end_date" type="datetime-local" name="dt_move_to_production_date"
+                  value="{{ i.dt_move_to_production_date|date:'Y-m-d\TH:i' }}"
+                  pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
               </div>
+              <!-- <div class="form-group">
+                <label>Move to Production Date</label>
+                <input class="form-control" type="date" value="{{i.dt_move_to_production_date|date:'Y-m-d'}}" id="dt_move_to_production_date"
+                name="dt_move_to_production_date" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+              </div> -->
             </div>
             <div class="modal-body" style="width: 330px; display: inline-block;">
 
@@ -377,6 +387,14 @@
       })
 
     </script>
+     </script>
+     <script>
+       var date = new Date();
+       var minDate = date.toISOString().substring(0, 16);
+       document.getElementById("datetimepicker1").min = minDate;
+       document.getElementById("datetimepicker2").min = minDate;
+       // document.getElementById("datetimepicker3").min = minDate;
+     </script>
 
     <script>
       $('#select-all').click(function (event) {

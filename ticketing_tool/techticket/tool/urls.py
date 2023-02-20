@@ -6,7 +6,7 @@ from .managers import CustomUserManager
 
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.dashboard, name='home'),
     path("register/", views.registerPage, name='register'),
     path("dashboard/", views.dashboard, name='dashboard'),
     path('login', views.adminloginPage, name='login'),
