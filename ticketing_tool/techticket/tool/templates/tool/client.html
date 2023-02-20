@@ -235,7 +235,7 @@
 {% for i in per %}
 <div id="editcl_PersonModal-{{i.id}}" class="modal fade">
   <div class="modal-dialog">
-    <div class="modal-content" style="width: 700px; position: relative; right: 15%; bottom: 50%;">
+    <div class="modal-content" style="width: 700px; position: relative; right: 11%; bottom: 50%;">
       <form action="/update/{{i.id}}" method="post">
         {% csrf_token %}
         <div class="modal-header">
@@ -262,7 +262,7 @@
           </div>
           <div class="form-group">
             <label>Team</label>
-            <input name="ch_teamname" value="{{i.ch_team}}" type="text" class="form-control" required>
+            <input name="ch_team_name" value="{{i.ch_team}}" type="text" class="form-control" required>
           </div>
           <div class="form-group">
             <label>Status</label>

@@ -453,7 +453,7 @@ class cl_Network_device(models.Model):
     i_asset_number = models.IntegerField()
     dt_move_to_production_date = models.DateTimeField(auto_now=False)
     dt_purchase_date = models.DateTimeField(auto_now=False)
-    dt_end_of_warranty = models.DateField(auto_now=False)
+    dt_end_of_warranty = models.DateTimeField(auto_now=False)
     txt_description = models.TextField()
 
     def __str__(self):
@@ -687,6 +687,8 @@ class cl_Service_subcategory(models.Model):
     ch_request_type = models.CharField(max_length=100, null=True)
     txt_description = models.TextField()
 
+    def __str__(self):
+        return self.ch_subname
 
     class Meta:
         db_table = 'cl_Service_subcategory'

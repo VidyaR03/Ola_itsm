@@ -135,7 +135,7 @@
 
   <div id="addcl_SoftwareModal" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 700px; position: relative; right: 50%; bottom: 50%;">
+      <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
         <form action="{% url 'softAdd' %}" method="post">
           {% csrf_token %}
           <div class="modal-header">
@@ -185,14 +185,14 @@
   {% for i in soft %}
   <div id="editcl_SoftwareModal-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
         <form action="/softUpdate/{{i.id}}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <h4 class="modal-title">Edit Documents</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>ID</label>
               <input name="id" value="{{i.id}}" type="text" class="form-control">
@@ -205,6 +205,8 @@
               <label>Vendor</label>
               <input name="ch_vendor" value="{{i.ch_vendor}}" type="text" class="form-control" required>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
               <label>Version</label>
               <input name="chversion" value="{{i.chversion}}" type="text" class="form-control">

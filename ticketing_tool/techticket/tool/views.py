@@ -677,7 +677,7 @@ def Update(request, id):
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.get(ch_teamname= request.POST.get('ch_team'))
+        ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
@@ -1320,6 +1320,7 @@ def assign_changeModal(request):
 
 def mail_sender():
     mail_host = email_notifier.objects.filter(id=1).first()
+    print(mail_host)
     if mail_host != None:
         settings.EMAIL_HOST = mail_host.host
         settings.EMAIL_PORT = mail_host.port
@@ -1345,6 +1346,7 @@ def send_approval_Mail(request):
             c_mail = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
             # print(c_mail.e_person_email)
             recepient.append(c_mail.e_person_email)
+
         # for i in recepient:
         #     print(i)
         print("hi")
@@ -1355,7 +1357,7 @@ def send_approval_Mail(request):
             subject = 'Welcome to Olatech Solutions'
             message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
             sender = settings.EMAIL_HOST_USER
-            # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            # # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
         except:
             raise Exception('Please Configure Email Sender Details')
@@ -1432,10 +1434,11 @@ def UADD(request):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
-        dt_updated_date = request.POST.get('dt_updated_date')
+        dt_updated_date = request.POST.get('dt_Updated_date')
         dt_escalation_date = request.POST.get('dt_escalation_date')     
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
-        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_subname')).first()
+        # print(request.POST.get(ch_service))
+        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_service_subcategory')).first()
         ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
         # ch_parent_request = request.POST.get('id')
         ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
@@ -1460,7 +1463,7 @@ def UADD(request):
             txt_description =txt_description,
         )
         ur.save()
-        print(ur)
+        # print(ur)
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
         event ="event"
@@ -1498,13 +1501,16 @@ def UUpdate(request, id):
         ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')
         dt_start_date = request.POST.get('dt_start_date')
-        dt_updated_date = request.POST.get('dt_updated_date')
-        ch_service = request.POST.get('ch_service')
-        ch_service_subcategory = request.POST.get('ch_service_subcategory')
-        ch_parent_request = request.POST.get('ch_parent_request')
-        ch_parent_change = request.POST.get('ch_parent_change')
+        dt_updated_date = request.POST.get('dt_Updated_date')
+        ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
+        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_service_subcategory')).first()
+        ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
+        # ch_parent_request = request.POST.get('ch_parent_request_id')
+        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
+
+        # ch_parent_change = request.POST.get('ch_parent_change_id')
         txt_description = request.POST.get('txt_description')
-        ch_assign_agent = ur.ch_assign_agent
+        ch_assign_agent =  request.POST.get('ch_assign_agent')
 
         ur = cl_User_request(
             id=id,
@@ -1539,9 +1545,12 @@ def UUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def UDelete(request, id):
-    ur = cl_User_request.objects.filter(id=id)
-    ur.delete()
+def UDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.delete()
     admin_name = request.session["username"]
     adminaction = "deletion of user request"
     event ="event"
