@@ -45,7 +45,6 @@ def home(request):
     return render(request, 'tool/dashboard.html',context)
 
 
-
 @login_required(login_url='/login_render/')
 def dashboard(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
