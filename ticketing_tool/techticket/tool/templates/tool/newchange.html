@@ -317,7 +317,11 @@
             <label>Person</label>
             <select name="ch_status" id="select_person" type="text" class="form-control"
               aria-label="Default select example" aria-invalid="false">
-              <option>Select a team first</option>
+              <option selected>Select Person to Assign Change</option>
+              {% for person in team_person %}
+              <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
+                {{person.ch_person_firstname}}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="modal-footer">

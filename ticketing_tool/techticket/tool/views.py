@@ -53,7 +53,7 @@ def dashboard(request):
     org = cl_New_organization.objects.all().count()
     service = cl_Service.objects.all().count()
     change = cl_New_change.objects.all().count()
-    Assign = cl_User_request.objects.filter(ch_assign_agent = 'Deallocate').count()
+    Assign = cl_User_request.objects.exclude(ch_assign_agent = 'Deallocate').count()
     newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
     newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
@@ -1300,7 +1300,7 @@ def assign_changeModal(request):
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            return JsonResponse({'result': 'success'})
+            # return JsonResponse({'result': 'success'})
         except:
             print('email not send')
         admin_name = request.session["username"]
@@ -1330,7 +1330,21 @@ def mail_sender():
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        print(list_id)
+        recepient = []
+        for i in list_id:
+            nchange = cl_New_change.objects.filter(id=i).first()
+            nchange.ch_status = "Watting for Approval"
+            nchange.save()
+            c_mail = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
+            # print(c_mail.e_person_email)
+            recepient.append(c_mail.e_person_email)
+        # for i in recepient:
+        #     print(i)
+        print("hi")
         try:
             mail_sender()
             list_id = request.POST.getlist('id[]')
@@ -1338,12 +1352,11 @@ def send_approval_Mail(request):
             subject = 'Welcome to Olatech Solutions'
             message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
             sender = settings.EMAIL_HOST_USER
-            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
         except:
             raise Exception('Please Configure Email Sender Details')
     # return render(request, 'tool/approve_change.html',{'permission':permission})
-
 
 ######################### Incident Mangement ####################################
 
