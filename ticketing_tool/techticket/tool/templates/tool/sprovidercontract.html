@@ -78,9 +78,6 @@
                 color: red;
             }
         </style>
-
-
-
         <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
             <tr>
                 <th>
@@ -91,10 +88,10 @@
                 </th>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Customer</th>
+                <th>Provider</th>
                 <th>Status</th>
                 <th>Contract Type</th>
-                <th>Provider</th>
+                <th>Customer</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Cost Unit</th>
@@ -102,7 +99,7 @@
                 <th>Cost Currency</th>
                 <th>Billing Frequency</th>
                 <th>Description</th>
-                <th>SLA</th>
+                <!-- <th>SLA</th> -->
                 {% if permission.serv_m_e == "on" or permission == None %}
                 <th>Edit</th>
                 {% endif %}
@@ -117,10 +114,10 @@
                     </td>
                     <td>{{i.id}}</td>
                     <td>{{i.ch_pname}}</td>
-                    <td>{{i.ch_customer}}</td>
+                    <td>{{i.ch_pcprovider}}</td>
                     <td>{{i.ch_status}}</td>
                     <td>{{i.ch_contract_type}}</td>
-                    <td>{{i.ch_pcprovider}}</td>
+                    <td>{{i.ch_customer}}</td>
                     <td>{{i.dt_start_date}}</td>
                     <td>{{i.dt_end_date}}</td>
                     <td>{{i.i_cost_unit}}</td>
@@ -128,10 +125,10 @@
                     <td>{{i.i_cost_currency}}</td>
                     <td>{{i.i_billing_frequency}}</td>
                     <td>{{i.txt_description}}</td>
-                    <td>{{i.ch_sla}}</td>
+                    <!-- <td>{{i.ch_sla}}</td> -->
                     {% if permission.serv_m_e == "on" or permission == None %}
                     <td>
-                        <a href="#editcl_ProvidercontractModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
+                        <a href="#editcl_ProvidercontractModal-{{i.id}}" class="edit" data-toggle="modal"><i
                                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     </td>
                     {% endif %}
@@ -164,42 +161,38 @@
         {% endif %}
 
 
-
         <div id="addcl_ProvidercontractModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
                     <form action="{% url 'spadd' %}" method="POST">
                         {% csrf_token %}
                         <div class="modal-header">
-                            <h4 class="modal-title">Add Data</h4>
+                            <h4 class="modal-title">Add Provider Contract</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-                            <!-- <div class="form-group">
-                            <label>ID</label>
-                            <input name="id" type="text" class="form-control"  readonly>
-                          </div> -->
                             <div class="form-group">
                                 <span class="required-field"></span><label>Name</label>
                                 <input name="ch_pname" type="text" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <span class="required-field"></span><label>Customer:<a
+                                <span class="required-field"></span><label>Provider:<a
                                         href="{% url 'new_organization' %}">
                                         <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                                     </a></label>
-                                <select name="ch_organization" id="ch_organization"
-                                    style="min-height:30px;min-width:280px;">
+                                <select name="ch_provider" id="ch_provider" class="form-control"
+                                    style="min-height:30px;min-width:280px;" required>
+                                    <option selected value="">Please select Provider</option>
                                     {% for i in org %}
                                     <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <span class="required-field"></span><label>Status</label>
                                 <select name="ch_status" type="text" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
+                                    aria-label="Default select example" aria-invalid="false" required>
+                                    <option selected value="">Please select Status</option>
                                     <option value="Assign">Assign</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Close">Close</option>
@@ -211,67 +204,97 @@
                                 <input name="ch_contract_type" type="text" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <span class="required-field"></span><label>Provider:<a
+                                <span class="required-field"></span><label>Customer:<a
                                         href="{% url 'new_organization' %}">
                                         <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                                     </a></label>
-
-                                <select name="ch_organization" id="ch_organization"
-                                    style="min-height:30px;min-width:280px;">
+                                <select name="ch_customer" id="ch_customer" class="form-control"
+                                    style="min-height:30px;min-width:280px;" required>
+                                    <option selected value="">Please select Customer</option>
                                     {% for i in org %}
                                     <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-
                             <div class="form-group">
-                                <span class="required-field"></span><label for="bday">Start Date</label>
-                                <input class="form-control" type="date" id='current_date'
-                                    value="{% now 'Y-m-d'  %}"><br>
-                            </div>
-                            <!-- <div class="form-group">
-                            <label for="bday">Start Date</label>
-                            <input class="form-control" type="date" id="dt_start_date" name="dt_start_date" required
-                                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                            <span class="validity"></span>
-                        </div> -->
-                            <div class="form-group">
-                                <span class="required-field"></span><label for="bday">End Date</label>
-                                <input class="form-control" type="date" id="dt_end_date" name="dt_end_date" required
-                                    pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                                <span class="validity"></span>
+                                <span class="required-field"></span><label for="dt_start_date">Start Date</label>
+                                <input class="form-control w-25" id="datetimepicker1" type="datetime-local"
+                                    name="dt_start_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"
+                                    min="now" required>
                             </div>
                         </div>
-                        <div class="modal-body" style="width: 330px; display: inline-block; ">
+                        <div class="modal-body" style="width: 330px; display: inline-block; position: relative; ">
+                            <div class="form-group">
+                                <span class="required-field"></span><label for="dt_Updated_date">End Date</label>
+                                <input class="form-control w-25" id="datetimepicker2" type="datetime-local"
+                                    name="dt_end_date" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"
+                                    required>
+                            </div>
                             <div class="form-group">
                                 <span class="required-field"></span> <label>Cost Unit</label>
-                                <input name="i_cost_unit" type="text" class="form-control" required>
+                                <input name="i_cost_unit" type="number" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <span class="required-field"></span> <label>Cost</label>
-                                <input name="i_cost" type="text" class="form-control" required>
+                                <input name="i_cost" type="number" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <span class="required-field"></span><label>Cost Currency</label>
-                                <input name="i_cost_currency" type="text" class="form-control" required>
+                                <!-- <input name="i_cost_currency" type="number" class="form-control" required> -->
+                                <select name="i_cost_currency" type="text" class="form-control"
+                                    aria-label="Default select example" aria-invalid="false" required>
+                                    <option selected value="">Please select Currency</option>
+                                    <option value="Rupee">Rupee</option>
+                                    <option value="Doller">Doller</option>
+                                    <option value="Euro">Euro</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <span class="required-field"></span> <label>Billing Frequency</label>
-                                <input name="i_billing_frequency" type="text" class="form-control" required>
+                                <span class="required-field"></span><label>Billing Frequency</label>
+                                <input name="i_billing_frequency" type="number" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <span class="required-field"></span><label>Description</label>
                                 <input name="txt_description" type="text" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <span class="required-field"></span><label>SLA</label>
-                                <input name="ch_sla" type="text" class="form-control" required>
-                            </div>
-
                         </div>
+                        <!-- CSS For Service Dropdown -->
+                        <style>
+                            .dropdown .dropdown-menu .form-check {
+                                padding: 0.25rem 1.5rem;
+                            }
+
+                            .dropdown .dropdown-menu .form-check .form-check-label {
+                                padding-left: 1.5rem;
+                            }
+                        </style>
+
+                        <!-- HTML For Service Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" style="margin-left: 30px; margin-bottom: 10px;" required>Select Services</button>
+                            <div class="dropdown-menu">
+                                {% for ser in servi %}
+                                <div class="form-check" style="background-color: white; width: 450px;">
+                                    <input class="form-check-input" name="service_ids" type="checkbox"
+                                        value="{{ ser.id }}" id="{{ ser.id }}">
+                                    <label class="form-check-label" for="{{ ser.id }}">{{ ser.ch_ssname }} : {{ ser.ch_status }} : {{ ser.txt_description }} : {{ ser.ch_sprovider }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- JS For Service Dropdown -->
+                        <script>
+                            $('.dropdown-menu').on('click', function (event) {
+                                var target = $(event.target);
+                                var checkbox = target.find('input[type="checkbox"]');
+                                checkbox.prop('checked', !checkbox.prop('checked'));
+                            });
+                        </script>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-success" value="Add">
+                            <input type="submit" id="add_provider_contracts" class="btn btn-success" value="Add">
                         </div>
                     </form>
                 </div>
@@ -280,35 +303,41 @@
 
         <!-- Edit Modal HTML -->
         {% for i in pro %}
-        <div id="editcl_ProvidercontractModal-{{forloop.counter}}" class="modal fade">
+        <div id="editcl_ProvidercontractModal-{{i.id}}" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
                     <form action="/spupdate/{{i.id}}" method="post">
                         {% csrf_token %}
                         <div class="modal-header">
-                            <h4 class="modal-title">Edit </h4>
+                            <h4 class="modal-title">Edit Provider Contract</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
                             <div class="form-group">
                                 <label>ID</label>
-                                <input name="id" value="{{i.id}}" type="text" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input name="ch_pname" value="{{i.ch_pname}}" type="text" class="form-control">
+                                <input name="id" value="{{i.id}}" type="text" class="form-control" disabled>
                             </div>
                             <div class="form-group">
-                                <label>Customer<a href="{% url 'new_organization' %}">
-                                        <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
-                                <input name="ch_organization" value="{{i.ch_customer}}" type="text" class="form-control"
-                                    required>
+                                <span class="required-field"></span><label>Name</label>
+                                <input name="ch_pname" value="{{i.ch_pname}}" type="text" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Status</label>
+                                <span class="required-field"></span><label>Provider:<a
+                                        href="{% url 'new_organization' %}">
+                                        <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                                    </a></label>
+                                <select name="ch_provider" id="ch_provider" class="form-control"
+                                    style="min-height:30px;min-width:280px;" required>
+                                    <option selected value="{{i.ch_pcprovider}}">{{i.ch_pcprovider}}</option>
+                                    {% for i in org %}
+                                    <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <span class="required-field"></span><label>Status</label>
                                 <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
-                                    aria-label="Default select example" aria-invalid="false">
+                                    aria-label="Default select example" aria-invalid="false" required>
                                     <option value="Assign">Assign</option>
                                     <option value="Pending">Pending</option>
                                     <option value="Close">Close</option>
@@ -316,62 +345,99 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Contract Type</label>
+                                <span class="required-field"></span><label>Contract Type</label>
                                 <input name="ch_contract_type" value="{{i.ch_contract_type}}" type="text"
-                                    class="form-control">
+                                    class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Provider <a href="{% url 'new_organization' %}">
+                                <span class="required-field"></span><label>Customer:<a
+                                        href="{% url 'new_organization' %}">
                                         <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                                     </a></label>
-                                <input name="ch_organization" value="{{i.ch_pcprovider}}" type="text"
-                                    class="form-control">
+                                <select name="ch_customer" id="ch_customer" class="form-control"
+                                    style="min-height:30px;min-width:280px;" required>
+                                    <option selected value="{{i.ch_customer}}">{{i.ch_customer}}</option>
+                                    {% for i in org %}
+                                    <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            Start Date : <input type="date" id='current_date' value="{% now 'Y-m-d'  %}"
-                                style="min-height:30px;min-width:280px;"><br>
-                            <!-- <div class="form-group">
-                          <label for="bday">Start Date</label>
-                          <input class="form-control" type="date" id="dt_start_date" name="dt_start_date" value="{{i.dt_start_date}}" required
-                            pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
-                          <span class="validity"></span>
-                        </div> -->
+                            <div class="form-group">
+                                <label for="dt_start_date">Start Date</label>
+                                <input class="form-control w-25" id="dt_start_date" type="datetime-local"
+                                    name="dt_start_date" value="{{ i.dt_start_date|date:'Y-m-d\TH:i' }}"
+                                    pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" readonly>
+                            </div>
                         </div>
-                        <div class="modal-body" style="width: 330px; display: inline-block;">
+                        <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 18px;">
                             <div class="form-group">
-                                <label for="bday">End Date</label>
-                                <input class="form-control" type="text" id="dt_end_date" name="dt_end_date"
-                                    value="{{i.dt_end_date}}" required>
-                                <span class="validity"></span>
+                                <span class="required-field"></span><label for="dt_end_date">End Date</label>
+                                <input class="form-control w-25" id="dt_end_date" type="datetime-local"
+                                    name="dt_end_date" value="{{ i.dt_end_date|date:'Y-m-d\TH:i' }}"
+                                    pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
                             </div>
                             <div class="form-group">
-                                <label>Cost Unit</label>
-                                <input name="i_cost_unit" value="{{i.i_cost_unit}}" type="text" class="form-control">
+                                <span class="required-field"></span><label>Cost Unit</label>
+                                <input name="i_cost_unit" value="{{i.i_cost_unit}}" type="number" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Cost</label>
-                                <input name="i_cost" value="{{i.i_cost}}" type="text" class="form-control">
+                                <span class="required-field"></span><label>Cost</label>
+                                <input name="i_cost" value="{{i.i_cost}}" type="number" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label>Cost Currency</label>
-                                <input name="i_cost_currency" value="{{i.i_cost_currency}}" type="text"
-                                    class="form-control">
+                                <span class="required-field"></span><label>Cost Currency</label>
+                                <select name="i_cost_currency" type="text" class="form-control"
+                                    aria-label="Default select example" aria-invalid="false" required>
+                                    <option selected value="{{i.i_cost_currency}}">{{i.i_cost_currency}}</option>
+                                    <option value="Rupee">Rupee</option>
+                                    <option value="Doller">Doller</option>
+                                    <option value="Euro">Euro</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label>Billing Frequency</label>
-                                <input name="i_billing_frequency" value="{{i.i_billing_frequency}}" type="text"
-                                    class="form-control">
+                                <span class="required-field"></span><label>Billing Frequency</label>
+                                <input name="i_billing_frequency" value="{{i.i_billing_frequency}}" type="number"
+                                    class="form-control" required>
                             </div>
-
                             <div class="form-group">
-                                <label>Description</label>
+                                <span class="required-field"></span><label>Description</label>
                                 <input name="txt_description" value="{{i.txt_description}}" type="text"
-                                    class="form-control">
+                                    class="form-control" required>
                             </div>
+                        <!-- CSS For Service Dropdown -->
+                        <style>
+                            .dropdown .dropdown-menu .form-check {
+                                padding: 0.25rem 1.5rem;
+                            }
 
-                            <div class="form-group">
-                                <label>SLA</label>
-                                <input name="ch_sla" value="{{i.ch_sla}}" type="text" class="form-control">
+                            .dropdown .dropdown-menu .form-check .form-check-label {
+                                padding-left: 1.5rem;
+                            }
+                        </style>
+
+                        <!-- HTML For Service Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" style=" margin-top: 20px;" required>Select Services</button>
+                            <div class="dropdown-menu">
+                                {% for ser in servi %}
+                                <div class="form-check" style="background-color: white; width: 450px;">
+                                    <input class="form-check-input" name="service_ids" type="checkbox"
+                                        value="{{ ser.id }}" id="{{ ser.id }}">
+                                    <label class="form-check-label" for="{{ ser.id }}">{{ ser.ch_ssname }} : {{ ser.ch_status }} : {{ ser.txt_description }} : {{ ser.ch_sprovider }}</label>
+                                </div>
+                                {% endfor %}
                             </div>
+                        </div>
+
+                        <!-- JS For Service Dropdown -->
+                        <script>
+                            $('.dropdown-menu').on('click', function (event) {
+                                var target = $(event.target);
+                                var checkbox = target.find('input[type="checkbox"]');
+                                checkbox.prop('checked', !checkbox.prop('checked'));
+                            });
+                        </script>
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -383,19 +449,26 @@
         </div>
         {% endfor %}
 
+        <script>
+            var date = new Date();
+            var minDate = date.toISOString().substring(0, 16);
+            document.getElementById("datetimepicker1").min = minDate;
+            document.getElementById("datetimepicker2").min = minDate;
+        </script>
+
         <!-- Multiple delete -->
         <script>
 
             $(document).ready(function () {
                 $('#delete_btn').click(function () {
-                    if (confirm('Are You Sure You Want to Delete User?')) {
+                    if (confirm('Are You Sure You Want To Delete Contract?')) {
                         var id = [];
                         var csrf = $('input[name=csrfmiddlewaretoken]').val();
                         $(':checkbox:checked').each(function (i) {
                             id[i] = $(this).val()
                         })
                         if (id.length === 0) {
-                            alert("please select user Which u want to delete?")
+                            alert("Please Select Contract Which You Want To Delete?")
                         } else {
                             console.log(id)
                             $.ajax({
@@ -406,7 +479,7 @@
                                     csrfmiddlewaretoken: csrf
                                 },
                                 success: function (response) {
-                                    alert("success")
+                                    alert("Deleted")
                                     location.reload();
                                     for (var i = 0; i < id.length; i++) {
                                         var error = $(response).find('#error_text')
@@ -423,8 +496,6 @@
             })
         </script>
         <script>
-
-
             $('#select-all').click(function (event) {
                 if (this.checked) {
                     // Iterate each checkbox
@@ -438,6 +509,5 @@
                 }
             });
         </script>
-
 
         {% endblock content %}

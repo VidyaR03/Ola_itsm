@@ -291,20 +291,14 @@ urlpatterns = [
     path('osDelete/', views.osDelete, name='osDelete'),
 
 
-
-
-
-    
-
     #url for sla
     path("sla/", views.sla, name='sla'),
     path('sladd', views.SLADD, name='sladd'),
     path('sledit', views.SLEdit, name='sledit'),
     path('slupdate/<str:id>', views.SLUpdate, name='slupdate'),
     path('sldelete', views.SLDelete, name='sldelete'),
+    path('get_slt_by_sla', views.get_slt_by_sla, name='get_slt_by_sla'),
 
-
-    
     
     #url for sdelivery
     path("servicedelivery/", views.servicedelivery,name='servicedelivery'),

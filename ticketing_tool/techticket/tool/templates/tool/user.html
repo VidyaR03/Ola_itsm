@@ -94,12 +94,13 @@
                 <span class="required-field"></span><label>Email</label>
                 <input name="ch_user_email" type="email" class="form-control">
               </div>
+            
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>Password</label>
                 <input name="ch_user_password" type="password" class="form-control">
               </div>
-            </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;">
 
               <div class="form-group">
                 <label>Role:<a href="{% url 'role_add' %}">
@@ -192,7 +193,48 @@
   </div>
   {% endfor %}
 
-  
+  <script>
+    $(document).ready(function () {
+      // Activate tooltip
+      $('[data-toggle="tooltip"]').tooltip();
+      // Select/Deselect checkboxes
+      var checkbox = $('table tbody input[type="checkbox"]');
+      $("#selectAll").click(function () {
+        if (this.checked) {
+          checkbox.each(function () {
+            this.checked = true;
+          });
+        } else {
+          checkbox.each(function () {
+            this.checked = false;
+          });
+        }
+      });
+      checkbox.click(function () {
+        if (!this.checked) {
+          $("#selectAll").prop("checked", false);
+        }
+      });
+    });
+  </script>
+
+  <script>
+    $('#select-all').click(function (event) {
+      if (this.checked) {
+        // Iterate each checkbox
+        $(':checkbox').each(function () {
+          this.checked = true;
+
+        });
+      } else {
+        $(':checkbox').each(function () {
+          this.checked = false;
+        });
+      }
+    }); 
+  </script>
+
+
   <script>
     function myFunction() {
       var x = document.getElementById("pass_Input");

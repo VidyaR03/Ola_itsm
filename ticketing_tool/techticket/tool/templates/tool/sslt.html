@@ -68,7 +68,7 @@
           <td>{{i.ch_unit}}</td>
           {% if permission.serv_m_e == "on" or permission == None %}
           <td>
-            <a href="#editcl_SltModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="material-icons"
+            <a href="#editcl_SltModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons"
                 data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
           {% endif %}
@@ -111,7 +111,7 @@
           <form action="{% url 'sltadd' %}" method="POST">
             {% csrf_token %}
             <div class="modal-header">
-              <h4 class="modal-title">Add Data</h4>
+              <h4 class="modal-title">Add SLT</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
@@ -241,18 +241,22 @@
 
       <!-- Edit Modal HTML -->
       {% for i in slt %}
-      <div id="editcl_SltModal-{{forloop.counter}}" class="modal fade">
+      <div id="editcl_SltModal-{{i.id}}" class="modal fade">
         <div class="modal-dialog">
           <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%">
             <form action="/sltupdate/{{i.id}}" method="post">
               {% csrf_token %}
               <div class="modal-header">
-                <h4 class="modal-title">Edit</h4>
+                <h4 class="modal-title">Edit SLT</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                   &times;
                 </button>
               </div>
               <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block">
+                <div class="form-group">
+                  <label>ID</label>
+                  <input name="id" type="text" value="{{i.id}}" class="form-control" disabled/>
+                </div>
                 <div class="form-group">
                   <span class="required-field"></span><label>&nbsp Name</label>
                   <input name="ch_name" type="text" value="{{i.ch_name}}" class="form-control" required />
@@ -276,7 +280,7 @@
                   </select>
                 </div>
               </div>
-              <div class="modal-body" style="width: 330px; display: inline-block">
+              <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
                 <div class="form-group">
                   <label>Metric</label>
                   <select name="ch_metric" value="{{i.ch_metric}}" type="text" class="form-control"

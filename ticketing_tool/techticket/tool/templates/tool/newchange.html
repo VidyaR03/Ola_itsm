@@ -62,7 +62,11 @@
         <td>{{i.id}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_caller}}</td>
+        {% if i.ch_status == "New" %}
+        <td>New</td>
+        {% else %}
         <td>{{i.ch_status}}</td>
+        {% endif %}
         <td>{{i.ch_category}}</td>
         <td>{{i.ch_title}}</td>
         <td>{{i.dt_start_date}}</td>
@@ -149,8 +153,13 @@
                 {% endfor %}
               </select>
             </div>
+
+            <div class="form-group">
+              <label>Status</label>
+              <input class="form-control" name="ch_status" value="New" type="text" readonly>
+            </div>
             
-            <div class="form-group"> 
+            <!-- <div class="form-group"> 
 
               <span class="required-field"> <label>Status</span></label>
               <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
@@ -163,7 +172,7 @@
                 <option value="Closed">Closed</option>
                 <option value="Reopend">Reopend</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <span class="required-field"></span> <label>Category</label>
               <input name="ch_category" type="text" class="form-control" required>
@@ -243,6 +252,10 @@
             </div>
             <div class="form-group">
               <label>Status</label>
+              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
+            </div>
+            <!-- <div class="form-group">
+              <label>Status</label>
               <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option value="New">New</option>
@@ -250,7 +263,7 @@
                 <option value="Close">Close</option>
                 <option value="Resolved">Resolved</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Category</label>
               <input name="ch_category" value="{{i.ch_category}}" type="text" class="form-control" required>
@@ -342,7 +355,7 @@
   document.getElementById("datetimepicker3").min = minDate;
 </script>
 
-
+<!-- for Getting people related to team change -->
 <script>
   $("#select_team").change(function () {
     var teamId = $(this).val();
@@ -368,7 +381,7 @@
             text: person.name
           }));
         });
-      }
+      },
     });
   });
 
@@ -451,7 +464,7 @@
                 $('#error').text(error.text())
                 $('tr#' + id[i] + '').fadeOut('slow');
               }
-            },
+            } 
           })
         }
       }
@@ -494,21 +507,22 @@
               id,
               csrfmiddlewaretoken: csrf
             },
-            error:function(response) {
-              if (data.result === 'success') {
-                alert("Approval Mail Send Succefully...!")
-                location.reload();
-              }
-              else {
-                alert("Fail..! Please Configure Email Sender Details")
-                location.reload();
+            success: function (response) {
+              alert("success")
+              location.reload();
+              for (var i = 0; i < id.length; i++) {
+                var error = $(response).find('#error_text')
+                var error_class = $(error).attr('class')
+                $('#error').addClass(error_class)
+                $('#error').text(error.text())
+                $('tr#' + id[i] + '').fadeOut('slow');
               }
             }
-          });
+            })
+          }
         }
-      }
+      })
     })
-  })
 </script>
 
 {% endblock content %}

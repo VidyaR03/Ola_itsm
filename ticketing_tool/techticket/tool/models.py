@@ -9,9 +9,6 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
 
-
-
-
 class cl_New_organization(models.Model):
     """Models which creates table for New Organization"""
     id = models.AutoField(primary_key=True, editable=False)
@@ -320,28 +317,6 @@ class cl_Application_solution(models.Model):
         db_table = 'cl_Application_solution'
 
 
-  ####### Service ############      
-
-
-class cl_Service(models.Model):
-    """Models which create the table for Service"""
-    id = models.AutoField(primary_key=True, editable=False)
-
-    ch_ssname = models.CharField(max_length=100, null=True)
-    ch_sprovider = models.ForeignKey(
-        cl_New_organization,  related_name='cl_new_organization_ch_sprovider', on_delete=models.CASCADE, null=True, blank=True)
-    ch_service_family = models.ForeignKey(
-        cl_Servicefamilies,  related_name='cl_servicefamilies_ch_service_family', on_delete=models.CASCADE, null=True, blank=True)
-    ch_status = models.CharField(max_length=100, null=True)
-    txt_description = models.TextField()
-
-    def __str__(self):
-        return self.ch_ssname
-
-    class Meta:
-        db_table = 'cl_Service'
-
-
 ######## Delivery Model #######
 
 class cl_Delivery_model(models.Model):
@@ -568,22 +543,22 @@ class cl_Server(models.Model):
 
         
 
-class cl_Service_subcategory(models.Model):
-    """Models which create the table for Provider Contract"""
-    id = models.AutoField(primary_key=True, editable=False)
+# class cl_Service_subcategory(models.Model):
+#     """Models which create the table for Provider Contract"""
+#     id = models.AutoField(primary_key=True, editable=False)
 
-    ch_subname = models.CharField(max_length=100, null=True)
-    ch_sservice = models.ForeignKey(
-        cl_Service, on_delete=models.CASCADE, null=True, blank=True)
-    ch_status = models.CharField(max_length=100, null=True)
-    ch_request_type = models.CharField(max_length=100, null=True)
-    txt_description = models.TextField()
+#     ch_subname = models.CharField(max_length=100, null=True)
+#     ch_sservice = models.ForeignKey(
+#         'cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+#     ch_status = models.CharField(max_length=100, null=True)
+#     ch_request_type = models.CharField(max_length=100, null=True)
+#     txt_description = models.TextField()
 
-    def __str__(self):
-        return self.ch_subname
+#     def __str__(self):
+#         return self.ch_subname
 
-    class Meta:
-        db_table = 'cl_Service_subcategory'
+#     class Meta:
+#         db_table = 'cl_Service_subcategory'
 
 
 ########### PC Software ###########
@@ -644,7 +619,7 @@ class cl_User_request(models.Model):
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     fk_caller = models.ForeignKey(
         cl_Person, on_delete=models.CASCADE, null=True, blank=True)
-    ch_status = models.CharField(max_length=100, default='active')
+    ch_status = models.CharField(max_length=100, default='New')
     ch_origin = models.CharField(max_length=100, null=True)
     ch_title = models.CharField(max_length=100, null=True)
     ch_request_type = models.CharField(max_length=100, null=True)
@@ -654,8 +629,8 @@ class cl_User_request(models.Model):
     dt_start_date = models.DateTimeField(default=datetime.now)
     dt_Updated_date = models.DateTimeField(default=datetime.now)
     dt_escalation_date = models.DateTimeField(default=datetime.now)
-    ch_service = models.ForeignKey(cl_Service, on_delete=models.CASCADE, null=True, blank=True)
-    ch_service_subcategory = models.ForeignKey(cl_Service_subcategory, on_delete=models.CASCADE, null=True, blank=True)
+    ch_service = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+    ch_service_subcategory = models.ForeignKey('cl_Service_subcategory', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_request = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_change = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
@@ -668,7 +643,86 @@ class cl_User_request(models.Model):
         db_table = 'cl_User_request'
 
 
+class cl_Slt(models.Model):
+    """Models which create the table for SLT"""
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_name = models.CharField(max_length=100, null=True)
+    ch_priority = models.CharField(max_length=100, null=True)
+    ch_request_type = models.CharField(max_length=100, null=True)
+    ch_metric = models.CharField(max_length=100, null=True)
+    ch_value = models.CharField(max_length=100, null=True)
+    ch_unit = models.CharField(max_length=100, null=True)
 
+    def __str__(self):
+        return self.ch_name
+
+    class Meta:
+        db_table = 'cl_Slt'
+
+
+class cl_Sla(models.Model):
+    """Models which create the table for Provider Contract"""
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_slname = models.CharField(max_length=100, null=True)
+    ch_slaprovider = models.ForeignKey(cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    txt_description = models.TextField()
+    slts = models.ManyToManyField(cl_Slt)
+
+    def __str__(self):
+        return self.ch_slname
+
+    class Meta:
+        db_table = 'cl_Sla'
+
+
+
+class cl_Service_subcategory(models.Model):
+
+    """Models which create the table for Provider Contract"""
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_subname = models.CharField(max_length=100, null=True)
+    ch_sservice = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+    ch_status = models.CharField(max_length=100, null=True)
+    ch_sla = models.ForeignKey(cl_Sla, on_delete=models.CASCADE, null=True, blank=True)
+    ch_request_type = models.CharField(max_length=100, null=True)
+    txt_description = models.TextField()
+
+
+    class Meta:
+        db_table = 'cl_Service_subcategory'
+
+  ####### Service ############      
+
+class cl_Service(models.Model):
+    """Models which create the table for Service"""
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_ssname = models.CharField(max_length=100, null=True)
+    ch_sprovider = models.ForeignKey(
+        cl_New_organization,  related_name='cl_new_organization_ch_sprovider', on_delete=models.CASCADE, null=True, blank=True)
+    ch_service_subcategory = models.ManyToManyField(cl_Service_subcategory)
+    ch_status = models.CharField(max_length=100, null=True)
+    txt_description = models.TextField()
+
+    def __str__(self):
+        return self.ch_ssname
+
+    class Meta:
+        db_table = 'cl_Service'
+
+
+class cl_Servicedelivery(models.Model):
+    """Models which create the table for Service Delivery"""
+    id = models.AutoField(primary_key=True, editable=False)
+    ch_sdname = models.CharField(max_length=100, null=True)
+    ch_organization = models.ForeignKey(
+        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
+    txt_description = models.TextField()
+
+    def __str__(self):
+        return self.ch_sdname
+
+    class Meta:
+        db_table = 'cl_Servicedelivery'
 
 
 class cl_Customer_contract(models.Model):
@@ -681,13 +735,16 @@ class cl_Customer_contract(models.Model):
     ch_contract_type = models.CharField(max_length=100, null=True)
     ch_pprovider = models.ForeignKey(
         cl_New_organization,  related_name='cl_new_organization_ch_pprovider', on_delete=models.CASCADE, null=True, blank=True)
-    dt_start_date = models.DateTimeField(auto_now=True)
-    dt_end_date = models.DateTimeField(auto_now=True)
+    dt_start_date = models.DateTimeField(default=datetime.now)
+    dt_end_date = models.DateTimeField(default=datetime.now)
     i_cost_unit = models.IntegerField()
     i_cost = models.IntegerField()
-    i_cost_currency = models.IntegerField()
+    i_cost_currency = models.CharField(max_length=100)
     i_billing_frequency = models.IntegerField()
     txt_description = models.TextField()
+
+    ch_services = models.ManyToManyField(cl_Service)
+
 
     def __str__(self):
         return self.ch_cname
@@ -707,15 +764,14 @@ class cl_Providercontract(models.Model):
     ch_contract_type = models.CharField(max_length=100, null=True)
     ch_pcprovider = models.ForeignKey(
         cl_New_organization,  related_name='cl_new_organization_ch_pcprovider', on_delete=models.CASCADE, null=True, blank=True)
-
-    dt_start_date = models.DateTimeField(auto_now=True)
-    dt_end_date = models.DateTimeField(auto_now=True)
+    dt_start_date = models.DateTimeField(default=datetime.now)
+    dt_end_date = models.DateTimeField(default=datetime.now)
     i_cost_unit = models.IntegerField()
     i_cost = models.IntegerField()
-    i_cost_currency = models.IntegerField()
+    i_cost_currency = models.CharField(max_length=100)
     i_billing_frequency = models.IntegerField()
     txt_description = models.TextField()
-    ch_sla = models.TextField()
+    ch_services = models.ManyToManyField(cl_Service)
 
     def __str__(self):
         return self.ch_pname
@@ -723,65 +779,10 @@ class cl_Providercontract(models.Model):
     class Meta:
         db_table = 'cl_Providercontract'
 
-
-
-
-
-class cl_Sla(models.Model):
-    """Models which create the table for Provider Contract"""
-    id = models.AutoField(primary_key=True, editable=False)
-
-    ch_slname = models.CharField(max_length=100, null=True)
-    ch_slaprovider = models.ForeignKey(
-        cl_New_organization,  related_name='cl_new_organization_ch_slaprovider', on_delete=models.CASCADE, null=True, blank=True)
-    txt_description = models.TextField()
-
-    def __str__(self):
-        return self.ch_slname
-
-    class Meta:
-        db_table = 'cl_Sla'
-
-
-class cl_Slt(models.Model):
-    """Models which create the table for SLT"""
-    id = models.AutoField(primary_key=True, editable=False)
-
-    ch_name = models.CharField(max_length=100, null=True)
-    ch_priority = models.CharField(max_length=100, null=True)
-    ch_request_type = models.CharField(max_length=100, null=True)
-    ch_metric = models.CharField(max_length=100, null=True)
-    ch_value = models.CharField(max_length=100, null=True)
-    ch_unit = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return self.ch_name
-
-    class Meta:
-        db_table = 'cl_Slt'
-
-
-class cl_Servicedelivery(models.Model):
-
-    """Models which create the table for Service Delivery"""
-    id = models.AutoField(primary_key=True, editable=False)
-    ch_sdname = models.CharField(max_length=100, null=True)
-    ch_organization = models.ForeignKey(
-        cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    txt_description = models.TextField()
-
-    def __str__(self):
-        return self.ch_sdname
-
-    class Meta:
-        db_table = 'cl_Servicedelivery'
-
-
+        
 class cl_Synchro_data_source(models.Model):
-
     """Models which create the table for Synchro Data Source"""
     id = models.AutoField(primary_key=True, editable=False)
-
     ch_name = models.CharField(max_length=100, null=True)
     ch_status = models.CharField(max_length=100, default='implementation')
     txt_description = models.TextField()
@@ -813,7 +814,6 @@ class cl_Synchro_data_source(models.Model):
 class cl_Oauth_google(models.Model):
     """Models which create the table for Oauth Google"""
     id = models.AutoField(primary_key=True, editable=False)
-
     e_login = models.EmailField()
     ch_status = models.CharField(max_length=100, default='No Acess token')
     ch_provider = models.CharField(max_length=100, default='Google')

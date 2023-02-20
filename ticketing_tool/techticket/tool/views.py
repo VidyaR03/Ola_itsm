@@ -7,7 +7,8 @@ from io import BytesIO
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from tool.models import cl_Location, cl_Service, cl_Software,cl_New_organization
+# from tool.models import cl_Location, cl_Service, cl_Software,cl_New_organization
+from tool.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.db.models import Q
@@ -451,7 +452,7 @@ def LEdit(request):
 def LUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
         ch_organization = request.POST.get('ch_owner_organization')
@@ -558,7 +559,7 @@ def OrgEdit(request):
 def OrgUpdate(request,id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
@@ -673,10 +674,8 @@ def Update(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_person_firstname = str.capitalize(
-            request.POST.get('ch_person_firstname'))
-        ch_person_lastname = str.capitalize(
-            request.POST.get('ch_person_lastname'))
+        ch_person_firstname = request.POST.get('ch_person_firstname')
+        ch_person_lastname = request.POST.get('ch_person_lastname')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
         ch_team = cl_Team.objects.get(ch_teamname= request.POST.get('ch_team'))
         ch_person_status = request.POST.get('ch_person_status')
@@ -971,7 +970,7 @@ def softEdit(request):
 def softUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_sofname = request.POST.get('ch_sofname')
         ch_vendor = request.POST.get('ch_vendor')
         chversion = request.POST.get('chversion')
@@ -1081,7 +1080,7 @@ def TEdit(request):
 def TUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
@@ -1180,6 +1179,7 @@ def CADD(request):
         ch_caller =cl_Person.objects.filter(
             ch_person_firstname=str.capitalize(request.POST.get('ch_caller'))).first()
         ch_status = request.POST.get('ch_status')
+        # ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1228,12 +1228,13 @@ def CUpdate(request, id):
     """
     if request.method == "POST":
         nchange = cl_New_change.objects.filter(id=id).first()
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
         ch_caller =cl_Person.objects.get(
             ch_person_firstname=str.capitalize(request.POST.get('ch_caller')))
-        ch_status = request.POST.get('ch_status')
+        # ch_status = request.POST.get('ch_status')
+        ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = nchange.dt_start_date
@@ -1279,6 +1280,7 @@ def CDelete(request):
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
         return redirect('newchange')
+########## Assign Change For Change Management############
 
 @login_required(login_url='/login_render/')
 def assign_changeModal(request):
@@ -1286,11 +1288,12 @@ def assign_changeModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
-        
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        s= "Assigned"
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
+            nchange.ch_status = s
             nchange.save()
         try:
             mail_sender()
@@ -1325,7 +1328,7 @@ def mail_sender():
         settings.EMAIL_HOST_PASSWORD = mail_host.host_password
 
 
-########## Approve Change ############
+########## Approve Change For Change Management############
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail(request):
@@ -1334,6 +1337,7 @@ def send_approval_Mail(request):
         list_id = request.POST.getlist('id[]')
         print(list_id)
         recepient = []
+
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_status = "Watting for Approval"
@@ -1500,6 +1504,8 @@ def UUpdate(request, id):
         ch_parent_request = request.POST.get('ch_parent_request')
         ch_parent_change = request.POST.get('ch_parent_change')
         txt_description = request.POST.get('txt_description')
+        ch_assign_agent = ur.ch_assign_agent
+
         ur = cl_User_request(
             id=id,
             fk_organization=fk_organization,
@@ -1518,6 +1524,8 @@ def UUpdate(request, id):
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
+            ch_assign_agent=ch_assign_agent
+
         )
         ur.save()
         admin_name = request.session["username"]
@@ -1548,6 +1556,8 @@ def escalate_notify(request):
     ur = cl_User_request.objects.all()
     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
+########## Assign Change For User Request############
+
 
 @login_required(login_url='/login_render/')
 def assign_URModal(request):
@@ -1555,11 +1565,13 @@ def assign_URModal(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(ch_employee_number=p_Emp_id).first()
-        
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+              
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
+            ur.ch_status = "Assigned"
+            
             ur.save()
         try:
             mail_sender()
@@ -1568,6 +1580,8 @@ def assign_URModal(request):
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            return JsonResponse({'result': 'success'})
+
         except:
             print('email not send')
         admin_name = request.session["username"]
@@ -1582,19 +1596,32 @@ def assign_URModal(request):
         }
     return render(request, 'tool/tassign.html', context)
 
+########## Approve Change For Incident Management############
+
 @login_required(login_url='/login_render/')
 def send_approval_Mail_UR(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        mail_sender()
         list_id = request.POST.getlist('id[]')
-        ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
-        subject = 'Welcome to Olatech Solutions'
-        message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
-        sender = settings.EMAIL_HOST_USER
-        recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
-        send_mail(subject, message, sender, recepient, fail_silently=False)
-    return render(request, 'tool/approve_change.html',{'permission':permission})
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Waiting for Approval"
+            ur.save()
+        try:
+            mail_sender()
+            list_id = request.POST.getlist('id[]')
+            ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
+            subject = 'Welcome to Olatech Solutions'
+            message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
+            sender = settings.EMAIL_HOST_USER
+            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            raise Exception('Please Configure Email Sender Details')
+        
+        # return redirect('user_request')
+
+    # return render(request, 'tool/approve_change.html',{'permission':permission})
  
 
 
@@ -1604,7 +1631,8 @@ def send_approval_Mail_UR(request):
 def customer_contract(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     cust = cl_Customer_contract.objects.all()
-    
+    servi = cl_Service.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -1618,7 +1646,7 @@ def customer_contract(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    return render(request, 'tool/scustomer_contract.html', {'cust': cust,'org':org,'users':users,'permission':permission})
+    return render(request, 'tool/scustomer_contract.html', {'cust': cust,'servi':servi, 'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1626,12 +1654,10 @@ def SCADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_a')).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_a')).first()
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1639,6 +1665,10 @@ def SCADD(request):
         i_cost_currency = request.POST.get('i_cost_currency')
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
+
+        services_ids = request.POST.getlist('service_ids')
+        services = cl_Service.objects.filter(id__in=services_ids)
+
         cust = cl_Customer_contract(
             ch_cname=ch_cname,
             ch_ccustomer=ch_ccustomer,
@@ -1654,6 +1684,8 @@ def SCADD(request):
             txt_description=txt_description,
         )
         cust.save()
+        cust.ch_services.set(services)
+
         admin_name = request.session["username"]
         adminaction = "addition of customer"
         event ="event"
@@ -1681,14 +1713,11 @@ def SCUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_e')).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_e')).first()
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1702,7 +1731,7 @@ def SCUpdate(request, id):
             ch_ccustomer=ch_ccustomer,
             ch_status=ch_status,
             ch_contract_type=ch_contract_type,
-            ch_provider=ch_pprovider,
+            ch_pprovider=ch_pprovider,
             dt_start_date=dt_start_date,
             dt_end_date=dt_end_date,
             i_cost_unit=i_cost_unit,
@@ -1726,11 +1755,15 @@ def SCDelete(request):
     return redirect('customercontract')
 
 
+################### Provider Contract ##################
+
 @login_required(login_url='/login_render/')
 def provider_contract(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     pro = cl_Providercontract.objects.all()
     org = cl_New_organization.objects.all()
+    servi = cl_Service.objects.all()
+
     page = request.GET.get('page', 1)
     paginator = Paginator(pro, 10)
     try:
@@ -1743,7 +1776,7 @@ def provider_contract(request):
         q = request.GET.get('searchstatus')
         if q != None:
             pro = cl_Customer_contract.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/sprovidercontract.html', {'pro': pro,'org':org,'users':users,'permission':permission})
+    return render(request, 'tool/sprovidercontract.html', {'pro': pro,'org':org,'users':users,'servi':servi,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
@@ -1751,12 +1784,10 @@ def SPADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_pname = request.POST.get('ch_pname')
-        ch_customer = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_pcprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_customer')).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pcprovider = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_customer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_customer')).first()
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1764,7 +1795,10 @@ def SPADD(request):
         i_cost_currency = request.POST.get('i_cost_currency')
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
-        ch_sla = request.POST.get('ch_sla')
+        
+        services_ids = request.POST.getlist('service_ids')
+        services = cl_Service.objects.filter(id__in=services_ids)
+
         pro = cl_Providercontract(
             ch_pname=ch_pname,
             ch_customer=ch_customer,
@@ -1778,9 +1812,10 @@ def SPADD(request):
             i_cost_currency=i_cost_currency,
             i_billing_frequency=i_billing_frequency,
             txt_description=txt_description,
-            ch_sla=ch_sla,
         )
         pro.save()
+        pro.ch_services.set(services)
+
         admin_name = request.session["username"]
         adminaction = "deletion of user request"
         event ="event"
@@ -1808,22 +1843,25 @@ def SPUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
+        pro_contract = cl_Providercontract.objects.filter(id=id).first()
         ch_pname = request.POST.get('ch_pname')
-        ch_customer = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_pcprovider = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_provider'))).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pcprovider = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        dt_start_date = request.POST.get('dt_start_date')
+        ch_customer = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_customer'))).first()
+        dt_start_date = pro_contract.dt_start_date
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
         i_cost = request.POST.get('i_cost')
         i_cost_currency = request.POST.get('i_cost_currency')
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
-        ch_sla = request.POST.get('ch_sla')
+
+        services_ids = request.POST.getlist("services_ids")
+        services = cl_Service.objects.filter(id__in=services_ids)
+        
         pro = cl_Providercontract(
             id=id,
             ch_pname=ch_pname,
@@ -1838,9 +1876,9 @@ def SPUpdate(request, id):
             i_cost_currency=i_cost_currency,
             i_billing_frequency=i_billing_frequency,
             txt_description=txt_description,
-            ch_sla=ch_sla,
         )
         pro.save()
+        pro.ch_services.set(services)
         return redirect('providercontract')
     return render(request, 'tool/sprovidercontract.html',{'permission':permission})
 
@@ -1912,7 +1950,7 @@ def SFEdit(request):
 def SFUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_sname = request.POST.get('ch_sname')
         sf = cl_Servicefamilies(
             id=id,
@@ -1932,13 +1970,14 @@ def SFDelete(request):
             sf.delete()
     return redirect('servicefamilies')
 
+##################### Service #######################
 
 @login_required(login_url='/login_render/')
 def sservice(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ser = cl_Service.objects.all()
     org = cl_New_organization.objects.all()
-    sfamily = cl_Servicefamilies.objects.all()
+    s_sub_category = cl_Service_subcategory.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -1953,32 +1992,32 @@ def sservice(request):
         users = paginator.page(paginator.num_pages)
 
    
-    return render(request, 'tool/sservice.html', {'ser': ser,'sfamily':sfamily,'org':org,'users':users,'permission':permission})
+    return render(request, 'tool/sservice.html', {'ser': ser,'s_sub_category':s_sub_category,'org':org,'users':users,'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SSADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
-
         ch_ssname = request.POST.get('ch_ssname')
-        ch_sprovider = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        ch_service_family = cl_Servicefamilies.objects.filter(
-            ch_sname=request.POST.get('ch_sfamily')).first()
+        ch_sprovider = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        # ch_service_family = cl_Servicefamilies.objects.filter(ch_sname=request.POST.get('ch_sfamily')).first()
+        s_subcategory_ids = request.POST.getlist("s_sub_category_ids")
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
+
+        subcategory = cl_Service_subcategory.objects.filter(id__in=s_subcategory_ids)
+        # print(subcategory)
 
         ser = cl_Service(
             # id=id,
             ch_ssname=ch_ssname,
             ch_sprovider=ch_sprovider,
-            ch_service_family=ch_service_family,
             ch_status=ch_status,
             txt_description=txt_description,
         )
         ser.save()
+        ser.ch_service_subcategory.set(subcategory)
         return redirect('service')
 
     return render(request, 'tool/sservice.html',{'permission':permission})
@@ -2002,23 +2041,24 @@ def SSUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
         ch_ssname = request.POST.get('ch_ssname')
-        ch_sprovider = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_service_family = cl_Servicefamilies.objects.get(
-            ch_sname=request.POST.get('ch_sfamily'))
+        ch_sprovider = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        s_subcategory_ids = request.POST.getlist("s_sub_category_ids")
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
+
+        subcategory = cl_Service_subcategory.objects.filter(id__in=s_subcategory_ids)
+        # print(subcategory)
+
         ser = cl_Service(
             id=id,
             ch_ssname=ch_ssname,
             ch_sprovider=ch_sprovider,
-            ch_service_family=ch_service_family,
             ch_status=ch_status,
             txt_description=txt_description,
         )
         ser.save()
+        ser.ch_service_subcategory.set(subcategory)
         return redirect('service')
     return render(request, 'tool/sservice.html',{'permission':permission})
 
@@ -2040,6 +2080,7 @@ def service_subcategory(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sub = cl_Service_subcategory.objects.all()
     ser = cl_Service.objects.all()
+    sla = cl_Sla.objects.all()
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -2055,8 +2096,15 @@ def service_subcategory(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    
-    return render(request, 'tool/service_subcategory.html', {'sub': sub,'ser':ser,'users':users, 'permission':permission})
+    context = {
+        'sub': sub,
+        'sla':sla,
+        'ser':ser,
+        'users':users,
+        'permission':permission
+    }
+
+    return render(request, 'tool/service_subcategory.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -2064,15 +2112,16 @@ def SADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.filter(
-            ch_ssname=request.POST.get('ch_sservice')).first()
-        ch_status = request.POST.get('ch_status')
+        ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
+        ch_status = request.POST.get('ch_status')	
+        ch_sla = cl_Sla.objects.filter(ch_slname=request.POST.get('ch_sla')).first()
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
         sub = cl_Service_subcategory(
             ch_subname=ch_subname,
             ch_sservice=ch_sservice,
             ch_status=ch_status,
+            ch_sla=	ch_sla,
             ch_request_type=ch_request_type,
             txt_description=txt_description,
         )
@@ -2099,12 +2148,10 @@ def SUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
-
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.get(
-            ch_ssname=request.POST.get('ch_sservice'))
-        ch_status = request.POST.get('ch_status')
+        ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
+        ch_status = request.POST.get('ch_status')	
+        ch_sla = cl_Sla.objects.filter(ch_slname=request.POST.get('ch_sla')).first()
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
         sub = cl_Service_subcategory(
@@ -2112,6 +2159,7 @@ def SUpdate(request, id):
             ch_subname=ch_subname,
             ch_sservice=ch_sservice,
             ch_status=ch_status,
+            ch_sla=	ch_sla,
             ch_request_type=ch_request_type,
             txt_description=txt_description,
         )
@@ -2136,6 +2184,8 @@ def SDelete(request):
 def sla(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     sl = cl_Sla.objects.all()
+    slts = cl_Slt.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -2151,26 +2201,86 @@ def sla(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
    
-    return render(request, 'tool/ssla.html', {'sl': sl,'org':org,'users':users, 'permission':permission})
+    return render(request, 'tool/ssla.html', {'sl': sl, 'slts':slts, 'org':org,'users':users, 'permission':permission})
 
 
 @login_required(login_url='/login_render/')
 def SLADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        ch_slname = request.POST.get('ch_slname')
-        ch_slaprovider = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_sl_name = request.POST.get('ch_slname')
+        ch_slaprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_organization')).first()
         txt_description = request.POST.get('txt_description')
+        slt_ids = request.POST.getlist("slt_ids")
+        slts = []
+        for i in slt_ids:
+            x = (cl_Slt.objects.filter(id=i).first()).id
+            slts.append(x)
 
         sl = cl_Sla(
-            ch_slname=ch_slname,
+            ch_slname=ch_sl_name,
             ch_slaprovider=ch_slaprovider,
-            txt_description=txt_description
+            txt_description=txt_description,
         )
         sl.save()
+        sl.slts.set(slts)
         return redirect('sla')
     return render(request, 'tool/ssla.html',{'permission':permission})
+
+
+# @login_required(login_url='/login_render/')
+# def get_slt_by_sla(request):
+#     slaId = request.GET.get('slaId')
+#     sla = cl_Sla.objects.filter(id=int(slaId)).first()
+
+#     slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
+
+#     slll = []
+#     for s in slt:
+#         print('id :',s.id)
+#         x = cl_Slt.objects.filter(id=s.id)
+#         slll.append(x)
+
+#     for s in slll:
+#         print(s)
+#     return JsonResponse([{'id': slt_in_sla.id, 'name': slt_in_sla.ch_name} for slt_in_sla in slll], safe=False)
+
+import json
+
+def get_slt_by_sla(request):
+    slaId = request.GET.get('slaId')
+    sla = cl_Sla.objects.filter(id=int(slaId)).first()
+
+    slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
+    
+    queryset_list = []
+
+    for s in slt:
+        print('id :', s.cl_slt_id)
+        queryset = cl_Slt.objects.filter(id__icontains=int(s.cl_slt_id))
+        data = []
+    
+        for obj in queryset:
+            data.append({
+                'id': obj.id,
+                'ch_name': obj.ch_name,
+                'ch_priority': obj.ch_priority,
+                'ch_request_type': obj.ch_request_type,
+                'ch_metric': obj.ch_metric,
+                'ch_value': obj.ch_value,
+                'ch_unit': obj.ch_unit
+            })
+            queryset_list.append(data)
+
+    json_data = json.dumps(queryset_list)
+        
+    # for queryset in queryset_list:
+    #     for obj in queryset:
+    #         print(obj['id'], obj['ch_name'], obj['ch_priority'])
+
+    return HttpResponse(json_data, content_type='application/json')
+
+
 
 
 @login_required(login_url='/login_render/')
@@ -2191,18 +2301,34 @@ def SLUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
-        ch_slname = request.POST.get('ch_slname')
-        ch_slaprovider = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_sl_name = request.POST.get('ch_slname')
+        ch_slaprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_organization')).first()
         txt_description = request.POST.get('txt_description')
+        slt_ids = request.POST.getlist("slt_ids")
+
+        slts = cl_Slt.objects.filter(id__in=slt_ids)
+
         sl = cl_Sla(
             id=id,
-            ch_slname=ch_slname,
+            ch_slname=ch_sl_name,
             ch_slaprovider=ch_slaprovider,
-            txt_description=txt_description
+            txt_description=txt_description,
         )
         sl.save()
+        sl.slts.set(slts)
+
+        # id = request.POST.get('id')
+        # ch_slname = request.POST.get('ch_slname')
+        # ch_slaprovider = cl_New_organization.objects.get(
+        #     ch_name=str.capitalize(request.POST.get('ch_organization')))
+        # txt_description = request.POST.get('txt_description')
+        # sl = cl_Sla(
+        #     id=id,
+        #     ch_slname=ch_slname,
+        #     ch_slaprovider=ch_slaprovider,
+        #     txt_description=txt_description
+        # )
+        # sl.save()
         return redirect('sla')
     return render(request, 'tool/ssla.html',{'permission':permission})
 
@@ -2377,7 +2503,6 @@ def SDUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
         ch_sdname = request.POST.get('ch_sdname')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
@@ -2504,7 +2629,7 @@ def extUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_person = cl_Person.objects.get(
             ch_person_firstname=request.POST.get('ch_person'))
         ch_person_lastname = request.POST.get('ch_person_lastname')
@@ -3287,7 +3412,7 @@ def synupdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
@@ -3420,7 +3545,7 @@ def oauthupdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        id = request.POST.get('id')
+        # id = request.POST.get('id')
         e_login = request.POST.get('e_login')
         ch_status = request.POST.get('ch_status')
         ch_provider = request.POST.get('ch_provider')
