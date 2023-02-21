@@ -853,7 +853,8 @@ class cl_Oauth_mazure(models.Model):
     class Meta:
         db_table = 'cl_Oauth_mazure'
 
-
+    
+    
 class cl_Ldapuser(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     ch_person =models.ForeignKey(
@@ -874,6 +875,7 @@ class cl_Ldapuser(models.Model):
 class cl_Externaluser(models.Model):
     """Models which create the table for External User"""
     id = models.AutoField(primary_key=True, editable=False)
+
     ch_person = models.ForeignKey(
         cl_Person, on_delete=models.CASCADE)
     ch_person_lastname = models.CharField(max_length=100, null=True)
@@ -889,16 +891,15 @@ class cl_Externaluser(models.Model):
         db_table = 'cl_Externaluser'
 
 
-class ch_Itsmuser(models.Model):
+class cl_ITSM_USER(models.Model):
     """Models which create the table for Itsmuser """
     id = models.AutoField(primary_key=True, editable=False)
 
-    ch_person = models.CharField(max_length=100, null=True)
+    ch_person = models.ForeignKey(cl_Person, on_delete=models.CASCADE)
     ch_email = models.EmailField()
     ch_login = models.CharField(max_length=100, null=True)
     ch_language = models.CharField(max_length=100, null=True)
     ch_status = models.CharField(max_length=100, null=True)
-    ch_person = models.CharField(max_length=100, null=True)
     ch_password = models.CharField(max_length=100, null=True)
     ch_password_expiration = models.CharField(max_length=100, null=True)
     dt_password_renewed_on = models.DateTimeField(
@@ -908,7 +909,9 @@ class ch_Itsmuser(models.Model):
         return self.ch_person
 
     class Meta:
-        db_table = 'ch_Itsmuser'
+        db_table = 'cl_ITSM_USER'
+        
+        
 
 
 class cl_Slacknotification(models.Model):

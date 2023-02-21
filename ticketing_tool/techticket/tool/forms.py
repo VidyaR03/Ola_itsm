@@ -219,7 +219,7 @@ class ExternaluserForm(ModelForm):
 
 class ItsmuserForm(ModelForm):
     class Meta:
-        model=ch_Itsmuser
+        model=cl_ITSM_USER
         fields='__all__'
 
 class SlacknotiForm(ModelForm):
