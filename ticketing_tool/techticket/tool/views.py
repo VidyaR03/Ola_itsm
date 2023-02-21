@@ -61,8 +61,6 @@ def send_telegram_message(token, chat_id, text):
     return response.json()
 
 
-
-
 ###########################################################################
 
 
