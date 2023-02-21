@@ -171,6 +171,7 @@
               <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
               </a></label>
               <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                <option selected value="">Please select Organization</option>
               {% for i in org %}
               <option value="{{i.ch_name}}">{{i.ch_name}}</option>
               {% endfor %}
@@ -181,6 +182,8 @@
                <span class="required-field"></span>
                <label>Business Criticality</label>
                <select name="ch_business_criticality" type="text" class="form-control" required>
+                <option selected value="">Please select Business Criticality</option>
+
                 <option value="High">High</option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>

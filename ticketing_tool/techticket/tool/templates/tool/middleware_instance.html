@@ -163,6 +163,7 @@
                      <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                     </a></label>
                     <select name="ch_organization" id="ch_organization"style="min-height:30px;min-width:280px;" required>
+                      <option selected value="">Please select Organization</option>
                       {% for i in org %}
                     <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                     {% endfor %}
@@ -173,6 +174,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_middleware" id="ch_middleware" style="min-height:30px;min-width:280px;"required>
+                  <option selected value="">Please select Middleware</option>
                   {% for i in middle %}
                   <option value="{{i.ch_midname}}">{{i.ch_midname}}</option>
                   {% endfor %}
