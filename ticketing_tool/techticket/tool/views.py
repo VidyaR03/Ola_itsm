@@ -30,8 +30,40 @@ from django.contrib.auth.decorators import login_required
 from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
+import json
 
-# from settings import ready
+
+
+
+############################# Telegram ####################################
+
+
+
+
+# from telegram import Bot
+
+# def send_telegram_message():
+#     bot = Bot(token=settings.BOT_TOKEN)
+#     bot.send_message(chat_id='ankush_narayanpure', text='Hello from Django!')
+
+
+import requests
+
+def send_telegram_message(token, chat_id, text):
+
+    url = f'https://api.telegram.org/bot{token}/sendMessage'
+    data = {
+        'chat_id': chat_id,
+        'text': text
+    }
+    response = requests.post(url, data=data)
+    print(response.json())
+    return response.json()
+
+
+
+
+###########################################################################
 
 
 @login_required(login_url='/login_render/')
@@ -57,6 +89,13 @@ def dashboard(request):
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
     newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
  
+    try:
+        # send_telegram_message(token=settings.BOT_TOKEN, chat_id=1998582799, text="Hello from Django!")
+        send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
+
+    except Exception as exception:
+        print("Exception message: {}".format(exception))
+        
 
     context = {
         'User': User,
@@ -68,10 +107,6 @@ def dashboard(request):
         'Assign':Assign,
         'Assign1':Assign1,
         'newopen1':newopen1
-
-     
-        
-
     }
 
     return render(request, 'tool/dashboard.html',context)
@@ -2186,7 +2221,7 @@ def SDelete(request):
     return redirect('service_subcategory')
 
 
-##############################################
+#########################################################
 
 @login_required(login_url='/login_render/')
 def sla(request):
@@ -2236,27 +2271,10 @@ def SLADD(request):
     return render(request, 'tool/ssla.html',{'permission':permission})
 
 
-# @login_required(login_url='/login_render/')
-# def get_slt_by_sla(request):
-#     slaId = request.GET.get('slaId')
-#     sla = cl_Sla.objects.filter(id=int(slaId)).first()
-
-#     slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
-
-#     slll = []
-#     for s in slt:
-#         print('id :',s.id)
-#         x = cl_Slt.objects.filter(id=s.id)
-#         slll.append(x)
-
-#     for s in slll:
-#         print(s)
-#     return JsonResponse([{'id': slt_in_sla.id, 'name': slt_in_sla.ch_name} for slt_in_sla in slll], safe=False)
-
-import json
 
 def get_slt_by_sla(request):
     slaId = request.GET.get('slaId')
+    print(slaId)
     sla = cl_Sla.objects.filter(id=int(slaId)).first()
 
     slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
@@ -2264,7 +2282,6 @@ def get_slt_by_sla(request):
     queryset_list = []
 
     for s in slt:
-        print('id :', s.cl_slt_id)
         queryset = cl_Slt.objects.filter(id__icontains=int(s.cl_slt_id))
         data = []
     
@@ -2281,13 +2298,7 @@ def get_slt_by_sla(request):
             queryset_list.append(data)
 
     json_data = json.dumps(queryset_list)
-        
-    # for queryset in queryset_list:
-    #     for obj in queryset:
-    #         print(obj['id'], obj['ch_name'], obj['ch_priority'])
-
     return HttpResponse(json_data, content_type='application/json')
-
 
 
 
@@ -2302,6 +2313,7 @@ def SLEdit(request):
     return render(request, 'tool/ssla.html', context)
 
 
+
 @login_required(login_url='/login_render/')
 def SLUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -2312,7 +2324,7 @@ def SLUpdate(request, id):
         ch_sl_name = request.POST.get('ch_slname')
         ch_slaprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_organization')).first()
         txt_description = request.POST.get('txt_description')
-        slt_ids = request.POST.getlist("slt_ids")
+        slt_ids = request.POST.getlist("e_slt_id_"+id)
 
         slts = cl_Slt.objects.filter(id__in=slt_ids)
 
@@ -2325,18 +2337,6 @@ def SLUpdate(request, id):
         sl.save()
         sl.slts.set(slts)
 
-        # id = request.POST.get('id')
-        # ch_slname = request.POST.get('ch_slname')
-        # ch_slaprovider = cl_New_organization.objects.get(
-        #     ch_name=str.capitalize(request.POST.get('ch_organization')))
-        # txt_description = request.POST.get('txt_description')
-        # sl = cl_Sla(
-        #     id=id,
-        #     ch_slname=ch_slname,
-        #     ch_slaprovider=ch_slaprovider,
-        #     txt_description=txt_description
-        # )
-        # sl.save()
         return redirect('sla')
     return render(request, 'tool/ssla.html',{'permission':permission})
 

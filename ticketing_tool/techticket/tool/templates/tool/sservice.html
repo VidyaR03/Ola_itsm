@@ -41,7 +41,6 @@
         <th>ID</th>
         <th>Name</th>
         <th>Provider</th>
-        <!-- <th>Service Family</th> -->
         <th>Status</th>
         <th>Description</th>
         {% if permission.serv_m_e == "on" or permission == None %}
@@ -59,7 +58,6 @@
           <td>{{i.id}}</td>
           <td>{{i.ch_ssname}}</td>
           <td>{{i.ch_sprovider}}</td>
-          <!-- <td>{{i.ch_service_family}}</td> -->
           <td>{{i.ch_status}}</td>
           <td>{{i.txt_description}}</td>
           {% if permission.serv_m_e == "on" or permission == None %}
@@ -219,7 +217,7 @@
                 </select>
               </div>
             </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;">
+            <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 28px;">
               <div class="form-group">
                 <span class="required-field"></span><label>Status</label>
                 <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
@@ -247,13 +245,14 @@
               </style>
 
               <!-- HTML For Service_Subcategory Dropdown -->
-              <div class="dropdown" style="margin-top: 37px;">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                  data-toggle="dropdown" style="margin-bottom: 10px;">Select Subcategories</button>
-                <div class="dropdown-menu">
+
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="e_dropdownMenuButton"
+                  data-toggle="dropdown" style="position: relative; top: 20px;">Select Subcategories</button>
+                <div class="dropdown-menu" style="position: relative; top: 20px;">
                   {% for s in s_sub_category %}
                   <div class="form-check" style="background-color: white; width: 450px;">
-                    <input class="form-check-input" name="s_sub_category_ids" type="checkbox" value="{{s.id}}"
+                    <input class="form-check-input" name="e_s_sub_category_id_{{ i.id }}" type="checkbox" value="{{s.id}}"
                       id="{{ s.id }}">
                     <label class="form-check-label" for="{{ s.id }}">{{s.ch_subname}} : {{s.ch_status}} : {{ s.ch_request_type }}</label>
                   </div>
@@ -263,7 +262,7 @@
 
               <!-- JS For Service_Subcategory Dropdown -->
               <script>
-                $('.dropdown-menu').on('click', function (event) {
+                $('#e_dropdownMenuButton').on('click', function (event) {
                   var target = $(event.target);
                   var checkbox = target.find('input[type="checkbox"]');
                   checkbox.prop('checked', !checkbox.prop('checked'));

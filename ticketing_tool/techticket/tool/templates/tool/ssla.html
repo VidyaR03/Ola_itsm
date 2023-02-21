@@ -212,14 +212,13 @@
 
               <!-- HTML For SLT Dropdown -->
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                <button class="btn btn-primary dropdown-toggle" type="button" id="e_dropdownMenuButton"
                   data-toggle="dropdown" style="margin-bottom: 10px;">Select SLT</button>
                 <div class="dropdown-menu">
                   {% for slt in slts %}
                   <div class="form-check" style="background-color: white; width: 450px;">
-                    <input class="form-check-input" name="slt_ids" type="checkbox" value="{{ slt.id }}"
-                      id="{{ slt.id }}" {% if i.slts.id %} checked {% endif %}>
-                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
+                    <input class="form-check-input" name="e_slt_id_{{ i.id }}" type="checkbox" value="{{ slt.id }}">
+                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -227,16 +226,60 @@
 
               <!-- JS For SLT Dropdown -->
               <script>
-                $('.dropdown-menu').on('click', function (event) {
+                $('#e_dropdownMenuButton').on('click', function (event) {
                   var target = $(event.target);
                   var checkbox = target.find('input[type="checkbox"]');
                   checkbox.prop('checked', !checkbox.prop('checked'));
                 });
               </script>
 
+              
+              <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
+              <script>
+                $(".edit_btn").click(function () {
+                  var slaId = $(this).parent()[0].id;
+                  var csrf = $('input[name=csrfmiddlewaretoken]').val();
+          
+                  $.ajax({
+                    method: "GET",
+                    url: "{% url 'get_slt_by_sla' %}",
+                    data: {
+                      slaId,
+                      csrfmiddlewaretoken: csrf
+                    },
+                    success: function (queryset_list) {
+          
+                      all_slts = document.querySelectorAll('input[name="e_slt_id_{{ i.id }}"]');
+                      selected_slt = [];
+          
+                      for (let index = 0; index < queryset_list.length; index++) {
+                        const queryset = queryset_list[index];
+                        for (let j = 0; j < queryset.length; j++) {
+                          id_in_str=queryset[j].id
+                          selected_slt.push(id_in_str.toString());
+                        }
+                      }
+          
+                      for (let i = 0; i < selected_slt.length; i++) {
+                        for (let j = 0; j < all_slts.length; j++) {
+                          if (all_slts[j].value === selected_slt[i]) {
+                            const checkboxes = document.getElementsByName("e_slt_id_{{ i.id }}");
+                            checkboxes[i].checked = true;
+                          }
+                        }
+                      }
+                    },
+                    error: function (xhr, status, error) {
+                      console.log('Error: ' + error);
+                    }
+                  });
+                });
+              </script>
+              <!-- END  JS For Filter slt which already assign and show ir marked Dropdown -->
+
               <div class="modal-footer">
                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                <input type="submit" class="btn btn-success" value="Add">
+                <input type="submit" class="btn btn-success" value="Update">
               </div>
             </div>
           </form>
@@ -245,36 +288,7 @@
     </div>
     {% endfor %}
 
-    <script>
-      $(".edit_btn").click(function () {
-        var slaId = $(this).parent()[0].id;
-        var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $.ajax({
-          method: "GET",
-          url: "{% url 'get_slt_by_sla' %}",
-          data: {
-            slaId,
-            csrfmiddlewaretoken: csrf
-          },
-          success: function (slts) {
-            for (let index = 0; index < slts.length; index++) {
-              const element = slts[index];
-              for (let j = 0; j < element.length; j++) {
-                const element2 = element[j];
-                console.log(element2);
-              }
-            }
-          },
-          error: function (xhr, status, error) {
-            console.log('Error: ' + error);
-          }
-
-        });
-      });
-
-    </script>
-
-
+    <!-- START JS For multiple delete -->
     <script>
       $(document).ready(function () {
         $('#delete_btn').click(function () {
