@@ -17,7 +17,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 from django.template.loader import get_template
-from django.core.exceptions import BadRequest
+# from django.core.exceptions import BadRequest
 from django.http import FileResponse
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -2568,39 +2568,139 @@ def oauth_mazuree(request):
     return render(request, 'tool/authmazure.html', context)
 
 
+########### LDAP USER ############
+
 @login_required(login_url='/login_render/')
 def ldapuser(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    form = LdapuserForm()
-    if request.method == 'POST':
-        form = LdapuserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Data Add Successfully")
+    ldap = cl_Ldapuser.objects.all()
+    call = cl_Person.objects.all()
+
+  
+    if request.method == "GET":
+        q = request.GET.get('searchstatus')
+        if q != None:
+            ldap = cl_Ldapuser.objects.filter(ch_status__icontains=q)
+
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(ldap, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)        
+    return render(request, 'tool/ldapuser.html', {'ldap': ldap, 'permission':permission,'users':users,'call':call})
+
+
+
+@login_required(login_url='/login_render/')
+def ldapADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        ch_person = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_person')).first()
+        ch_ldapserver = request.POST.get('ch_ldapserver')
+        e_email = str.lower(request.POST.get('e_email'))
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ldap = cl_Ldapuser(
+            ch_person=ch_person,
+            ch_ldapserver=ch_ldapserver,
+            e_email=e_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+        )
+        ldap.save()
+        return redirect('ldapuser')
+    return render(request, 'tool/ldapuser.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def ldapEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    ldap = cl_Ldapuser.objects.all()
     context = {
-        'form': form,
+        'ldap': ldap,
         'permission':permission
-        }
+    }
     return render(request, 'tool/ldapuser.html', context)
 
+
+@login_required(login_url='/login_render/')
+def ldapUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    """
+    Function for update change_information
+    """
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_person = cl_Person.objects.get(ch_person_firstname=request.POST.get('ch_person'))
+        ch_ldapserver = request.POST.get('ch_ldapserver')
+        e_email = request.POST.get('e_email')
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ldap = cl_Ldapuser(
+            id=id,
+            ch_person=ch_person,
+            ch_ldapserver=ch_ldapserver,
+            e_email=e_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+        )
+        ldap.save()
+        return redirect('ldapuser')
+    return render(request, 'tool/ldapuser.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def ldapDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            ldap = cl_Ldapuser.objects.filter(id=i).first()
+            ldap.delete()
+    return redirect('ldapuser')
+
+
+
+
+
+
+########### External User ##########
 
 @login_required(login_url='/login_render/')
 def externaluser(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     ext = cl_Externaluser.objects.all()
+    call = cl_Person.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchstatus')
         if q != None:
             ext = cl_Externaluser.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/externaluser.html', {'ext': ext, 'permission':permission})
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(ext, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)        
+        
+    return render(request, 'tool/externaluser.html', {'ext': ext, 'permission':permission,'users':users,'call':call})
 
 
 @login_required(login_url='/login_render/')
 def extADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        ch_person = cl_Person.objects.get(
-            ch_person_firstname=request.POST.get('ch_person'))
+        ch_person = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_person')).first()
         ch_person_lastname = request.POST.get('ch_person_lastname')
         e_email = str.lower(request.POST.get('e_email'))
         ch_login = request.POST.get('ch_login')
@@ -2637,7 +2737,7 @@ def extUpdate(request, id):
     Function for update change_information
     """
     if request.method == "POST":
-        # id = request.POST.get('id')
+        id = request.POST.get('id')
         ch_person = cl_Person.objects.get(
             ch_person_firstname=request.POST.get('ch_person'))
         ch_person_lastname = request.POST.get('ch_person_lastname')
@@ -2660,27 +2760,133 @@ def extUpdate(request, id):
 
 
 @login_required(login_url='/login_render/')
-def extDelete(request, id):
-    ext = cl_Externaluser.objects.get(id=id)
-    ext.delete()
+def extDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            ext = cl_Externaluser.objects.filter(id=i).first()
+            ext.delete()
     return redirect('externaluser')
 
-#################################################
+
+################### ITSM USER   ##############################
 
 @login_required(login_url='/login_render/')
 def itsmuser(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    form = ItsmuserForm()
-    if request.method == 'POST':
-        form = ItsmuserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Data Add Successfully")
+    itsm = cl_ITSM_USER.objects.all()
+    call = cl_Person.objects.all()
+
+
+    if request.method == "GET":
+        q = request.GET.get('searchstatus')
+        if q != None:
+            itsm = cl_ITSM_USER.objects.filter(ch_status__icontains=q)
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(itsm, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)       
     context = {
-        'form': form,
-        'permission':permission
+        'users': users,
+        'permission':permission,
+        'itsm':itsm,
+        'call':call
         }
     return render(request, 'tool/itsmuser.html', context)
+
+
+@login_required(login_url='/login_render/')
+def itsmADD(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        ch_person = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_person')).first()
+        ch_email = str.lower(request.POST.get('ch_email'))
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ch_password = request.POST.get('ch_password')
+        ch_password_expiration = request.POST.get('ch_password_expiration')
+        dt_password_renewed_on = request.POST.get('dt_password_renewed_on')
+
+
+        itsm = cl_ITSM_USER(
+            
+            ch_person=ch_person,
+            ch_email=ch_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+            ch_password=ch_password,
+            ch_password_expiration=ch_password_expiration,
+            dt_password_renewed_on=dt_password_renewed_on
+        )
+        itsm.save()
+        return redirect('itsmuser')
+    return render(request, 'tool/itsmuser.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def itsmEdit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    itsm = cl_ITSM_USER.objects.all()
+    context = {
+        'itsm': itsm,
+        'permission':permission
+    }
+    return render(request, 'tool/itsmuser.html', context)
+
+
+@login_required(login_url='/login_render/')
+def itsmUpdate(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    """
+    Function for update change_information
+    """
+    if request.method == "POST":
+        id = request.POST.get('id')
+        ch_person = cl_Person.objects.get(ch_person_firstname=request.POST.get('ch_person'))
+        ch_email = str.lower(request.POST.get('ch_email'))
+        ch_login = request.POST.get('ch_login')
+        ch_language = request.POST.get('ch_language')
+        ch_status = request.POST.get('ch_status')
+        ch_password = request.POST.get('ch_password')
+        ch_password_expiration = request.POST.get('ch_password_expiration')
+        dt_password_renewed_on = request.POST.get('dt_password_renewed_on')
+
+
+        itsm = cl_ITSM_USER(
+            id = id,
+            ch_person=ch_person,
+            ch_email=ch_email,
+            ch_login=ch_login,
+            ch_language=ch_language,
+            ch_status=ch_status,
+            ch_password=ch_password,
+            ch_password_expiration=ch_password_expiration,
+            dt_password_renewed_on=dt_password_renewed_on
+        )
+        itsm.save()
+        return redirect('itsmuser')
+    return render(request, 'tool/itsmuser.html',{'permission':permission,'itsm':itsm})
+
+
+
+@login_required(login_url='/login_render/')
+def itsmDelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            itsm = cl_ITSM_USER.objects.filter(id=i).first()
+            itsm.delete()
+    return redirect('itsmuser')
+    
+    
+    
 
 
 @login_required(login_url='/login_render/')

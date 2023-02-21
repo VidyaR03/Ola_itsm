@@ -360,15 +360,31 @@ urlpatterns = [
     path("add_new_sms/", views.add_new_sms,name='add_new_sms'),
     path("sms_edit/<str:id>", views.sms_edit,name='sms_edit'),
 
-
     #URL for External User
     path("externaluser/", views.externaluser,name='externaluser'),
     path('extadd', views.extADD, name='extadd'),
     path('extedit', views.extEdit, name='extedit'),
     path('extupdate/<str:id>', views.extUpdate, name='extupdate'),
-    path('extdelete/<str:id>', views.extDelete, name='extdelete'),
+    path('extdelete/', views.extDelete, name='extdelete'),
     #Assign
     # path("tassign/", views.assignform, name='assign'),
+   
+    ##### url for LDAP user 
+    path("ldapuser/", views.ldapuser,name='ldapuser'),
+    path('ldapadd', views.ldapADD, name='ldapadd'),
+    path('ldapedit', views.ldapEdit, name='ldapedit'),
+    path('ldapupdate/<str:id>', views.ldapUpdate, name='ldapupdate'),
+    path('ldapdelete/', views.ldapDelete, name='ldapdelete'),
+   
+
+    ##### url for ITSM user 
+    path("itsmuser/", views.itsmuser,name='itsmuser'),
+    path('itsmadd', views.itsmADD, name='itsmadd'),
+    path('itsmedit', views.itsmEdit, name='itsmedit'),
+    path('itsmupdate/<str:id>', views.itsmUpdate, name='itsmupdate'),
+    path('itsmdelete/', views.itsmDelete, name='itsmdelete'),
+
+        
 
 
     #url for integration
