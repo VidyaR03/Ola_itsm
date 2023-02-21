@@ -235,18 +235,41 @@
                 <input name="ch_miname" value="{{i.ch_miname}}" type="text" class="form-control" required>
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Organization<a href="{% url 'new_organization' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+              </div> -->
+              <div class="form-group">
+                <span class="required-field"></span><label>Organization:<a href="{% url 'new_organization' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="{{i.ch_organization}}">{{i.ch_organization}}</option>
+                  {% for i in org %}
+                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="form-group">
+                <span class="required-field"></span><label>Middleware<a href="{% url 'newmiddleware' %}">
+                    <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_middleware" id="ch_middleware" style="min-height:30px;min-width:280px;"required>
+                  <option selected value="{{i.ch_middleware}}">{{i.ch_middleware}}</option>
+
+                  {% for i in middle %}
+                  <option value="{{i.ch_midname}}">{{i.ch_midname}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <!-- <div class="form-group">
                 <label>Middleware<a href="{% url 'newmiddleware' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <input name="ch_middleware" value="{{i.ch_middleware}}" type="text" class="form-control" required>
-              </div>
+              </div> -->
 
 
             </div>

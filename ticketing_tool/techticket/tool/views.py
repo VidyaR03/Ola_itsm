@@ -487,7 +487,7 @@ def LUpdate(request, id):
         # id = request.POST.get('id')
         ch_location_name = request.POST.get('ch_location_name')
         txt_address = request.POST.get('txt_address')
-        ch_organization = request.POST.get('ch_owner_organization')
+        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
         ch_city = request.POST.get('ch_city')
         i_pincode = request.POST.get('i_pincode')
         ch_country = request.POST.get('ch_country')
@@ -703,6 +703,7 @@ def Edit(request):
 
 @login_required(login_url='/login_render/')
 def Update(request, id):
+    team1 =cl_Team.objects.all()
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
@@ -1521,10 +1522,10 @@ def UUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        fk_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        fk_caller = cl_Person.objects.get(
-            ch_person_firstname=str.capitalize(request.POST.get('ch_Person')))
+        fk_organization = cl_New_organization.objects.filter(
+            ch_name=request.POST.get('ch_organization')).first()
+        fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
+
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -3287,6 +3288,15 @@ def sms_edit(request, id):
         return redirect('sms_display')
     return render(request, 'tool/sms_notifier.html',{'permission':permission})
 
+
+@login_required(login_url='/login_render/')
+def smsdelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            sms = sms_notifier.objects.filter(id=i).first()
+            sms.delete()
+    return redirect('sms_display')
 
 
 # =============================================================================
