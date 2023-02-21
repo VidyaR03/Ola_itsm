@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BOT_TOKEN="6060226398:AAH69ccQhASbfr7fJq2d1y0w2UbGZyo0Eds"
+BOT_URL="https://api.telegram.org/bot%s/"%BOT_TOKEN
+
+
 AUTH_USER_MODEL = 'tool.adminuser' # new
 # Application definition
 
@@ -59,6 +63,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
         "APP_DIRS": True,
+
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",

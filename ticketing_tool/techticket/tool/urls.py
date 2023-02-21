@@ -5,6 +5,9 @@ from django.conf.urls.static import static
 from .managers import CustomUserManager
 
 
+from .views import send_telegram_message
+
+
 urlpatterns = [
     path('', views.dashboard, name='home'),
     path("register/", views.registerPage, name='register'),
@@ -14,6 +17,9 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('logs/', views.view_logs, name='logs'),
     path('delete/', views.LogsDelete, name='logsdelete'),
+
+
+    path('send-telegram-message/', send_telegram_message, name='send_telegram_message'),
 
     
     #Url for person form
