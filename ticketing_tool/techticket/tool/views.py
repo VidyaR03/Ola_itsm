@@ -81,8 +81,8 @@ def dashboard(request):
     User = cl_User_request.objects.all().count()
     org = cl_New_organization.objects.all().count()
     service = cl_Service.objects.all().count()
-    change = cl_New_change.objects.all().count()
-    Assign = cl_User_request.objects.exclude(ch_assign_agent = 'Deallocate').count()
+    change = cl_New_change.objects.all().count()    
+    Assign = cl_User_request.objects.exclude(ch_assign_agent = 'Deallocate').count()    
     newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
     newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
@@ -1161,6 +1161,8 @@ def TDelete(request):
 @login_required(login_url='/login_render/')
 def newchange(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
+    org = cl_New_organization.objects.all()
+    call = cl_Person.objects.all()
     nchange = cl_New_change.objects.all()
     if request.method == "GET":
         allteam = cl_Team.objects.all()
@@ -1170,10 +1172,6 @@ def newchange(request):
             nchange = cl_New_change.objects.filter(ch_status__icontains=q)
 
     page = request.GET.get('page', 1)
-    org = cl_New_organization.objects.all()
-    call = cl_Person.objects.all()
-
-
     paginator = Paginator(nchange, 10)
     try:
         users = paginator.page(page)

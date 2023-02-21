@@ -169,6 +169,7 @@
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                <option selected value="">Please select Organization</option>
                 {% for i in org %}
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
@@ -179,6 +180,8 @@
                 <label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
+                  <option selected value="">Please select Status</option>
+
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
@@ -187,6 +190,8 @@
                 <span class="required-field"></span>
                 <label>Business Criticality</label>
                 <select name="ch_business_criticality" type="text" class="form-control" required>
+                  <option selected value="">Please select Business Criticality</option>
+
                   <option value="High">High</option>
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -213,6 +218,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
               <select name="ch_software" id="ch_software" style="min-height:30px;min-width:280px;">
+                <option selected value="">Please Select Software</option>
                 {% for i in soft %}
                 <option value="{{i.ch_sofname}}">{{i.ch_sofname}}</option>
                 {% endfor %}

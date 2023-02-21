@@ -192,6 +192,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please Select Organization</option>
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
@@ -202,6 +203,8 @@
                 <label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
+                  <option selected value="">Please select Status</option>
+
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
@@ -209,6 +212,8 @@
               <div class="form-group">
                 <label>Business Criticality</label>
                 <select name="ch_business_criticality" type="text" class="form-control" required>
+                  <option selected value="">Please select Business Criticality</option>
+
                   <option value="High">High</option>
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -225,6 +230,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_network_type" id="ch_network_type" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Network Type</option>
                   {% for i in nttype %}
                   <option value="{{i.ch_nname}}">{{i.ch_nname}}</option>
                   {% endfor %}
@@ -236,6 +242,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_brand" id="ch_brand" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Brand</option>
                   {% for i in brnd %}
                   <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
                   {% endfor %}
@@ -247,6 +254,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_model" id="ch_model" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Model</option>
                   {% for i in model %}
                   <option value="{{i.ch_modelname}}">{{i.ch_modelname}}</option>
                   {% endfor %}

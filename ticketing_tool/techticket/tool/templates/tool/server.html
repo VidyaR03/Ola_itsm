@@ -174,6 +174,8 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Organization/option>
+
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
@@ -184,6 +186,8 @@
                 <span class="required-field"></span><label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false">
+                  <option selected value="">Please select Status</option>
+
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
@@ -206,6 +210,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_os_family" id="ch_os_family" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select OS Family</option>
                   {% for i in osf %}
                   <option value="{{i.ch_fname}}">{{i.ch_fname}}</option>
                   {% endfor %}
@@ -217,6 +222,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_brand" id="ch_brand" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Brand</option>
                   {% for i in brnd %}
                   <option value="{{i.ch_brandname}}">{{i.ch_brandname}}</option>
                   {% endfor %}
@@ -228,6 +234,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_model" id="ch_model" style="min-height:30px;min-width:280px;" required>
+                  <option selected value=""> Please select Model </option>
                   {% for i in model %}
                   <option value="{{i.ch_modelname}}">{{i.ch_modelname}}</option>
                   {% endfor %}
@@ -239,6 +246,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="i_os_version" id="i_os_version" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Os Version</option>
                   {% for i in osv %}
                   <option value="{{i.ch_osname}}">{{i.ch_osname}}</option>
                   {% endfor %}
@@ -254,6 +262,7 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="i_os_license" id="i_os_license" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select OS License </option>
                   {% for i in ol %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
