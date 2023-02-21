@@ -381,6 +381,8 @@
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
                 <select name="ch_organization" id="fk_organization"  style="min-height:30px;min-width:280px;">
+                  <option selected value="">Please select Organization</option>
+
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
@@ -391,6 +393,8 @@
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <select name="ch_caller" id="fk_caller" style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Caller</option>
+
                 {% for i in team_person %}
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
@@ -611,14 +615,47 @@
               <label>ID</label>
               <input name="id" type="text" value="{{i.id}}" class="form-control" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label>Organization</label>
               <input name="ch_organization" value="{{i.fk_organization}}" type="text" class="form-control" required>
+            </div> -->
+            <div class="form-group">
+              <span class="required-field"></span><label>Organization:<a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+                <option selected value="{{i.fk_organization}}">{{i.fk_organization}}</option>
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="form-group">
+              <span class="required-field"></span><label>Caller:<a href="{% url 'client' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;" required>
+                <option selected value="{{i.fk_caller}}">{{i.fk_caller}}</option>
+                {% for i in team_person %}
+                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- <div class="form-group">
+              <label>Caller:<a href="{% url 'client' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <select name="ch_caller" id="fk_caller" style="min-height:30px;min-width:280px;">
+                {% for i in team_person %}
+                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
+                {% endfor %}
+              </select>
+            </div> -->
+
+            <!-- <div class="form-group">
               <label>Caller</label>
               <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Status</label>
               <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
@@ -638,7 +675,7 @@
             <div class="form-group">
               <label>Origin</label>
               <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
+                aria-label="Default select example" aria-invalid="false" >
                 <option value="Phone"> Phone
                 </option>
                 <option value="Email"> Email
@@ -748,7 +785,7 @@
             <div class="form-group">
               <label>Service</label>
               <select name="ch_sername" type="text" id="select_service" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
+                aria-label="Default select example" aria-invalid="false" required>
                 <options selected value="{{i.ch_service}}">{{i.ch_service}}</option>
                 {% for service in allservice %}
                 <option value="{{service.id}}">{{service.ch_ssname}}</option>
@@ -784,8 +821,10 @@
             </div> -->
             <div class="form-group">
               <label>Parent Request</label>
-              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" class="form-control">
-              <option value=0 >Select Parent Request</option>
+              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" class="form-control" required>
+              <option selected value="{{i.ch_parent_request_id}}">{{i.ch_parent_request_id}}</option>
+
+                <!-- <option value=0 >Select Parent Request</option> -->
               {% for j in ur %}
                 <option value="{{j.id}}">{{j.id}}</option>
               {% endfor %}

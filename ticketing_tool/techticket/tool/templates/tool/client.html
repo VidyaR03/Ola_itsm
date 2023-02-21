@@ -142,6 +142,8 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required  style="min-height:30px;min-width:280px;" style="min-height:30px;min-width:280px;" required>
+                  <option selected value="">Please select Organization</option>
+
                   {% for i in org %}
                   <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                   {% endfor %}
@@ -153,6 +155,8 @@
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                   <select name="ch_team_name" id="ch_team_name" style="min-height:30px;min-width:280px;" required>
+                    <option selected value="">Please select Team</option>
+
                     {% for i in team1 %}
                     <option value="{{i.ch_teamname}}">{{i.ch_teamname}}</option>
                     {% endfor %}
@@ -256,14 +260,38 @@
             <label>Last Name</label>
             <input name="ch_person_lastname" value="{{i.ch_person_lastname}}" type="text" class="form-control" required>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Organization</label>
             <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
+          </div> -->
+          <div class="form-group">
+            <span class="required-field"></span><label>Organization:<a href="{% url 'new_organization' %}">
+                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              </a></label>
+            <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
+              <option selected value="{{i.ch_organization}}">{{i.ch_organization}}</option>
+              {% for i in org %}
+              <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="form-group">
+            <span class="required-field"></span>
+            <label>Team<a href="{% url 'team'%}">
+                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+              </a></label>
+              <select name="ch_team_name" id="ch_team_name" class="form-control" style="min-height:30px;min-width:280px;" required>
+                <option selected value="{{i.ch_team}}">{{i.ch_team}}</option>
+
+                {% for i in team1 %}
+                <option value="{{i.ch_teamname}}">{{i.ch_teamname}}</option>
+                {% endfor %}
+              </select>              
+            </div>
+          <!-- <div class="form-group">
             <label>Team</label>
             <input name="ch_team_name" value="{{i.ch_team}}" type="text" class="form-control" required>
-          </div>
+          </div> -->
           <div class="form-group">
             <label>Status</label>
             <select name="ch_person_status" value="{{i.ch_person_status}}" type="text" class="form-control"

@@ -359,6 +359,9 @@ urlpatterns = [
     path("sms_display", views.sms_display,name='sms_display'),
     path("add_new_sms/", views.add_new_sms,name='add_new_sms'),
     path("sms_edit/<str:id>", views.sms_edit,name='sms_edit'),
+    path('smsdelete', views.smsdelete, name='smsdelete'),
+
+
 
 
     #URL for External User

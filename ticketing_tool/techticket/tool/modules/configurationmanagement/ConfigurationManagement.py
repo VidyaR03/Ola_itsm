@@ -161,7 +161,7 @@ def DocUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_version = request.POST.get('ch_version')
         txt_description = request.POST.get('txt_description')
         txt_text = request.POST.get('txt_text')
@@ -258,7 +258,7 @@ def appUpdate(request, id):
         id = request.POST.get('id')
         ch_name = request.POST.get('ch_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
@@ -373,7 +373,7 @@ def bussUpdate(request, id):
         id = request.POST.get('id')
         ch_business_name = request.POST.get('ch_business_name')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -481,7 +481,7 @@ def dbUpdate(request, id):
         id = request.POST.get('id')
         ch_dbname = request.POST.get('ch_dbname')
         ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
@@ -691,8 +691,9 @@ def MUpdate(request, id):
     if request.method == "POST":
         id = request.POST.get('id')
         ch_miname = request.POST.get('ch_miname')
-        ch_organization = cl_New_organization.objects.get(ch_name=request.POST.get('ch_organization'))
-        ch_middleware = cl_New_middleware.objects.get(ch_midname=request.POST.get('ch_middleware'))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first() 
+        ch_middleware = cl_New_middleware.objects.filter(ch_midname=request.POST.get('ch_middleware')).first()
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
             'dt_move_to_production_date')
@@ -803,12 +804,12 @@ def MWUpdate(request, id):
         id = request.POST.get('id')
         ch_midname = request.POST.get('ch_midname')
 
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
@@ -919,13 +920,13 @@ def osUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
         ch_osname = request.POST.get('ch_osname')
         ch_status = request.POST.get('ch_status')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
-        ch_software = cl_Software.objects.get(ch_sofname=request.POST.get('ch_software'))
+        ch_software = cl_Software.objects.filter(ch_sofname=request.POST.get('ch_software')).first()
         ch_software_license = request.POST.get('ch_software_license')
         ch_system = request.POST.get('ch_system')
         ch_path = request.POST.get('ch_path')
@@ -1033,8 +1034,7 @@ def waUpdate(request, id):
         ch_waname = request.POST.get('ch_waname')
         ch_organization = cl_New_organization.objects.get(
             ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_webserver = cl_Web_server.objects.get(
-            ch_wsname=request.POST.get('ch_webserver'))
+        ch_webserver = cl_Web_server.objects.filter(ch_wsname=request.POST.get('ch_webserver')).first()
         url_website = request.POST.get('url_website')
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get(
