@@ -1,6 +1,9 @@
+import json
 import random
 import time
+import logging
 import datetime
+import requests
 from datetime import *
 from .forms import *
 from io import BytesIO
@@ -30,7 +33,6 @@ from django.contrib.auth.decorators import login_required
 from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
-import json
 
 
 
@@ -40,14 +42,13 @@ import json
 
 
 
-# from telegram import Bot
+logger = logging.getLogger(__name__)
 
 # def send_telegram_message():
 #     bot = Bot(token=settings.BOT_TOKEN)
 #     bot.send_message(chat_id='ankush_narayanpure', text='Hello from Django!')
 
 
-import requests
 
 def send_telegram_message(token, chat_id, text):
 
@@ -86,14 +87,6 @@ def dashboard(request):
     newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
     newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
- 
-    try:
-        # send_telegram_message(token=settings.BOT_TOKEN, chat_id=1998582799, text="Hello from Django!")
-        send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
-
-    except Exception as exception:
-        print("Exception message: {}".format(exception))
-        
 
     context = {
         'User': User,
@@ -247,7 +240,6 @@ def document(request):
     for entry in doc:
         if entry.disc_Attachment == 'annonymous.pdf':
             entry.disc_Attachment = 'No File'
-           
     context = {
         'doc': doc,
         'users':users,
@@ -529,7 +521,6 @@ def LDelete(request):
 def new_organization(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     org = cl_New_organization.objects.all()
-     
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
@@ -543,7 +534,6 @@ def new_organization(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
     return render(request, 'tool/neworganization.html', {'org': org,'users':users,'permission':permission})
 
 
@@ -958,7 +948,6 @@ def software(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
     return render(request, 'tool/software.html', {'soft': soft,'users':users,'permission':permission})
 
 
@@ -1606,7 +1595,6 @@ def assign_URModal(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
-              
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
@@ -2031,7 +2019,6 @@ def sservice(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-   
     return render(request, 'tool/sservice.html', {'ser': ser,'s_sub_category':s_sub_category,'org':org,'users':users,'permission':permission})
 
 
