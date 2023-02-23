@@ -84,7 +84,7 @@
         </th>
         <th>ID</th>
         <th>Name</th>
-        <th>Service</th>
+        <!-- <th>Service</th> -->
         <th>Status</th>
         <th>SLA</th>
         <th>Request Type</th>
@@ -104,7 +104,7 @@
           </td>
           <td>{{i.id}}</td>
           <td>{{i.ch_subname}}</td>
-          <td>{{i.ch_sservice}}</td>
+          <!-- <td>{{i.ch_sservice}}</td> -->
           <td>{{i.ch_status}}</td>
           <td>{{i.ch_sla}}</td>
           <td>{{i.ch_request_type}}</td>
@@ -161,7 +161,7 @@
                 <span class="required-field"></span><label>Name</label>
                 <input name="ch_subname" type="text" class="form-control" required>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Service<a href="{% url 'service' %}">
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
                 <select name="ch_sservice" class="form-control" id="ch_sservice"
@@ -171,20 +171,18 @@
                   <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
                   {% endfor %}
                 </select>
-              </div>
+              </div> -->
               <div class="form-group">
                 <span class="required-field"></span><label>Status</label>
                 <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
                   aria-invalid="false" required>
                   <option selected value="">Please select Status</option>
-                  <option value="Assign">Assign</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Close">Close</option>
-                  <option value="Approve">Approve</option>
+                  <option value="Implementation">Implementation</option>
+                  <option value="Obsolete">Obsolete</option>
+                  <option value="Production">Production</option>
+                  <!-- <option value="Approve">Approve</option> -->
                 </select>
               </div>
-            </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <span class="required-field"></span><label>SLA<a href="{% url 'sla' %}">
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
@@ -195,6 +193,8 @@
                   {% endfor %}
                 </select>
               </div>
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
               <div class="form-group">
                 <span class="required-field"></span><label>Request Type</label>
                 <select name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
@@ -238,7 +238,7 @@
                 <span class="required-field"></span><label>Name</label>
                 <input name="ch_subname" value="{{i.ch_subname}}" type="text" class="form-control" required>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label>Service<a href="{% url 'service' %}">
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>
                 <select name="ch_sservice" class="form-control" id="ch_sservice"
@@ -248,20 +248,19 @@
                   <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
                   {% endfor %}
                 </select>
-              </div>
+              </div> -->
               <div class="form-group">
                 <span class="required-field"></span><label>Status</label>
                 <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
                   aria-label="Default select example" aria-invalid="false" required>
                   <option selected value="{{i.ch_status}}">{{i.ch_status}}</option>
-                  <option value="Assign">Assign</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Close">Close</option>
-                  <option value="Approve">Approve</option>
+                  <option value="Implementation">Implementation</option>
+                  <option value="Obsolete">Obsolete</option>
+                  <option value="Production">Production</option>
                 </select>
               </div>
             </div>
-            <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
+            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
                 <label>SLA<a href="{% url 'sla' %}">
                     <span class="glyphicon glyphicon-plus-sign"></span></a> </label>

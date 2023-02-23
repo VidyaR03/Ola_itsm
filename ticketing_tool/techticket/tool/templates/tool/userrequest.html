@@ -1,248 +1,7 @@
 {% extends 'tool/adminbase.html' %}
 {% load static %}
 {% block content %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-{% load static %}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Request</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CVarela+Round">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-    <script src="../../../static/js/demo.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="{% static '/css/location.css' %}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <style>
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .notification-drop {
-            font-family: 'Ubuntu', sans-serif;
-            color: rgb(0, 0, 0);
-        }
-
-        .notification-drop .item {
-            padding: 10px;
-            font-size: 20px;
-            position: relative;
-            border-bottom: 1px solid rgb(143, 57, 57);
-        }
-
-        .notification-drop .item:hover {
-            cursor: pointer;
-        }
-
-        .notification-drop .item i {
-            margin-left: 10px;
-        }
-
-        .notification-drop .item ul {
-            display: none;
-            position: absolute;
-            top: 100%;
-            background: rgb(214, 201, 201);
-            left: -250px;
-            /* right: 0; */
-            z-index: 1;
-            border-top: 1px solid #ddd;
-            scroll-behavior: smooth;
-            max-height: 40vh;
-            overflow: scroll;
-            justify-content: flex-start;
-
-        }
-
-        .notification-drop .item ul li {
-            font-size: 16px;
-            padding: 5px 5px 5px 5px;
-        }
-
-        .notification-drop .item ul li:hover {
-            background: rgb(192, 202, 42);
-            color: rgba(0, 0, 0, 0.8);
-        }
-
-        @media screen and (min-width: 500px) {
-            .notification-drop {
-                display: flex;
-                justify-content: flex-end;
-            }
-
-            .notification-drop .item {
-                border: none;
-            }
-        }
-
-        .notification-bell {
-            font-size: 25px;
-
-        }
-
-        /* .dropdown-menu {
-            max-height: 40vh;
-            overflow: scroll;
-            width: fit-content;
-        } */
-
-        .btn__badge {
-            background: #FF5D5D;
-            color: white;
-            font-size: 12px;
-            position: absolute;
-            top: 0;
-            right: 0px;
-            padding: 3px 10px;
-            border-radius: 45%;
-        }
-    </style>
-</head>
-
-
-<body> -->
-<!-- <div class="container">
-    <div class="row">
-        <div class="text-right">
-            <a href="{% url 'home' %}" class="btn btn-primary" role="button">Back to Home Page</a>
-            <a href="{% url 'configurationmanagement' %}" class="btn btn-primary" role="button">Back to Page</a>
-            <a href="{% url 'logout' %}" class="btn btn-danger" data-toggle="modal"><i
-                    class="material-icons">&#xE147;</i> <span>Hello, {{request.user}} Logout</span></a>
-            <div>
-                <ul class="notification-drop">
-                    <li class="item">
-                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i> <span
-                            class="btn__badge pulse-button ">{{ escalated_ur|length }}</span>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'escalate_notify' %}" class="btn btn-default" role="button">Mark
-                                    Read All</a></li>
-                            {% for i in escalated_ur %}
-                            <li>Change id {{ i.id }} has been Escalated</li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<!-- <div class="container" style="margin-top:30px; display: inline-block;">
-    <div class="row" style="margin-top: 5px;">
-        <div class="col-xl-12">
-            <form action="" method="get" class="form-inline">
-                <input type="text" class="form-control" name="searchstatus" placeholder="Search">
-                <input type="submit" class="btn btn-success" value="Search">
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- <div class="text-right">
-    <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal"><span>Add New User Request</span></a>
-</div><br> -->
-<!-- <div class="text-right">
-    <a href="#deletecl_User_requestModal" class="btn btn-danger" data-toggle="modal"><i
-            class="material-icons">delete</i> <span>Delete User Request</span></a>
-</div> -->
-
-<!-- <style>
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .notification-drop {
-        font-family: 'Ubuntu', sans-serif;
-        color: rgb(0, 0, 0);
-    }
-
-    .notification-drop .item {
-        padding: 10px;
-        font-size: 20px;
-        position: relative;
-        border-bottom: 1px solid rgb(143, 57, 57);
-    }
-
-    .notification-drop .item:hover {
-        cursor: pointer;
-    }
-
-    .notification-drop .item i {
-        margin-left: 10px;
-    }
-
-    .notification-drop .item ul {
-        display: none;
-        position: absolute;
-        top: 100%;
-        background: rgb(214, 201, 201);
-        left: -250px;
-        /* right: 0; */
-        z-index: 1;
-        border-top: 1px solid #ddd;
-        scroll-behavior: smooth;
-        max-height: 40vh;
-        overflow: scroll;
-        justify-content: flex-start;
-
-    }
-
-    .notification-drop .item ul li {
-        font-size: 16px;
-        padding: 5px 5px 5px 5px;
-    }
-
-    .notification-drop .item ul li:hover {
-        background: rgb(192, 202, 42);
-        color: rgba(0, 0, 0, 0.8);
-    }
-
-    @media screen and (min-width: 500px) {
-        .notification-drop {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .notification-drop .item {
-            border: none;
-        }
-    }
-
-    .notification-bell {
-        font-size: 25px;
-
-    }
-
-    .dropdown-menu {
-        max-height: 40vh;
-        overflow: scroll;
-        width: fit-content;
-    }
-
-    .btn__badge {
-        background: #FF5D5D;
-        color: white;
-        font-size: 12px;
-        position: absolute;
-        top: 0;
-        right: 0px;
-        padding: 3px 10px;
-        border-radius: 45%;
-    }
-</style> -->
 <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
   <div>
     <form action="" method="get" class="form-inline"
@@ -281,10 +40,10 @@
         <th>Organization</th>
         <th>Caller</th>
         <th>Status</th>
-        <th>Urgency</th>
+        <th>Priority</th>
         <th>Start Date</th>
         <th>Updated Date</th>
-        <th>Escalate After</th>
+        <th>Title</th>
         <th>Service</th>
         <th>Service Subcategory</th>
         <th>Parent Request</th>
@@ -313,10 +72,10 @@
         {% else %}
         <td>{{i.ch_status}}</td>
         {% endif %}
-        <td>{{i.ch_urgency}}</td>
+        <td>{{i.ch_priority}}</td>
         <td>{{i.dt_start_date}}</td>
         <td>{{i.dt_Updated_date}}</td>
-        <td>{{i.dt_escalation_date}}</td>
+        <td>{{i.ch_title}}</td>
         <td>{{i.ch_service}}</td>
         <td>{{i.ch_service_subcategory}}</td>
         <td>{{i.ch_parent_request_id}}</td>
@@ -330,7 +89,7 @@
 
         {% if permission.inci_m_e == "on" or permission == None %}
         <td>
-          <a href="#editcl_User_requestModal-{{i.id}}"class="edit" data-toggle="modal"><i class="material-icons"
+          <a href="#editcl_User_requestModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons"
               data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         </td>
         {% endif %}
@@ -380,19 +139,20 @@
               <span class="required-field"></span>  <label>Organization:<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-                <select name="ch_organization" id="fk_organization"  style="min-height:30px;min-width:280px;">
-                  <option selected value="">Please select Organization</option>
+              <select name="ch_organization" class="form-control" id="fk_organization"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Organization</option>
 
-                  {% for i in org %}
-                  <option value="{{i.ch_name}}">{{i.ch_name}}</option>
-                  {% endfor %}
-                </select>
+                {% for i in org %}
+                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="form-group">
               <span class="required-field"></span>  <label>Caller:<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_caller" id="fk_caller" style="min-height:30px;min-width:280px;">
+              <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;">
                 <option selected value="">Please select Caller</option>
 
                 {% for i in team_person %}
@@ -404,137 +164,66 @@
               <label>Status</label>
               <input class="form-control" name="ch_status" value="New" type="text" readonly>
             </div>
-
-            <!-- <div class="form-group">
-              <label>Status</label>
-              <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
-                <option value="New">New</option>
-                <option value="Approval_Awaited">Approval Awaited</option>
-                <option value="Approved">Approved</option>
-                <option value="Assigned">Assigned</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
-                <option value="Reopend">Reopend</option>
-              </select>
-            </div> -->
             <div class="form-group">
               <span class="required-field"></span>  <label>Origin</label>
               <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
-                <option value="Phone"> Phone
-                </option>
-                <option value="Email"> Email
-                </option>
-                <option value="Portal"> Portal
-                </option>
-                <option value="Monitoring"> Monitoring
-                </option>
+                <option value="">Please Select Origin</option>
+                <option value="Phone"> Phone</option>
+                <option value="Email"> Email</option>
+                <option value="Portal"> Portal</option>
+                <option value="Monitoring"> Monitoring</option>
               </select>
             </div>
             <div class="form-group">
               <span class="required-field"></span>  <label>Title</label>
-              <input class="form-control" name="ch_title" type="text" required>
+              <input class="form-control" name="ch_title" type="text" placeholder="Enter Title" required>
             </div>
             <div class="form-group">
               <label>Request Type</label>
-              <select id="requesttype"   name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
-                <option value="Incident"> Incident
-                </option>
-                <option value="Service"> Service
-                </option>
-               </select>
+              <select name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false" required>
+                <option value="">Please Select Request Type</option>
+                <option value="Incident">Incident</option>
+                <option value="Service">Service</option>
+              </select>
             </div>
             <div class="form-group">
               <span class="required-field"></span>  <label>Impact</label>
               <select name="ch_impact" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
-                <option value="A deparment"> A deparment
-                </option>
-                <option value="A person"> A person
-                </option>
-                <option value="A service"> A service
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <span class="required-field"></span> <label>Urgency</label>
-              <select name="ch_urgency" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
+                <option value="">Please Select Impact</option>
+                <option value="deparment"> A deparment</option>
+                <option value="person"> A person</option>
+                <option value="service"> A service</option>
               </select>
             </div>
             <div class="form-group">
               <label>Priority</label>
               <select name="ch_priority" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
+                <option value="">Please Select Priority</option>
+                <option value="Critical"> Critical</option>
+                <option value="High"> High</option>
+                <option value="Medium"> Medium</option>
+                <option value="Low"> Low</option>
               </select>
             </div>
-
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
-            <!--start of right half -->
-            <!-- <div class="form-group">
-              <label for="dt_start_date">Start Date</label>
-              <input class="form-control w-25" type="datetime-local" name="dt_start_date"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div> -->
             <div class="form-group">
               <span class="required-field"></span>  <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
-              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
-            </div>
-            <div class="form-group">
-              <span class="required-field"></span>  <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
-              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_Updated_date"
-              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
-            </div>
-
-            <!-- <div class="form-group">
-              <label for="dt_start_date">Updated Date</label>
-              <input class="form-control w-25" type="datetime-local" name="dt_Updated_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span> <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
-              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_escalation_date"
-              pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
-
-            <!-- <div class="form-group">
-              <label for="dt_escalation_date">Escalate After</label>
-              <input class="form-control" type="datetime-local" name="dt_escalation_date"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div> -->
-            <!-- <div class="form-group">
-                            <label>Service</label>:<a href="{% url 'new_organization' %}">
-                                <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                              </a></label>
-                              <select name="ch_service" id="ch_service"style="min-height:30px;min-width:280px;">
-                                {% for i in ser %}
-                              <option value="{{i.ch_ssname}}">{{i.ch_ssname}}</option>
-                              {% endfor %}
-                            </select>
-                        </div> -->
             <div class="form-group">
-              <span class="required-field"></span> <label>Service</label>
-              <select name="ch_sername" type="text" id="select_service" class="form-control"
+              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
+              <input class="form-control w-25" id="datetimepicker2" type="datetime-local" name="dt_Updated_date"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+            </div>
+            <div class="form-group">
+              <label>Service</label>
+              <select name="ch_sername" type="text" id="select_service_a" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
                 <option selected>Select Service</option>
                 {% for service in allservice %}
@@ -543,56 +232,50 @@
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Service Subcategory</label>
-              <select name="ch_service_subcategory" id="select_subcategory" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option>Select a Service First</option>
+              <label>Service Sub-Category</label>
+              <select name="ch_ser_sub" id="select_service_subcate_a" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option value="">Please Select Service</option>
               </select>
             </div>
             <!-- <div class="form-group">
-              <label>Service Subcategory</label>
-              <select name="ch_subcatname" id="select_subcategory" type="text" class="form-control"
+              <label>Service SLT for TTO</label>
+              <select name="select_service_tto_slt" id="select_tto_slt_a" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
-                <option selected>Select Subcategory </option>
-                {% for subcat in ser_sub %}
-                <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
+                <option value="">Please Select Sub-Category</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Service SLT for TTR</label>
+              <select name="select_service_ttr_slt" id="select_ttr_slt_a" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option value="">Please Select Sub-Category</option>
+              </select>
+            </div> -->
+            <div class="form-group">
+              <label>Parent Request</label>
+              <select name="ch_parent_request_id" class="form-control" id="ch_parent_request"
+                style="min-height:30px;min-width:280px;">
+                <option value="">Please Select Parent Request</option>
+                {% for j in ur %}
+                <option value="{{j.id}}">{{j.id}}</option>
                 {% endfor %}
               </select>
-            </div> -->
-            <!-- <div class="form-group">
-                            <label>Service Subcategory</label>
-                            <input class="form-control" name="ch_service_subcategory" type="text">
-                        </div> -->
-            <div class="form-group">
-              <span class="required-field"></span> <label>Parent Request</label>
-              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" >
-              <option value=0 >Select Parent Request</option>
-              {% for j in ur %}
-                <option value="{{j.id}}">{{j.id}}</option>
-              {% endfor %}
-            </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Parent Change</label>
-              <select  name="ch_parent_change_id" id="ch_parent_change" style="min-height:30px;min-width:280px;" required>
-              <option value=''>Select Parent Change</option>
-              {% for k in nchange %}
-                <option value="{{k.id}}">{{k.id}}</option>
-              {% endfor %}
-            </select>
-            </div>
-            <!-- <div class="form-group">
               <label>Parent Change</label>
-              <input class="form-control" name="ch_parent_change" type="text">
-            </div> -->
+              <select name="ch_parent_change_id" class="form-control" id="ch_parent_change"
+                style="min-height:30px;min-width:280px;">
+                <option value=0>Please Select Parent Change</option>
+                {% for k in nchange %}
+                <option value="{{k.id}}">{{k.id}}</option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="form-group">
               <label>Description</label>
               <input class="form-control" name="txt_description" type="text">
             </div>
-            <!-- <div class="form-group">
-              <label>Agent</label>
-              <input class="form-control" name="ch_assign_agent" value="Deallocated" type="text" disabled>
-            </div> -->
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -615,264 +298,228 @@
             <h3 class="modal-title">Edit User Request</h3>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
-          <!-- left half of form -->
+          <!--start of left half -->
           <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
-              <label>ID</label>
-              <input name="id" type="text" value="{{i.id}}" class="form-control" required>
-            </div>
-            <!-- <div class="form-group">
-              <label>Organization</label>
-              <input name="ch_organization" value="{{i.fk_organization}}" type="text" class="form-control" required>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span><label>Organization:<a href="{% url 'new_organization' %}">
+              <label>Organization:<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
-                <option selected value="{{i.fk_organization}}">{{i.fk_organization}}</option>
+              <select name="ch_organization" class="form-control" id="fk_organization"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.fk_organization }}">{{ i.fk_organization }}</option>
                 {% for i in org %}
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span><label>Caller:<a href="{% url 'client' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;" required>
-                <option selected value="{{i.fk_caller}}">{{i.fk_caller}}</option>
-                {% for i in team_person %}
-                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <!-- <div class="form-group">
               <label>Caller:<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_caller" id="fk_caller" style="min-height:30px;min-width:280px;">
+              <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.fk_caller }}">{{ i.fk_caller }}</option>
                 {% for i in team_person %}
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
               </select>
-            </div> -->
-
-            <!-- <div class="form-group">
-              <label>Caller</label>
-              <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span>  <label>Status</label>
-              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label>Status</label>
-              <select name="ch_status" type="text" value="{{i.ch_status}}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Active"> Active
-                </option>
-                <option value="Inactive"> Inactive
-                </option>
-                <option value="New"> New
-                </option>
-              </select>
-            </div> -->
+              <input class="form-control" name="ch_status" value="{{i.ch_status}}" type="text" readonly>
+            </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Origin</label>
-              <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
-                aria-label="Default select example" aria-invalid="false" >
-                <option value="Phone"> Phone
-                </option>
-                <option value="Email"> Email
-                </option>
-                <option value="Portal"> Portal
-                </option>
-                <option value="Monitoring"> Monitoring
-                </option>
+              <label>Origin</label>
+              <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option selected value="{{ i.ch_origin }}">{{ i.ch_origin }}</option>
+                <option value="Phone"> Phone</option>
+                <option value="Email"> Email</option>
+                <option value="Portal"> Portal</option>
+                <option value="Monitoring"> Monitoring</option>
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span>  <label>Title</label>
-              <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" required>
+              <label>Title</label>
+              <input class="form-control" name="ch_title" value="{{i.ch_title}}" type="text" placeholder="Enter Title" required>
             </div>
             <div class="form-group">
               <label>Request Type</label>
-              <select id="requesttype"  name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false">
-                <option selected value="{{i.ch_request_type}}">{{i.ch_request_type}}</option>
-                <option value="Incident"> Incident
-                </option>
-                <option value="Service"> Service
-                </option>
-               </select>
+              <select name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false" required>
+                <option selected value="{{ i.ch_request_type }}">{{ i.ch_request_type }}</option>
+                <option value="Incident">Incident</option>
+                <option value="Service">Service</option>
+              </select>
             </div>
             <!-- <div class="form-group">
               <span class="required-field"></span>  <label>Request Type</label>
               <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control" required>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span>  <label>Impact</label>
-              <select name="ch_impact" type="text" value="{{i.ch_impact}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="A deparment"> A deparment
-                </option>
-                <option value="A person"> A person
-                </option>
-                <option value="A service"> A service
-                </option>
+              <label>Impact</label>
+              <select name="ch_impact" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option selected value="{{ i.ch_impact }}">{{ i.ch_impact }}</option>
+                <option value="deparment"> A deparment</option>
+                <option value="person"> A person</option>
+                <option value="service"> A service</option>
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span>  <label>Urgency</label>
-              <!-- <input name="ch_urgency" type="text"  value="{{i.ch_urgency}}"   class="form-control"  required> -->
-              <select name="ch_urgency" type="text" value="{{i.ch_urgency}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
+              <label>Priority</label>
+              <select name="ch_priority" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option selected value="{{ i.ch_priority }}">{{ i.ch_priority }}</option>
+                <option value="Critical"> Critical</option>
+                <option value="High"> High</option>
+                <option value="Medium"> Medium</option>
+                <option value="Low"> Low</option>
               </select>
             </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
-              <span class="required-field"></span>  <label>Priority</label>
-              <!-- <input name="ch_priority" type="text"    value="{{i.ch_priority}}" class="form-control"  required> -->
-              <select name="ch_priority" type="text" value="{{i.ch_priority}}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
                 value="{{ i.dt_start_date|date:'Y-m-d\TH:i' }}"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" readonly>
             </div>
             <div class="form-group">
               <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
-              <input class="form-control w-25" id="dt_Updated_date" type="datetime-local" name="dt_Updated_date"
-                value="{{ i.dt_Updated_date|date:'Y-m-d\TH:i' }}"
+              <input class="form-control w-25" id="datetimepicker_{{ i.id }}" type="datetime-local" name="dt_Updated_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
-
             <div class="form-group">
-              <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
-              <input class="form-control w-25" id="dt_escalation_date" type="datetime-local" name="dt_escalation_date"
-                value="{{ i.dt_escalation_date|date:'Y-m-d\TH:i' }}"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div>
-            <!-- <div class="form-group">
-              <label for="bday">Update Date</label>
-              <input type="date" id='current_date' value="{% now 'Y-m-d' %}" class="form-control">
-              <span class="validity"></span>
-            </div> -->
-            <!-- <div class="form-group">
               <label>Service</label>
-              <select name="ch_sername"  type="text" id="select_service" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option selected>Select Service</option>
-                {% for service in allservice %}
-                <option value="{{service.id}}">{{service.ch_ssname}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Service Subcategory</label>
-              <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option selected>Select Subcategory </option>
-                {% for subcat in ser_sub %}
-                <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
-                {% endfor %}
-              </select>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span>  <label>Service</label>
-              <select name="ch_sername" type="text" id="select_service" class="form-control"
+              <select name="ch_sername" type="text" id="select_service_{{ i.id }}" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
-                <options selected value="{{i.ch_service}}">{{i.ch_service}}</option>
+                <option selected value="{{ i.ch_service_id }}">{{ i.ch_service }}</option>
                 {% for service in allservice %}
                 <option value="{{service.id}}">{{service.ch_ssname}}</option>
                 {% endfor %}
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span>  <label>Service Subcategory</label>
-              <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <options selected value="{{i.ch_service_subcategory}}">{{i.ch_service_subcategory}}</option>
-                  {% for subcat in ser_sub %}
-                <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
-                {% endfor %}
+              <label>Service Sub-Category</label>
+              <select name="ch_ser_sub" id="select_service_subcate_{{ i.id }}" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option selected value="{{ i.ch_service_subcategory_id }}">{{ i.ch_service_subcategory }}</option>
               </select>
             </div>
             <!-- <div class="form-group">
-              <label>Service</label>
-              <select name="ch_sername" type="text" id="eselect_service" class="form-control"
+              <label>Service SLT</label>
+              <select name="select_service_slt" id="select_slt_{{ i.id }}" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
-                <option selected>Select Service</option>
-                {% for service in allservice %}
-                <option value="{{service.id}}">{{service.ch_ssname}}</option>
-                {% endfor %}
+                <option selected value="{{ i.ch_service_slts_id }}">{{ i.ch_service_slts }}</option>
+              </select>
+            </div> -->
+            <!-- <div class="form-group">
+              <label>Service SLT for TTO</label>
+              <select name="select_service_tto_slt" id="select_tto_slt_{{ i.id }}" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option value="">Please Select Sub-Category</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Service Subcategory</label>
-              <select name="ch_service_subcategory" id="eselect_subcategory" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option>Select a Service First</option>
+              <label>Service SLT for TTR</label>
+              <select name="select_service_ttr_slt" id="select_ttr_slt_{{ i.id }}" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option value="">Please Select Sub-Category</option>
               </select>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span>  <label>Parent Request</label>
-              <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" class="form-control" required>
-              <option selected value="{{i.ch_parent_request_id}}">{{i.ch_parent_request_id}}</option>
-
-                <!-- <option value=0 >Select Parent Request</option> -->
-              {% for j in ur %}
-                <option value="{{j.id}}">{{j.id}}</option>
-              {% endfor %}
-            </select>
-            </div>
-            <!-- <div class="form-group">
               <label>Parent Request</label>
-              <input name="ch_parent_request_id" type="text" value="{{i.ch_parent_request_id}}" class="form-control" required>
-            </div> -->
+              <select name="ch_parent_request_id" class="form-control" id="ch_parent_request"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_parent_request }}">{{ i.ch_parent_request }}</option>
+                {% for j in ur %}
+                <option value="{{j.id}}">{{j.id}}</option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="form-group">
-              <span class="required-field"></span>  <label>Parent Change</label>
-              <input name="ch_parent_change_id" type="text" value="{{i.ch_parent_change_id}}" class="form-control" required>
+              <label>Parent Change</label>
+              <select name="ch_parent_change_id" class="form-control" id="ch_parent_change"
+                style="min-height:30px;min-width:280px;">
+                {% if i.ch_parent_change_id is none %}
+                <option selected value=0>None</option>
+                {% else %}
+                  <option selected value="{{ i.ch_parent_change_id }}">{{ i.ch_parent_change_id }}</option>
+                {% endif %}
+                {% for k in nchange %}
+                <option value="{{k.id}}">{{k.id}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="form-group">
               <label>Description</label>
-              <input name="txt_description" type="text" value="{{i.txt_description}}" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label>Agent</label>
-              <input name="ch_assign_agent" value="{{i.ch_assign_agent}}" type="text" placeholder="Deallocate" class="form-control">
+              <input class="form-control" value="{{ i.txt_description }}" name="txt_description" type="text">
             </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-            <input type="submit" class="btn btn-info" value="Update">
+            <input type="submit" class="btn btn-success" value="Update">
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- For Subcategory in service for EDIT model-->
+<script>
+  $("#select_service_{{ i.id }}").change(function () {
+    var serviceId = $(this).val();
+    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+    $.ajax({
+      method: "GET",
+      url: "{% url 'get_SubCategory_by_service_for_UR' %}",
+      data: {
+        serviceId,
+        csrfmiddlewaretoken: csrf
+      },
+      success: function (subcategory_list) {
+
+        subcategory_id = [];
+        subcategory_ch_subname = [];
+        subcategory_ch_request_type = [];
+
+        for (let index = 0; index < subcategory_list.length; index++) {
+          const queryset = subcategory_list[index];
+
+          for (let j = 0; j < queryset.length; j++) {
+            subcategory_id_in_service = queryset[j].id
+            subcategory_ch_subname_in_service = queryset[j].ch_subname
+            subcategory_ch_request_type_in_service = queryset[j].ch_request_type
+
+            subcategory_id.push(subcategory_id_in_service);
+            subcategory_ch_subname.push(subcategory_ch_subname_in_service);
+            subcategory_ch_request_type.push(subcategory_ch_request_type_in_service)
+          }
+        }
+        for (let i = 0; i < subcategory_id.length; i++) {
+          var sltSelect = $("#select_service_subcate_{{ i.id }}");
+          sltSelect.empty();
+          $.each(subcategory_id, function (index, subCate_id) {
+            const option = $('<option></option>').attr('value', subCate_id).text(subcategory_ch_subname[index] + " : " + subcategory_ch_request_type[index]);
+            sltSelect.append(option);
+          })
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log('Error: ' + error);
+      }
+    });
+  });
+
+</script>
+
+<script>
+  var date = new Date();
+  var minDate = date.toISOString().substring(0, 16);
+  document.getElementById("datetimepicker_{{ i.id }}").min = minDate;
+</script>
+
 {% endfor %}
 
 
@@ -901,10 +548,6 @@
           <select name="ch_status" id="select_person" type="text" class="form-control"
             aria-label="Default select example" aria-invalid="false">
             <option>Select a Team First</option>
-            <!-- {% for person in team_person %}
-            <option value="{{person.ch_employee_number}}">{{person.ch_employee_number}} :
-              {{person.ch_person_firstname}}</option>
-            {% endfor %} -->
           </select>
         </div>
         <div class="modal-footer">
@@ -923,8 +566,6 @@
     });
   });
 </script>
-
-</html> 
 
 <!-- for delete change -->
 <script>
@@ -966,81 +607,59 @@
   })
 </script>
 
-<!-- For service and service Subcategory -->
+
+<!-- For Subcategory in service for ADD model -->
 <script>
-  $("#select_service").change(function () {
+  $("#select_service_a").change(function () {
     var serviceId = $(this).val();
     var csrf = $('input[name=csrfmiddlewaretoken]').val();
-    // Make an AJAX request to the server
-    // alert(serviceId)
-    // alert(serviceId)
     $.ajax({
       method: "GET",
-      url: "{% url 'get_service_sub_by_service' %}",
+      url: "{% url 'get_SubCategory_by_service_for_UR' %}",
       data: {
         serviceId,
         csrfmiddlewaretoken: csrf
       },
-      success: function (subcategory) {
-        // Update the options of the service dropdown
-        var catoSelect = $("#select_subcategory");
-        catoSelect.empty();
-        $.each(subcategory, function (index, cato) {
-          console.log(cato.id, cato.name)
-          catoSelect.append($("<option>", {
-            id: 'select_subcategory',
-            value: cato.id,
-            text: cato.name
-          }));
-        });
+      success: function (subcategory_list) {
+
+        subcategory_id = [];
+        subcategory_ch_subname = [];
+        subcategory_ch_request_type = [];
+
+        for (let index = 0; index < subcategory_list.length; index++) {
+          const queryset = subcategory_list[index];
+
+          for (let j = 0; j < queryset.length; j++) {
+            subcategory_id_in_service = queryset[j].id
+            subcategory_ch_subname_in_service = queryset[j].ch_subname
+            subcategory_ch_request_type_in_service = queryset[j].ch_request_type
+
+            subcategory_id.push(subcategory_id_in_service);
+            subcategory_ch_subname.push(subcategory_ch_subname_in_service);
+            subcategory_ch_request_type.push(subcategory_ch_request_type_in_service)
+          }
+        }
+        for (let i = 0; i < subcategory_id.length; i++) {
+          var sltSelect = $("#select_service_subcate_a");
+          sltSelect.empty();
+          $.each(subcategory_id, function (index, subCate_id) {
+            const option = $('<option></option>').attr('value', subCate_id).text(subcategory_ch_subname[index] + " : " + subcategory_ch_request_type[index]);
+            sltSelect.append(option);
+          })
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log('Error: ' + error);
       }
     });
   });
 
 </script>
-
-<!-- For service and service Subcategory -->
-<script>
-  $("#eselect_service").change(function () {
-    var serviceId = $(this).val();
-    var csrf = $('input[name=csrfmiddlewaretoken]').val();
-    // Make an AJAX request to the server
-    // alert(serviceId)
-    // alert(serviceId)
-    $.ajax({
-      method: "GET",
-      url: "{% url 'get_service_sub_by_service' %}",
-      data: {
-        serviceId,
-        csrfmiddlewaretoken: csrf
-      },
-      success: function (subcategory) {
-        // Update the options of the service dropdown
-        var catoSelect = $("#eselect_subcategory");
-        catoSelect.empty();
-        $.each(subcategory, function (index, cato) {
-          console.log(cato.id, cato.name)
-          catoSelect.append($("<option>", {
-            id: 'eselect_subcategory',
-            value: cato.id,
-            text: cato.name
-          }));
-        });
-      }
-    });
-  });
-
-</script>
-
-
-
 
 <script>
   $("#select_team").change(function () {
     var teamId = $(this).val();
     var csrf = $('input[name=csrfmiddlewaretoken]').val();
-    // Make an AJAX request to the server
-    // alert(teamId)
     $.ajax({
       method: "GET",
       url: "{% url 'get_people_by_team' %}",
@@ -1081,7 +700,7 @@
         } else {
           //console.log(id)
           var p = document.getElementById('select_person').value
-          console.log(p,"person id")
+          console.log(p, "person id")
           $.ajax({
             url: "{% url 'assign_UR' %}",
             method: "POST",
@@ -1124,8 +743,6 @@
   }); 
 </script>
 
-
-
 <!-- For Approve Change -->
 <script>
   $(document).ready(function () {
@@ -1147,9 +764,9 @@
               csrfmiddlewaretoken: csrf
             },
             error: function (response) {
-              if (data.result === 'success'){
-              alert("Approval Mail Send Succefully...!")
-              location.reload();
+              if (data.result === 'success') {
+                alert("Approval Mail Send Succefully...!")
+                location.reload();
               }
               else {
                 alert("Fail..! Please Configure Email Sender Details")
@@ -1162,15 +779,12 @@
     })
   })
 </script>
+
 <script>
   var date = new Date();
   var minDate = date.toISOString().substring(0, 16);
   document.getElementById("datetimepicker1").min = minDate;
   document.getElementById("datetimepicker2").min = minDate;
-  // document.getElementById("datetimepicker3").min = minDate;
 </script>
-
-
-<!-- </html> -->
 
 {% endblock content %}
