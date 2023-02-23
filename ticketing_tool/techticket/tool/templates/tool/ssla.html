@@ -137,7 +137,7 @@
                   <div class="form-check" style="background-color: white; width: 450px;">
                     <input class="form-check-input" name="slt_ids" type="checkbox" value="{{ slt.id }}"
                       id="{{ slt.id }}">
-                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
+                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.id }} : {{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -218,7 +218,7 @@
                   {% for slt in slts %}
                   <div class="form-check" style="background-color: white; width: 450px;">
                     <input class="form-check-input" name="e_slt_id_{{ i.id }}" type="checkbox" value="{{ slt.id }}">
-                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
+                    <label class="form-check-label" for="{{ slt.id }}">{{ slt.id }} : {{ slt.ch_name }} : {{ slt.ch_priority }} : {{ slt.ch_request_type }} : {{ slt.ch_metric }} : {{ slt.ch_value }} : {{ slt.ch_unit }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -237,9 +237,10 @@
               <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
               <script>
                 $(".edit_btn").click(function () {
+
                   var slaId = $(this).parent()[0].id;
                   var csrf = $('input[name=csrfmiddlewaretoken]').val();
-          
+                  // alert(slaId)
                   $.ajax({
                     method: "GET",
                     url: "{% url 'get_slt_by_sla' %}",
@@ -248,10 +249,8 @@
                       csrfmiddlewaretoken: csrf
                     },
                     success: function (queryset_list) {
-          
                       all_slts = document.querySelectorAll('input[name="e_slt_id_{{ i.id }}"]');
                       selected_slt = [];
-          
                       for (let index = 0; index < queryset_list.length; index++) {
                         const queryset = queryset_list[index];
                         for (let j = 0; j < queryset.length; j++) {
@@ -260,9 +259,9 @@
                         }
                       }
           
-                      for (let i = 0; i < selected_slt.length; i++) {
-                        for (let j = 0; j < all_slts.length; j++) {
-                          if (all_slts[j].value === selected_slt[i]) {
+                      for (let i = 0; i < all_slts.length; i++) {
+                        for (let j = 0; j < selected_slt.length; j++) {
+                          if (all_slts[i].value === selected_slt[j]) {
                             const checkboxes = document.getElementsByName("e_slt_id_{{ i.id }}");
                             checkboxes[i].checked = true;
                           }

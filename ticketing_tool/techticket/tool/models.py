@@ -62,7 +62,6 @@ class cl_Web_server(models.Model):
         db_table = 'cl_Web_server'
 
 
-
 ############ Brand #############
 
 class cl_Brand(models.Model):
@@ -213,9 +212,6 @@ class cl_Team(models.Model):
     #         max = cl_Team.objects.aggregate(id_max=Max('id'))['id_max']
     #         self.id = "{}{:05s}".format('R', max if max is not None else 1)
     #     super().save(*kwargs)
-
-    # print(id)
-
     # tid = models.CharField(max_length=17,unique=True, editable=False)
     
     # ch_organization = models.CharField(max_length=100,null=True)
@@ -624,13 +620,15 @@ class cl_User_request(models.Model):
     ch_title = models.CharField(max_length=100, null=True)
     ch_request_type = models.CharField(max_length=100, null=True)
     ch_impact = models.CharField(max_length=100, null=True)
-    ch_urgency = models.CharField(max_length=100, null=True)
     ch_priority = models.CharField(max_length=100, null=True)
     dt_start_date = models.DateTimeField(default=datetime.now)
     dt_Updated_date = models.DateTimeField(default=datetime.now)
-    dt_escalation_date = models.DateTimeField(default=datetime.now)
+    # dt_TTR_escalation_date = models.DateTimeField(default=datetime.now, null=True,)
+    # dt_TTO_escalation_date = models.DateTimeField(default=datetime.now, null=True,)
     ch_service = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
     ch_service_subcategory = models.ForeignKey('cl_Service_subcategory', on_delete=models.CASCADE, null=True, blank=True)
+    # ch_service_tto_slts = models.ForeignKey('cl_Slt', on_delete=models.CASCADE, null=True, blank=True,related_name='ch_service_tto_slts')
+    # ch_service_ttr_slts = models.ForeignKey('cl_Slt', on_delete=models.CASCADE, null=True, blank=True, related_name='ch_service_ttr_slts')
     ch_parent_request = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_change = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
@@ -675,13 +673,11 @@ class cl_Sla(models.Model):
         db_table = 'cl_Sla'
 
 
-
 class cl_Service_subcategory(models.Model):
-
     """Models which create the table for Provider Contract"""
     id = models.AutoField(primary_key=True, editable=False)
     ch_subname = models.CharField(max_length=100, null=True)
-    ch_sservice = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
+    # ch_sservice = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
     ch_status = models.CharField(max_length=100, null=True)
     ch_sla = models.ForeignKey(cl_Sla, on_delete=models.CASCADE, null=True, blank=True)
     ch_request_type = models.CharField(max_length=100, null=True)
@@ -706,6 +702,7 @@ class cl_Service(models.Model):
     txt_description = models.TextField()
 
     def __str__(self):
+        
         return self.ch_ssname
 
     class Meta:

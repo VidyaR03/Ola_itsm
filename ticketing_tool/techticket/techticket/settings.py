@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'tool',    
+    'tool', 
 ]
 
 MIDDLEWARE = [
@@ -180,6 +180,7 @@ EMAIL_PORT = ""
 EMAIL_USE_SSL=True
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
+
 
 
 # Disable Django's logging setup

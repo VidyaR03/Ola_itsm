@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from .managers import CustomUserManager
 
 
-from .views import send_telegram_message
+# from .views import send_telegram_message
 
 
 urlpatterns = [
@@ -17,11 +17,7 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('logs/', views.view_logs, name='logs'),
     path('delete/', views.LogsDelete, name='logsdelete'),
-
-
-    path('send-telegram-message/', send_telegram_message, name='send_telegram_message'),
-
-    
+   
     #Url for person form
     path('add', views.ADD, name='add'),
     # path('edit', views.Edit, name='edit'),
@@ -37,7 +33,7 @@ urlpatterns = [
     path('cdelete', views.CDelete, name='cdelete'),
     path('assign_change', views.assign_changeModal, name='assign_change'),
     path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
-    path("get_service_sub_by_service", views.get_service_sub_by_service, name="get_service_sub_by_service"),
+    path("get_service_sub_by_service_for_service_html", views.get_service_sub_by_service_for_service_html, name="get_service_sub_by_service_for_service_html"),
 
 
     #Url For Team form
@@ -131,9 +127,13 @@ urlpatterns = [
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/', views.UDelete, name='udelete'),
-    path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+    # path('escalate_notify', views.escalate_notify, name='escalate_notify'),
     path('sendMailUR', views.send_approval_Mail_UR, name='sendMailUR'),
     path('assign_UR', views.assign_URModal, name='assign_UR'),
+    path("get_SubCategory_by_service_for_UR", views.get_SubCategory_by_service_for_UR, name="get_SubCategory_by_service_for_UR"),
+    # path("get_slt_by_subCategory_for_UR", views.get_slt_by_subCategory_for_UR, name="get_slt_by_subCategory_for_UR"),
+
+
 
 
 

@@ -10,7 +10,6 @@ from io import BytesIO
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-# from tool.models import cl_Location, cl_Service, cl_Software,cl_New_organization
 from tool.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
@@ -36,19 +35,11 @@ from django.conf import settings
 
 
 
+###################### DONT DELETE THIS CODEEEEEEE ######################
 
-############################# Telegram ####################################
+############################# Telegram ########################
 
-
-
-
-logger = logging.getLogger(__name__)
-
-# def send_telegram_message():
-#     bot = Bot(token=settings.BOT_TOKEN)
-#     bot.send_message(chat_id='ankush_narayanpure', text='Hello from Django!')
-
-
+import requests
 
 def send_telegram_message(token, chat_id, text):
 
@@ -61,9 +52,16 @@ def send_telegram_message(token, chat_id, text):
     print(response.json())
     return response.json()
 
+logger = logging.getLogger(__name__)
 
-###########################################################################
+###############################################################
 
+###################### DONT DELETE THIS CODEEEEEEE ######################
+
+
+
+
+##########################################################################
 
 @login_required(login_url='/login_render/')
 def home(request):
@@ -99,15 +97,17 @@ def dashboard(request):
     incident_count = cl_User_request.objects.filter(ch_request_type = "Incident").count()
     service_count = cl_User_request.objects.filter(ch_request_type = "Service").count()
  
-    # try:
-    #     #send_telegram_message(token=settings.BOT_TOKEN, chat_id=1998582799, text="Hello from Django!")
-    #     send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
 
+###################### DONT DELETE THIS CODEEEEEEE ######################
+
+    # try:
+    #     # send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
     # except Exception as exception:
     #     print("Exception message: {}".format(exception))
-        
-    print(incident_count)
-    print(service_count)
+
+###################### DONT DELETE THIS CODEEEEEEE ######################
+
+
     context = {
         'log':log,
         'User': User,
@@ -650,7 +650,6 @@ def OrgUpdate(request,id):
 def OrgDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             org = cl_New_organization.objects.filter(id=i).first()
             org.delete()
@@ -1217,7 +1216,6 @@ def newchange(request):
 
     if request.method == "GET":
         allteam = cl_Team.objects.all()
-        # team_person = cl_Person.objects.all()
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
@@ -1228,12 +1226,6 @@ def get_people_by_team(request):
     people = cl_Person.objects.filter(ch_team_id=team_id)
     return JsonResponse([{'id': person.id, 'name': person.ch_person_firstname} for person in people], safe=False)
 
-def get_service_sub_by_service(request):
-    service_id = request.GET.get('serviceId')
-    print(service_id)
-    subcategory = cl_Service_subcategory.objects.filter(ch_sservice_id=service_id)
-    print(subcategory)
-    return JsonResponse([{'id': cato.id, 'name': cato.ch_subname} for cato in subcategory] ,safe=False)
 
 @login_required(login_url='/login_render/')
 def CADD(request):
@@ -1393,7 +1385,6 @@ def assign_changeModal(request):
 
 def mail_sender():
     mail_host = email_notifier.objects.filter(id=1).first()
-    print(mail_host)
     if mail_host != None:
         settings.EMAIL_HOST = mail_host.host
         settings.EMAIL_PORT = mail_host.port
@@ -1422,12 +1413,8 @@ def send_approval_Mail(request):
             nchange.ch_status = "Watting for Approval"
             nchange.save()
             c_mail = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
-            # print(c_mail.e_person_email)
             recepient.append(c_mail.e_person_email)
 
-        # for i in recepient:
-        #     print(i)
-        print("hi")
         try:
             mail_sender()
             list_id = request.POST.getlist('id[]')
@@ -1448,18 +1435,16 @@ def send_approval_Mail(request):
 @login_required(login_url='/login_render/')
 def user_request(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    ur = cl_User_request.objects.all()    
+    ur = cl_User_request.objects.all()
     ser = cl_Service.objects.all()
     allservice = cl_Service.objects.all()
     ser_sub = cl_Service_subcategory.objects.all()
     nchange = cl_New_change.objects.all()
 
-    escalated_ur = escalation(ur)
     if request.method == "GET":
         q = request.GET.get('searchservice')
         if q != None:
             ur = cl_User_request.objects.filter(ch_service__icontains=q)
-        # escalated_ur = escalation(ur)
     org = cl_New_organization.objects.all()
     allteam = cl_Team.objects.all()
     team_person = cl_Person.objects.all()
@@ -1474,7 +1459,7 @@ def user_request(request):
    
     context = {
             'ur': ur,
-            'escalated_ur': escalated_ur,
+            # 'escalated_ur': escalated_ur,
             'users':users,
             'permission':permission,
             'org':org,
@@ -1488,21 +1473,78 @@ def user_request(request):
     return render(request, 'tool/userrequest.html', context)
 
 
-def escalation(ur):
-    escalated_ur = []
-    for req in ur:
-        if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_assign_agent == 'Deallocate':
-            escalated_ur.append(req)
-        elif datetime.date(req.dt_escalation_date) == datetime.date(datetime.now()) and datetime.time(req.dt_escalation_date) < datetime.time(datetime.now()):
-            escalated_ur.append(req)
-    return escalated_ur
+def TTO_Calculation():
+    ur = cl_User_request.objects.all()
+
+
+
+# def escalation(ur):
+#     escalated_ur = []
+#     for req in ur:
+#         if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_assign_agent == 'Deallocate':
+#             escalated_ur.append(req)
+#         elif datetime.date(req.dt_escalation_date) == datetime.date(datetime.now()) and datetime.time(req.dt_escalation_date) < datetime.time(datetime.now()):
+#             escalated_ur.append(req)
+#     return escalated_ur
+
+def get_SubCategory_by_service_for_UR(request):
+    service_id = request.GET.get('serviceId')
+    services = cl_Service.objects.filter(id=int(service_id)).first()
+
+    ser_subcategory = services.ch_service_subcategory.through.objects.filter(cl_service_id=services.id)
+
+    subcategory_list = []
+
+    for s in ser_subcategory:
+        queryset = cl_Service_subcategory.objects.filter(id__icontains=int(s.cl_service_subcategory_id))
+        data = []
+
+        for obj in queryset:
+            data.append({
+                'id': obj.id,
+                'ch_subname': obj.ch_subname,
+                'ch_status': obj.ch_status,
+                'ch_request_type': obj.ch_request_type,
+                'txt_description': obj.txt_description,
+            })
+            subcategory_list.append(data)
+
+    json_data = json.dumps(subcategory_list)
+    return HttpResponse(json_data, content_type='application/json')
+
+
+# def get_slt_by_subCategory_for_UR(request):
+#     subCategory_id = request.GET.get('sub_cat_Id')
+#     subCategory = cl_Service_subcategory.objects.filter(id=int(subCategory_id)).first()
+#     subCategory_sla = subCategory.ch_sla
+
+#     slt = subCategory_sla.slts.through.objects.filter(cl_sla_id=subCategory_sla.id)
+
+#     queryset_list = []
+
+#     for s in slt:
+#         queryset = cl_Slt.objects.filter(id__icontains=int(s.cl_slt_id))
+#         data = []
+    
+#         for obj in queryset:
+#             data.append({
+#                 'id': obj.id,
+#                 'ch_name': obj.ch_name,
+#                 'ch_priority': obj.ch_priority,
+#                 'ch_request_type': obj.ch_request_type,
+#                 'ch_metric': obj.ch_metric,
+#                 'ch_value': obj.ch_value,
+#                 'ch_unit': obj.ch_unit
+#             })
+#             queryset_list.append(data)
+#     json_data = json.dumps(queryset_list)
+#     return HttpResponse(json_data, content_type='application/json')
 
 
 @login_required(login_url='/login_render/')
 def UADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
         fk_organization = cl_New_organization.objects.filter(
             ch_name=request.POST.get('ch_organization')).first()
         fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
@@ -1511,18 +1553,40 @@ def UADD(request):
         ch_title = request.POST.get('ch_title')
         ch_request_type = request.POST.get('ch_request_type')
         ch_impact = request.POST.get('ch_impact')
-        ch_urgency = request.POST.get('ch_urgency')
         ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
         dt_updated_date = request.POST.get('dt_Updated_date')
-        dt_escalation_date = request.POST.get('dt_escalation_date')     
+
+        # start_date = datetime.strptime(dt_start_date, '%Y-%m-%dT%H:%M')
+        # tto_escalation = start_date + timedelta(minutes=5)
+        # dt_TTO_escalation_date = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+
+        # start_date = datetime.strptime(dt_start_date, '%Y-%m-%dT%H:%M')
+        # ttr_escalation = start_date + timedelta(minutes=5)
+        # dt_TTR_escalation_date = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+
+
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
-        # print(request.POST.get(ch_service))
-        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_service_subcategory')).first()
-        ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
-        # ch_parent_request = request.POST.get('id')
-        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
+        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_ser_sub')).first()
+        
+        # tto_slt_id = int(request.POST.get('select_service_tto_slt'))
+        # ch_service_tto_slts = cl_Slt.objects.filter(id=tto_slt_id).first()
+        
+        # ttr_slt_id = int(request.POST.get('select_service_ttr_slt'))
+        # ch_service_ttr_slts = cl_Slt.objects.filter(id=ttr_slt_id).first()
+
+
+        try:
+            ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
+        except:
+            ch_parent_request = None
+        
+        try:
+            ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
+        except:
+            ch_parent_change = None
         txt_description = request.POST.get('txt_description')
+        
         ur = cl_User_request(
             fk_organization=fk_organization,
             fk_caller=fk_caller,
@@ -1531,19 +1595,21 @@ def UADD(request):
             ch_title=ch_title,
             ch_request_type=ch_request_type,
             ch_impact=ch_impact,
-            ch_urgency=ch_urgency,
             ch_priority=ch_priority,
             dt_start_date =dt_start_date,
             dt_Updated_date =dt_updated_date,
-            dt_escalation_date = dt_escalation_date,
+            # dt_TTO_escalation_date=dt_TTO_escalation_date,
+            # dt_TTR_escalation_date=dt_TTR_escalation_date,
             ch_service =ch_service,
             ch_service_subcategory =ch_service_subcategory,
+            # ch_service_tto_slts=ch_service_tto_slts,
+            # ch_service_ttr_slts=ch_service_ttr_slts,
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
         )
         ur.save()
-        # print(ur)
+
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
         event ="event"
@@ -1568,29 +1634,34 @@ def UEdit(request):
 def UUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
+        ur1 = cl_User_request.objects.filter(id=id).first()
+
         fk_organization = cl_New_organization.objects.filter(
             ch_name=request.POST.get('ch_organization')).first()
         fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
-
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
         ch_request_type = request.POST.get('ch_request_type')
         ch_impact = request.POST.get('ch_impact')
-        ch_urgency = request.POST.get('ch_urgency')
-        ch_priority = request.POST.get('ch_priority')
+        ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
         dt_updated_date = request.POST.get('dt_Updated_date')
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
-        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_service_subcategory')).first()
-        ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
-        # ch_parent_request = request.POST.get('ch_parent_request_id')
-        ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
+        ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_ser_sub')).first()
+        # slt_id = int(request.POST.get('select_service_slt'))
+        # ch_service_slts = cl_Slt.objects.filter(id=slt_id).first()
+        try:
+            ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
+        except:
+            ch_parent_request = None
+        
+        try:
+            ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
+        except:
+            ch_parent_change = None
 
-        # ch_parent_change = request.POST.get('ch_parent_change_id')
         txt_description = request.POST.get('txt_description')
-        ch_assign_agent =  request.POST.get('ch_assign_agent')
 
         ur = cl_User_request(
             id=id,
@@ -1601,17 +1672,16 @@ def UUpdate(request, id):
             ch_title=ch_title,
             ch_request_type=ch_request_type,
             ch_impact=ch_impact,
-            ch_urgency=ch_urgency,
             ch_priority=ch_priority,
-            dt_start_date=dt_start_date,
-            dt_Updated_date=dt_updated_date,
-            ch_service=ch_service,
-            ch_service_subcategory=ch_service_subcategory,
+            dt_start_date =dt_start_date,
+            dt_Updated_date =dt_updated_date,
+            ch_service =ch_service,
+            ch_service_subcategory =ch_service_subcategory,
+            # ch_service_slts=ch_service_slts,
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
-            ch_assign_agent=ch_assign_agent
-
+            ch_assign_agent =ur1.ch_assign_agent
         )
         ur.save()
         admin_name = request.session["username"]
@@ -1639,11 +1709,11 @@ def UDelete(request):
     return redirect('userrequest')
 
 
-@login_required(login_url='/login_render/')
-def escalate_notify(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
-    ur = cl_User_request.objects.all()
-    return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
+# @login_required(login_url='/login_render/')
+# def escalate_notify(request):
+#     permission = roles.objects.filter(id=request.session['user_role']).first()
+#     ur = cl_User_request.objects.all()
+#     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
 ########## Assign Change For User Request############
 
@@ -1678,6 +1748,7 @@ def assign_URModal(request):
 
         except:
             print('email not send')
+
         admin_name = request.session["username"]
         adminaction = "assign the changes"
         event ="event"
@@ -2096,23 +2167,44 @@ def sservice(request):
 
     return render(request, 'tool/sservice.html', {'ser': ser,'s_sub_category':s_sub_category,'org':org,'users':users,'permission':permission})
 
+def get_service_sub_by_service_for_service_html(request):
+    service_id = request.GET.get('serviceId')
+    services = cl_Service.objects.filter(id=int(service_id)).first()
 
+    ser_subcategory = services.ch_service_subcategory.through.objects.filter(cl_service_id=services.id)
+
+    queryset_list = []
+
+    for s in ser_subcategory:
+        queryset = cl_Service_subcategory.objects.filter(id__icontains=int(s.cl_service_subcategory_id))
+        data = []
+    
+        for obj in queryset:
+            data.append({
+                'id': obj.id,
+                'ch_subname': obj.ch_subname,
+                'ch_status': obj.ch_status,
+                'ch_request_type': obj.ch_request_type,
+                'txt_description': obj.txt_description,
+            })
+            queryset_list.append(data)
+
+    json_data = json.dumps(queryset_list)
+    return HttpResponse(json_data, content_type='application/json')
+    
 @login_required(login_url='/login_render/')
 def SSADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_ssname = request.POST.get('ch_ssname')
         ch_sprovider = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        # ch_service_family = cl_Servicefamilies.objects.filter(ch_sname=request.POST.get('ch_sfamily')).first()
         s_subcategory_ids = request.POST.getlist("s_sub_category_ids")
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
 
         subcategory = cl_Service_subcategory.objects.filter(id__in=s_subcategory_ids)
-        # print(subcategory)
 
         ser = cl_Service(
-            # id=id,
             ch_ssname=ch_ssname,
             ch_sprovider=ch_sprovider,
             ch_status=ch_status,
@@ -2121,7 +2213,6 @@ def SSADD(request):
         ser.save()
         ser.ch_service_subcategory.set(subcategory)
         return redirect('service')
-
     return render(request, 'tool/sservice.html',{'permission':permission})
 
 
@@ -2145,12 +2236,11 @@ def SSUpdate(request, id):
     if request.method == "POST":
         ch_ssname = request.POST.get('ch_ssname')
         ch_sprovider = cl_New_organization.objects.filter(ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        s_subcategory_ids = request.POST.getlist("s_sub_category_ids")
+        s_subcategory_ids = request.POST.getlist("e_s_sub_category_id_"+id)
         ch_status = request.POST.get('ch_status')
         txt_description = request.POST.get('txt_description')
 
         subcategory = cl_Service_subcategory.objects.filter(id__in=s_subcategory_ids)
-        # print(subcategory)
 
         ser = cl_Service(
             id=id,
@@ -2214,14 +2304,15 @@ def SADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
+        # ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
         ch_status = request.POST.get('ch_status')	
         ch_sla = cl_Sla.objects.filter(ch_slname=request.POST.get('ch_sla')).first()
         ch_request_type = request.POST.get('ch_request_type')
         txt_description = request.POST.get('txt_description')
+
         sub = cl_Service_subcategory(
             ch_subname=ch_subname,
-            ch_sservice=ch_sservice,
+            # ch_sservice=ch_sservice,
             ch_status=ch_status,
             ch_sla=	ch_sla,
             ch_request_type=ch_request_type,
@@ -2251,7 +2342,7 @@ def SUpdate(request, id):
     """
     if request.method == "POST":
         ch_subname = request.POST.get('ch_subname')
-        ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
+        # ch_sservice = cl_Service.objects.filter(ch_ssname=request.POST.get('ch_sservice')).first()
         ch_status = request.POST.get('ch_status')	
         ch_sla = cl_Sla.objects.filter(ch_slname=request.POST.get('ch_sla')).first()
         ch_request_type = request.POST.get('ch_request_type')
@@ -2259,7 +2350,7 @@ def SUpdate(request, id):
         sub = cl_Service_subcategory(
             id=id,
             ch_subname=ch_subname,
-            ch_sservice=ch_sservice,
+            # ch_sservice=ch_sservice,
             ch_status=ch_status,
             ch_sla=	ch_sla,
             ch_request_type=ch_request_type,
@@ -2333,11 +2424,9 @@ def SLADD(request):
 
 def get_slt_by_sla(request):
     slaId = request.GET.get('slaId')
-    print(slaId)
     sla = cl_Sla.objects.filter(id=int(slaId)).first()
-
     slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
-    
+
     queryset_list = []
 
     for s in slt:
@@ -2384,7 +2473,6 @@ def SLUpdate(request, id):
         ch_slaprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_organization')).first()
         txt_description = request.POST.get('txt_description')
         slt_ids = request.POST.getlist("e_slt_id_"+id)
-
         slts = cl_Slt.objects.filter(id__in=slt_ids)
 
         sl = cl_Sla(
@@ -2484,7 +2572,6 @@ def SLTUpdate(request, id):
         ch_metric = request.POST.get('ch_metric')
         ch_value = request.POST.get('ch_value')
         ch_unit = request.POST.get('ch_unit')
-        print(id)
 
         slt = cl_Slt(
             id=id,
@@ -3962,5 +4049,6 @@ def oauthdelete(request):
             oauthg = cl_Oauth_google.objects.filter(id=i).first()
             oauthg.delete()
     return redirect('authgoogle')
+
 
 

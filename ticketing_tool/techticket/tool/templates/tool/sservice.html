@@ -61,8 +61,8 @@
           <td>{{i.ch_status}}</td>
           <td>{{i.txt_description}}</td>
           {% if permission.serv_m_e == "on" or permission == None %}
-          <td>
-            <a href="#editcl_ServiceModal-{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons"
+          <td id="{{i.id}}">
+            <a href="#editcl_ServiceModal_{{i.id}}" class="edit_btn" data-toggle="modal"><i class="material-icons"
                 data-toggle="tooltip" title="Edit">&#xE254;</i></a>
           </td>
           {% endif %}
@@ -144,7 +144,7 @@
                   <div class="form-check" style="background-color: white; width: 450px;">
                     <input class="form-check-input" name="s_sub_category_ids" type="checkbox" value="{{s.id}}"
                       id="{{ s.id }}">
-                    <label class="form-check-label" for="{{ s.id }}">{{s.ch_subname}} : {{s.ch_status}} : {{ s.ch_request_type }}</label>
+                    <label class="form-check-label" for="{{ s.id }}">{{ s.id }} : {{s.ch_subname}} : {{s.ch_status}} : {{ s.ch_request_type }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -162,12 +162,12 @@
             <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 52px;">
               <div class="form-group">
                 <span class="required-field"></span><label>Status</label>
-                <select name="ch_status" type="text" class="form-control" aria-label="Default select example" aria-invalid="false" required>
+                <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
+                  aria-invalid="false" required>
                   <option selected value="">Please select Status</option>
-                  <option value="Assign">Assign</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Close">Close</option>
-                  <option value="Approve">Approve</option>
+                  <option value="Implementation">Implementation</option>
+                  <option value="Obsolete">Obsolete</option>
+                  <option value="Production">Production</option>
                 </select>
               </div>
               <div class="form-group">
@@ -186,7 +186,7 @@
 
     <!-- Edit Modal HTML -->
     {% for i in ser %}
-    <div id="editcl_ServiceModal-{{i.id}}" class="modal fade">
+    <div id="editcl_ServiceModal_{{i.id}}" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
           <form action="/ssupdate/{{i.id}}" method="post">
@@ -223,10 +223,9 @@
                 <select name="ch_status" value="{{i.ch_status}}" type="text" class="form-control"
                   aria-label="Default select example" aria-invalid="false" required>
                   <option selected value="{{i.ch_status}}">{{i.ch_status}}</option>
-                  <option value="Assign">Assign</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Close">Close</option>
-                  <option value="Approve">Approve</option>
+                  <option value="Implementation">Implementation</option>
+                  <option value="Obsolete">Obsolete</option>
+                  <option value="Production">Production</option>
                 </select>
               </div>
               <div class="form-group">
@@ -252,9 +251,8 @@
                 <div class="dropdown-menu" style="position: relative; top: 20px;">
                   {% for s in s_sub_category %}
                   <div class="form-check" style="background-color: white; width: 450px;">
-                    <input class="form-check-input" name="e_s_sub_category_id_{{ i.id }}" type="checkbox" value="{{s.id}}"
-                      id="{{ s.id }}">
-                    <label class="form-check-label" for="{{ s.id }}">{{s.ch_subname}} : {{s.ch_status}} : {{ s.ch_request_type }}</label>
+                    <input class="form-check-input" name="e_s_sub_category_id_{{ i.id }}" type="checkbox" value="{{ s.id }}">
+                    <label class="form-check-label" for="{{ s.id }}">{{ s.id }} : {{s.ch_subname}} : {{s.ch_status}} : {{ s.ch_request_type }}</label>
                   </div>
                   {% endfor %}
                 </div>
@@ -268,6 +266,50 @@
                   checkbox.prop('checked', !checkbox.prop('checked'));
                 });
               </script>
+
+
+              <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
+              <script>
+                $(".edit_btn").click(function () {
+                  var serviceId = $(this).parent()[0].id;
+                  var csrf = $('input[name=csrfmiddlewaretoken]').val();
+
+                  $.ajax({
+                    method: "GET",
+                    url: "{% url 'get_service_sub_by_service_for_service_html' %}",
+                    data: {
+                      serviceId,
+                      csrfmiddlewaretoken: csrf
+                    },
+                    success: function (queryset_list) {
+                      all_ser_subCategory = document.querySelectorAll('input[name="e_s_sub_category_id_{{ i.id }}"]');
+                      selected_subcategory = [];
+
+                      for (let index = 0; index < queryset_list.length; index++) {
+                        const queryset = queryset_list[index];
+                        for (let j = 0; j < queryset.length; j++) {
+                          id_in_str = queryset[j].id
+                          selected_subcategory.push(id_in_str.toString());
+                        }
+                      }
+
+                      for (let i = 0; i < all_ser_subCategory.length; i++) {
+                        for (let j = 0; j < selected_subcategory.length; j++) {
+                          if (all_ser_subCategory[i].value === selected_subcategory[j]) {
+                            const checkboxes = document.getElementsByName("e_s_sub_category_id_{{ i.id }}");
+                            checkboxes[i].checked = true;
+                          }
+                        }
+                      }
+                    },
+                    error: function (xhr, status, error) {
+                      console.log('Error: ' + error);
+                    }
+                  });
+                });
+              </script>
+              <!-- END  JS For Filter slt which already assign and show ir marked Dropdown -->
+
             </div>
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -278,6 +320,8 @@
       </div>
     </div>
     {% endfor %}
+
+
     <script>
 
       $(document).ready(function () {
