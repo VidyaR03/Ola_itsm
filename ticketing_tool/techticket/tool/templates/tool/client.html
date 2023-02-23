@@ -42,7 +42,7 @@
         <th>Manager</th>
         <th>Employee Number</th>
         <th>Email</th>
-        <th>Phone</th>
+        <th>Telegram Id</th>
         <th>Mobile Number</th>
         {% if permission.confi_m_e == "on" or permission == None %}
         <th>Edit</th>
@@ -70,7 +70,7 @@
         <td>{{i.ch_manager}}</td>
         <td>{{i.ch_employee_number}}</td>
         <td>{{i.e_person_email}}</td>
-        <td>{{i.ch_person_phone}}</td>
+        <td>{{i.telegram_chatid}}</td>
         <td>{{i.ch_person_mobilenumber}}</td>
         {% if permission.confi_m_e == "on" or permission == None %}
         <td>
@@ -210,9 +210,8 @@
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
-                <label>Phone</label>
-                <input name="ch_person_phone" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
-                  required>
+                <label>Telegram Chat Id</label>
+                <input name="telegram_chatid" type="text" class="form-control" required>
               </div>
               <div class="form-group">
                 <span class="required-field"></span>
@@ -329,9 +328,8 @@
             <input name="e_person_email" value="{{i.e_person_email}}" type="text" class="form-control">
           </div>
           <div class="form-group">
-            <label>Phone</label>
-            <input name="ch_person_phone" value="{{i.ch_person_phone}}" type="text" class="form-control"
-              pattern="[0-9 ]+" maxlength="14" required>
+            <label>Telegram Chat Id</label>
+            <input name="telegram_chatid" value="{{i.telegram_chatid}}" type="text" class="form-control" required>
           </div>
           <div class="form-group">
             <label>Mobile Number</label>

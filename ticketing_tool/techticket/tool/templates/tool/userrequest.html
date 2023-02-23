@@ -377,7 +377,7 @@
           <!--start of left half -->
           <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
-              <label>Organization:<a href="{% url 'new_organization' %}">
+              <span class="required-field"></span>  <label>Organization:<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
                 <select name="ch_organization" id="fk_organization"  style="min-height:30px;min-width:280px;">
@@ -389,7 +389,7 @@
                 </select>
             </div>
             <div class="form-group">
-              <label>Caller:<a href="{% url 'client' %}">
+              <span class="required-field"></span>  <label>Caller:<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <select name="ch_caller" id="fk_caller" style="min-height:30px;min-width:280px;">
@@ -419,7 +419,7 @@
               </select>
             </div> -->
             <div class="form-group">
-              <label>Origin</label>
+              <span class="required-field"></span>  <label>Origin</label>
               <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="Phone"> Phone
@@ -433,15 +433,21 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Title</label>
+              <span class="required-field"></span>  <label>Title</label>
               <input class="form-control" name="ch_title" type="text" required>
             </div>
             <div class="form-group">
               <label>Request Type</label>
-              <input class="form-control" name="ch_request_type" type="text" required>
+              <select id="requesttype"   name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option value="Incident"> Incident
+                </option>
+                <option value="Service"> Service
+                </option>
+               </select>
             </div>
             <div class="form-group">
-              <label>Impact</label>
+              <span class="required-field"></span>  <label>Impact</label>
               <select name="ch_impact" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="A deparment"> A deparment
@@ -453,7 +459,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Urgency</label>
+              <span class="required-field"></span> <label>Urgency</label>
               <select name="ch_urgency" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="Critical"> Critical
@@ -490,12 +496,12 @@
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span><label for="dt_start_date">Start Date</label>
+              <span class="required-field"></span>  <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
               pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
             <div class="form-group">
-              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
+              <span class="required-field"></span>  <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_Updated_date"
               pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
@@ -506,7 +512,7 @@
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
+              <span class="required-field"></span> <span class="required-field"></span><label for="dt_escalation_date">Escalated Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_escalation_date"
               pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
@@ -527,7 +533,7 @@
                             </select>
                         </div> -->
             <div class="form-group">
-              <label>Service</label>
+              <span class="required-field"></span> <label>Service</label>
               <select name="ch_sername" type="text" id="select_service" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
                 <option selected>Select Service</option>
@@ -537,7 +543,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Service Subcategory</label>
+              <span class="required-field"></span> <label>Service Subcategory</label>
               <select name="ch_service_subcategory" id="select_subcategory" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option>Select a Service First</option>
@@ -558,7 +564,7 @@
                             <input class="form-control" name="ch_service_subcategory" type="text">
                         </div> -->
             <div class="form-group">
-              <label>Parent Request</label>
+              <span class="required-field"></span> <label>Parent Request</label>
               <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" >
               <option value=0 >Select Parent Request</option>
               {% for j in ur %}
@@ -567,7 +573,7 @@
             </select>
             </div>
             <div class="form-group">
-              <label>Parent Change</label>
+              <span class="required-field"></span> <label>Parent Change</label>
               <select  name="ch_parent_change_id" id="ch_parent_change" style="min-height:30px;min-width:280px;" required>
               <option value=''>Select Parent Change</option>
               {% for k in nchange %}
@@ -657,7 +663,7 @@
               <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
             </div> -->
             <div class="form-group">
-              <label>Status</label>
+              <span class="required-field"></span>  <label>Status</label>
               <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
             </div>
             <!-- <div class="form-group">
@@ -673,7 +679,7 @@
               </select>
             </div> -->
             <div class="form-group">
-              <label>Origin</label>
+              <span class="required-field"></span> <label>Origin</label>
               <select name="ch_origin" type="text" value="{{i.ch_origin}}" class="form-control"
                 aria-label="Default select example" aria-invalid="false" >
                 <option value="Phone"> Phone
@@ -687,15 +693,26 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Title</label>
+              <span class="required-field"></span>  <label>Title</label>
               <input name="ch_title" type="text" value="{{i.ch_title}}" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Request Type</label>
-              <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control" required>
+              <select id="requesttype"  name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option selected value="{{i.ch_request_type}}">{{i.ch_request_type}}</option>
+                <option value="Incident"> Incident
+                </option>
+                <option value="Service"> Service
+                </option>
+               </select>
             </div>
+            <!-- <div class="form-group">
+              <span class="required-field"></span>  <label>Request Type</label>
+              <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control" required>
+            </div> -->
             <div class="form-group">
-              <label>Impact</label>
+              <span class="required-field"></span>  <label>Impact</label>
               <select name="ch_impact" type="text" value="{{i.ch_impact}" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <option value="A deparment"> A deparment
@@ -707,7 +724,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Urgency</label>
+              <span class="required-field"></span>  <label>Urgency</label>
               <!-- <input name="ch_urgency" type="text"  value="{{i.ch_urgency}}"   class="form-control"  required> -->
               <select name="ch_urgency" type="text" value="{{i.ch_urgency}" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
@@ -724,7 +741,7 @@
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
-              <label>Priority</label>
+              <span class="required-field"></span>  <label>Priority</label>
               <!-- <input name="ch_priority" type="text"    value="{{i.ch_priority}}" class="form-control"  required> -->
               <select name="ch_priority" type="text" value="{{i.ch_priority}}" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
@@ -783,7 +800,7 @@
               </select>
             </div> -->
             <div class="form-group">
-              <label>Service</label>
+              <span class="required-field"></span>  <label>Service</label>
               <select name="ch_sername" type="text" id="select_service" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
                 <options selected value="{{i.ch_service}}">{{i.ch_service}}</option>
@@ -793,7 +810,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Service Subcategory</label>
+              <span class="required-field"></span>  <label>Service Subcategory</label>
               <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false">
                 <options selected value="{{i.ch_service_subcategory}}">{{i.ch_service_subcategory}}</option>
@@ -820,7 +837,7 @@
               </select>
             </div> -->
             <div class="form-group">
-              <label>Parent Request</label>
+              <span class="required-field"></span>  <label>Parent Request</label>
               <select  name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;" class="form-control" required>
               <option selected value="{{i.ch_parent_request_id}}">{{i.ch_parent_request_id}}</option>
 
@@ -835,7 +852,7 @@
               <input name="ch_parent_request_id" type="text" value="{{i.ch_parent_request_id}}" class="form-control" required>
             </div> -->
             <div class="form-group">
-              <label>Parent Change</label>
+              <span class="required-field"></span>  <label>Parent Change</label>
               <input name="ch_parent_change_id" type="text" value="{{i.ch_parent_change_id}}" class="form-control" required>
             </div>
             <div class="form-group">

@@ -366,7 +366,14 @@ urlpatterns = [
     path("add_new_sms/", views.add_new_sms,name='add_new_sms'),
     path("sms_edit/<str:id>", views.sms_edit,name='sms_edit'),
     path('smsdelete', views.smsdelete, name='smsdelete'),
+    
 
+    
+    #url for Boat Id Notification
+    path("boat_display", views.boat_display,name='boat_display'),
+    path("add_new_boatid/", views.add_new_boatid,name='add_new_boatid'),
+    path("boatid_edit/<str:id>", views.boatid_edit,name='boatid_edit'),
+    path('boatdelete', views.boatdelete, name='boatdelete'),
 
 
     #URL for External User

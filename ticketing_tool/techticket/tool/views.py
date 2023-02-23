@@ -77,7 +77,8 @@ def home(request):
 
 
 @login_required(login_url='/login_render/')
-def dashboard(request):
+def dashboard(request): 
+    log = user_activity_log.objects.all()
     permission = roles.objects.filter(id=request.session['user_role']).first()
     User = cl_User_request.objects.all().count()
     org = cl_New_organization.objects.all().count()
@@ -87,8 +88,28 @@ def dashboard(request):
     newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
     newopen1= cl_New_change.objects.exclude(Q(ch_assign_agent = 'request.session(username)') & Q(ch_status = 'Assigned')).count()
+    watch = cl_User_request.objects.filter(Q(ch_assign_agent = 'request.session(username)')).count()
+    Customer_Contract_count = cl_Customer_contract.objects.all().count()
+    Provider_Contract_count = cl_Providercontract.objects.all().count()
+    Delivery_Model_count = cl_Servicedelivery.objects.all().count()
+    Services_count = cl_Service.objects.all().count()
+    Service_Subcategory_count = cl_Service_subcategory.objects.all().count()
+    SLA_count = cl_Sla.objects.all().count()
+    SLT_count = cl_Slt.objects.all().count()
+    incident_count = cl_User_request.objects.filter(ch_request_type = "Incident").count()
+    service_count = cl_User_request.objects.filter(ch_request_type = "Service").count()
+ 
+    # try:
+    #     #send_telegram_message(token=settings.BOT_TOKEN, chat_id=1998582799, text="Hello from Django!")
+    #     send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
 
+    # except Exception as exception:
+    #     print("Exception message: {}".format(exception))
+        
+    print(incident_count)
+    print(service_count)
     context = {
+        'log':log,
         'User': User,
         'permission':permission,
         'org':org,
@@ -97,7 +118,17 @@ def dashboard(request):
         'newopen':newopen,
         'Assign':Assign,
         'Assign1':Assign1,
-        'newopen1':newopen1
+        'newopen1':newopen1,
+        'watch':watch,
+        'Customer_Contract_count':Customer_Contract_count,
+        'Provider_Contract_count':Provider_Contract_count,
+        'Delivery_Model_count':Delivery_Model_count,
+        'Services_count':Services_count,
+        'SLA_count':SLA_count,
+        'SLT_count':SLT_count,
+        'Service_Subcategory_count':Service_Subcategory_count,
+        'incident_count':incident_count,
+        'service_count':service_count
     }
 
     return render(request, 'tool/dashboard.html',context)
@@ -205,10 +236,25 @@ def view_logs(request):
     """
     permission = roles.objects.filter(id=request.session['user_role']).first()
     log = user_activity_log.objects.all()
+    page = request.GET.get('page', 1)
+
+
+    paginator = Paginator(log, 14)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+
     context = {
-        "log" : log,
-        'permission':permission
-        }
+        'log': log,
+        'users':users,
+        'permission':permission,
+    }
+
+    
     return render(request, 'tool/logs.html', context)
 
 
@@ -654,7 +700,7 @@ def ADD(request):
         # ch_manager = request.POST.get('ch_manager')
         ch_employee_number = str.upper(request.POST.get('ch_employee_number'))
         e_person_email = str.lower(request.POST.get('e_person_email'))
-        ch_person_phone = request.POST.get('ch_person_phone')
+        telegram_chatid = request.POST.get('telegram_chatid')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
         per = cl_Person(
             ch_person_firstname=ch_person_firstname,
@@ -667,7 +713,7 @@ def ADD(request):
             ch_manager=ch_manager,
             ch_employee_number=ch_employee_number,
             e_person_email=e_person_email,
-            ch_person_phone=ch_person_phone,
+            telegram_chatid=telegram_chatid,
             ch_person_mobilenumber=ch_person_mobilenumber,
         )
         per.save()
@@ -707,7 +753,7 @@ def Update(request, id):
         ch_manager = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_manager')).first()
         ch_employee_number = request.POST.get('ch_employee_number')
         e_person_email = request.POST.get('e_person_email')
-        ch_person_phone = request.POST.get('ch_person_phone')
+        telegram_chatid = request.POST.get('telegram_chatid')
         ch_person_mobilenumber = request.POST.get('ch_person_mobilenumber')
         per = cl_Person(
             id=id,
@@ -721,7 +767,7 @@ def Update(request, id):
             ch_manager=ch_manager,
             ch_employee_number=ch_employee_number,
             e_person_email=e_person_email,
-            ch_person_phone=ch_person_phone,
+            telegram_chatid=telegram_chatid,
             ch_person_mobilenumber=ch_person_mobilenumber,
         )
         per.save()
@@ -1309,6 +1355,10 @@ def assign_changeModal(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
+        telegram_chat_id = per.telegram_chatid
+        print(telegram_chat_id)
+
+
         s= "Assigned"
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
@@ -1317,11 +1367,14 @@ def assign_changeModal(request):
             nchange.save()
         try:
             mail_sender()
+            change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
             subject = 'Welcome to Olatech Solutions'
-            message = 'Hope you are enjoying your Olatech Services'
+            message = f'Request ID : "{list_id[0]}" Assigned to you '
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Request ID : "{list_id[0]}" Assigned to you ')
+
             # return JsonResponse({'result': 'success'})
         except:
             print('email not send')
@@ -1356,6 +1409,11 @@ def send_approval_Mail(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
+        p_Emp_id = request.POST.get('p')
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        telegram_chat_id = per.telegram_chatid
+        print("******")
+        print(telegram_chat_id)
         print(list_id)
         recepient = []
 
@@ -1379,6 +1437,8 @@ def send_approval_Mail(request):
             sender = settings.EMAIL_HOST_USER
             # # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Change ID : "{list_id[0]}" ')
+
         except:
             raise Exception('Please Configure Email Sender Details')
     # return render(request, 'tool/approve_change.html',{'permission':permission})
@@ -1595,19 +1655,25 @@ def assign_URModal(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
+        telegram_chat_id = per.telegram_chatid
+        print("******")
+        print(telegram_chat_id)
+        print("************")
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
-            ur.ch_status = "Assigned"
-            
+            ur.ch_status = "Assigned"            
             ur.save()
+        
         try:
             mail_sender()
+            ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
             subject = 'Welcome to Olatech Solutions'
-            message = 'Hope you are enjoying your Olatech Services IN UR'
+            message = f'Request ID : "{list_id[0]}" Assigned to you '
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Request ID : "{list_id[0]}" Request Description : "{ur_approve.txt_description}" ')
             return JsonResponse({'result': 'success'})
 
         except:
@@ -1631,6 +1697,13 @@ def send_approval_Mail_UR(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
+        p_Emp_id = request.POST.get('p')
+        per = cl_Person.objects.filter(id=p_Emp_id).first()
+        telegram_chat_id = per.telegram_chatid
+        print("******")
+        print(telegram_chat_id)
+        print("************")
+              
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Waiting for Approval"
@@ -1640,10 +1713,12 @@ def send_approval_Mail_UR(request):
             list_id = request.POST.getlist('id[]')
             ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
             subject = 'Welcome to Olatech Solutions'
-            message = f'Please approve Following Change for further process. UR ID : "{list_id[0]}" UR Description : "{ur_approve.txt_description}" '
+            message = f' Approve Following Request ID : "{list_id[0]}" '
             sender = settings.EMAIL_HOST_USER
             recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Request ID : "{list_id[0]}" Assigned to you ')
+
         except:
             raise Exception('Please Configure Email Sender Details')
         
@@ -3383,6 +3458,107 @@ def add_new_email(request):
 #         email.save()
 #         return redirect('email_display')
 #     return render(request, 'tool/email_notifier.html',{'permission':permission})
+
+
+############# Boat Id ################
+@login_required(login_url='/login_render/')
+def boat_display(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    boat = boat_notifier.objects.all()
+
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            boat = boat_notifier.objects.filter(name_icontains=q)      
+
+    
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(boat, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+    context = {
+            'boat': boat,
+            'permission':permission,
+            'users':users
+
+        }
+    return render(request, 'tool/boat_notifier.html', context)
+
+@login_required(login_url='/login_render/')
+def add_new_boatid(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST": 
+        boat_tokan = request.POST.get('boat_tokan')
+        name = request.POST.get('name') 
+
+        boat = boat_notifier(
+            boat_tokan =boat_tokan,
+            name = name
+        
+        )
+        boat.save()
+        return redirect('boat_display')
+    return render(request, 'tool/boat_notifier.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def boatid_edit(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        boat_tokan = request.POST.get('boat_tokan')
+        name = request.POST.get('name')  
+        boat = boat_notifier(
+            id = id,
+            boat_tokan =boat_tokan,
+            name = name
+        )
+       
+        boat.save()
+        return redirect('boat_display')
+    return render(request, 'tool/boat_notifier.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def boatdelete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            boat = boat_notifier.objects.filter(id=i).first()
+            boat.delete()
+    return redirect('boat_display')
+
+
+# @login_required(login_url='/login_render/')
+# def add_new_email(request):
+#     permission = roles.objects.filter(id=request.session['user_role']).first()
+#     if request.method == "POST":
+#         name = request.POST.get('name')
+#         SMTP_server = request.POST.get('SMTP_server')
+#         SMTP_port = request.POST.get('SMTP_port')
+#         sender_email = request.POST.get('sender_email')
+#         sender_email_password = request.POST.get('sender_email_password')
+#         message = request.POST.get('message')
+
+#         email = email_notifier(
+#             name=name,
+#             SMTP_server=SMTP_server,
+#             SMTP_port=SMTP_port,
+#             sender_email=sender_email,
+#             sender_email_password=sender_email_password,
+#             message = message
+#         )
+#         email.save()
+#         return redirect('email_display')
+#     return render(request, 'tool/email_notifier.html',{'permission':permission})
+
+
+
 
 
 

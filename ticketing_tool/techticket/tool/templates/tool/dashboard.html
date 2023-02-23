@@ -10,43 +10,47 @@
 
 <!-- main content -->
 <div class="wrapper" style="width: 95.1%;">
-  <br><br>    
+  <br><br>
   <!-- ****** cards start ********** -->
   <div class="row" style="margin-left: 20px; margin-right: 20px;">
-    <div class="col-3 col-m-6 col-sm-6" >
+    <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{User}}
+          <h2 style="color:azure; ">Total Request</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Total Request</h2>
+        <!-- <h3 style="color:azure ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">100
+          <h2 style="color:azure; ">Overdue Tickets</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Overdue Tickets</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{newopen}}
+          <h2 style="color:azure; ">New And Open Tickets</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">New And Open Tickets</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{org}}
+          <h2 style="color:azure; ">Tickets On Hold</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Tickets On Hold</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
 
@@ -59,42 +63,52 @@
   <div class="row" style="margin-left: 20px; margin-right: 20px;">
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
-        <h3 style="color:azure; font-weight: bolder;">100
+        <h3 style="color:azure; font-weight: bolder;">{{watch}}
+          <h2 style="color:azure; ">Tickets I am Watching</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Tickets I am Watching</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{Assign}}
+          <h2 style="color:azure; ">Assign Tickets</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Assign Tickets</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; ">{{service}}
+          <h2 style="color:azure; ">Service Request</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Service Request</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{change}}
+          <h2 style="color:azure; ">Change Request</h2>
+
           <!-- <i class="fas fa-users"></i> -->
         </h3>
-        <h3 style="color:azure; ">{{total_customer}}</h3>
-        <h2 style="color:azure; ">Change Request</h2>
+        <!-- <h3 style="color:azure; ">{{total_customer}}</h3> -->
       </div>
     </div>
 
   </div>
+
+  <div id="data"
+    data-values="{{Customer_Contract_count}},{{Provider_Contract_count}}, {{Delivery_Model_count}}, {{Services_count}}, {{SLA_count}}, {{SLT_count}}, {{Service_Subcategory_count}}">
+  </div>
+  <div id="Data" data-values="{{ incident_count }},{{ service_count }}"></div>
+
   <!-- ****** cards end ********** -->
   <style>
     #bar_chart-container {
@@ -110,85 +124,122 @@
     }
   </style>
 
+
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
   <div class="row">
-      <div id="bar_chart-container">
-        <canvas id="myBarChart"></canvas>
-      </div>
-  
-      <div id="DoughnutChart_chart-container">
-        <canvas id="myDoughnutChart"></canvas>
-      </div>
+    <div id="bar_chart-container">
+      <canvas id="myBarChart"></canvas>
+    </div>
+
+    <div id="DoughnutChart_chart-container">
+      <canvas id="myDoughnutChart"></canvas>
+    </div>
   </div>
-  
+
   <script>
-    var ctx = document.getElementById('myBarChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(255, 159, 64, 0.6)'
-                ],
-                borderColor: [
-                    'black',
-                    'black',
-                    'black',
-                    'black',
-                    'black',
-                    'black',
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+    var dataString = document.getElementById('data').getAttribute('data-values');
+    var dataValues = dataString.split(',');
+    console.log('Data values:', dataValues);
+    var data = dataValues.map(function (value) {
+      return parseInt(value);
+    });
+    var canvas = document.getElementById('myBarChart');
+    console.log('Canvas:', canvas);
+
+    var ctx = canvas.getContext('2d');
+    console.log('Context:', ctx);
+
+
+    var myBarChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Customer Contract', 'Provider Contract', 'Delivery Model', 'Services', 'SLA', 'SLT', 'Service Subcategory'],
+        datasets: [{
+          label: '# of Service',
+          data: data,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+
+
+          ],
+          borderColor: [
+            'black',
+            'black',
+            'black',
+            'black',
+            'black',
+            'black',
+            'black',
+
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
             }
+          }]
         }
+      }
     });
   </script>
 
-<script>
-  var ctx = document.getElementById('myDoughnutChart').getContext('2d');
-  var myDoughnutChart = new Chart(ctx, {
+  <script>
+    var dataString = document.getElementById('Data').getAttribute('data-values');
+    var dataValues = dataString.split(',');
+    console.log('Data values:', dataValues);
+    var Data = dataValues.map(function (value) {
+      return parseInt(value);
+    });
+
+    var canvas = document.getElementById('myDoughnutChart');
+    console.log('Canvas:', canvas);
+
+    var ctx = canvas.getContext('2d');
+    console.log('Context:', ctx);
+
+    var myDoughnutChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-          labels: ['Red', 'Blue', 'Yellow'],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.6)',
-                  'rgba(54, 162, 235, 0.6)',
-                  'rgba(255, 206, 86, 0.6)'
-              ],
-              borderColor: [
-                  'black',
-                  'black',
-                  'black',
-              ],
-              borderWidth: 1
-          }]
-      }
-  });
+        labels: ['Incident', 'Service'],
+        datasets: [{
+          label: '# of Request',
+          data: Data,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+          ],
+          borderColor: [
+            'black',
+            'black',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'left'
+        }
+    }
+  }
+});
+console.log('Chart:', myDoughnutChart);
 </script>
 
-  
+
 
 
   <!-- ****** table  start ********** -->
