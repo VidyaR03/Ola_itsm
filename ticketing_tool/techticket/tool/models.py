@@ -237,7 +237,7 @@ class cl_Person(models.Model):
     ch_manager = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_employee_number = models.CharField(max_length=100, null=True)
     e_person_email = models.EmailField(null=True)
-    ch_person_phone = models.CharField(max_length=100, null=True)
+    telegram_chatid = models.CharField(max_length=100, null=True)
     ch_person_mobilenumber = models.CharField(max_length=200, null=True)
 
     def __str__(self):
@@ -1155,6 +1155,18 @@ class adminuser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS=[]
 
+
+
+class boat_notifier(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
+    boat_tokan = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.boat_tokan
+
+    class Meta:
+        db_table = 'boat_notifier'
 
 class email_notifier(models.Model):
     name = models.CharField(max_length=100, null=True)

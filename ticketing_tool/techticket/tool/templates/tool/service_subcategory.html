@@ -97,7 +97,8 @@
 
       <tbody>
         {% for i in users %}
-        {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+        {% if forloop.counter < 11 %} 
+        <tr id="{{i.id}}">
           <td>
             <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
           </td>
@@ -108,6 +109,7 @@
           <td>{{i.ch_sla}}</td>
           <td>{{i.ch_request_type}}</td>
           <td>{{i.txt_description}}</td>
+          
           {% if permission.serv_m_e == "on" or permission == None %}
           <td>
             <a href="#editcl_Service_subcategoryModal-{{i.id}}" class="edit" data-toggle="modal"><i
