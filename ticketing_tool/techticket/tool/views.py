@@ -1442,7 +1442,7 @@ def user_request(request):
         if q != None:
             ur = cl_User_request.objects.filter(ch_status__icontains=q)
 
-    escalated_ur = escalation(ur)
+    # escalated_ur = escalation(ur)
     
         # escalated_ur = escalation(ur)
     org = cl_New_organization.objects.all()
