@@ -21,9 +21,8 @@
       {% endif %}
 
       {% if permission.serv_m_d == "on" or permission == None %}
-      <a href="#deletecl_ServiceModal/{{i.id }} " class="btn btn-danger" data-toggle="modal"
-        onclick="removeSelectedRow();">
-        <span>Delete </span></a>
+      <button type="submit" id="delete_btn" class="btn btn-danger">Delete </button>
+
       {% endif %}
     </div>
     <style>

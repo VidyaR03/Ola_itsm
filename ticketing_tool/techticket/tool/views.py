@@ -56,13 +56,6 @@ logger = logging.getLogger(__name__)
 
 ###############################################################
 
-###################### DONT DELETE THIS CODEEEEEEE ######################
-
-
-
-
-##########################################################################
-
 @login_required(login_url='/login_render/')
 def home(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -236,10 +229,13 @@ def view_logs(request):
     """
     permission = roles.objects.filter(id=request.session['user_role']).first()
     log = user_activity_log.objects.all()
+    if request.method == "GET":
+            q = request.GET.get('searchname')
+            if q != None:
+                log = user_activity_log.objects.filter(username__icontains=q) 
+
     page = request.GET.get('page', 1)
-
-
-    paginator = Paginator(log, 14)
+    paginator = Paginator(log, 10)
     try:
         users = paginator.page(page)
     except PageNotAnInteger:
@@ -1442,9 +1438,13 @@ def user_request(request):
     nchange = cl_New_change.objects.all()
 
     if request.method == "GET":
-        q = request.GET.get('searchservice')
+        q = request.GET.get('searchstatus')
         if q != None:
-            ur = cl_User_request.objects.filter(ch_service__icontains=q)
+            ur = cl_User_request.objects.filter(ch_status__icontains=q)
+
+    escalated_ur = escalation(ur)
+    
+        # escalated_ur = escalation(ur)
     org = cl_New_organization.objects.all()
     allteam = cl_Team.objects.all()
     team_person = cl_Person.objects.all()
@@ -1768,7 +1768,7 @@ def UDelete(request):
 #     ur = cl_User_request.objects.all()
 #     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
-########## Assign Change For User Request############
+########## Assign Change For User Request ############
 
 
 @login_required(login_url='/login_render/')

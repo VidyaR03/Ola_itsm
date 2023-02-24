@@ -62,7 +62,10 @@ urlpatterns = [
     path('OrgUpdate/<str:id>', views.OrgUpdate, name='OrgUpdate'),
     path('OrgDelete/', views.OrgDelete, name='OrgDelete'),
           
-    
+    ###### Reopen ####
+    path('reopen', views.reopen, name='reopen'),
+
+
     #url for document
     path("document/", views.document, name='document'),
     path('DocAdd', views.DocAdd, name='DocAdd'),
