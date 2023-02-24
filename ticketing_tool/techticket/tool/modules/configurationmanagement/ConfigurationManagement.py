@@ -281,7 +281,6 @@ def appDelete(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             appso = cl_Application_solution.objects.filter(id=i).first()
             appso.delete()
@@ -339,7 +338,6 @@ def bussAdd(request):
         ch_business_criticality = request.POST.get('ch_business_criticality')
         dt_move_to_production_date = request.POST.get('dt_move_to_production_date')
         txt_description = request.POST.get('txt_description')
-        print(ch_business_name)
         buss = cl_Business_process(
             # id=id,
             ch_business_name=ch_business_name,
@@ -349,7 +347,6 @@ def bussAdd(request):
             dt_move_to_production_date=dt_move_to_production_date,
             txt_description=txt_description,
         )
-        # print(buss)
         buss.save()
         return redirect('businessprocess')
     return render(request, 'tool/business_process.html',{'permission':permission})
@@ -396,7 +393,6 @@ def bussUpdate(request, id):
 def bussDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             buss = cl_Business_process.objects.filter(id=i).first()
             buss.delete()
@@ -512,7 +508,7 @@ def dbUpdate(request, id):
 def dbDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
+        # print(list_id)
         for i in list_id:
             db = cl_Newdb_server.objects.filter(id=i).first()
             db.delete()
@@ -613,7 +609,6 @@ def DSUpdate(request, id):
 def DSDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             schema = cl_Database_schema.objects.filter(id=i).first()
             schema.delete()
@@ -716,7 +711,6 @@ def MUpdate(request, id):
 def MDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             mi = cl_Middleware_instance.objects.filter(id=i).first()
             mi.delete()
@@ -836,7 +830,6 @@ def MWUpdate(request, id):
 def MWDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             middle = cl_New_middleware.objects.filter(id=i).first()
             middle.delete()
@@ -953,7 +946,6 @@ def osUpdate(request, id):
 def osDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             os = cl_Other_software.objects.filter(id=i).first()
             os.delete()
@@ -1059,7 +1051,6 @@ def waUpdate(request, id):
 def waDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             wa = cl_Web_application.objects.filter(id=i).first()
             wa.delete()
@@ -1213,7 +1204,6 @@ def ndUpdate(request, id):
 def ndDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             nd = cl_Network_device.objects.filter(id=i).first()
             nd.delete()
@@ -1253,7 +1243,6 @@ def ntAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        print(id)
         ch_nname = request.POST.get('ch_nname')
         nt = cl_network_type(
             # id=id,
@@ -1295,7 +1284,6 @@ def ntUpdate(request, id):
 def ntDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             nt = cl_network_type.objects.filter(id=i).first()
             nt.delete()
@@ -1334,7 +1322,6 @@ def osfAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         id = request.POST.get('id')
-        print(id)
         ch_fname = request.POST.get('ch_fname')
         
         osf = cl_os_family(
@@ -1342,7 +1329,6 @@ def osfAdd(request):
             ch_fname=ch_fname,
         )
         osf.save()
-        print(osf)
         return redirect('os_family')
     return render(request, 'tool/os_family.html',{'permission':permission})
 
@@ -1377,7 +1363,6 @@ def osfUpdate(request, id):
 def osfDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             nd = cl_os_family.objects.filter(id=i).first()
             nd.delete()
@@ -1428,7 +1413,6 @@ def osvAdd(request):
             ch_fname =ch_fname, 
         )
         osv.save()
-        print(osv)
         return redirect('os_version')
     return render(request, 'tool/os_version.html',{'permission':permission})
 
@@ -1466,7 +1450,6 @@ def osvUpdate(request, id):
 def osvDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             osv = cl_os_version.objects.filter(id=i).first()
             osv.delete()
@@ -1582,7 +1565,6 @@ def olUpdate(request, id):
 def olDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             ol = cl_os_license.objects.filter(id=i).first()
             ol.delete()
@@ -1621,13 +1603,11 @@ def bnAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        print(id)
         ch_brandname = request.POST.get('ch_brandname')
         brand = cl_Brand(
             ch_brandname=ch_brandname,
         )
         brand.save()
-        print(brand)
         return redirect('brand')
 
     return render(request, 'tool/brand.html',{'permission':permission})
@@ -1665,7 +1645,6 @@ def bnUpdate(request, id):
 def bnDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             brand = cl_Brand.objects.filter(id=i).first()
             brand.delete()
@@ -1712,7 +1691,6 @@ def mdAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        print(id)
         ch_modelname = request.POST.get('ch_modelname')
         ch_brandname = cl_Brand.objects.filter(ch_brandname=request.POST.get('ch_brand')).first()
 
@@ -1723,7 +1701,6 @@ def mdAdd(request):
 
         )
         model.save()
-        print(model)
         return redirect('cmodel')
 
     return render(request, 'tool/model.html',{'permission':permission})
@@ -1765,7 +1742,6 @@ def mdUpdate(request, id):
 def mdDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             model = cl_model.objects.filter(id=i).first()
             model.delete()
@@ -1804,7 +1780,6 @@ def ivAdd(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         # id = request.POST.get('id')
-        print(id)
         ch_iosname = request.POST.get('ch_iosname')
         ch_brandname = cl_Brand.objects.filter(
             ch_brandname=request.POST.get('ch_brand')).first()
@@ -1815,7 +1790,6 @@ def ivAdd(request):
             ch_brandname=ch_brandname,
         )
         iv.save()
-        print(iv)
         return redirect('iosver')
     return render(request, 'tool/ios_version.html',{'permission':permission})
 
@@ -1858,7 +1832,6 @@ def ivUpdate(request, id):
 def ivDelete(request):    
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             nd = cl_ios_version.objects.filter(id=i).first()
             nd.delete()
@@ -2032,7 +2005,6 @@ def serverUpdate(request, id):
 def serverDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             se = cl_Server.objects.filter(id=i).first()
             se.delete()
@@ -2154,7 +2126,6 @@ def wsUpdate(request, id):
 def wsDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             ws = cl_Web_server.objects.filter(id=i).first()
             ws.delete()
@@ -2278,7 +2249,6 @@ def pcUpdate(request, id):
 def pcDelete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
         for i in list_id:
             pc = cl_Pc_software.objects.filter(id=i).first()
             pc.delete()

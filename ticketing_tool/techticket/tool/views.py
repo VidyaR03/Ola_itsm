@@ -49,7 +49,6 @@ def send_telegram_message(token, chat_id, text):
         'text': text
     }
     response = requests.post(url, data=data)
-    print(response.json())
     return response.json()
 
 logger = logging.getLogger(__name__)
@@ -96,11 +95,7 @@ def dashboard(request):
     # try:
     #     # send_telegram_message(token=settings.BOT_TOKEN, chat_id=-1001875732520, text="Hello from Django!")
     # except Exception as exception:
-    #     print("Exception message: {}".format(exception))
-
-###################### DONT DELETE THIS CODEEEEEEE ######################
-
-
+   
     context = {
         'log':log,
         'User': User,
@@ -1222,6 +1217,10 @@ def get_people_by_team(request):
     people = cl_Person.objects.filter(ch_team_id=team_id)
     return JsonResponse([{'id': person.id, 'name': person.ch_person_firstname} for person in people], safe=False)
 
+def get_service_sub_by_service(request):
+    service_id = request.GET.get('serviceId')
+    subcategory = cl_Service_subcategory.objects.filter(ch_sservice_id=service_id)
+    return JsonResponse([{'id': cato.id, 'name': cato.ch_subname} for cato in subcategory] ,safe=False)
 
 @login_required(login_url='/login_render/')
 def CADD(request):
@@ -1344,7 +1343,6 @@ def assign_changeModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
-        print(telegram_chat_id)
 
 
         s= "Assigned"
@@ -1374,7 +1372,8 @@ def assign_changeModal(request):
         nchange = cl_New_change.objects.all()
         context = {
             'nchange': nchange,
-            'permission':permission
+            'permission':permission,
+            'change_approve':change_approve
         }
     return render(request, 'tool/tassign.html', context)
 
@@ -1398,10 +1397,7 @@ def send_approval_Mail(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
-        telegram_chat_id = per.telegram_chatid
-        print("******")
-        print(telegram_chat_id)
-        print(list_id)
+        telegram_chat_id = per.telegram_chatid       
         recepient = []
 
         for i in list_id:
@@ -1662,7 +1658,6 @@ def UADD(request):
             txt_description =txt_description,
         )
         ur.save()
-
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
         event ="event"
@@ -1779,9 +1774,7 @@ def assign_URModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
-        print("******")
-        print(telegram_chat_id)
-        print("************")
+     
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
@@ -1816,6 +1809,102 @@ def assign_URModal(request):
         }
     return render(request, 'tool/tassign.html', context)
 
+########## Approved Change For Incident Management############
+
+@login_required(login_url='/login_render/')
+def change_approved(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+          
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Approved"
+            ur.save()
+    return redirect('userrequest')
+
+
+########## Approved Close For Incident Management############
+
+@login_required(login_url='/login_render/')
+def close(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')      
+              
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Close"
+            ur.save()
+
+    return redirect('userrequest')
+
+
+########## Reopen Change For Incident Management############
+
+@login_required(login_url='/login_render/')
+def reopen(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')  
+              
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Reopen"
+            ur.save()
+        
+    return redirect('userrequest')
+
+
+
+
+########## Approved Change For Change Management############
+
+@login_required(login_url='/login_render/')
+def cm_approved(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+          
+        for i in list_id:
+            cm = cl_New_change.objects.filter(id=i).first()
+            cm.ch_status = "Approved"
+            cm.save()
+
+    return redirect('newchange')
+
+
+########## Approved Close For Change Management############
+
+@login_required(login_url='/login_render/')
+def cm_close(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')      
+              
+        for i in list_id:
+            cm = cl_New_change.objects.filter(id=i).first()
+            cm.ch_status = "Close"
+            cm.save()
+    return redirect('newchange')
+
+
+########## Reopen Change For Change Management############
+
+@login_required(login_url='/login_render/')
+def cm_reopen(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')  
+              
+        for i in list_id:
+            cm = cl_New_change.objects.filter(id=i).first()
+            cm.ch_status = "Reopen"
+            cm.save()
+        
+    return redirect('newchange')
+
+
 ########## Approve Change For Incident Management############
 
 @login_required(login_url='/login_render/')
@@ -1826,9 +1915,7 @@ def send_approval_Mail_UR(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
-        print("******")
-        print(telegram_chat_id)
-        print("************")
+     
               
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
@@ -1848,7 +1935,7 @@ def send_approval_Mail_UR(request):
         except:
             raise Exception('Please Configure Email Sender Details')
         
-        # return redirect('user_request')
+        return redirect('send_approval_Mail_UR')
 
     # return render(request, 'tool/approve_change.html',{'permission':permission})
  

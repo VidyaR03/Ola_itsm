@@ -31,7 +31,6 @@ urlpatterns = [
     # path('cedit', views.CEdit, name='cedit'),
     path('cupdate/<str:id>', views.CUpdate, name='cupdate'),
     path('cdelete', views.CDelete, name='cdelete'),
-    path('assign_change', views.assign_changeModal, name='assign_change'),
     path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
     path("get_service_sub_by_service_for_service_html", views.get_service_sub_by_service_for_service_html, name="get_service_sub_by_service_for_service_html"),
 
@@ -130,10 +129,51 @@ urlpatterns = [
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),
     path('udelete/', views.UDelete, name='udelete'),
-    # path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+    path('escalate_notify', views.escalate_notify, name='escalate_notify'),
+
+
+    ########URL for Send Approval  mail in User Request#######
     path('sendMailUR', views.send_approval_Mail_UR, name='sendMailUR'),
+
+    
+    ########URL for Send Assign  mail in User Request#######
     path('assign_UR', views.assign_URModal, name='assign_UR'),
-    path("get_SubCategory_by_service_for_UR", views.get_SubCategory_by_service_for_UR, name="get_SubCategory_by_service_for_UR"),
+
+    ########URL for Change Approved in User Request#######
+    path('approved', views.change_approved, name='approved'),
+
+    ########URL for Reopen in User Request#######
+    path('reopen', views.reopen, name='reopen'),
+    
+    ########URL for Close in User Request#######
+    path('close', views.close, name='close'),
+
+
+     ########URL for Send Assign  mail in Change Management#######
+ 
+    path('assign_change', views.assign_changeModal, name='assign_change'),
+
+     ########URL for Send Approval  mail in Change Management#######
+
+    path('sendMail', views.send_approval_Mail, name='sendMail'),
+
+     ########URL for Send approved  status in Change Management#######
+
+    path('cm_approved', views.cm_approved, name='cm_approved'),
+
+    ########URL for Send reopen  status in Change Management#######
+
+    path('cm_reopen', views.cm_reopen, name='cm_reopen'),
+
+    ########URL for Send close  status in Change Management#######
+
+    path('cm_close', views.cm_close, name='cm_close'),
+
+
+
+
+
+
 
     
     #URL For new middleware
@@ -195,7 +235,7 @@ urlpatterns = [
     path('osvEdit', views.osvEdit, name='osvEdit'),
     path('osvUpdate/<str:id>', views.osvUpdate, name='osvUpdate'),
     path('osvDelete/', views.osvDelete, name='osvDelete'),
-    path('sendMail', views.send_approval_Mail, name='sendMail'),
+
 
 
 

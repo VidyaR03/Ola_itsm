@@ -18,21 +18,17 @@
    
     
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-     
-<!--    
-	<div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-		<span class="caret"></span></button>
-		<ul class="dropdown-menu">
-			<li><a href="#" id="approve_btn">Approval</a></li>
-			<li><a href="#" id="approved_btn">Approved</a></li>
-			<li><a href="#" id="reopen_btn">Reopen</a></li>
-			<li><a href="#" id="close_btn">Close</a></li>
-			<li><a href="#" id="assign_btn">Assign</a></li>
-		</ul>
-	</div> -->
-
-      
+      <div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#" id="approve_btn">Waiting for Approve</a></li>
+          <li><a href="#" id="approved_btn">Approved</a></li>
+          <li><a href="#" id="reopen_btn">Reopen</a></li>
+          <li><a href="#" id="close_btn">Close</a></li>
+          <!-- <li><a href="#" id="assign_btn">Assign</a></li> -->
+        </ul>
+      </div>
       {% if permission.ch_m_a == "on" or permission == None %}
       <a href="#addcl_New_changeModal" class="btn btn-success" data-toggle="modal"><span>Add New Change</span></a>
       {% endif %}
@@ -43,14 +39,19 @@
       <a href="#assign_changeModal" class="btn btn-primary" data-toggle="modal"><span>Assign Change</span></a>
       {% endif %}
       {% if permission.ch_m_approve == "on" or permission == None %}
-      <button type="submit" id="approve_btn" class="btn btn-primary">Waiting for Approval</button><br>
+      <!-- <button type="submit" id="approve_btn" class="btn btn-primary">Waiting for Approve </button> -->
       {% endif %}
-     
-</div>
-</div>
+      <!-- <button type="submit" id="approve_btn" class="btn btn-info">Waiting for Approve</button> -->
+      <!-- <button type="submit" id="approved_btn" class="btn btn-info">Approved</button>
+      <button type="submit" id="reopen_btn" class="btn btn-info">Reopen</button>
+      <button type="submit" id="close_btn" class="btn btn-info">Close</button> -->
 
 
-  
+    </div>
+
+
+  </div>
+
   <table class="table table-striped table-hover" id="table" style="margin-top: 10px;">
    <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
       <th>
@@ -546,8 +547,101 @@
                 $('#error').text(error.text())
                 $('tr#' + id[i] + '').fadeOut('slow');
               }
-            } 
+            }, 
           })
+        }
+      }
+    })
+  })
+</script>
+<!-- For Approved Change -->
+<script>
+  $(document).ready(function () {
+    $('#approved_btn').click(function () {
+      if (confirm('Are You Sure You Want to Approved UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Approved?")
+        } else {
+          $.ajax({
+            url: "{% url 'cm_approved' %}",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf
+            },
+            success: function () {
+              location.reload();
+            
+            },
+          });
+        }
+      }
+    })
+  })
+</script>
+
+
+<!-- For Reopen Change -->
+<script>
+  $(document).ready(function () {
+    $('#reopen_btn').click(function () {
+      if (confirm('Are You Sure You Want to Reopen UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Reopen?")
+        } else {
+          $.ajax({
+            url: "{% url 'cm_reopen' %}",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf
+            },
+            success: function () {
+            location.reload();
+            },
+          
+          });
+        }
+      }
+    })
+  })
+</script>
+
+
+<!-- For Close Change -->
+<script>
+  $(document).ready(function () {
+    $('#close_btn').click(function () {
+      if (confirm('Are You Sure You Want to Close UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Close?")
+        } else {
+          $.ajax({
+            url: "{% url 'cm_close' %}",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf
+            },
+            success: function () {
+            location.reload();
+            },
+          });
         }
       }
     })
@@ -569,7 +663,7 @@
     }
   }); 
 </script>
-<!-- For Approve Change -->
+<!-- For Waiting For Approval Change -->
 <script>
   $(document).ready(function () {
     $('#approve_btn').click(function () {
