@@ -125,10 +125,9 @@
                     <td>{{i.i_cost_currency}}</td>
                     <td>{{i.i_billing_frequency}}</td>
                     <td>{{i.txt_description}}</td>
-                    <!-- <td>{{i.ch_sla}}</td> -->
                     {% if permission.serv_m_e == "on" or permission == None %}
-                    <td>
-                        <a href="#editcl_ProvidercontractModal-{{i.id}}" class="edit" data-toggle="modal"><i
+                    <td id="{{i.id}}">
+                        <a href="#editcl_ProvidercontractModal-{{i.id}}" class="edit_btn" data-toggle="modal"><i
                                 class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     </td>
                     {% endif %}
@@ -422,7 +421,7 @@
                             <div class="dropdown-menu">
                                 {% for ser in servi %}
                                 <div class="form-check" style="background-color: white; width: 450px;">
-                                    <input class="form-check-input" name="service_ids" type="checkbox"
+                                    <input class="form-check-input" name="service_ids_e_{{ i.id }}" type="checkbox"
                                         value="{{ ser.id }}" id="{{ ser.id }}">
                                     <label class="form-check-label" for="{{ ser.id }}">{{ ser.ch_ssname }} : {{ ser.ch_status }} : {{ ser.txt_description }} : {{ ser.ch_sprovider }}</label>
                                 </div>
@@ -438,6 +437,50 @@
                                 checkbox.prop('checked', !checkbox.prop('checked'));
                             });
                         </script>
+
+                        <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
+                        <script>
+                          $(".edit_btn").click(function () {
+                            all_services = document.querySelectorAll('input[name="service_ids_e_{{ i.id }}"]');
+                            for (let j = 0; j < all_services.length; j++) {
+                              all_services[j].checked = false;
+                            }
+                            var provider_contractID = $(this).parent()[0].id;
+                            var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                            $.ajax({
+                              method: "GET",
+                              url: "{% url 'get_service_by_Provider_contract' %}",
+                              data: {
+                                provider_contractID,
+                                csrfmiddlewaretoken: csrf
+                              },
+                              success: function (queryset_list) {
+                                all_slts = document.querySelectorAll('input[name="service_ids_e_{{ i.id }}"]');
+                                selected_slt = [];
+                                for (let index = 0; index < queryset_list.length; index++) {
+                                  const queryset = queryset_list[index];
+                                  for (let j = 0; j < queryset.length; j++) {
+                                    id_in_str=queryset[j].id
+                                    selected_slt.push(id_in_str.toString());
+                                  }
+                                }
+                            
+                                for (let i = 0; i < all_slts.length; i++) {
+                                  for (let j = 0; j < selected_slt.length; j++) {
+                                    if (all_slts[i].value === selected_slt[j]) {
+                                      const checkboxes = document.getElementsByName("service_ids_e_{{ i.id }}");
+                                      checkboxes[i].checked = true;
+                                    }
+                                  }
+                                }
+                              },
+                              error: function (xhr, status, error) {
+                                console.log('Error: ' + error);
+                              }
+                            });
+                          });
+                        </script>
+                        <!-- END  JS For Filter slt which already assign and show ir marked Dropdown -->
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

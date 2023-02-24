@@ -271,6 +271,10 @@
               <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
               <script>
                 $(".edit_btn").click(function () {
+                  all_ser_subCategory = document.querySelectorAll('input[name="e_s_sub_category_id_{{ i.id }}"]');
+                  for (let j = 0; j < all_ser_subCategory.length; j++) {
+                    all_ser_subCategory[j].checked = false;
+                  }
                   var serviceId = $(this).parent()[0].id;
                   var csrf = $('input[name=csrfmiddlewaretoken]').val();
 

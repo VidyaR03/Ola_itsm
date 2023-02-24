@@ -131,11 +131,6 @@ urlpatterns = [
     path('sendMailUR', views.send_approval_Mail_UR, name='sendMailUR'),
     path('assign_UR', views.assign_URModal, name='assign_UR'),
     path("get_SubCategory_by_service_for_UR", views.get_SubCategory_by_service_for_UR, name="get_SubCategory_by_service_for_UR"),
-    # path("get_slt_by_subCategory_for_UR", views.get_slt_by_subCategory_for_UR, name="get_slt_by_subCategory_for_UR"),
-
-
-
-
 
     
     #URL For new middleware
@@ -174,9 +169,7 @@ urlpatterns = [
     path('bnUpdate/<str:id>', views.bnUpdate, name='bnUpdate'),
     path('bnDelete/', views.bnDelete, name='bnDelete'),
 
-    
-
-    
+        
       #URL for Model Type
     path("cmodel/", views.cmodel,name='cmodel'),
     path('mdAdd', views.mdAdd, name='mdAdd'),
@@ -243,7 +236,8 @@ urlpatterns = [
     path('scedit', views.SCEdit, name='scedit'),
     path('scupdate/<str:id>', views.SCUpdate, name='scupdate'),
     path('scdelete', views.SCDelete, name='scdelete'),
-    
+    path("get_service_by_Customer_contract", views.get_service_by_Customer_contract, name="get_service_by_Customer_contract"),
+
     #Url for provider contract
 
     path("providercontract/", views.provider_contract, name='providercontract'),
@@ -251,6 +245,8 @@ urlpatterns = [
     path('spedit', views.SPEdit, name='spedit'),
     path('spupdate/<str:id>', views.SPUpdate, name='spupdate'),
     path('spdelete', views.SPDelete, name='spdelete'),
+    path("get_service_by_Provider_contract", views.get_service_by_Provider_contract, name="get_service_by_Provider_contract"),
+
 
      #URL for System
      path("systemnav/", views.systemnav, name='systemnav'),

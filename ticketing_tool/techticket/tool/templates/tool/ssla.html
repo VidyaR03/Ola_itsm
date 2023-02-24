@@ -237,7 +237,10 @@
               <!-- START  JS For Filter slt which already assign and show ir marked Dropdown -->
               <script>
                 $(".edit_btn").click(function () {
-
+                  all_slts = document.querySelectorAll('input[name="e_slt_id_{{ i.id }}"]');
+                  for (let j = 0; j < all_slts.length; j++) {
+                    all_slts[j].checked = false;
+                  }
                   var slaId = $(this).parent()[0].id;
                   var csrf = $('input[name=csrfmiddlewaretoken]').val();
                   // alert(slaId)
@@ -258,7 +261,6 @@
                           selected_slt.push(id_in_str.toString());
                         }
                       }
-          
                       for (let i = 0; i < all_slts.length; i++) {
                         for (let j = 0; j < selected_slt.length; j++) {
                           if (all_slts[i].value === selected_slt[j]) {

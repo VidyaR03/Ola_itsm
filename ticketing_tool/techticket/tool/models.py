@@ -623,7 +623,7 @@ class cl_User_request(models.Model):
     ch_priority = models.CharField(max_length=100, null=True)
     dt_start_date = models.DateTimeField(default=datetime.now)
     dt_Updated_date = models.DateTimeField(default=datetime.now)
-    # dt_TTR_escalation_date = models.DateTimeField(default=datetime.now, null=True,)
+    dt_Request_Assign_date = models.DateTimeField(null=True,)
     # dt_TTO_escalation_date = models.DateTimeField(default=datetime.now, null=True,)
     ch_service = models.ForeignKey('cl_Service', on_delete=models.CASCADE, null=True, blank=True)
     ch_service_subcategory = models.ForeignKey('cl_Service_subcategory', on_delete=models.CASCADE, null=True, blank=True)
