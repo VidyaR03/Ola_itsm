@@ -32,6 +32,7 @@ from django.contrib.auth.decorators import login_required
 from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
+import requests
 
 
 
@@ -39,7 +40,6 @@ from django.conf import settings
 
 ############################# Telegram ########################
 
-import requests
 
 def send_telegram_message(token, chat_id, text):
 
@@ -1456,7 +1456,9 @@ def user_request(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
+    
+    TTO_Calculation()
+    
     context = {
             'ur': ur,
             # 'escalated_ur': escalated_ur,
@@ -1475,17 +1477,69 @@ def user_request(request):
 
 def TTO_Calculation():
     ur = cl_User_request.objects.all()
+    for i in ur:
+        ur_tto = None
+        ur_ttr = None
+        ur_sub_cate = i.ch_service_subcategory
+        ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
+        ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
+
+        if i.ch_assign_agent == "Deallocate":
+            # print(i.ch_assign_agent)
+            for s in ur_slt:
+                queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
+                for k in queryset:
+                    print("SLT TTO:",k)
+                    # if k.ch_metric == "TTO":    
+                    if k.ch_unit == "Hours":
+                        tto_min = int(k.ch_value)*60
+                        tto_escalation = i.dt_start_date + timedelta(minutes=tto_min)
+                        ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+                        # ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
+                    else:
+                        tto_escalation = i.dt_start_date + timedelta(minutes=int(k.ch_value))
+                        ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+
+            print("TTO :",ur_tto)
+            ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
+            if datetime.date(ur_tto_Date) < datetime.date(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                i.ch_status = "TTO Escalated"
+                i.save()
+            elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                i.ch_status = "TTO Escalated"
+                i.save()
+            else:
+                i.ch_status = i.ch_status
+                # i.ch_status = "New"
+                i.save()
+        
+        elif i.ch_status == "Assigned":
+            for s in ur_slt:
+                queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
+                for k in queryset:
+                    # print("SLT TTR:",k)
+                    # if k.ch_metric == "TTR":    
+                    if k.ch_unit == "Hours":
+                        ttr_min = int(k.ch_value)*60
+                        ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=ttr_min)
+                        ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+                        ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
+                    else:
+                        ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=int(k.ch_value))
+                        ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+            print("TTR :",ur_ttr)
+            ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')   
+            if datetime.date(ur_ttr_Date) < datetime.date(datetime.now()) and i.ch_status == "Assigned":
+                i.ch_status = "TTR Escalated"
+                i.save()
+            elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
+                i.ch_status = "TTR Escalated"
+                i.save()
+            else:
+                i.ch_status = i.ch_status
+                i.save()
 
 
-
-# def escalation(ur):
-#     escalated_ur = []
-#     for req in ur:
-#         if datetime.date(req.dt_escalation_date) < datetime.date(datetime.now()) and req.ch_assign_agent == 'Deallocate':
-#             escalated_ur.append(req)
-#         elif datetime.date(req.dt_escalation_date) == datetime.date(datetime.now()) and datetime.time(req.dt_escalation_date) < datetime.time(datetime.now()):
-#             escalated_ur.append(req)
-#     return escalated_ur
 
 def get_SubCategory_by_service_for_UR(request):
     service_id = request.GET.get('serviceId')
@@ -1574,7 +1628,6 @@ def UADD(request):
         
         # ttr_slt_id = int(request.POST.get('select_service_ttr_slt'))
         # ch_service_ttr_slts = cl_Slt.objects.filter(id=ttr_slt_id).first()
-
 
         try:
             ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
@@ -1732,9 +1785,11 @@ def assign_URModal(request):
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
-            ur.ch_status = "Assigned"            
+            ur.ch_status = "Assigned" 
+            now = datetime.now()
+            ur.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
+            print("HIIII",ur.dt_Request_Assign_date)       
             ur.save()
-        
         try:
             mail_sender()
             ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
@@ -1745,9 +1800,9 @@ def assign_URModal(request):
             send_mail(subject, message, sender, recepient, fail_silently=False)
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Request ID : "{list_id[0]}" Request Description : "{ur_approve.txt_description}" ')
             return JsonResponse({'result': 'success'})
-
         except:
             print('email not send')
+        
 
         admin_name = request.session["username"]
         adminaction = "assign the changes"
@@ -1822,6 +1877,27 @@ def customer_contract(request):
         users = paginator.page(paginator.num_pages)
     return render(request, 'tool/scustomer_contract.html', {'cust': cust,'servi':servi, 'org':org,'users':users,'permission':permission})
 
+def get_service_by_Customer_contract(request):
+    customer_contractID = request.GET.get('customer_contractID')
+    customer_contract = cl_Customer_contract.objects.filter(id=int(customer_contractID)).first()
+
+    services = customer_contract.ch_services.through.objects.filter(cl_customer_contract_id=customer_contract.id)
+    print("HII",services)
+    queryset_list = []
+
+    for s in services:
+        queryset = cl_Service.objects.filter(id__icontains=int(s.cl_service_id)).first()
+        data = []
+        
+        data.append({
+            'id': queryset.id,
+            'ch_ssname': queryset.ch_ssname,
+            'ch_status': queryset.ch_status,
+        })
+        queryset_list.append(data)
+
+    json_data = json.dumps(queryset_list)
+    return HttpResponse(json_data, content_type='application/json')
 
 @login_required(login_url='/login_render/')
 def SCADD(request):
@@ -1888,10 +1964,10 @@ def SCUpdate(request, id):
     """
     if request.method == "POST":
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_e')).first()
+        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_a')).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_e')).first()
+        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_a')).first()
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -1899,6 +1975,10 @@ def SCUpdate(request, id):
         i_cost_currency = request.POST.get('i_cost_currency')
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
+
+        services_ids = request.POST.getlist('service_ids_e_'+id)
+        services = cl_Service.objects.filter(id__in=services_ids)
+
         cust = cl_Customer_contract(
             id=id,
             ch_cname=ch_cname,
@@ -1915,6 +1995,14 @@ def SCUpdate(request, id):
             txt_description=txt_description,
         )
         cust.save()
+        cust.ch_services.set(services)
+
+        admin_name = request.session["username"]
+        adminaction = "Updation of customer"
+        event ="event"
+        resultcode = "200"
+        user_activity(admin_name, adminaction, event, resultcode)
+
         return redirect('customercontract')
     return render(request, 'tool/scustomer_contract.html',{'permission':permission})
 
@@ -1951,6 +2039,30 @@ def provider_contract(request):
         if q != None:
             pro = cl_Customer_contract.objects.filter(ch_status__icontains=q)
     return render(request, 'tool/sprovidercontract.html', {'pro': pro,'org':org,'users':users,'servi':servi,'permission':permission})
+
+
+
+def get_service_by_Provider_contract(request):
+    provider_contractID = request.GET.get('provider_contractID')
+    provider_contract = cl_Providercontract.objects.filter(id=int(provider_contractID)).first()
+
+    services = provider_contract.ch_services.through.objects.filter(cl_providercontract_id=provider_contract.id)
+    print("HII",services)
+    queryset_list = []
+
+    for s in services:
+        queryset = cl_Service.objects.filter(id__icontains=int(s.cl_service_id)).first()
+        data = []
+        
+        data.append({
+            'id': queryset.id,
+            'ch_ssname': queryset.ch_ssname,
+            'ch_status': queryset.ch_status,
+        })
+        queryset_list.append(data)
+
+    json_data = json.dumps(queryset_list)
+    return HttpResponse(json_data, content_type='application/json')
 
 
 @login_required(login_url='/login_render/')
@@ -2033,7 +2145,7 @@ def SPUpdate(request, id):
         i_billing_frequency = request.POST.get('i_billing_frequency')
         txt_description = request.POST.get('txt_description')
 
-        services_ids = request.POST.getlist("services_ids")
+        services_ids = request.POST.getlist("service_ids_e_"+id)
         services = cl_Service.objects.filter(id__in=services_ids)
         
         pro = cl_Providercontract(
@@ -2172,26 +2284,26 @@ def get_service_sub_by_service_for_service_html(request):
     services = cl_Service.objects.filter(id=int(service_id)).first()
 
     ser_subcategory = services.ch_service_subcategory.through.objects.filter(cl_service_id=services.id)
-
+    print("HII",ser_subcategory)
     queryset_list = []
 
     for s in ser_subcategory:
-        queryset = cl_Service_subcategory.objects.filter(id__icontains=int(s.cl_service_subcategory_id))
+        queryset = cl_Service_subcategory.objects.filter(id__icontains=int(s.cl_service_subcategory_id)).first()
         data = []
-    
-        for obj in queryset:
-            data.append({
-                'id': obj.id,
-                'ch_subname': obj.ch_subname,
-                'ch_status': obj.ch_status,
-                'ch_request_type': obj.ch_request_type,
-                'txt_description': obj.txt_description,
-            })
-            queryset_list.append(data)
+
+        data.append({
+            'id': queryset.id,
+            'ch_subname': queryset.ch_subname,
+            'ch_status': queryset.ch_status,
+            'ch_request_type': queryset.ch_request_type,
+            'txt_description': queryset.txt_description,
+        })
+        queryset_list.append(data)
 
     json_data = json.dumps(queryset_list)
     return HttpResponse(json_data, content_type='application/json')
     
+
 @login_required(login_url='/login_render/')
 def SSADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
@@ -2421,33 +2533,29 @@ def SLADD(request):
     return render(request, 'tool/ssla.html',{'permission':permission})
 
 
-
 def get_slt_by_sla(request):
     slaId = request.GET.get('slaId')
     sla = cl_Sla.objects.filter(id=int(slaId)).first()
+
     slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
-
-    queryset_list = []
-
-    for s in slt:
-        queryset = cl_Slt.objects.filter(id__icontains=int(s.cl_slt_id))
-        data = []
     
-        for obj in queryset:
-            data.append({
-                'id': obj.id,
-                'ch_name': obj.ch_name,
-                'ch_priority': obj.ch_priority,
-                'ch_request_type': obj.ch_request_type,
-                'ch_metric': obj.ch_metric,
-                'ch_value': obj.ch_value,
-                'ch_unit': obj.ch_unit
-            })
-            queryset_list.append(data)
+    queryset_list = []
+    for i in slt:
+        data = []
+        queryset = cl_Slt.objects.filter(id__icontains=i.cl_slt_id).first()
+        data.append({
+            'id': queryset.id,
+            'ch_name': queryset.ch_name,
+            'ch_priority': queryset.ch_priority,
+            'ch_request_type': queryset.ch_request_type,
+            'ch_metric': queryset.ch_metric,
+            'ch_value': queryset.ch_value,
+            'ch_unit': queryset.ch_unit
+        })
+        queryset_list.append(data)
 
     json_data = json.dumps(queryset_list)
     return HttpResponse(json_data, content_type='application/json')
-
 
 
 @login_required(login_url='/login_render/')

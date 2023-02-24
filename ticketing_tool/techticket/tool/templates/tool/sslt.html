@@ -135,7 +135,7 @@
                 <select name="ch_request_type" value="{{i.ch_request_type}}" type="text" class="form-control"
                   aria-label="Default select example" aria-invalid="false">
                   <option value="Incident">Incident</option>
-                  <option value="Service Request">Service Request</option>
+                  <option value="Service">Service</option>
                 </select>
               </div>
             </div>
@@ -265,6 +265,7 @@
                   <label>Priority</label>
                   <select name="ch_priority" value="{{i.ch_priority}}" type="text" class="form-control"
                     aria-label="Default select example" aria-invalid="false">
+                    <option selected value="{{i.ch_priority}}">{{i.ch_priority}}</option>
                     <option value="Critical">Critical</option>
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -275,8 +276,9 @@
                   <label>Request type</label>
                   <select name="ch_request_type" value="{{i.ch_request_type}}" type="text" class="form-control"
                     aria-label="Default select example" aria-invalid="false">
+                    <option selected value="{{i.ch_request_type}}">{{i.ch_request_type}}</option>
                     <option value="Incident">Incident</option>
-                    <option value="Service Request">Service Request</option>
+                    <option value="Service">Service</option>
                   </select>
                 </div>
               </div>
@@ -285,6 +287,7 @@
                   <label>Metric</label>
                   <select name="ch_metric" value="{{i.ch_metric}}" type="text" class="form-control"
                     aria-label="Default select example" aria-invalid="false">
+                    <option selected value="{{i.ch_metric}}">{{i.ch_metric}}</option>
                     <option value="TTO">TTO</option>
                     <option value="TTR">TTR</option>
                   </select>
@@ -298,6 +301,7 @@
                   <label>Unit</label>
                   <select name="ch_unit" value="{{i.ch_unit}}" type="text" class="form-control"
                     aria-label="Default select example" aria-invalid="false">
+                    <option selected value="{{i.ch_unit}}">{{i.ch_unit}}</option>
                     <option value="Hours">Hours</option>
                     <option value="Minute">Minute</option>
                   </select>

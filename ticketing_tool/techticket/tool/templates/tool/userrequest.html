@@ -34,31 +34,30 @@
     <thead>
       <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
         <th>
-
         </th>
-        <th>ID</th>
-        <th>Organization</th>
-        <th>Caller</th>
-        <th>Status</th>
-        <th>Priority</th>
-        <th>Start Date</th>
-        <th>Updated Date</th>
-        <th>Title</th>
-        <th>Service</th>
-        <th>Service Subcategory</th>
-        <th>Parent Request</th>
-        <th>Parent Change</th>
-        <th>Description</th>
-        <th>Agent</th>
+        <th style="text-align: center;">ID</th>
+        <th style="text-align: center;">Organization</th>
+        <th style="text-align: center;">Caller</th>
+        <th style="text-align: center;">Request Type</th>
+        <th style="text-align: center;">Status</th>
+        <th style="text-align: center;">Priority</th>
+        <th style="text-align: center;">Start Date</th>
+        <th style="text-align: center;">Updated Date</th>
+        <th style="text-align: center;">Title</th>
+        <th style="text-align: center;">Service</th>
+        <th style="text-align: center;">Service Subcategory</th>
+        <th style="text-align: center;">Parent Request</th>
+        <th style="text-align: center;">Parent Change</th>
+        <!-- <th style="text-align: center;">Description</th> -->
+        <th style="text-align: center;">Agent</th>
         {% if permission.inci_m_e == "on" or permission == None %}
-        <th>Edit</th>
+        <th style="text-align: center;">Edit</th>
         {% endif %}
 
       </tr>
     </thead>
-    <tbody>
+    <tbody style="text-align: center;">
       {% csrf_token %}
-
       {% for i in users %}
       {% if forloop.counter < 11 %} <tr id="{{i.id}}">
         <td>
@@ -67,8 +66,9 @@
         <td>{{i.id}}
         <td>{{i.fk_organization}}</td>
         <td>{{i.fk_caller}}</td>
-        {% if i.ch_status == "New" %}
-        <td>New</td>
+        <td>{{i.ch_request_type}}</td>
+        {% if i.ch_status == "TTO Escalated" or i.ch_status == "TTR Escalated" %}
+        <td style="color: red;">{{i.ch_status}}</td>
         {% else %}
         <td>{{i.ch_status}}</td>
         {% endif %}
@@ -80,7 +80,7 @@
         <td>{{i.ch_service_subcategory}}</td>
         <td>{{i.ch_parent_request_id}}</td>
         <td>{{i.ch_parent_change_id}}</td>
-        <td>{{i.txt_description}}</td>
+        <!-- <td>{{i.txt_description}}</td> -->
         {% if i.ch_assign_agent == "Deallocate" %}
         <td>Not Assign</td>
         {% else %}
@@ -210,9 +210,9 @@
               </select>
             </div>
           </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;">
+          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
             <div class="form-group">
-              <span class="required-field"></span>  <span class="required-field"></span><label for="dt_start_date">Start Date</label>
+              <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
@@ -351,10 +351,6 @@
                 <option value="Service">Service</option>
               </select>
             </div>
-            <!-- <div class="form-group">
-              <span class="required-field"></span>  <label>Request Type</label>
-              <input name="ch_request_type" type="text" value="{{i.ch_request_type}}" class="form-control" required>
-            </div> -->
             <div class="form-group">
               <label>Impact</label>
               <select name="ch_impact" type="text" class="form-control" aria-label="Default select example"
@@ -377,7 +373,7 @@
               </select>
             </div>
           </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;">
+          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
