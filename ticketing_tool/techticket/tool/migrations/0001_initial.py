@@ -524,6 +524,7 @@ class Migration(migrations.Migration):
                 ('event', models.CharField(max_length=200)),
                 ('resultcode', models.IntegerField()),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ('duration', models.DateTimeField(default=datetime.datetime(2023, 2, 24, 16, 30, 27, 101381))),
 =======
                 ('duration', models.DateTimeField(default=datetime.datetime(2023, 2, 23, 12, 27, 45, 702905))),
@@ -586,6 +587,7 @@ class Migration(migrations.Migration):
                 ('ch_request_type', models.CharField(max_length=100, null=True)),
                 ('ch_impact', models.CharField(max_length=100, null=True)),
 <<<<<<< HEAD
+<<<<<<< HEAD
                 ('ch_priority', models.CharField(max_length=100, null=True)),
                 ('dt_start_date', models.DateTimeField(default=datetime.datetime.now)),
                 ('dt_Updated_date', models.DateTimeField(default=datetime.datetime.now)),
@@ -641,6 +643,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tool.cl_sla'),
         ),
         migrations.AddField(
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
             model_name='cl_service_subcategory',

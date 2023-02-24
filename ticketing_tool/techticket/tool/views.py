@@ -1757,11 +1757,11 @@ def UDelete(request):
     return redirect('userrequest')
 
 
-# @login_required(login_url='/login_render/')
-# def escalate_notify(request):
-#     permission = roles.objects.filter(id=request.session['user_role']).first()
-#     ur = cl_User_request.objects.all()
-#     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
+@login_required(login_url='/login_render/')
+def escalate_notify(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    ur = cl_User_request.objects.all()
+    return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
 ########## Assign Change For User Request ############
 

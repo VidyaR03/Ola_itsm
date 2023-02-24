@@ -546,6 +546,7 @@
     </div>
   </div>
 </div>
+{% endfor %}
 
 <!-- For Subcategory in service for EDIT model-->
 <script>
@@ -698,7 +699,7 @@
     var csrf = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
       method: "GET",
-      url: "{% url 'get_SubCategory_by_service_for_UR' %}",
+      url: "{% url 'get_service_sub_by_service_for_service_html' %}",
       data: {
         serviceId,
         csrfmiddlewaretoken: csrf
