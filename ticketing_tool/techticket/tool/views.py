@@ -1470,7 +1470,6 @@ def user_request(request):
             }
     return render(request, 'tool/userrequest.html', context)
 
-
 def TTO_Calculation():
     ur = cl_User_request.objects.all()
     for i in ur:
@@ -1479,61 +1478,60 @@ def TTO_Calculation():
         ur_sub_cate = i.ch_service_subcategory
         ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
         ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
-
         if i.ch_assign_agent == "Deallocate":
             # print(i.ch_assign_agent)
             for s in ur_slt:
                 queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
-                for k in queryset:
-                    print("SLT TTO:",k)
-                    # if k.ch_metric == "TTO":    
-                    if k.ch_unit == "Hours":
-                        tto_min = int(k.ch_value)*60
-                        tto_escalation = i.dt_start_date + timedelta(minutes=tto_min)
-                        ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
-                        # ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
-                    else:
-                        tto_escalation = i.dt_start_date + timedelta(minutes=int(k.ch_value))
-                        ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
-
-            print("TTO :",ur_tto)
-            ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
-            if datetime.date(ur_tto_Date) < datetime.date(datetime.now()) and i.ch_assign_agent == 'Deallocate':
-                i.ch_status = "TTO Escalated"
-                i.save()
-            elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
-                i.ch_status = "TTO Escalated"
-                i.save()
-            else:
-                i.ch_status = i.ch_status
-                # i.ch_status = "New"
-                i.save()
-        
+                if queryset != None:
+                    for k in queryset:
+                        print("SLT TTO:",k)
+                        if k.ch_metric == "TTO":
+                            if k.ch_unit == "Hours":
+                                tto_min = int(k.ch_value)*60
+                                tto_escalation = i.dt_start_date + timedelta(minutes=tto_min)
+                                ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+                                # ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
+                            else:
+                                tto_escalation = i.dt_start_date + timedelta(minutes=int(k.ch_value))
+                                ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+                            print("TTO :",ur_tto, k.ch_name)
+                            ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
+                            if datetime.date(ur_tto_Date) < datetime.date(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                                i.ch_status = "TTO Escalated"
+                                i.save()
+                            elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                                i.ch_status = "TTO Escalated"
+                                i.save()
+                            else:
+                                i.ch_status = i.ch_status
+                                # i.ch_status = "New"
+                                i.save()
         elif i.ch_status == "Assigned":
             for s in ur_slt:
                 queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
-                for k in queryset:
-                    # print("SLT TTR:",k)
-                    # if k.ch_metric == "TTR":    
-                    if k.ch_unit == "Hours":
-                        ttr_min = int(k.ch_value)*60
-                        ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=ttr_min)
-                        ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
-                        ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
-                    else:
-                        ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=int(k.ch_value))
-                        ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
-            print("TTR :",ur_ttr)
-            ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')   
-            if datetime.date(ur_ttr_Date) < datetime.date(datetime.now()) and i.ch_status == "Assigned":
-                i.ch_status = "TTR Escalated"
-                i.save()
-            elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
-                i.ch_status = "TTR Escalated"
-                i.save()
-            else:
-                i.ch_status = i.ch_status
-                i.save()
+                if queryset != None:
+                    for k in queryset:
+                        # print("SLT TTR:",k)
+                        if k.ch_metric == "TTR":
+                            if k.ch_unit == "Hours":
+                                ttr_min = int(k.ch_value)*60
+                                ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=ttr_min)
+                                ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+                                ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
+                            else:
+                                ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=int(k.ch_value))
+                                ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+                            print("TTR :",ur_ttr, k.ch_name)
+                            ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
+                            if datetime.date(ur_ttr_Date) < datetime.date(datetime.now()) and i.ch_status == "Assigned":
+                                i.ch_status = "TTR Escalated"
+                                i.save()
+                            elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
+                                i.ch_status = "TTR Escalated"
+                                i.save()
+                            else:
+                                i.ch_status = i.ch_status
+                                i.save()
 
 
 
@@ -1915,6 +1913,8 @@ def send_approval_Mail_UR(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
+        print("#####")
+        print(telegram_chat_id)
      
               
         for i in list_id:
@@ -2365,6 +2365,26 @@ def sservice(request):
         users = paginator.page(paginator.num_pages)
 
     return render(request, 'tool/sservice.html', {'ser': ser,'s_sub_category':s_sub_category,'org':org,'users':users,'permission':permission})
+
+def get_SubCategory_by_service_for_UR(request):
+    service_id = request.GET.get('serviceId')
+    services = cl_Service.objects.filter(id=int(service_id)).first()
+    ser_subcategory = services.ch_service_subcategory.through.objects.filter(cl_service_id=services.id)
+    subcategory_list = []
+    for s in ser_subcategory:
+        queryset = cl_Service_subcategory.objects.filter(id__icontains=int(s.cl_service_subcategory_id))
+        data = []
+        for obj in queryset:
+            data.append({
+                'id': obj.id,
+                'ch_subname': obj.ch_subname,
+                'ch_status': obj.ch_status,
+                'ch_request_type': obj.ch_request_type,
+                'txt_description': obj.txt_description,
+            })
+            subcategory_list.append(data)
+    json_data = json.dumps(subcategory_list)
+    return HttpResponse(json_data, content_type='application/json')
 
 def get_service_sub_by_service_for_service_html(request):
     service_id = request.GET.get('serviceId')

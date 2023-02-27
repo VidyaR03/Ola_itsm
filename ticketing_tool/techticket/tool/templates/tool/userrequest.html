@@ -2,8 +2,6 @@
 {% load static %}
 {% block content %}
 
-
-
 <div style="position: relative; top: 65px; margin-left: 85px; padding-top: 0px; margin-top: 0px;">
   <div>
 
@@ -17,7 +15,6 @@
           Management</a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-
       <div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         <span class="caret"></span></button>
@@ -29,8 +26,7 @@
           <!-- <li><a href="#assign_URModal" id="assign_btn">Assign</a></li> -->
         </ul>
       </div>
-
-
+     
       {% if permission.inci_m_a == "on" or permission == None %}
       <a href="#addcl_User_requestModal" class="btn btn-success" data-toggle="modal">
         <span>Add New User Request</span></a>
@@ -42,14 +38,9 @@
       <a href="#assign_URModal" class="btn btn-primary" data-toggle="modal">
         <span>Assign User Request</span></a>
       {% endif %}
-      <!-- <button type="submit" id="approve_btn" class="btn btn-info">Waiting for Approve</button>
-      <button type="submit" id="approved_btn" class="btn btn-info">Approved</button>
-      <button type="submit" id="reopen_btn" class="btn btn-info">Reopen</button>
-      <button type="submit" id="close_btn" class="btn btn-info">Close</button> -->
+   
 
-
-
-
+ 
     </div>
   </div>
 
@@ -159,7 +150,7 @@
           <!--start of left half -->
           <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
-              <span class="required-field"></span> <label>Organization:<a href="{% url 'new_organization' %}">
+              <span class="required-field"></span>  <label>Organization:<a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <select name="ch_organization" class="form-control" id="fk_organization"
@@ -171,7 +162,7 @@
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Caller:<a href="{% url 'client' %}">
+              <span class="required-field"></span>  <label>Caller:<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;">
@@ -187,7 +178,7 @@
               <input class="form-control" name="ch_status" value="New" type="text" readonly>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Origin</label>
+              <span class="required-field"></span>  <label>Origin</label>
               <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="">Please Select Origin</option>
@@ -211,7 +202,7 @@
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Impact</label>
+              <span class="required-field"></span>  <label>Impact</label>
               <select name="ch_impact" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false">
                 <option value="">Please Select Impact</option>
@@ -241,12 +232,6 @@
             <div class="form-group">
               <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
               <input class="form-control w-25" id="datetimepicker2" type="datetime-local" name="dt_Updated_date"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span> <span class="required-field"></span><label
-                for="dt_escalation_date">Escalated Date</label>
-              <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_escalation_date"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
             <div class="form-group">
@@ -281,10 +266,6 @@
               </select>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span> <label>Parent Request</label>
-              <select name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;">
-                <option value=0>Select Parent Request</option>
-                {% for j in ur %}
               <label>Parent Request</label>
               <select name="ch_parent_request_id" class="form-control" id="ch_parent_request"
                 style="min-height:30px;min-width:280px;">
@@ -345,18 +326,6 @@
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span><label>Caller:<a href="{% url 'client' %}">
-                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
-              <select name="ch_caller" class="form-control" id="fk_caller" style="min-height:30px;min-width:280px;"
-                required>
-                <option selected value="{{i.fk_caller}}">{{i.fk_caller}}</option>
-                {% for i in team_person %}
-                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <!-- <div class="form-group">
               <label>Caller:<a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
@@ -366,15 +335,6 @@
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
               </select>
-            </div> -->
-
-            <!-- <div class="form-group">
-              <label>Caller</label>
-              <input name="ch_Person" value="{{i.fk_caller}}" class="form-control" required>
-            </div> -->
-            <div class="form-group">
-              <span class="required-field"></span> <label>Status</label>
-              <input name="ch_status" value="{{i.ch_status}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
               <label>Status</label>
@@ -415,37 +375,18 @@
               </select>
             </div>
             <div class="form-group">
-              <span class="required-field"></span> <label>Urgency</label>
-              <!-- <input name="ch_urgency" type="text"  value="{{i.ch_urgency}}"   class="form-control"  required> -->
-              <select name="ch_urgency" type="text" value="{{i.ch_urgency}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
+              <label>Priority</label>
+              <select name="ch_priority" type="text" class="form-control" aria-label="Default select example"
+                aria-invalid="false">
+                <option selected value="{{ i.ch_priority }}">{{ i.ch_priority }}</option>
+                <option value="Critical"> Critical</option>
+                <option value="High"> High</option>
+                <option value="Medium"> Medium</option>
+                <option value="Low"> Low</option>
               </select>
             </div>
           </div>
           <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
-            <div class="form-group">
-              <span class="required-field"></span> <label>Priority</label>
-              <!-- <input name="ch_priority" type="text"    value="{{i.ch_priority}}" class="form-control"  required> -->
-              <select name="ch_priority" type="text" value="{{i.ch_priority}}" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <option value="Critical"> Critical
-                </option>
-                <option value="High"> High
-                </option>
-                <option value="Medium"> Medium
-                </option>
-                <option value="Low"> Low
-                </option>
-              </select>
-            </div>
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
@@ -471,20 +412,14 @@
               <label>Service Sub-Category</label>
               <select name="ch_ser_sub" id="select_service_subcate_{{ i.id }}" type="text" class="form-control"
                 aria-label="Default select example" aria-invalid="false" required>
-                <options selected value="{{i.ch_service}}">{{i.ch_service}}</option>
-                  {% for service in allservice %}
-                  <option value="{{service.id}}">{{service.ch_ssname}}</option>
-                  {% endfor %}
+                <option selected value="{{ i.ch_service_subcategory_id }}">{{ i.ch_service_subcategory }}</option>
               </select>
             </div>
-            <div class="form-group">
-              <span class="required-field"></span> <label>Service Subcategory</label>
-              <select name="ch_subname" id="select_subcategory" type="text" class="form-control"
-                aria-label="Default select example" aria-invalid="false">
-                <options selected value="{{i.ch_service_subcategory}}">{{i.ch_service_subcategory}}</option>
-                  {% for subcat in ser_sub %}
-                  <option value="{{subcat.id}}">{{subcat.ch_subname}}</option>
-                  {% endfor %}
+            <!-- <div class="form-group">
+              <label>Service SLT</label>
+              <select name="select_service_slt" id="select_slt_{{ i.id }}" type="text" class="form-control"
+                aria-label="Default select example" aria-invalid="false" required>
+                <option selected value="{{ i.ch_service_slts_id }}">{{ i.ch_service_slts }}</option>
               </select>
             </div> -->
             <!-- <div class="form-group">
@@ -502,12 +437,10 @@
               </select>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span> <label>Parent Request</label>
-              <select name="ch_parent_request_id" id="ch_parent_request" style="min-height:30px;min-width:280px;"
-                class="form-control" required>
-                <option selected value="{{i.ch_parent_request_id}}">{{i.ch_parent_request_id}}</option>
-
-                <!-- <option value=0 >Select Parent Request</option> -->
+              <label>Parent Request</label>
+              <select name="ch_parent_request_id" class="form-control" id="ch_parent_request"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_parent_request }}">{{ i.ch_parent_request }}</option>
                 {% for j in ur %}
                 <option value="{{j.id}}">{{j.id}}</option>
                 {% endfor %}
@@ -531,11 +464,6 @@
               <label>Description</label>
               <input class="form-control" value="{{ i.txt_description }}" name="txt_description" type="text">
             </div>
-            <div class="form-group">
-              <label>Agent</label>
-              <input name="ch_assign_agent" value="{{i.ch_assign_agent}}" type="text" placeholder="Deallocate"
-                class="form-control">
-            </div>
           </div>
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -546,7 +474,6 @@
     </div>
   </div>
 </div>
-{% endfor %}
 
 <!-- For Subcategory in service for EDIT model-->
 <script>
@@ -649,8 +576,6 @@
   });
 </script>
 
-</html>
-
 <!-- for delete change -->
 <script>
   $(document).ready(function () {
@@ -699,7 +624,7 @@
     var csrf = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
       method: "GET",
-      url: "{% url 'get_service_sub_by_service_for_service_html' %}",
+      url: "{% url 'get_SubCategory_by_service_for_UR' %}",
       data: {
         serviceId,
         csrfmiddlewaretoken: csrf
@@ -826,6 +751,52 @@
     }
   }); 
 </script>
+
+<!-- For Approve Change -->
+<script>
+  $(document).ready(function () {
+    $('#approve_btn').click(function () {
+      if (confirm('Are You Sure You Want to Approve UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Approve?")
+        } else {
+          $.ajax({
+            url: "{% url 'sendMailUR' %}",
+            method: "POST",
+            data: {
+              id,
+              csrfmiddlewaretoken: csrf
+            },
+            error: function (response) {
+              if (data.result === 'success') {
+                alert("Approval Mail Send Succefully...!")
+                location.reload();
+              }
+              else {
+                alert("Fail..! Please Configure Email Sender Details")
+                location.reload();
+              }
+            },
+          });
+        }
+      }
+    })
+  })
+</script>
+
+<script>
+  var date = new Date();
+  var minDate = date.toISOString().substring(0, 16);
+  document.getElementById("datetimepicker1").min = minDate;
+  document.getElementById("datetimepicker2").min = minDate;
+</script>
+
+
 <!-- For Approved Change -->
 <script>
   $(document).ready(function () {
@@ -855,6 +826,8 @@
     })
   })
 </script>
+<!-- For Reopen Change -->
+
 <script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
@@ -992,7 +965,7 @@
 
 
 <!-- For Reopen Change -->
-<script>
+<!-- <script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
       if (confirm('Are You Sure You Want to Reopen UR?')) {
@@ -1016,6 +989,5 @@
       }
     })
   })
-</script>
-
+</script> -->
 {% endblock content %}

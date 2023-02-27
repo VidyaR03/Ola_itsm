@@ -34,6 +34,9 @@ urlpatterns = [
     path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
     path("get_service_sub_by_service_for_service_html", views.get_service_sub_by_service_for_service_html, name="get_service_sub_by_service_for_service_html"),
 
+    path("get_SubCategory_by_service_for_UR", views.get_SubCategory_by_service_for_UR, name="get_SubCategory_by_service_for_UR"),
+
+
 
     #Url For Team form
     path('tadd', views.TADD, name='tadd'),
