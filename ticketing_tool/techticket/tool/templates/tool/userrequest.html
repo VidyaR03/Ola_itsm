@@ -38,9 +38,6 @@
       <a href="#assign_URModal" class="btn btn-primary" data-toggle="modal">
         <span>Assign User Request</span></a>
       {% endif %}
-   
-
- 
     </div>
   </div>
 
@@ -136,6 +133,8 @@
     {% endif %}
   </ul>
   {% endif %}
+
+
 
   <!-- Add Modal HTML -->
   <div id="addcl_User_requestModal" class="modal fade">
@@ -320,7 +319,7 @@
               <select name="ch_organization" class="form-control" id="fk_organization"
                 style="min-height:30px;min-width:280px;">
                 <option selected value="{{ i.fk_organization }}">{{ i.fk_organization }}</option>
-                {% for i in org %}
+                {% for i in org %}  
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
               </select>
@@ -475,7 +474,7 @@
   </div>
 </div>
 
-<!-- For Subcategory in service for EDIT model-->
+
 <script>
   $("#select_service_{{ i.id }}").change(function () {
     var serviceId = $(this).val();
@@ -523,6 +522,53 @@
 
 </script>
 
+<!-- For Subcategory in service for EDIT model-->
+<script>
+  $("#select_service_{{ i.id }}").change(function () {
+    var serviceId = $(this).val();
+    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+    $.ajax({
+      method: "GET",
+      url: "{% url 'get_SubCategory_by_service_for_UR' %}",
+      data: {
+        serviceId,
+        csrfmiddlewaretoken: csrf
+      },
+      success: function (subcategory_list) {
+
+        subcategory_id = [];
+        subcategory_ch_subname = [];
+        subcategory_ch_request_type = [];
+
+        for (let index = 0; index < subcategory_list.length; index++) {
+          const queryset = subcategory_list[index];
+
+          for (let j = 0; j < queryset.length; j++) {
+            subcategory_id_in_service = queryset[j].id
+            subcategory_ch_subname_in_service = queryset[j].ch_subname
+            subcategory_ch_request_type_in_service = queryset[j].ch_request_type
+            subcategory_id.push(subcategory_id_in_service);
+            subcategory_ch_subname.push(subcategory_ch_subname_in_service);
+            subcategory_ch_request_type.push(subcategory_ch_request_type_in_service)
+          }
+        }
+        for (let i = 0; i < subcategory_id.length; i++) {
+          var sltSelect = $("#select_service_subcate_{{ i.id }}");
+          sltSelect.empty();
+          $.each(subcategory_id, function (index, subCate_id) {
+            const option = $('<option></option>').attr('value', subCate_id).text(subcategory_ch_subname[index] + " : " + subcategory_ch_request_type[index]);
+            sltSelect.append(option);
+          })
+        }
+      },
+      error: function (xhr, status, error) {
+        console.log('Error: ' + error);
+      }
+    });
+  });
+
+</script>
+
 <script>
   var date = new Date();
   var minDate = date.toISOString().substring(0, 16);
@@ -530,7 +576,6 @@
 </script>
 
 {% endfor %}
-
 
 <!-- Assign Change form -->
 <div id="assign_URModal" class="modal fade">

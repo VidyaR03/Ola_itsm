@@ -66,6 +66,7 @@ urlpatterns = [
           
     ###### Reopen ####
     path('reopen', views.reopen, name='reopen'),
+    path('get_Existing_user', views.get_Existing_user, name='get_Existing_user'),
 
 
     #url for document
