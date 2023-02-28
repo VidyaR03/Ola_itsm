@@ -96,7 +96,7 @@
 
         <div id="addboat_notifierModal" class="modal fade">
             <div class="modal-dialog">
-                <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
+                <div class="modal-content" style="width: 350px; position: relative; left: 10%; bottom: 50%;">
                     <form action="{% url 'add_new_boatid' %}" method="post">
                         {% csrf_token %}
                         <div class="modal-header">
@@ -112,6 +112,7 @@
                                 <span class="required-field"></span> <label>Name</label>
                                 <input name="name" type="text" class="form-control" required>
                             </div>
+                        </div>    
 
 
                             <div class="modal-footer">
@@ -128,7 +129,7 @@
     {% for i in boat %}
     <div id="editboat_notifierModal-{{i.id}}" class="modal fade">
         <div class="modal-dialog">
-            <div class="modal-content" style="width: 700px; position: relative; right: 10%; bottom: 50%;">
+            <div class="modal-content" style="width: 350px; position: relative; left: 10%; bottom: 50%;">
                 <form action="/boatid_edit/{{i.id}}"  method="post">
                     {% csrf_token %}
                     <div class="modal-header">
