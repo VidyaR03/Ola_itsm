@@ -40,6 +40,7 @@
           <th>ID</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>Organization</th>
           <th>Email</th>
           <th>Role</th>
           <th>Mobile Number</th>
@@ -58,6 +59,7 @@
           <td>{{i.id}}</td>
           <td>{{i.first_name}}</td>
           <td>{{i.last_name}}</td>
+          <td>{{i.ch_organization}}</td>
           <td>{{i.email}}</td>
           <td>{{i.ch_user_role}}</td>
           <td>{{i.ch_user_mobilenumber}}</td>
@@ -74,7 +76,7 @@
 
     <div id="add_User" class="modal fade">
       <div class="modal-dialog">
-        <div class="modal-content" style="width: 700px; position: relative; left: 15%; bottom: 50%;">
+        <div class="modal-content" style="width: 700px; position: relative; right: 10%; ">
           <form action="{% url 'add_new_user' %}" method="post">
             {% csrf_token %}
             <div class="modal-header">
@@ -83,27 +85,41 @@
             </div>
             <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
               <div class="form-group">
-                <label>First Name</label>
+                <span class="required-field"></span><label>First Name</label>
                 <input name="ch_user_firstname" type="text" class="form-control" required>
               </div>
               <div class="form-group">
                 <span class="required-field"></span><label>Last Name</label>
                 <input name="ch_user_lastname" type="text" class="form-control" required>
               </div>
+              <div class="form-group">
+                <label>Organization  <a href="{% url 'new_organization' %}">
+                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  </a></label>
+                <select name="ch_organization" class="form-control"  id="ch_organization" style="min-height:30px;min-width:280px;">
+                  <option selected value="">Please select Organization</option>
+                  {% for i in org %}
+                  <option value="{{i.id}}">{{i.ch_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <span class="required-field"></span><label>Mobile Number</label>
+                <input name="ch_user_mobilenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
+                  required>
+              </div>            
+            </div>
+            <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
               <div class="form-group" id="user_mail_id">
                 <span class="required-field"></span><label>Email</label>
                 <input name="ch_user_email" id="ch_user_emailID" autocomplete="off" type="email" class="form-control">
               </div>
-            
-            </div>
-            <div class="modal-body" style="width: 330px; display: inline-block;">
               <div class="form-group">
-                <label>Password</label>
+                <span class="required-field"></span><label>Password</label>
                 <input name="ch_user_password" type="password" class="form-control">
               </div>
-
               <div class="form-group">
-                <label>Role:<a href="{% url 'role_add' %}">
+                <span class="required-field"></span><label>Role:<a href="{% url 'role_add' %}">
                     <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                   </a></label>
                 <select class="form-control" name="role_name" id="role_name" style="min-height:30px;min-width:280px;">
@@ -111,16 +127,6 @@
                   <option value="{{i.role_name}}">{{i.role_name}}</option>
                   {% endfor %}
                 </select>
-              </div>
-              <!-- <div class="form-group">
-                <label for="ch_user_expirydate">Expiry Date</label>
-                <input class="form-control w-25" type="datetime-local" name="ch_user_expirydate"
-                  pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}">
-              </div> -->
-              <div class="form-group">
-                <label>Mobile Number</label>
-                <input name="ch_user_mobilenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
-                  required>
               </div>
             </div>
             <div class="modal-footer">
@@ -137,14 +143,14 @@
   {% for i in user %}
   <div id="edit_User-{{forloop.counter}}" class="modal fade">
     <div class="modal-dialog">
-      <div class="modal-content" style="width: 400px; position: relative; left: 15%; bottom: 50%;">
+      <div class="modal-content" style="width: 700px; position: relative; right: 10%; ">
         <form action="/user_edit/{{i.id}}" method="post">
           {% csrf_token %}
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">Edit Person</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>First Name</label>
               <input name="first_name" value="{{i.first_name}}" type="text" class="form-control" disabled>
@@ -157,16 +163,24 @@
               <label>Email</label>
               <input name="email" value="{{i.email}}" type="text" class="form-control" disabled>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;">
+            <div class="form-group">
+              <label>Organization  <a href="{% url 'new_organization' %}">
+                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a></label>
+              <select name="ch_organization" class="form-control"  id="ch_organization" style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_organization }}">{{ i.ch_organization }}</option>
+                {% for i in org %}
+                <option value="{{i.id}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
             <div class="form-group">
               <label>Mobile Number</label>
               <input name="ch_user_mobilenumber" value="{{i.ch_user_mobilenumber}}" type="number" class="form-control"
                 pattern="[0-9 ]+" maxlength="14" disabled>
             </div>
-            <!-- <div class="form-group">
-              <label style="display: block;">Password</label>
-              <input name="password" type="password" value="{{i.password}}" class="form-control" id="pass_Input" style="width: 99%; display: inline-block;">
-              <i class="far fa-eye" onclick="myFunction()" style="margin-left: -30px; cursor: pointer;"></i>
-            </div> -->
             <div class="form-group">
               <label>Role:<a href="{% url 'role_add' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
@@ -177,11 +191,7 @@
                 {% endfor %}
               </select>
             </div>
-            <!-- <div class="form-group">
-              <label for="ch_user_expirydate">Expiry Date</label>
-              <input class="form-control w-25" type="datetime-local" name="ch_user_expirydate"
-                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" value="{{i.ch_user_expirydate}}">
-            </div> -->
+          </div>
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
               <input type="submit" class="btn btn-info" value="Update">

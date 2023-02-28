@@ -25,14 +25,10 @@
 
 		<!-- navbar -->
 		<div class="navbar">
-			<!-- nav left -->
 			<a href="/dashboard"><img src="{% static 'images/olatlogo_300dpi_updated.png' %}"
 			style="height: 50px; max-width: fit-content; margin-top: 10px;"></a>
 			<h3 class="nav-item" style="padding-left: 20px;">IT Service Management</h3>
-			<!-- end nav left -->
-			<!-- nav right -->
 			<div class="navbar-nav nav-right">
-				<!-- <h3 style="margin-right: 20px;">Hello,  {{request.user}}</h3> -->
 				<h3 style="margin-right: 20px;">Hello, {{ request.user.first_name }}</h3>
 				<input type="text" style="display: none;" id="current_user" value="{{ request.user.first_name }}" >
 				<div class="avt dropdown">
