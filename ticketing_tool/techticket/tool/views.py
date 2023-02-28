@@ -33,6 +33,8 @@ from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
 import requests
+from django.shortcuts import render
+from django.contrib import messages
 
 
 
@@ -2716,7 +2718,15 @@ def SLDelete(request):
 @login_required(login_url='/login_render/')
 def SLT(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
+   
+
+            # Code to process form data and add to table
+        # ...
+       
+
+
     slt = cl_Slt.objects.all()
+  
          
     if request.method == "GET":
         q = request.GET.get('searchname')
@@ -2732,13 +2742,19 @@ def SLT(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-   
+
+
+
     context = {
         'slt': slt,
         'users':users,
         'permission':permission
+    
+         
     }
     return render(request, 'tool/sslt.html', context)
+
+
 
 
 @login_required(login_url='/login_render/')
