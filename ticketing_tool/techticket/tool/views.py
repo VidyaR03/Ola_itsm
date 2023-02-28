@@ -1186,15 +1186,27 @@ def TDelete(request):
 @login_required(login_url='/login_render/')
 def newchange(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    org = cl_New_organization.objects.all()
-    call = cl_Person.objects.all()
-    nchange = cl_New_change.objects.all()
-    if request.method == "GET":
-        allteam = cl_Team.objects.all()
-        team_person = cl_Person.objects.all()
-        q = request.GET.get('searchstatus')
-        if q != None:
-            nchange = cl_New_change.objects.filter(ch_status__icontains=q)
+    user = adminuser.objects.filter(email=request.user).first()
+    if user.ch_organization == None:
+        org = cl_New_organization.objects.all()
+        call = cl_Person.objects.all()
+        nchange = cl_New_change.objects.all()
+        if request.method == "GET":
+            allteam = cl_Team.objects.all()
+            team_person = cl_Person.objects.all()
+            q = request.GET.get('searchstatus')
+            if q != None:
+                nchange = cl_New_change.objects.filter(ch_status__icontains=q)
+    else:
+        org = cl_New_change.objects.filter(ch_organization=user.ch_organization)
+        call = cl_Person.objects.all()
+        nchange = cl_New_change.objects.filter(ch_organization=user.ch_organization)
+        if request.method == "GET":
+            allteam = cl_Team.objects.filter(ch_organization=user.ch_organization)
+            team_person = cl_Person.objects.filter(ch_organization=user.ch_organization)
+            q = request.GET.get('searchstatus')
+            if q != None:
+                nchange = cl_New_change.objects.filter(ch_status__icontains=q)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(nchange, 10)
@@ -1205,8 +1217,6 @@ def newchange(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    if request.method == "GET":
-        allteam = cl_Team.objects.all()
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
@@ -1427,23 +1437,46 @@ def send_approval_Mail(request):
 @login_required(login_url='/login_render/')
 def user_request(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
-    ur = cl_User_request.objects.all()
-    ser = cl_Service.objects.all()
-    allservice = cl_Service.objects.all()
-    ser_sub = cl_Service_subcategory.objects.all()
-    nchange = cl_New_change.objects.all()
+    user = adminuser.objects.filter(email=request.user).first()
+    if user.ch_organization == None:
+        ur = cl_User_request.objects.all()
+        allservice = cl_Service.objects.all()
+        ser_sub = cl_Service_subcategory.objects.all()
+        nchange = cl_New_change.objects.all()
+        org = cl_New_organization.objects.all()
+        allteam = cl_Team.objects.all()
+        team_person = cl_Person.objects.all()
+        if request.method == "GET":
+            q = request.GET.get('searchstatus')
+            if q != None:
+                ur = cl_User_request.objects.filter(ch_status__icontains=q)
+    else:
+        org = cl_New_change.objects.filter(ch_organization=user.ch_organization)
+        allteam = cl_Team.objects.filter(ch_organization=user.ch_organization)
+        team_person = cl_Person.objects.filter(ch_organization=user.ch_organization)
+        ur = cl_User_request.objects.filter(fk_organization=user.ch_organization)
+        customer_contract = cl_Customer_contract.objects.filter(ch_ccustomer=user.ch_organization)
+        allservice = []
+        for s in customer_contract:
+            cust_ser = s.ch_services.through.objects.filter(cl_customer_contract_id=s.id)
+            for x in cust_ser:
+                service_in_contract = cl_Service.objects.filter(id=x.cl_service_id).first()
+                if service_in_contract not in allservice:
+                    allservice.append(service_in_contract)
+        
+        ser_sub = []
+        for sub in allservice:
+            s = sub.ch_service_subcategory.through.objects.filter(cl_service_id=sub.id)
+            for x in s:
+                sub_in_cont = cl_Service_subcategory.objects.filter(id=x.cl_service_subcategory_id).first()
+                ser_sub.append(sub_in_cont)
 
-    if request.method == "GET":
-        q = request.GET.get('searchstatus')
-        if q != None:
-            ur = cl_User_request.objects.filter(ch_status__icontains=q)
+        nchange = cl_New_change.objects.filter(ch_organization=user.ch_organization)
+        if request.method == "GET":
+            q = request.GET.get('searchstatus')
+            if q != None:
+                ur = cl_User_request.objects.filter(ch_status__icontains=q)
 
-    # escalated_ur = escalation(ur)
-    
-        # escalated_ur = escalation(ur)
-    org = cl_New_organization.objects.all()
-    allteam = cl_Team.objects.all()
-    team_person = cl_Person.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(ur, 10)
     try:
@@ -1457,13 +1490,11 @@ def user_request(request):
     
     context = {
             'ur': ur,
-            # 'escalated_ur': escalated_ur,
             'users':users,
             'permission':permission,
             'org':org,
             'allteam':allteam,
             'team_person':team_person,
-            'ser':ser,
             'allservice':allservice,
             'ser_sub':ser_sub,
             'nchange':nchange
@@ -2050,10 +2081,10 @@ def SCUpdate(request, id):
     """
     if request.method == "POST":
         ch_cname = request.POST.get('ch_cname')
-        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_a')).first()
+        ch_ccustomer = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_ccustomer_e')).first()
         ch_status = request.POST.get('ch_status')
         ch_contract_type = request.POST.get('ch_contract_type')
-        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_a')).first()
+        ch_pprovider = cl_New_organization.objects.filter(ch_name=request.POST.get('ch_pprovider_e')).first()
         dt_start_date = request.POST.get('dt_start_date')
         dt_end_date = request.POST.get('dt_end_date')
         i_cost_unit = request.POST.get('i_cost_unit')
@@ -3645,6 +3676,7 @@ def user_display(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "GET":
         user = adminuser.objects.exclude(ch_user_role_id=None)
+        org = cl_New_organization.objects.all()
         role = roles.objects.all()
         q = request.GET.get('searchrole')
         if q != None:
@@ -3652,6 +3684,7 @@ def user_display(request):
         context = {
             'user': user,
             'role': role,
+            'org': org,
             'permission':permission
         }
         return render(request, 'tool/user.html', context)
@@ -3681,16 +3714,20 @@ def add_new_user(request):
         ch_user_password = request.POST.get('ch_user_password')
         ch_user_role = roles.objects.get(
             role_name=request.POST.get('role_name'))
-        # ch_user_expirydate = request.POST.get('ch_user_expirydate')
         ch_user_mobilenumber = request.POST.get('ch_user_mobilenumber')
-
+        org_id = request.POST.get('ch_organization')
+        if org_id == '':
+            ch_organization = None
+        else:
+            ch_organization = cl_New_organization.objects.filter(id = request.POST.get('ch_organization')).first()
+            print("Organization",ch_organization)
         user = adminuser(
             first_name=ch_user_firstname,
             last_name=ch_user_lastname,
             email=ch_user_email,
             ch_user_role=ch_user_role,
-            # ch_user_expirydate=ch_user_expirydate,
             ch_user_mobilenumber = ch_user_mobilenumber,
+            ch_organization = ch_organization
         )
         user.set_password(ch_user_password)
         user.save()
@@ -3703,9 +3740,11 @@ def user_edit(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(id=id).first()
     if request.method == "POST":
+        ch_organization = cl_New_organization.objects.filter(id = request.POST.get('ch_organization')).first()
         ch_user_updated_role = roles.objects.get(
             role_name=request.POST.get('role_name'))
         user.ch_user_role = ch_user_updated_role
+        user.ch_organization = ch_organization
         user.save()
         return redirect('user_display')
     return render(request, 'tool/user.html',{'permission':permission})

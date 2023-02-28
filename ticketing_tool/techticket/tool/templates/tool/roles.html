@@ -25,10 +25,10 @@
         </div>
         <style>
             .required-field::before {
-            content: "*";
-            color: red;
+                content: "*";
+                color: red;
             }
-          </style>
+        </style>
         <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
             <thead>
                 <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
@@ -78,111 +78,112 @@
                         <div class="modal-body" style=" padding-left: 30px;">
                             <div class="form-group">
                                 <span class="required-field"></span><label>Role Name</label>
-                                <input name="role_name" type="text" class="form-control" required />
+                                <input name="role_name" id="new_role_name" type="text" class="form-control" required />
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Change Management</h4>
                                 <div>
-                                    <input type="checkbox" name="ch_m_a" id="ch_m_a">
+                                    <input class="check_imput" type="checkbox" name="ch_m_a" id="ch_m_a">
                                     <label for="ch_m_a" style="margin-right: 30px;">Add</label>
 
-                                    <input type="checkbox" name="ch_m_e" id="ch_m_e">
+                                    <input class="check_imput" type="checkbox" name="ch_m_e" id="ch_m_e">
                                     <label for="ch_m_e" style="margin-right: 30px;">Edit</label>
 
-                                    <input type="checkbox" name="ch_m_d" id="ch_m_d">
+                                    <input class="check_imput" type="checkbox" name="ch_m_d" id="ch_m_d">
                                     <label for="ch_m_d" style="margin-right: 30px;">Delete</label>
 
-                                    <input type="checkbox" name="ch_m_v" id="ch_m_v">
+                                    <input class="check_imput" type="checkbox" name="ch_m_v" id="ch_m_v">
                                     <label for="ch_m_v" style="margin-right: 30px;">View</label>
 
-                                    <input type="checkbox" name="ch_m_approve" id="ch_m_approve">
+                                    <input class="check_imput" type="checkbox" name="ch_m_approve" id="ch_m_approve">
                                     <label for="ch_m_approve" style="margin-right: 30px;">Approval</label>
 
-                                    <input type="checkbox" name="ch_m_assign" id="ch_m_assign">
+                                    <input class="check_imput" type="checkbox" name="ch_m_assign" id="ch_m_assign">
                                     <label for="ch_m_assign">Assign</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Incident Management</h4>
                                 <div>
-                                    <input type="checkbox" name="inci_m_a" id="inci_m_a">
+                                    <input class="check_imput" type="checkbox" name="inci_m_a" id="inci_m_a">
                                     <label for="inci_m_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="inci_m_e" id="inci_m_e">
+                                    <input class="check_imput" type="checkbox" name="inci_m_e" id="inci_m_e">
                                     <label for="inci_m_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="inci_m_d" id="inci_m_d">
+                                    <input class="check_imput" type="checkbox" name="inci_m_d" id="inci_m_d">
                                     <label for="inci_m_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="inci_m_v" id="inci_m_v">
+                                    <input class="check_imput" type="checkbox" name="inci_m_v" id="inci_m_v">
                                     <label for="inci_m_v" style="margin-right: 30px;">View</label>
 
-                                    <input type="checkbox" name="inci_m_approve" id="inci_m_approve">
+                                    <input class="check_imput" type="checkbox" name="inci_m_approve"
+                                        id="inci_m_approve">
                                     <label for="inci_m_approve" style="margin-right: 30px;">Approval</label>
 
-                                    <input type="checkbox" name="inci_m_assign" id="inci_m_assign">
+                                    <input class="check_imput" type="checkbox" name="inci_m_assign" id="inci_m_assign">
                                     <label for="inci_m_assign">Assign</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Configuration Management</h4>
                                 <div>
-                                    <input type="checkbox" name="confi_m_a" id="confi_m_a">
+                                    <input class="check_imput" type="checkbox" name="confi_m_a" id="confi_m_a">
                                     <label for="confi_m_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="confi_m_e" id="confi_m_e">
+                                    <input class="check_imput" type="checkbox" name="confi_m_e" id="confi_m_e">
                                     <label for="confi_m_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="confi_m_d" id="confi_m_d">
+                                    <input class="check_imput" type="checkbox" name="confi_m_d" id="confi_m_d">
                                     <label for="confi_m_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="confi_m_v" id="confi_m_v">
+                                    <input class="check_imput" type="checkbox" name="confi_m_v" id="confi_m_v">
                                     <label for="confi_m_v">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Service Management</h4>
                                 <div>
-                                    <input type="checkbox" name="serv_m_a" id="serv_m_a">
+                                    <input class="check_imput" type="checkbox" name="serv_m_a" id="serv_m_a">
                                     <label for="serv_m_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="serv_m_e" id="serv_m_e">
+                                    <input class="check_imput" type="checkbox" name="serv_m_e" id="serv_m_e">
                                     <label for="serv_m_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="serv_m_d" id="serv_m_d">
+                                    <input class="check_imput" type="checkbox" name="serv_m_d" id="serv_m_d">
                                     <label for="serv_m_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="serv_m_v" id="serv_m_v">
+                                    <input class="check_imput" type="checkbox" name="serv_m_v" id="serv_m_v">
                                     <label for="serv_m_v">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>User Management</h4>
                                 <div>
-                                    <input type="checkbox" name="user_m_a" id="user_m_a">
+                                    <input class="check_imput" type="checkbox" name="user_m_a" id="user_m_a">
                                     <label for="user_m_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="user_m_e" id="user_m_e">
+                                    <input class="check_imput" type="checkbox" name="user_m_e" id="user_m_e">
                                     <label for="user_m_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="user_m_d" id="user_m_d">
+                                    <input class="check_imput" type="checkbox" name="user_m_d" id="user_m_d">
                                     <label for="user_m_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="user_m_v" id="user_m_v">
+                                    <input class="check_imput" type="checkbox" name="user_m_v" id="user_m_v">
                                     <label for="user_m_v">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Settings</h4>
                                 <div>
-                                    <input type="checkbox" name="setting_a" id="setting_a">
+                                    <input class="check_imput" type="checkbox" name="setting_a" id="setting_a">
                                     <label for="setting_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="setting_e" id="setting_e">
+                                    <input class="check_imput" type="checkbox" name="setting_e" id="setting_e">
                                     <label for="setting_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="setting_d" id="setting_d">
+                                    <input class="check_imput" type="checkbox" name="setting_d" id="setting_d">
                                     <label for="setting_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="setting_v" id="setting_v">
+                                    <input class="check_imput" type="checkbox" name="setting_v" id="setting_v">
                                     <label for="setting_v">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>History</h4>
                                 <div>
-                                    <input type="checkbox" name="history_a" id="history_a">
+                                    <input class="check_imput" type="checkbox" name="history_a" id="history_a">
                                     <label for="history_a" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="history_e" id="history_e">
+                                    <input class="check_imput" type="checkbox" name="history_e" id="history_e">
                                     <label for="history_e" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="history_d" id="history_d">
+                                    <input class="check_imput" type="checkbox" name="history_d" id="history_d">
                                     <label for="history_d" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="history_v" id="history_v">
+                                    <input class="check_imput" type="checkbox" name="history_v" id="history_v">
                                     <label for="history_v">View</label>
                                 </div>
                             </div>
@@ -234,13 +235,17 @@
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Incident Management</h4>
                                 <div>
-                                    <input type="checkbox" name="inci_m_a" id="inci_m_a{{i.id}}" {% if i.inci_m_a %} checked{% endif %}>
+                                    <input type="checkbox" name="inci_m_a" id="inci_m_a{{i.id}}" {% if i.inci_m_a %}
+                                        checked{% endif %}>
                                     <label for="inci_m_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="inci_m_e" id="inci_m_e{{i.id}}" {% if i.inci_m_e %} checked{% endif %}>
+                                    <input type="checkbox" name="inci_m_e" id="inci_m_e{{i.id}}" {% if i.inci_m_e %}
+                                        checked{% endif %}>
                                     <label for="inci_m_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="inci_m_d" id="inci_m_d{{i.id}}" {% if i.inci_m_d %} checked{% endif %}>
+                                    <input type="checkbox" name="inci_m_d" id="inci_m_d{{i.id}}" {% if i.inci_m_d %}
+                                        checked{% endif %}>
                                     <label for="inci_m_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="inci_m_v" id="inci_m_v{{i.id}}" {% if i.inci_m_v %} checked{% endif %}>
+                                    <input type="checkbox" name="inci_m_v" id="inci_m_v{{i.id}}" {% if i.inci_m_v %}
+                                        checked{% endif %}>
                                     <label for="inci_m_v{{i.id}}" style="margin-right: 30px;">View</label>
                                     <input type="checkbox" name="inci_m_approve" id="inci_m_approve{{i.id}}" {% if i.inci_m_approve %} checked{% endif %}>
                                     <label for="inci_m_approve{{i.id}}" style="margin-right: 30px;">Approval</label>
@@ -251,65 +256,85 @@
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Configuration Management</h4>
                                 <div>
-                                    <input type="checkbox" name="confi_m_a" id="confi_m_a{{i.id}}" {% if i.confi_m_a %} checked{% endif %}>
+                                    <input type="checkbox" name="confi_m_a" id="confi_m_a{{i.id}}" {% if i.confi_m_a %}
+                                        checked{% endif %}>
                                     <label for="confi_m_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="confi_m_e" id="confi_m_e{{i.id}}" {% if i.confi_m_e %} checked{% endif %}>
+                                    <input type="checkbox" name="confi_m_e" id="confi_m_e{{i.id}}" {% if i.confi_m_e %}
+                                        checked{% endif %}>
                                     <label for="confi_m_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="confi_m_d" id="confi_m_d{{i.id}}" {% if i.confi_m_d %} checked{% endif %}>
+                                    <input type="checkbox" name="confi_m_d" id="confi_m_d{{i.id}}" {% if i.confi_m_d %}
+                                        checked{% endif %}>
                                     <label for="confi_m_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="confi_m_v" id="confi_m_v{{i.id}}" {% if i.confi_m_v %} checked{% endif %}>
+                                    <input type="checkbox" name="confi_m_v" id="confi_m_v{{i.id}}" {% if i.confi_m_v %}
+                                        checked{% endif %}>
                                     <label for="confi_m_v{{i.id}}">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Service Management</h4>
                                 <div>
-                                    <input type="checkbox" name="serv_m_a" id="serv_m_a{{i.id}}" {% if i.serv_m_a %} checked{% endif %}>
+                                    <input type="checkbox" name="serv_m_a" id="serv_m_a{{i.id}}" {% if i.serv_m_a %}
+                                        checked{% endif %}>
                                     <label for="serv_m_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="serv_m_e" id="serv_m_e{{i.id}}" {% if i.serv_m_e %} checked{% endif %}>
+                                    <input type="checkbox" name="serv_m_e" id="serv_m_e{{i.id}}" {% if i.serv_m_e %}
+                                        checked{% endif %}>
                                     <label for="serv_m_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="serv_m_d" id="serv_m_d{{i.id}}" {% if i.serv_m_d %} checked{% endif %}>
+                                    <input type="checkbox" name="serv_m_d" id="serv_m_d{{i.id}}" {% if i.serv_m_d %}
+                                        checked{% endif %}>
                                     <label for="serv_m_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="serv_m_v" id="serv_m_v{{i.id}}" {% if i.serv_m_v %} checked{% endif %}>
+                                    <input type="checkbox" name="serv_m_v" id="serv_m_v{{i.id}}" {% if i.serv_m_v %}
+                                        checked{% endif %}>
                                     <label for="serv_m_v{{i.id}}">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>User Management</h4>
                                 <div>
-                                    <input type="checkbox" name="user_m_a" id="user_m_a{{i.id}}" {% if i.user_m_a %} checked{% endif %}>
+                                    <input type="checkbox" name="user_m_a" id="user_m_a{{i.id}}" {% if i.user_m_a %}
+                                        checked{% endif %}>
                                     <label for="user_m_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="user_m_e" id="user_m_e{{i.id}}" {% if i.user_m_e %} checked{% endif %}>
+                                    <input type="checkbox" name="user_m_e" id="user_m_e{{i.id}}" {% if i.user_m_e %}
+                                        checked{% endif %}>
                                     <label for="user_m_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="user_m_d" id="user_m_d{{i.id}}" {% if i.user_m_d %} checked{% endif %}>
+                                    <input type="checkbox" name="user_m_d" id="user_m_d{{i.id}}" {% if i.user_m_d %}
+                                        checked{% endif %}>
                                     <label for="user_m_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="user_m_v" id="user_m_v{{i.id}}" {% if i.user_m_v %} checked{% endif %}>
+                                    <input type="checkbox" name="user_m_v" id="user_m_v{{i.id}}" {% if i.user_m_v %}
+                                        checked{% endif %}>
                                     <label for="user_m_v{{i.id}}">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>Settings</h4>
                                 <div>
-                                    <input type="checkbox" name="setting_a" id="setting_a{{i.id}}" {% if i.setting_a %} checked{% endif %}>
+                                    <input type="checkbox" name="setting_a" id="setting_a{{i.id}}" {% if i.setting_a %}
+                                        checked{% endif %}>
                                     <label for="setting_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="setting_e" id="setting_e{{i.id}}" {% if i.setting_e %} checked{% endif %}>
+                                    <input type="checkbox" name="setting_e" id="setting_e{{i.id}}" {% if i.setting_e %}
+                                        checked{% endif %}>
                                     <label for="setting_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="setting_d" id="setting_d{{i.id}}" {% if i.setting_d %} checked{% endif %}>
+                                    <input type="checkbox" name="setting_d" id="setting_d{{i.id}}" {% if i.setting_d %}
+                                        checked{% endif %}>
                                     <label for="setting_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="setting_v" id="setting_v{{i.id}}" {% if i.setting_v %} checked{% endif %}>
+                                    <input type="checkbox" name="setting_v" id="setting_v{{i.id}}" {% if i.setting_v %}
+                                        checked{% endif %}>
                                     <label for="setting_v{{i.id}}">View</label>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 20px;">
                                 <h4>History</h4>
                                 <div>
-                                    <input type="checkbox" name="history_a" id="history_a{{i.id}}" {% if i.history_a %} checked{% endif %}>
+                                    <input type="checkbox" name="history_a" id="history_a{{i.id}}" {% if i.history_a %}
+                                        checked{% endif %}>
                                     <label for="history_a{{i.id}}" style="margin-right: 30px;">Add</label>
-                                    <input type="checkbox" name="history_e" id="history_e{{i.id}}" {% if i.history_e %} checked{% endif %}>
+                                    <input type="checkbox" name="history_e" id="history_e{{i.id}}" {% if i.history_e %}
+                                        checked{% endif %}>
                                     <label for="history_e{{i.id}}" style="margin-right: 30px;">Edit</label>
-                                    <input type="checkbox" name="history_d" id="history_d{{i.id}}" {% if i.history_d %} checked{% endif %}>
+                                    <input type="checkbox" name="history_d" id="history_d{{i.id}}" {% if i.history_d %}
+                                        checked{% endif %}>
                                     <label for="history_d{{i.id}}" style="margin-right: 30px;">Delete</label>
-                                    <input type="checkbox" name="history_v" id="history_v{{i.id}}" {% if i.history_v %} checked{% endif %}>
+                                    <input type="checkbox" name="history_v" id="history_v{{i.id}}" {% if i.history_v %}
+                                        checked{% endif %}>
                                     <label for="history_v{{i.id}}">View</label>
                                 </div>
                             </div>
@@ -326,5 +351,19 @@
     </div>
 </div>
 
+<script>
+    $("#new_role_name").blur(function () {
+        var permissions = $(this).val();
+        if (permissions === "Admin" || permissions === "admin" ) {
+            checkboxes = $('.check_imput')
+            checkboxes.each(function (i) {
+                checkboxes[i].checked = true;
+            });
+        };
+      });
+</script>
 
 {% endblock content %}
+
+
+
