@@ -906,63 +906,7 @@
 
 
 <!-- For Reopen Change -->
-<!-- <script>
-  $(document).ready(function () {
-    $('#reopen_btn').click(function () {
-      if (confirm('Are You Sure You Want to Reopen UR?')) {
-        var id = [];
-        var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $(':checkbox:checked').each(function (i) {
-          id[i] = $(this).val()
-        })
-        if (id.length === 0) {
-          alert("please select UR Which u want to Reopen?")
-        } else {
-          $.ajax({
-            url: "{% url 'reopen' %}",
-            method: "POST",
-            data: {
-              id,
-              csrfmiddlewaretoken: csrf
-            },
-          
-          });
-        }
-      }
-    })
-  })
-</script> -->
-
-
-<!-- For Close Change -->
-<script>
-  $(document).ready(function () {
-    $('#close_btn').click(function () {
-      if (confirm('Are You Sure You Want to Close UR?')) {
-        var id = [];
-        var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $(':checkbox:checked').each(function (i) {
-          id[i] = $(this).val()
-        })
-        if (id.length === 0) {
-          alert("please select UR Which u want to Close?")
-        } else {
-          $.ajax({
-            url: "{% url 'close' %}",
-            method: "POST",
-            data: {
-              id,
-              csrfmiddlewaretoken: csrf
-            },
-            success: function () {
-            location.reload();
-          },
-        });
-      }
-    }
-    })
-  })
-</script>
+<!--  -->
 
 
 
@@ -1010,7 +954,7 @@
 
 
 <!-- For Reopen Change -->
-<!-- <script>
+<script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
       if (confirm('Are You Sure You Want to Reopen UR?')) {
@@ -1034,5 +978,5 @@
       }
     })
   })
-</script> -->
+</script>
 {% endblock content %}

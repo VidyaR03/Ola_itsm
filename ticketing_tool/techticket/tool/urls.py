@@ -64,9 +64,11 @@ urlpatterns = [
     path('OrgUpdate/<str:id>', views.OrgUpdate, name='OrgUpdate'),
     path('OrgDelete/', views.OrgDelete, name='OrgDelete'),
           
-    ###### Reopen ####
+    ###### Reopen 
     path('reopen', views.reopen, name='reopen'),
     path('get_Existing_user', views.get_Existing_user, name='get_Existing_user'),
+    # path('reopen', views.reopen, name='reopen'),
+
 
 
     #url for document
