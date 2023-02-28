@@ -1451,7 +1451,7 @@ def user_request(request):
             if q != None:
                 ur = cl_User_request.objects.filter(ch_status__icontains=q)
     else:
-        org = cl_New_change.objects.filter(ch_organization=user.ch_organization)
+        org = cl_New_organization.objects.filter(ch_name=user.ch_organization)
         allteam = cl_Team.objects.filter(ch_organization=user.ch_organization)
         team_person = cl_Person.objects.filter(ch_organization=user.ch_organization)
         ur = cl_User_request.objects.filter(fk_organization=user.ch_organization)
