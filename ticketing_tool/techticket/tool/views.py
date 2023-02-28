@@ -1534,7 +1534,6 @@ def TTO_Calculation():
                                 i.save()
 
 
-
 def get_SubCategory_by_service_for_UR(request):
     service_id = request.GET.get('serviceId')
     services = cl_Service.objects.filter(id=int(service_id)).first()
@@ -3656,6 +3655,21 @@ def user_display(request):
             'permission':permission
         }
         return render(request, 'tool/user.html', context)
+
+
+def get_Existing_user(request):
+    ch_user_emailID = request.GET.get('user_emailID')
+    print(ch_user_emailID)
+    user = adminuser.objects.filter(email=ch_user_emailID).first()
+    usercount = None
+    if user != None:
+        usercount = 1
+    else:
+        usercount = 0
+    json_data = json.dumps(usercount)
+    return HttpResponse(json_data, content_type='application/json')
+
+
 
 @login_required(login_url='/login_render/')
 def add_new_user(request):

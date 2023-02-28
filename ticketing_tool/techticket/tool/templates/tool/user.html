@@ -90,9 +90,9 @@
                 <span class="required-field"></span><label>Last Name</label>
                 <input name="ch_user_lastname" type="text" class="form-control" required>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="user_mail_id">
                 <span class="required-field"></span><label>Email</label>
-                <input name="ch_user_email" type="email" class="form-control">
+                <input name="ch_user_email" id="ch_user_emailID" autocomplete="off" type="email" class="form-control">
               </div>
             
             </div>
@@ -125,7 +125,7 @@
             </div>
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-              <input type="submit" class="btn btn-success" value="Add">
+              <input type="submit" id="add_user_btn" class="btn btn-success" value="Add">
             </div>
           </form>
         </div>
@@ -193,11 +193,48 @@
   </div>
   {% endfor %}
 
+
+
+  <script>
+    $("#ch_user_emailID").blur(function () {
+      var user_emailID = $(this).val();
+      var csrf = $('input[name=csrfmiddlewaretoken]').val();
+      $.ajax({
+        method: "GET",
+        url: "{% url 'get_Existing_user' %}",
+        data: {
+          user_emailID,
+          csrfmiddlewaretoken: csrf
+        },
+        success: function (usercount) {
+          console.log(usercount);
+          if (usercount === 1) {
+            email_feild = $("#user_mail_id")
+            $("#user_mail_id").css("color", "red")
+            const msg = $('<p></p>').attr('class', 'msgs').text("Email Already Exist..!");
+            $(".msgs").empty()
+            email_feild.append(msg);
+            $("#add_user_btn").css('display', 'none');
+          }
+          else {
+            email_feild = $("#user_mail_id")
+            $("#user_mail_id").css("color", "green")
+            const msg = $('<p></p>').attr('class', 'msgs').text("Email Accepted..!");
+            $(".msgs").empty()
+            email_feild.append(msg);
+            $("#add_user_btn").css('display', 'Inline-block');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log('Error: ' + error);
+        }
+      });
+    });
+  </script>
+
   <script>
     $(document).ready(function () {
-      // Activate tooltip
       $('[data-toggle="tooltip"]').tooltip();
-      // Select/Deselect checkboxes
       var checkbox = $('table tbody input[type="checkbox"]');
       $("#selectAll").click(function () {
         if (this.checked) {
