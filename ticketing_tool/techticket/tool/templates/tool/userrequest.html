@@ -798,7 +798,7 @@
 </script>
 
 <!-- For Approve Change -->
-<script>
+<!-- <script>
   $(document).ready(function () {
     $('#approve_btn').click(function () {
       if (confirm('Are You Sure You Want to Approve UR?')) {
@@ -832,7 +832,7 @@
       }
     })
   })
-</script>
+</script> -->
 
 <script>
   var date = new Date();
@@ -930,10 +930,16 @@
               id,
               csrfmiddlewaretoken: csrf
             },
-            success: function (response) {
-              alert('success')
-              
+            success: function () {
             location.reload();
+              
+            for (var i = 0; i < id.length; i++) {
+                var error = $(response).find('#error_text')
+                var error_class = $(error).attr('class')
+                $('#error').addClass(error_class)
+                $('#error').text(error.text())
+                $('tr#' + id[i] + '').fadeOut('slow');
+              }
           },
         });
         }

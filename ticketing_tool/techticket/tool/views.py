@@ -1399,22 +1399,29 @@ def send_approval_Mail(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
-        telegram_chat_id = per.telegram_chatid       
+        # telegram_chat_id = per.telegram_chatid  
         recepient = []
+        telegram_chat_id=[]
+     
+
+        print("######")
+        print(recepient)
 
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_status = "Watting for Approval"
             nchange.save()
             c_mail = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
+            t_id = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
             recepient.append(c_mail.e_person_email)
+            telegram_chat_id.append(t_id.telegram_chatid)
 
         try:
             mail_sender()
             list_id = request.POST.getlist('id[]')
             change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
             subject = 'Welcome to Olatech Solutions'
-            message = f'Please approve Following Change for further process. Change ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
+            message = f'Please approve Following Change for further process.\nChange ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
             sender = settings.EMAIL_HOST_USER
             # # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
@@ -1422,6 +1429,9 @@ def send_approval_Mail(request):
 
         except:
             raise Exception('Please Configure Email Sender Details')
+        
+    return redirect('newchange')
+
     # return render(request, 'tool/approve_change.html',{'permission':permission})
 
 ######################### Incident Mangement ####################################
@@ -1823,7 +1833,7 @@ def change_approved(request):
     return redirect('userrequest')
 
 
-########## Approved Close For Incident Management############
+########## Status Close For Incident Management############
 
 @login_required(login_url='/login_render/')
 def close(request):
@@ -1873,7 +1883,7 @@ def cm_approved(request):
     return redirect('newchange')
 
 
-########## Approved Close For Change Management############
+########## Status Close For Change Management############
 
 @login_required(login_url='/login_render/')
 def cm_close(request):
@@ -1913,30 +1923,36 @@ def send_approval_Mail_UR(request):
         list_id = request.POST.getlist('id[]')
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
-        telegram_chat_id = per.telegram_chatid
-        print("#####")
-        print(telegram_chat_id)
+        # telegram_chat_id = per.telegram_chatid
+        recepient = []
+        telegram_chat_id=[]
+      
      
               
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Waiting for Approval"
             ur.save()
+            n_mail =  cl_Person.objects.filter(id=ur.fk_caller_id).first()
+            t_id = cl_Person.objects.filter(id=ur.fk_caller_id).first()
+            recepient.append(n_mail.e_person_email)
+            telegram_chat_id.append(t_id.telegram_chatid)
+
         try:
             mail_sender()
             list_id = request.POST.getlist('id[]')
             ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
             subject = 'Welcome to Olatech Solutions'
-            message = f' Approve Following Request ID : "{list_id[0]}" '
+            message = f'Please approve Following Request for further process.\nRequest ID : "{list_id[0]}" User Description : "{ur_approve.txt_description}" '
             sender = settings.EMAIL_HOST_USER
-            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
+            # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Request ID : "{list_id[0]}" Assigned to you ')
 
         except:
             raise Exception('Please Configure Email Sender Details')
         
-        return redirect('send_approval_Mail_UR')
+    return redirect('userrequest')
 
     # return render(request, 'tool/approve_change.html',{'permission':permission})
  

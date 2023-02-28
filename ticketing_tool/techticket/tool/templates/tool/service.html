@@ -158,8 +158,11 @@
           </div>
           <div class="form-group">
               <span class="required-field"></span>  <label>Mobile Number</label>
-              <input name="i_team_phonenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
-                required>
+              <input type="tel" id="mobile-number" name="i_team_phonenumber" pattern="[6789]\d{9}" required>
+
+
+              <!-- <input name="i_team_phonenumber" type="text" class="form-control" pattern="[0-9 ]+" maxlength="14"
+                required> -->
           </div>
 
           <div class="form-group">
@@ -239,7 +242,7 @@
             <div class="form-group">
               <label>Mobile Number</label>
               <input name="i_team_phonenumber" value="{{i.i_team_phonenumber}}" type="text" class="form-control"
-                pattern="[0-9 ]+" maxlength="14" required>
+              pattern="[6789]\d{9}" required>
             </div>
             <div class="form-group">
               <label>Notification</label>
