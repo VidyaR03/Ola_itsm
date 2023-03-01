@@ -1,0 +1,153 @@
+Script started on 2023-03-01 15:23:54+05:30 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="149" LINES="19"]
+[?2004h]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ [K]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ [K]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ python3 manage.py runserver
+[?2004lPerforming system checks...
+
+System check identified some issues:
+
+WARNINGS:
+[33;1mtool.adminuser.ch_user_mobilenumber: (fields.W122) 'max_length' is ignored when used with IntegerField.
+	HINT: Remove 'max_length' from field[0m
+[33;1mtool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`[0m
+
+System check identified 2 issues (0 silenced).
+March 01, 2023 - 16:34:12
+Django version 4.1.7, using settings 'techticket.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[01/Mar/2023 16:34:17] [32m"GET / HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:34:17] [m"GET /login_render/?next=/ HTTP/1.1" 200 3443[0m
+[01/Mar/2023 16:34:25] [32m"POST /login HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:34:25] [32m"GET / HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:34:25] [m"GET /login_render/?next=/ HTTP/1.1" 200 3507[0m
+^C[?2004h]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ python3 manage.py createsuperuser
+[?2004lSystem check identified some issues:
+
+WARNINGS:
+[33;1mtool.adminuser.ch_user_mobilenumber: (fields.W122) 'max_length' is ignored when used with IntegerField.
+	HINT: Remove 'max_length' from field[0m
+[33;1mtool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`[0m
+Email: olatech@gmail.ocm   com
+Password: 
+Password (again): 
+[31;1mThis password is too short. It must contain at least 8 characters.
+This password is too common.
+[0mBypass password validation and create user anyway? [y/N]: t y
+Superuser created successfully.
+[?2004h]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ ola[K[K[Kpython3 manage.py createsuperuser
+[?2004lSystem check identified some issues:
+
+WARNINGS:
+[33;1mtool.adminuser.ch_user_mobilenumber: (fields.W122) 'max_length' is ignored when used with IntegerField.
+	HINT: Remove 'max_length' from field[0m
+[33;1mtool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`[0m
+Email: ^C[31;1m
+Operation cancelled.
+[0m[?2004h]0;mangesh@mangesh-HP-EliteBook-x360-1030-G2: ~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[01;32mmangesh@mangesh-HP-EliteBook-x360-1030-G2[00m:[01;34m~/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket[00m$ python3 manage.py createsuperuser[6Prunserver
+[?2004lPerforming system checks...
+
+System check identified some issues:
+
+WARNINGS:
+[33;1mtool.adminuser.ch_user_mobilenumber: (fields.W122) 'max_length' is ignored when used with IntegerField.
+	HINT: Remove 'max_length' from field[0m
+[33;1mtool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`[0m
+
+System check identified 2 issues (0 silenced).
+March 01, 2023 - 16:35:29
+Django version 4.1.7, using settings 'techticket.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[01/Mar/2023 16:35:32] [32m"GET / HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:35:32] [m"GET /login_render/?next=/ HTTP/1.1" 200 3443[0m
+[01/Mar/2023 16:35:41] [32m"POST /login HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:35:41] [m"GET / HTTP/1.1" 200 19900[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/style.css HTTP/1.1" 304 0[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/index.js HTTP/1.1" 304 0[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/images/admin.png HTTP/1.1" 304 0[0m
+[01/Mar/2023 16:35:41] [36m"GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1214: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_New_change'> QuerySet.
+  paginator = Paginator(nchange, 10)
+[01/Mar/2023 16:35:48] [m"GET /newchange/ HTTP/1.1" 200 29485[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:569: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_New_organization'> QuerySet.
+  paginator = Paginator(org, 10)
+[01/Mar/2023 16:35:55] [m"GET /new_organization/ HTTP/1.1" 200 19137[0m
+[01/Mar/2023 16:36:25] [32m"POST /OrgADD HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:36:25] [m"GET /new_organization/ HTTP/1.1" 200 21932[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1085: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Team'> QuerySet.
+  paginator = Paginator(tem, 10)
+[01/Mar/2023 16:36:41] [m"GET /team/ HTTP/1.1" 200 18712[0m
+[01/Mar/2023 16:36:58] [32m"POST /tadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:36:58] [m"GET /team/ HTTP/1.1" 200 23123[0m
+[01/Mar/2023 16:37:05] [m"GET /contact/ HTTP/1.1" 200 11609[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:664: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Person'> QuerySet.
+  paginator = Paginator(per, 10)
+[01/Mar/2023 16:37:07] [m"GET /client/ HTTP/1.1" 200 21377[0m
+[01/Mar/2023 16:37:36] [32m"POST /add HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:37:36] [m"GET /client/ HTTP/1.1" 200 28049[0m
+[01/Mar/2023 16:37:39] [m"GET /newchange/ HTTP/1.1" 200 29789[0m
+[01/Mar/2023 16:38:07] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:38:08] [m"GET /newchange/ HTTP/1.1" 200 37030[0m
+[01/Mar/2023 16:38:43] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:38:43] [m"GET /newchange/ HTTP/1.1" 200 37017[0m
+[01/Mar/2023 16:39:35] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:39:35] [m"GET /newchange/ HTTP/1.1" 200 37042[0m
+[01/Mar/2023 16:39:41] [m"GET /newchange/ HTTP/1.1" 200 37042[0m
+[01/Mar/2023 16:40:12] [m"GET /client/ HTTP/1.1" 200 28049[0m
+[01/Mar/2023 16:40:46] [32m"POST /add HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:40:46] [m"GET /client/ HTTP/1.1" 200 34884[0m
+[01/Mar/2023 16:40:58] [m"GET / HTTP/1.1" 200 19900[0m
+[01/Mar/2023 16:41:02] [m"GET /newchange/ HTTP/1.1" 200 37277[0m
+[01/Mar/2023 16:41:32] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:41:32] [m"GET /newchange/ HTTP/1.1" 200 37259[0m
+[01/Mar/2023 16:48:05] [32m"POST /cdelete HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:48:05] [m"GET /newchange/ HTTP/1.1" 200 29952[0m
+[01/Mar/2023 16:48:07] [m"GET /newchange/ HTTP/1.1" 200 29952[0m
+[01/Mar/2023 16:49:10] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:49:10] [m"GET /newchange/ HTTP/1.1" 200 37251[0m
+[01/Mar/2023 16:49:46] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:49:46] [m"GET /newchange/ HTTP/1.1" 200 37256[0m
+[01/Mar/2023 16:50:29] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:50:29] [m"GET /newchange/ HTTP/1.1" 200 37274[0m
+[01/Mar/2023 16:52:04] [32m"POST /cadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:52:04] [m"GET /newchange/ HTTP/1.1" 200 37265[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1492: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_User_request'> QuerySet.
+  paginator = Paginator(ur, 10)
+[01/Mar/2023 16:52:53] [m"GET /userrequest/ HTTP/1.1" 200 34377[0m
+[01/Mar/2023 16:53:28] [m"GET /servicenav/ HTTP/1.1" 200 14921[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:2784: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Slt'> QuerySet.
+  paginator = Paginator(slt, 10)
+[01/Mar/2023 16:53:30] [m"GET /slt/ HTTP/1.1" 200 22062[0m
+[01/Mar/2023 16:54:16] [32m"POST /sltadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:54:16] [m"GET /slt/ HTTP/1.1" 200 26582[0m
+[01/Mar/2023 16:54:18] [m"GET /servicenav/ HTTP/1.1" 200 14921[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:2655: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Sla'> QuerySet.
+  paginator = Paginator(sl, 10)
+[01/Mar/2023 16:54:22] [m"GET /sla/ HTTP/1.1" 200 18114[0m
+[01/Mar/2023 16:54:43] [32m"POST /sladd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:54:43] [m"GET /sla/ HTTP/1.1" 200 24407[0m
+[01/Mar/2023 16:54:47] [m"GET /servicenav/ HTTP/1.1" 200 14921[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:2549: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Service_subcategory'> QuerySet.
+  paginator = Paginator(sub, 10)
+[01/Mar/2023 16:54:49] [m"GET /service_subcategory/ HTTP/1.1" 200 20759[0m
+[01/Mar/2023 16:55:04] [32m"POST /sadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:55:04] [m"GET /service_subcategory/ HTTP/1.1" 200 25215[0m
+[01/Mar/2023 16:55:08] [m"GET /servicenav/ HTTP/1.1" 200 14921[0m
+/home/mangesh/Desktop/ola_Itsm2/Ola_Itsm/ticketing_tool/techticket/tool/views.py:2406: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Service'> QuerySet.
+  paginator = Paginator(ser, 10)
+[01/Mar/2023 16:55:10] [m"GET /sservice/ HTTP/1.1" 200 19038[0m
+[01/Mar/2023 16:55:30] [32m"POST /ssadd HTTP/1.1" 302 0[0m
+[01/Mar/2023 16:55:30] [m"GET /sservice/ HTTP/1.1" 200 26492[0m
+[01/Mar/2023 16:55:39] [m"GET /userrequest/ HTTP/1.1" 200 34446[0m
+[01/Mar/2023 16:56:13] [m"GET /get_SubCategory_by_service_for_UR?serviceId=1&csrfmiddlewaretoken=wF0ZcMIUhrqdHiUAlyTfcFDry8dHRC5sLkF3iV2qv9ZXXAHSAmia6cvCdJLHtLoc HTTP/1.1" 200 2[0m
+[01/Mar/2023 16:56:19] [m"GET /userrequest/ HTTP/1.1" 200 34446[0m
+[01/Mar/2023 16:56:28] [m"GET /servicenav/ HTTP/1.1" 200 14921[0m
+[01/Mar/2023 16:56:31] [m"GET /sservice/ HTTP/1.1" 200 26492[0m
+HII <QuerySet []>
+[01/Mar/2023 16:56:38] [m"GET /get_service_sub_by_service_for_service_html?serviceId=1&csrfmiddlewaretoken=kLtyw0nyRwGVDzlNoYzR3Mxc0o8V7o4Izq8CC9H45efFTR85DMYMXjpnFZGVJxns HTTP/1.1" 200 2[0m
+[01/Mar/2023 16:56:43] 

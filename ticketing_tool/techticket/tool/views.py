@@ -1475,7 +1475,6 @@ def user_request(request):
                 service_in_contract = cl_Service.objects.filter(id=x.cl_service_id).first()
                 if service_in_contract not in allservice:
                     allservice.append(service_in_contract)
-        
         ser_sub = []
         for sub in allservice:
             s = sub.ch_service_subcategory.through.objects.filter(cl_service_id=sub.id)
