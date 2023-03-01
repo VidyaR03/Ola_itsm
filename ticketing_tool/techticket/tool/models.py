@@ -57,7 +57,7 @@ class cl_Web_server(models.Model):
 
     def __str__(self):
         return self.ch_wsname
- 
+
     class Meta:
         db_table = 'cl_Web_server'
 
@@ -584,7 +584,22 @@ class cl_New_change(models.Model):
     """
     Models which create the table for New Change
     """
-    id = models.AutoField(primary_key=True, editable=False)
+    id = models.CharField(primary_key=True, max_length=10)    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Generate the id which doesn't exit
+            last_id = cl_New_change.objects.all().order_by('-id').first()
+            if last_id:
+                try:
+                    last_id_num = int(last_id.id.split('-')[1])
+                except(ValueError, IndexError):
+                    last_id_num = 0
+                new_id_num = last_id_num + 1
+                new_id = f"C-{new_id_num:05}"
+            else:
+                new_id = "C-00001"
+            self.id = new_id
+        super().save(*args, **kwargs)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     ch_caller = models.ForeignKey(
@@ -610,7 +625,24 @@ class cl_User_request(models.Model):
     """
     Models which create the table for User Request
     """
-    id = models.AutoField(primary_key=True, editable=False)
+    id = models.CharField(primary_key=True, max_length=10)
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Generate the id which doesn't exit
+            last_id = cl_User_request.objects.all().order_by('-id').first()
+            if last_id:
+                try:
+                    last_id_num = int(last_id.id.split('-')[1])
+                except(ValueError, IndexError):
+                    last_id_num = 0
+                new_id_num = last_id_num + 1
+                new_id = f"R-{new_id_num:05}"
+            else:
+                new_id = "R-00001"
+            self.id = new_id
+        super().save(*args, **kwargs)
+
     fk_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     fk_caller = models.ForeignKey(

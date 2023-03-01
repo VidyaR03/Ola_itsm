@@ -17,7 +17,7 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('logs/', views.view_logs, name='logs'),
     path('delete/', views.LogsDelete, name='logsdelete'),
-   
+
     #Url for person form
     path('add', views.ADD, name='add'),
     # path('edit', views.Edit, name='edit'),
