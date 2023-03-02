@@ -530,6 +530,16 @@ class cl_Server(models.Model):
 
     class Meta:
         db_table = 'cl_Server'
+    
+class cl_Reopen(models.Model):
+    txt_reopen = models.TextField()
+    ureq_id = models.CharField(max_length=100,null=True)  
+
+    def __str__(self):
+        return self.txt_reopen
+
+    class Meta:
+        db_table = 'cl_Reopen'
 
 
 
@@ -662,6 +672,7 @@ class cl_User_request(models.Model):
     ch_parent_request = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_change = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
+    reopen_reason = models.TextField(default='issue')
     ch_assign_agent = models.CharField(max_length=100, default='Deallocate')
 
     def __str__(self):

@@ -25,7 +25,9 @@
         <ul class="dropdown-menu">
           <li><a href="#" id="approve_btn">Waiting for Approve</a></li>
           <li><a href="#" id="approved_btn">Approved</a></li>
-          <li><a href="#" id="reopen_btn">Reopen</a></li>
+          <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
+            <span>Reopen Remark</span></a></li>
+          <!-- <li><a href="#" id="reopen_btn">Reopen</a></li> -->
           <li><a href="#" id="close_btn">Close</a></li>
           <!-- <li><a href="#" id="assign_btn">Assign</a></li> -->
         </ul>
@@ -287,7 +289,7 @@
           <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
             <div class="form-group">
               <label>ID</label>
-              <input name="id" value="{{i.id}}" type="text" class="form-control" required>
+              <input name="id" value="{{i.id}}" type="text" class="form-control" required readonly>
             </div>
             <div class="form-group">
               <span class="required-field"></span>
@@ -347,13 +349,13 @@
               <label>Category</label>
               <input name="ch_category" value="{{i.ch_category}}" type="text" class="form-control" required>
             </div>
-            <br>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block;"><!--start of right half -->
             <div class="form-group">
               <label>Title</label>
               <input name="ch_title" value="{{i.ch_title}}" type="text" class="form-control" required>
             </div>
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block;"><!--start of right half -->
+          
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
@@ -382,7 +384,7 @@
             </div> -->
             <div class="form-group">
               <label>Parent Change</label>
-              <select  name="ch_parent_change_id" id="ch_parent_change_id" style="min-height:30px;min-width:280px;" required>
+              <select  name="ch_parent_change_id" id="ch_parent_change_id" style="min-height:30px;min-width:280px;"  required>
               <option selected value="{{i.ch_parent_change_id}}">{{i.ch_parent_change_id}}</option>
                 <!-- <option value=0 >Select Parent Change</option> -->
               {% for k in nchange %}
@@ -449,6 +451,32 @@
     </div>
   </div>
 </div>
+
+<!-- Reopen Remark Form CM-->
+
+<div id="reopen_model" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 400px; position: relative; left: 15%;">
+      <div class="modal-header">
+        <h4 class="modal-title">Reopen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Reason for Reopen</label>
+          <input class="form-control" name="txt_reopen" type="text">
+        </div>
+     
+        <div class="modal-footer">
+          <button type="submit" id="reopen_btn" class="btn btn-primary">Remark</button>
+          <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- </body> -->
 <script>
   var date = new Date();
@@ -623,7 +651,8 @@
             url: "{% url 'cm_reopen' %}",
             method: "POST",
             data: {
-              id,
+              reason: $('input[name=txt_reopen]').val(),
+              ur_id: id,
               csrfmiddlewaretoken: csrf
             },
             success: function () {

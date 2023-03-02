@@ -468,6 +468,10 @@ urlpatterns = [
     path('syndelete', views.syndelete, name='syndelete'),
 
 
+    # path('store_reopen_reason/', views.store_reopen_reason, name='store_reopen_reason'),
+
+
+
 
     path("authgoogle/", views.authgoogle,name='authgoogle'),
     path('oauthadd', views.oauthadd, name='oauthadd'),
