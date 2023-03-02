@@ -169,8 +169,8 @@
               <label>Organization  <a href="{% url 'new_organization' %}">
                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select name="ch_organization" class="form-control"  id="ch_organization" style="min-height:30px;min-width:280px;">
-                <option selected value="{{ i.ch_organization }}">{{ i.ch_organization }}</option>
+              <select name="ch_organization_e" class="form-control"  id="ch_organization" style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_organization_id }}">{{ i.ch_organization }}</option>
                 {% for i in org %}
                 <option value="{{i.id}}">{{i.ch_name}}</option>
                 {% endfor %}
@@ -185,7 +185,8 @@
               <label>Role:<a href="{% url 'role_add' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
-              <select class="form-control" name="role_name" id="role_name">
+              <select class="form-control" name="role_name_e" id="role_name">
+                <option selected value="{{i.ch_user_role}}">{{i.ch_user_role}}</option>
                 {% for i in role %}
                 <option value="{{i.role_name}}">{{i.role_name}}</option>
                 {% endfor %}

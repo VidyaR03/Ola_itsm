@@ -658,8 +658,6 @@ def client(request):
         q = request.GET.get('searchname')
         if q != None:
             per = cl_Person.objects.filter(ch_person_firstname__icontains=q)
-
-    team1 =cl_Team.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(per, 10)
     try:
@@ -669,7 +667,12 @@ def client(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users,'permission':permission,'team1':team1})
+    return render(request, 'tool/client.html', {'per': per, 'org':org,'users':users,'permission':permission})
+
+def get_team_by_org(request):
+    org_id = request.GET.get('org_id')
+    teams = cl_Team.objects.filter(ch_organization=org_id)
+    return JsonResponse([{'id': team.id, 'teamname': team.ch_teamname} for team in teams], safe=False)
 
 
 @login_required(login_url='/login_render/')
@@ -680,16 +683,12 @@ def ADD(request):
             request.POST.get('ch_person_firstname'))
         ch_person_lastname = str.capitalize(
             request.POST.get('ch_person_lastname'))
-        ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
+        ch_organization = cl_New_organization.objects.filter(id=str.capitalize(request.POST.get('ch_organization'))).first()
+        ch_team = cl_Team.objects.filter(id=request.POST.get('ch_team_name')).first()
         ch_person_status = str.capitalize(request.POST.get('ch_person_status'))
         ch_person_location = str.capitalize(
             request.POST.get('ch_person_location')) 
-        ch_person_function = str.capitalize(
-            request.POST.get('ch_person_function'))
-        ch_manager = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_manager')).first()
-        # ch_manager = request.POST.get('ch_manager')
+        ch_person_function = str.capitalize(request.POST.get('ch_person_function'))
         ch_employee_number = str.upper(request.POST.get('ch_employee_number'))
         e_person_email = str.lower(request.POST.get('e_person_email'))
         telegram_chatid = request.POST.get('telegram_chatid')
@@ -702,7 +701,6 @@ def ADD(request):
             ch_person_status=ch_person_status,
             ch_person_location=ch_person_location,
             ch_person_function=ch_person_function,
-            ch_manager=ch_manager,
             ch_employee_number=ch_employee_number,
             e_person_email=e_person_email,
             telegram_chatid=telegram_chatid,
@@ -731,18 +729,15 @@ def Edit(request):
 
 @login_required(login_url='/login_render/')
 def Update(request, id):
-    team1 =cl_Team.objects.all()
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        id = request.POST.get('id')
         ch_person_firstname = request.POST.get('ch_person_firstname')
         ch_person_lastname = request.POST.get('ch_person_lastname')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))    
-        ch_team = cl_Team.objects.filter(ch_teamname=request.POST.get('ch_team_name')).first()
+        ch_organization = cl_New_organization.objects.get(id = request.POST.get('ch_organization'))    
+        ch_team = cl_Team.objects.filter(id=request.POST.get('ch_team_name')).first()
         ch_person_status = request.POST.get('ch_person_status')
         ch_person_location = request.POST.get('ch_person_location')
         ch_person_function = request.POST.get('ch_person_function')
-        ch_manager = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_manager')).first()
         ch_employee_number = request.POST.get('ch_employee_number')
         e_person_email = request.POST.get('e_person_email')
         telegram_chatid = request.POST.get('telegram_chatid')
@@ -756,7 +751,6 @@ def Update(request, id):
             ch_person_status=ch_person_status,
             ch_person_location=ch_person_location,
             ch_person_function=ch_person_function,
-            ch_manager=ch_manager,
             ch_employee_number=ch_employee_number,
             e_person_email=e_person_email,
             telegram_chatid=telegram_chatid,
@@ -1076,6 +1070,7 @@ def team(request):
     if request.method == "GET":
         tem = cl_Team.objects.all()
         org = cl_New_organization.objects.all()
+        team_person = cl_Person.objects.all()
         q = request.GET.get('searchname')
         if q != None:
             tem = cl_Team.objects.filter(ch_teamname__icontains=q)
@@ -1089,7 +1084,14 @@ def team(request):
             users = paginator.page(1)
         except EmptyPage:
             users = paginator.page(paginator.num_pages)
-    return render(request, 'tool/service.html', {'tem': tem, 'org':org,'users':users,'permission':permission})
+        context={
+            'tem': tem, 
+            'org':org,
+            'team_person':team_person,
+            'users':users,
+            'permission':permission
+        }
+    return render(request, 'tool/service.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -1099,18 +1101,16 @@ def TADD(request):
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
-        e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
-        i_team_phonenumber = request.POST.get('i_team_phonenumber')
-        b_team_notification = request.POST.get('b_team_notification')
+            id=request.POST.get('ch_organization')).first()
+        L1_Manager = cl_Person.objects.filter(id=request.POST.get('L1_Manager')).first()
+        L2_Manager = cl_Person.objects.filter(id=request.POST.get('L2_Manager')).first()
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
             ch_teamname=ch_teamname,
             ch_teamstatus=ch_teamstatus,
             ch_organization=ch_organization,
-            e_team_emailfield=e_team_emailfield,
-            i_team_phonenumber=i_team_phonenumber,
-            b_team_notification=b_team_notification,
+            L1_Manager=L1_Manager,
+            L2_Manager=L2_Manager,
             ch_team_function=ch_team_function,
         )
         tem.save()
@@ -1122,6 +1122,10 @@ def TADD(request):
         return redirect('team')
     return render(request, 'tool/service.html',{'permission':permission})
 
+def get_people_by_org(request):
+    org_id = request.GET.get('org_id')
+    people = cl_Person.objects.filter(ch_organization=org_id)
+    return JsonResponse([{'id': person.id, 'firstname': person.ch_person_firstname, 'lastname': person.ch_person_lastname} for person in people], safe=False)
 
 
 @login_required(login_url='/login_render/')
@@ -1140,22 +1144,20 @@ def TEdit(request):
 def TUpdate(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        # id = request.POST.get('id')
         ch_teamname = request.POST.get('ch_teamname')
         ch_teamstatus = request.POST.get('ch_teamstatus')
-        ch_organization = cl_New_organization.objects.get(ch_name = request.POST.get('ch_organization'))        
-        e_team_emailfield = str.lower(request.POST.get('e_team_emailfield'))
-        i_team_phonenumber = request.POST.get('i_team_phonenumber')
-        b_team_notification = request.POST.get('b_team_notification')
+        ch_organization = cl_New_organization.objects.filter(
+            id=request.POST.get('ch_organization')).first()
+        L1_Manager = cl_Person.objects.filter(id=request.POST.get('L1_Manager')).first()
+        L2_Manager = cl_Person.objects.filter(id=request.POST.get('L2_Manager')).first()
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
             id=id,
             ch_teamname=ch_teamname,
             ch_teamstatus=ch_teamstatus,
             ch_organization=ch_organization,
-            e_team_emailfield=e_team_emailfield,
-            i_team_phonenumber=i_team_phonenumber,
-            b_team_notification=b_team_notification,
+            L1_Manager=L1_Manager,
+            L2_Manager=L2_Manager,
             ch_team_function=ch_team_function,
         )
         tem.save()
@@ -1189,7 +1191,7 @@ def TDelete(request):
 def newchange(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(email=request.user).first()
-    if user.ch_organization == None:
+    if user.ch_organization.ch_name == "Inhouse":
         org = cl_New_organization.objects.all()
         call = cl_Person.objects.all()
         nchange = cl_New_change.objects.all()
@@ -1356,7 +1358,6 @@ def assign_changeModal(request):
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
 
-
         s= "Assigned"
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
@@ -1442,7 +1443,6 @@ def send_approval_Mail(request):
         
     return redirect('newchange')
 
-    # return render(request, 'tool/approve_change.html',{'permission':permission})
 
 ######################### Incident Mangement ####################################
 
@@ -1450,7 +1450,7 @@ def send_approval_Mail(request):
 def user_request(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(email=request.user).first()
-    if user.ch_organization == None:
+    if user.ch_organization.ch_name == 'Inhouse':
         ur = cl_User_request.objects.all()
         allservice = cl_Service.objects.all()
         ser_sub = cl_Service_subcategory.objects.all()
@@ -1462,10 +1462,11 @@ def user_request(request):
             q = request.GET.get('searchstatus')
             if q != None:
                 ur = cl_User_request.objects.filter(ch_status__icontains=q)
-    else:
+
+    elif user.ch_organization.ch_name != 'Inhouse':
         org = cl_New_organization.objects.filter(ch_name=user.ch_organization)
         allteam = cl_Team.objects.filter(ch_organization=user.ch_organization)
-        team_person = cl_Person.objects.filter(ch_organization=user.ch_organization)
+        team_person = cl_Person.objects.filter(e_person_email=user.email)
         ur = cl_User_request.objects.filter(fk_organization=user.ch_organization)
         customer_contract = cl_Customer_contract.objects.filter(ch_ccustomer=user.ch_organization)
         allservice = []
@@ -1481,13 +1482,11 @@ def user_request(request):
             for x in s:
                 sub_in_cont = cl_Service_subcategory.objects.filter(id=x.cl_service_subcategory_id).first()
                 ser_sub.append(sub_in_cont)
-
         nchange = cl_New_change.objects.filter(ch_organization=user.ch_organization)
         if request.method == "GET":
             q = request.GET.get('searchstatus')
             if q != None:
                 ur = cl_User_request.objects.filter(ch_status__icontains=q)
-
     page = request.GET.get('page', 1)
     paginator = Paginator(ur, 10)
     try:
@@ -1496,9 +1495,9 @@ def user_request(request):
         users = paginator.page(1)
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
-    
+
     TTO_Calculation()
-    
+
     context = {
             'ur': ur,
             'users':users,
@@ -1512,6 +1511,32 @@ def user_request(request):
             }
     return render(request, 'tool/userrequest.html', context)
 
+def escalation_mail(req_status, id):
+        ur_raised = cl_User_request.objects.filter(id=id).first()
+
+        if req_status == "TTO Escalated":
+            message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
+            subject = 'Request TTO Escalation'
+        elif req_status == "TTR Escalated":
+            message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
+            subject = 'Request TTR Escalation'
+
+        helpdesk_L2 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L2.L2_Manager.e_person_email]
+        telchat_id=helpdesk_L2.L2_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
+
+
 def TTO_Calculation():
     ur = cl_User_request.objects.all()
     for i in ur:
@@ -1520,68 +1545,70 @@ def TTO_Calculation():
         ur_sub_cate = i.ch_service_subcategory
         ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
         ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
-        if i.ch_assign_agent == "Deallocate":
-            # print(i.ch_assign_agent)
-            for s in ur_slt:
-                queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
-                if queryset != None:
-                    for k in queryset:
-                        print("SLT TTO:",k)
-                        if k.ch_metric == "TTO":
-                            if k.ch_unit == "Hours":
-                                tto_min = int(k.ch_value)*60
-                                tto_escalation = i.dt_start_date + timedelta(minutes=tto_min)
-                                ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
-                                # ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
-                            else:
-                                tto_escalation = i.dt_start_date + timedelta(minutes=int(k.ch_value))
-                                ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
-                            print("TTO :",ur_tto, k.ch_name)
-                            ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
-                            if datetime.date(ur_tto_Date) < datetime.date(datetime.now()) and i.ch_assign_agent == 'Deallocate':
-                                i.ch_status = "TTO Escalated"
-                                i.save()
-                            elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
-                                i.ch_status = "TTO Escalated"
-                                i.save()
-                            else:
-                                i.ch_status = i.ch_status
-                                # i.ch_status = "New"
-                                i.save()
-        elif i.ch_status == "Assigned":
-            for s in ur_slt:
-                queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
-                if queryset != None:
-                    for k in queryset:
-                        # print("SLT TTR:",k)
-                        if k.ch_metric == "TTR":
-                            if k.ch_unit == "Hours":
-                                ttr_min = int(k.ch_value)*60
-                                ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=ttr_min)
-                                ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+        if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved":
+            if (i.ch_assign_agent == "Deallocate" and i.ch_status != "TTO Escalated") or i.ch_status == "Approved":
+                for s in ur_slt:
+                    queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
+                    if queryset != None:
+                        for k in queryset:
+                            if k.ch_metric == "TTO":
+                                if k.ch_unit == "Hours":
+                                    tto_min = int(k.ch_value)*60
+                                    tto_escalation = i.dt_start_date + timedelta(minutes=tto_min)
+                                    ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+                                else:
+                                    tto_escalation = i.dt_start_date + timedelta(minutes=int(k.ch_value))
+                                    ur_tto = tto_escalation.strftime('%Y-%m-%dT%H:%M')
+                                print(ur_tto)
+                                ur_tto_Date = datetime.strptime(ur_tto, '%Y-%m-%dT%H:%M')
+                                if datetime.date(ur_tto_Date) < datetime.date(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                                    i.ch_status = "TTO Escalated"
+                                    i.save()
+                                    escalation_mail(i.ch_status,i.id)
+                                    print("Status changed -> TTO Escalate")
+                                elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
+                                    i.ch_status = "TTO Escalated"
+                                    i.save()
+                                    escalation_mail(i.ch_status,i.id)
+                                    print("Status changed -> TTO Escalate")
+                                else:
+                                    i.ch_status = i.ch_status
+                                    i.save()
+            elif i.ch_status == "Assigned":
+                for s in ur_slt:
+                    queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
+                    if queryset != None:
+                        for k in queryset:
+                            if k.ch_metric == "TTR":
+                                if k.ch_unit == "Hours":
+                                    ttr_min = int(k.ch_value)*60
+                                    ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=ttr_min)
+                                    ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+                                    ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
+                                else:
+                                    ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=int(k.ch_value))
+                                    ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
+                                print(ur_ttr)
                                 ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
-                            else:
-                                ttr_escalation = i.dt_Request_Assign_date + timedelta(minutes=int(k.ch_value))
-                                ur_ttr = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
-                            print("TTR :",ur_ttr, k.ch_name)
-                            ur_ttr_Date = datetime.strptime(ur_ttr, '%Y-%m-%dT%H:%M')
-                            if datetime.date(ur_ttr_Date) < datetime.date(datetime.now()) and i.ch_status == "Assigned":
-                                i.ch_status = "TTR Escalated"
-                                i.save()
-                            elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
-                                i.ch_status = "TTR Escalated"
-                                i.save()
-                            else:
-                                i.ch_status = i.ch_status
-                                i.save()
+                                if datetime.date(ur_ttr_Date) < datetime.date(datetime.now()) and i.ch_status == "Assigned":
+                                    i.ch_status = "TTR Escalated"
+                                    i.save()
+                                    escalation_mail(i.ch_status,i.id)
+                                    print("Status changed -> TTR Escalate")
+                                elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
+                                    i.ch_status = "TTR Escalated"
+                                    i.save()
+                                    escalation_mail(i.ch_status,i.id)
+                                    print("Status changed -> TTR Escalate")
+                                else:
+                                    i.ch_status = i.ch_status
+                                    i.save()
 
 
 def get_SubCategory_by_service_for_UR(request):
     service_id = request.GET.get('serviceId')
     services = cl_Service.objects.filter(id=int(service_id)).first()
-
     ser_subcategory = services.ch_service_subcategory.through.objects.filter(cl_service_id=services.id)
-
     subcategory_list = []
 
     for s in ser_subcategory:
@@ -1602,41 +1629,14 @@ def get_SubCategory_by_service_for_UR(request):
     return HttpResponse(json_data, content_type='application/json')
 
 
-# def get_slt_by_subCategory_for_UR(request):
-#     subCategory_id = request.GET.get('sub_cat_Id')
-#     subCategory = cl_Service_subcategory.objects.filter(id=int(subCategory_id)).first()
-#     subCategory_sla = subCategory.ch_sla
-
-#     slt = subCategory_sla.slts.through.objects.filter(cl_sla_id=subCategory_sla.id)
-
-#     queryset_list = []
-
-#     for s in slt:
-#         queryset = cl_Slt.objects.filter(id__icontains=int(s.cl_slt_id))
-#         data = []
-    
-#         for obj in queryset:
-#             data.append({
-#                 'id': obj.id,
-#                 'ch_name': obj.ch_name,
-#                 'ch_priority': obj.ch_priority,
-#                 'ch_request_type': obj.ch_request_type,
-#                 'ch_metric': obj.ch_metric,
-#                 'ch_value': obj.ch_value,
-#                 'ch_unit': obj.ch_unit
-#             })
-#             queryset_list.append(data)
-#     json_data = json.dumps(queryset_list)
-#     return HttpResponse(json_data, content_type='application/json')
-
 
 @login_required(login_url='/login_render/')
 def UADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         fk_organization = cl_New_organization.objects.filter(
-            ch_name=request.POST.get('ch_organization')).first()
-        fk_caller = cl_Person.objects.filter(ch_person_firstname=request.POST.get('ch_caller')).first()
+            id=request.POST.get('ch_organization')).first()
+        fk_caller = cl_Person.objects.filter(id=request.POST.get('ch_caller')).first()
         ch_status = request.POST.get('ch_status')
         ch_origin = request.POST.get('ch_origin')
         ch_title = request.POST.get('ch_title')
@@ -1645,30 +1645,12 @@ def UADD(request):
         ch_priority = request.POST.get('ch_priority')   
         dt_start_date = request.POST.get('dt_start_date')
         dt_updated_date = request.POST.get('dt_Updated_date')
-
-        # start_date = datetime.strptime(dt_start_date, '%Y-%m-%dT%H:%M')
-        # tto_escalation = start_date + timedelta(minutes=5)
-        # dt_TTO_escalation_date = tto_escalation.strftime('%Y-%m-%dT%H:%M')
-
-        # start_date = datetime.strptime(dt_start_date, '%Y-%m-%dT%H:%M')
-        # ttr_escalation = start_date + timedelta(minutes=5)
-        # dt_TTR_escalation_date = ttr_escalation.strftime('%Y-%m-%dT%H:%M')
-
-
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
         ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_ser_sub')).first()
-        
-        # tto_slt_id = int(request.POST.get('select_service_tto_slt'))
-        # ch_service_tto_slts = cl_Slt.objects.filter(id=tto_slt_id).first()
-        
-        # ttr_slt_id = int(request.POST.get('select_service_ttr_slt'))
-        # ch_service_ttr_slts = cl_Slt.objects.filter(id=ttr_slt_id).first()
-
         try:
             ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
         except:
             ch_parent_request = None
-        
         try:
             ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         except:
@@ -1686,17 +1668,32 @@ def UADD(request):
             ch_priority=ch_priority,
             dt_start_date =dt_start_date,
             dt_Updated_date =dt_updated_date,
-            # dt_TTO_escalation_date=dt_TTO_escalation_date,
-            # dt_TTR_escalation_date=dt_TTR_escalation_date,
             ch_service =ch_service,
             ch_service_subcategory =ch_service_subcategory,
-            # ch_service_tto_slts=ch_service_tto_slts,
-            # ch_service_ttr_slts=ch_service_ttr_slts,
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
         )
         ur.save()
+
+        ur_raised = cl_User_request.objects.latest('id')
+        subject = 'New User request raised'
+        message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority is "{ur_raised.ch_priority}"' 
+        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L1.L1_Manager.e_person_email]
+        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
+
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
         event ="event"
@@ -1715,6 +1712,7 @@ def UEdit(request):
         'permission':permission
     }
     return render(request, 'tool/userrequest.html', context)
+
 
 
 @login_required(login_url='/login_render/')
@@ -1802,7 +1800,7 @@ def escalate_notify(request):
     ur = cl_User_request.objects.all()
     return render(request, 'tool/userrequest.html', {'ur': ur, 'permission':permission})
 
-########## Assign Change For User Request ############
+########## Assign For User Request ############
 
 
 @login_required(login_url='/login_render/')
@@ -1820,17 +1818,16 @@ def assign_URModal(request):
             ur.ch_status = "Assigned" 
             now = datetime.now()
             ur.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
-            print("HIIII",ur.dt_Request_Assign_date)       
             ur.save()
+
         try:
             mail_sender()
-            ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
-            subject = 'Welcome to Olatech Solutions'
-            message = f'Request ID : "{list_id[0]}" Assigned to you '
+            subject = 'Request Assign'
+            message = f'Request ID : "{list_id}" Assigned to you'
             sender = settings.EMAIL_HOST_USER
-            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            recepient = [per.e_person_email]
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Request ID : "{list_id[0]}" Request Description : "{ur_approve.txt_description}" ')
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
             return JsonResponse({'result': 'success'})
         except:
             print('email not send')
@@ -1866,16 +1863,32 @@ def change_approved(request):
 ########## Status Close For Incident Management############
 
 @login_required(login_url='/login_render/')
-def close(request):
+def im_resolved(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')      
               
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
-            ur.ch_status = "Close"
-            ur.save()
-
+            ur.ch_status = "Resolved"
+            ur.save() 
+            req_caller = cl_Person.objects.filter(id=ur.fk_caller_id).first()   
+            helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+            L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
+            L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
+            all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
+            try:
+                mail_sender()
+                subject = 'Request Resolved'
+                message = f'Request ID : "{list_id}" is resolved successfully.'
+                sender = settings.EMAIL_HOST_USER
+                recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+                for i in all_chat_ids:
+                    send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+                return JsonResponse({'result': 'success'})
+            except:
+                print('email not send')
     return redirect('userrequest')
 
 
@@ -1948,36 +1961,25 @@ def cm_reopen(request):
 
 @login_required(login_url='/login_render/')
 def send_approval_Mail_UR(request):
-    # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(id=p_Emp_id).first()
-        # telegram_chat_id = per.telegram_chatid
-        recepient = []
-        telegram_chat_id=[]
-      
-     
+        helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        L1_manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()
+        recepient = [L1_manager.e_person_email]
+        telegram_chat_id=[L1_manager.telegram_chatid]
               
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Waiting for Approval"
             ur.save()
-            n_mail =  cl_Person.objects.filter(id=ur.fk_caller_id).first()
-            t_id = cl_Person.objects.filter(id=ur.fk_caller_id).first()
-            recepient.append(n_mail.e_person_email)
-            telegram_chat_id.append(t_id.telegram_chatid)
 
         try:
             mail_sender()
-            list_id = request.POST.getlist('id[]')
-            ur_approve = cl_User_request.objects.filter(id=list_id[0]).first()
-            subject = 'Welcome to Olatech Solutions'
-            message = f'Please approve Following Request for further process.\nRequest ID : "{list_id[0]}" User Description : "{ur_approve.txt_description}" '
+            subject = 'Request for Approval'
+            message = f'Please approve Following Request for further process.\nRequest ID : "{list_id}"'
             sender = settings.EMAIL_HOST_USER
-            # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com','vidya.r@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Request ID : "{list_id[0]}" Assigned to you ')
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
 
         except:
             raise Exception('Please Configure Email Sender Details')
@@ -3707,6 +3709,7 @@ def user_display(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "GET":
         user = adminuser.objects.exclude(ch_user_role_id=None)
+        # user = adminuser.objects.all()
         org = cl_New_organization.objects.all()
         role = roles.objects.all()
         q = request.GET.get('searchrole')
@@ -3743,8 +3746,7 @@ def add_new_user(request):
         ch_user_lastname = request.POST.get('ch_user_lastname')
         ch_user_email = request.POST.get('ch_user_email')
         ch_user_password = request.POST.get('ch_user_password')
-        ch_user_role = roles.objects.get(
-            role_name=request.POST.get('role_name'))
+        ch_user_role = roles.objects.get(role_name=request.POST.get('role_name'))
         ch_user_mobilenumber = request.POST.get('ch_user_mobilenumber')
         org_id = request.POST.get('ch_organization')
         if org_id == '':
@@ -3771,9 +3773,9 @@ def user_edit(request, id):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(id=id).first()
     if request.method == "POST":
-        ch_organization = cl_New_organization.objects.filter(id = request.POST.get('ch_organization')).first()
-        ch_user_updated_role = roles.objects.get(
-            role_name=request.POST.get('role_name'))
+        print(request.POST.get('ch_organization_e'))
+        ch_organization = cl_New_organization.objects.filter(id = request.POST.get('ch_organization_e')).first()
+        ch_user_updated_role = roles.objects.get(role_name=request.POST.get('role_name_e'))
         user.ch_user_role = ch_user_updated_role
         user.ch_organization = ch_organization
         user.save()

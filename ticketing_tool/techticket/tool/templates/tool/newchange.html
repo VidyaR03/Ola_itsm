@@ -18,6 +18,7 @@
    
     
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
+      {% if permission.ch_m_approve == "on" and permission.ch_m_assign == "on" or permission == None %}
       <div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         <span class="caret"></span></button>
@@ -29,6 +30,7 @@
           <!-- <li><a href="#" id="assign_btn">Assign</a></li> -->
         </ul>
       </div>
+      {% endif %}
       {% if permission.ch_m_a == "on" or permission == None %}
       <a href="#addcl_New_changeModal" class="btn btn-success" data-toggle="modal"><span>Add New Change</span></a>
       {% endif %}
@@ -156,9 +158,14 @@
           <!--start of left half -->
           <div class="modal-body" style="width: 330px; padding-left: 40px; display: inline-block;">
             <div class="form-group">
-              <span class="required-field"></span><label>Organization  <a href="{% url 'new_organization' %}">
+              <span class="required-field"></span>
+              <label>Organization
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'new_organization' %}">
                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
+                </a>
+                {% endif %}
+              </label>
               <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
                 <option selected value=''>Please select Organization</option>
                 {% for i in org %}
@@ -168,12 +175,16 @@
             </div>
 
             <div class="form-group">
-              <span class="required-field"></span><label>Caller<a href="{% url 'client' %}">
+              <span class="required-field"></span>
+              <label>Caller
+                {% if permission.confi_m_a == "on" or permission == None %}
+                <a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
+                </a>
+                {% endif %}
+              </label>
               <select name="ch_caller" id="ch_caller" style="min-height:30px;min-width:280px;" required>
                 <option selected value="">Please select Caller</option>
-
                 {% for i in call %}
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
@@ -279,9 +290,14 @@
               <input name="id" value="{{i.id}}" type="text" class="form-control" required>
             </div>
             <div class="form-group">
-              <span class="required-field"></span><label>Organization:<a href="{% url 'new_organization' %}">
+              <span class="required-field"></span>
+              <label>Organization
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'new_organization' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
+                </a>
+                {% endif %}
+              </label>
               <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
                 <option selected value="{{i.ch_organization}}">{{i.ch_organization}}</option>
                 {% for i in org %}
@@ -294,9 +310,14 @@
               <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
             </div> -->
             <div class="form-group">
-              <span class="required-field"></span><label>Caller:<a href="{% url 'client' %}">
+              <span class="required-field"></span>
+              <label>Caller
+                {% if permission.confi_m_a == "on" or permission == None %}
+                <a href="{% url 'client' %}">
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
-                </a></label>
+                </a>
+                {% endif %}
+              </label>
               <select name="ch_caller" class="form-control" id="ch_caller" style="min-height:30px;min-width:280px;" required>
                 <option selected value="{{i.ch_caller}}">{{i.ch_caller}}</option>
                 {% for i in team_person %}
