@@ -170,7 +170,7 @@
             </div>
             <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-              <input type="submit" class="btn btn-success" value="Add" onclick="displayInfo()" >
+              <input type="submit" class="btn btn-success" value="Add"  >
             </div>
           </form>
         </div>
@@ -342,8 +342,9 @@
                     csrfmiddlewaretoken: csrf,
                   },
                   success: function (response) {
-                    alert("success");
                     location.reload();
+                    alert("Data Deleted successfully!");
+
                     for (var i = 0; i < id.length; i++) {
                       var error = $(response).find("#error_text");
                       var error_class = $(error).attr("class");
@@ -372,14 +373,7 @@
           }
         });
       </script>
-      <script>
-        function displayInfo(){
-          alert("Data added successfully!");
-    
-          
-        }
-        </script>
-  
+      
 
       {% endblock content %}
 
