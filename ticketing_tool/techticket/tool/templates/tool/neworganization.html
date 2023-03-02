@@ -175,7 +175,7 @@
                 <label>Parent </label>
                 <select name="ch_parent_id" class="form-control"  id="ch_parent"
                   style="min-height:30px;min-width:280px;">
-                  <option selected value="{{ i.ch_parent }}" >{{ i.ch_parent }}</option>
+                  <option value=0>Please Select Parent </option>
                   {% for j in org %}
                   <option  value="{{j.id}}">{{j.id}}</option>
                   {% endfor %}
