@@ -194,9 +194,8 @@ class cl_Team(models.Model):
     ch_teamstatus = models.CharField(max_length=100, null=True)
     ch_organization = models.ForeignKey(
         cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
-    e_team_emailfield = models.EmailField(null=True)
-    i_team_phonenumber = models.CharField(max_length=200, null=True)
-    b_team_notification = models.CharField(max_length=100, null=True)
+    L1_Manager = models.ForeignKey('cl_Person', related_name='L1_Manager', on_delete=models.CASCADE, null=True, blank=True)
+    L2_Manager = models.ForeignKey('cl_Person', related_name='L2_Manager', on_delete=models.CASCADE, null=True, blank=True)
     ch_team_function = models.CharField(max_length=100, null=True)
 
     def __str__(self):
@@ -230,7 +229,6 @@ class cl_Person(models.Model):
     ch_person_status = models.CharField(max_length=100, null=True)
     ch_person_location = models.CharField(max_length=100, null=True)
     ch_person_function = models.CharField(max_length=100, null=True)
-    ch_manager = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_employee_number = models.CharField(max_length=100, null=True)
     e_person_email = models.EmailField(null=True)
     telegram_chatid = models.CharField(max_length=100, null=True)
@@ -685,7 +683,7 @@ class cl_Slt(models.Model):
 
     def __str__(self):
         return self.ch_name
-
+    
     class Meta:
         db_table = 'cl_Slt'
 

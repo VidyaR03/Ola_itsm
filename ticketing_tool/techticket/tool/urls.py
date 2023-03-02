@@ -24,6 +24,8 @@ urlpatterns = [
     path('update/<str:id>', views.Update, name='update'),
     path('delete_person/', views.Delete, name='delete_person'),
     path("client/", views.client,name='client'),
+    path("get_team_by_org", views.get_team_by_org, name="get_team_by_org"),
+
 
     #Url For New Change
     path("newchange/", views.newchange, name='newchange'),
@@ -33,8 +35,8 @@ urlpatterns = [
     path('cdelete', views.CDelete, name='cdelete'),
     path("get_people_by_team", views.get_people_by_team, name="get_people_by_team"),
     path("get_service_sub_by_service_for_service_html", views.get_service_sub_by_service_for_service_html, name="get_service_sub_by_service_for_service_html"),
-
     path("get_SubCategory_by_service_for_UR", views.get_SubCategory_by_service_for_UR, name="get_SubCategory_by_service_for_UR"),
+
 
 
 
@@ -46,7 +48,7 @@ urlpatterns = [
     path("team/", views.team, name='team'),
     path("configurationmanagement/", views.configuration, name='configurationmanagement'),
     path("configurationmanagement_copy/", views.configurationmanagement_copy, name='configurationmanagement_copy'),
-
+    path("get_people_by_org", views.get_people_by_org, name="get_people_by_org"),
     path("contact/", views.contact, name='contact'),
     path("newci/", views.newci, name='newci'),
 
@@ -152,7 +154,7 @@ urlpatterns = [
     path('reopen', views.reopen, name='reopen'),
     
     ########URL for Close in User Request#######
-    path('close', views.close, name='close'),
+    path('im_resolved', views.im_resolved, name='im_resolved'),
 
 
      ########URL for Send Assign  mail in Change Management#######
