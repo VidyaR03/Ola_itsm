@@ -1,4 +1,7 @@
 import json
+from django.shortcuts import render, get_object_or_404
+
+from django.urls import reverse
 import random
 import time
 import logging
@@ -441,19 +444,56 @@ class ViewAttachedPDF(View):
 ############## Location ##########
 
 @login_required(login_url='/login_render/')
-def Location(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
-    loc = cl_Location.objects.all()
+# def Location(request):
+#     loc = []
+#     if request.method == 'POST':
+#         loc = request.POST.getlist('loc')
+#     permission = roles.objects.filter(id=request.session['user_role']).first()
+#     loc = cl_Location.objects.all()
+
     
+    
+#     if request.method == "GET":
+#         q = request.GET.get('searchname')
+#         if q != None:
+#             loc = cl_Location.objects.filter(ch_location_name__icontains=q)
+#     page = request.GET.get('page', 1)
+#     org = cl_New_organization.objects.all()
+
+
+#     paginator = Paginator(loc, 10)
+#     try:
+#         users = paginator.page(page)
+#     except PageNotAnInteger:
+#         users = paginator.page(1)
+#     except EmptyPage:
+#         users = paginator.page(paginator.num_pages)
+
+
+#     context = {
+#         'loc': loc,
+#         'users':users,
+#         'permission':permission,
+#         'org':org,
+#     }
+#     return render(request, 'tool/location.html', context)
+
+
+
+def Location(request):
+    users = []
+    if request.method == 'POST':
+        users = request.POST.getlist('users')
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    loc_query = cl_Location.objects.all()
+
     if request.method == "GET":
         q = request.GET.get('searchname')
         if q != None:
-            loc = cl_Location.objects.filter(ch_location_name__icontains=q)
+            loc_query = loc_query.filter(ch_location_name__icontains=q)
+
+    paginator = Paginator(loc_query, 10)
     page = request.GET.get('page', 1)
-    org = cl_New_organization.objects.all()
-
-
-    paginator = Paginator(loc, 10)
     try:
         users = paginator.page(page)
     except PageNotAnInteger:
@@ -461,15 +501,26 @@ def Location(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
+    org = cl_New_organization.objects.all()
+
+    # Add URL for each cl_Location object to the context dictionary
+    for i in users:
+        i.url = reverse('location_detail', args=[i.pk])
 
     context = {
-        'loc': loc,
-        'users':users,
-        'permission':permission,
-        'org':org,
+        'users': users,
+        'permission': permission,
+        'org': org,
     }
     return render(request, 'tool/location.html', context)
 
+
+def location_detail(request, pk):
+    location = get_object_or_404(cl_Location, pk=pk)
+    context = {
+        'location': location,
+    }
+    return render(request, 'tool/location_detail.html', context)
 
 
 @login_required(login_url='/login_render/')
@@ -591,7 +642,9 @@ def OrgADD(request):
         ch_name = str.capitalize(request.POST.get('ch_name'))
         ch_code = request.POST.get('ch_code')
         ch_status = request.POST.get('ch_status')
-        ch_parent = request.POST.get('ch_parent')
+        # ch_parent = request.POST.get('ch_parent')
+        ch_parent = cl_New_organization.objects.filter(id=request.POST.get('ch_parent_id')).first()
+
         ch_delivery_model = request.POST.get('ch_delivery_model')
         org = cl_New_organization(
             ch_name=ch_name,

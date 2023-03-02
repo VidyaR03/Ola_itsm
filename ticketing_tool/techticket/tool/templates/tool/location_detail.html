@@ -1,0 +1,53 @@
+
+
+{% extends 'tool/adminbase.html' %}
+{% load static %}
+{% block content %}
+
+<div style="position: relative; top: 65px; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
+  <div class="row">
+    <div class="col-md-8" style="color:brown;">
+      <h1>{{ location.ch_location_name }}</h1>
+    </div>
+    <div class="col-md-8">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>ID:</td>
+            <td>{{ location.id }}</td>
+          </tr>
+          <tr>
+            <td>Name:</td>
+            <td>{{ location.ch_location_name}}</td>
+          </tr>
+          <tr>
+            <td>Address:</td>
+            <td>{{ location.txt_address }}</td>
+          </tr>
+          <tr>
+            <td>Organization:</td>
+            <td>{{ location.ch_organization }}</td>
+          </tr>
+          <tr>
+            <td>City:</td>
+            <td>{{ location.ch_city }}</td>
+          </tr>
+          <tr>
+            <td>Pincode:</td>
+            <td>{{ location.i_pincode }}</td>
+          </tr>
+          <tr>
+            <td>Country:</td>
+            <td>{{ location.ch_country }}</td>
+          </tr>
+          <tr>
+            <td>Status:</td>
+            <td>{{ location.ch_status }}</td>
+          </tr>
+          <!-- Add any other fields you want to display here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -20,7 +20,7 @@
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
       {% if permission.ch_m_approve == "on" and permission.ch_m_assign == "on" or permission == None %}
       <div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        <button class="btn btn-info" type="button" data-toggle="dropdown">
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
           <li><a href="#" id="approve_btn">Waiting for Approve</a></li>
@@ -301,7 +301,7 @@
                 {% endif %}
               </label>
               <select name="ch_organization" class="form-control" id="ch_organization" style="min-height:30px;min-width:280px;" required>
-                <option selected value="{{i.ch_organization}}">{{i.ch_organization}}</option>
+                <option selected value="{{i.ch_organization}}" selected >{{i.ch_organization}}</option>
                 {% for i in org %}
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
@@ -321,7 +321,7 @@
                 {% endif %}
               </label>
               <select name="ch_caller" class="form-control" id="ch_caller" style="min-height:30px;min-width:280px;" required>
-                <option selected value="{{i.ch_caller}}">{{i.ch_caller}}</option>
+                <option selected value="{{i.ch_caller}}" selected >{{i.ch_caller}}</option>
                 {% for i in team_person %}
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
@@ -606,7 +606,7 @@
 <script>
   $(document).ready(function () {
     $('#approved_btn').click(function () {
-      if (confirm('Are You Sure You Want to Approved UR?')) {
+      if (confirm('Are You Sure You Send to Approved UR?')) {
         var id = [];
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
         $(':checkbox:checked').each(function (i) {

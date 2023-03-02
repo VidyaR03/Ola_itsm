@@ -15,7 +15,7 @@ class cl_New_organization(models.Model):
     ch_name = models.CharField(max_length=100, null=True)
     ch_code = models.CharField(max_length=100, null=True)
     ch_status = models.CharField(max_length=50, null=True)
-    ch_parent = models.CharField(max_length=100, null=True)
+    ch_parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_delivery_model = models.CharField(max_length=100, null=True)
 
     def __str__(self):

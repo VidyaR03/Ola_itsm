@@ -51,6 +51,9 @@ urlpatterns = [
     path("get_people_by_org", views.get_people_by_org, name="get_people_by_org"),
     path("contact/", views.contact, name='contact'),
     path("newci/", views.newci, name='newci'),
+     
+
+    path('location/<int:pk>/',views.location_detail, name='location_detail'),
 
     #Url for Loction form
     path("location/", views.Location,name='location'),

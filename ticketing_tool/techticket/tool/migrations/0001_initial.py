@@ -154,8 +154,8 @@ class Migration(migrations.Migration):
                 ('ch_name', models.CharField(max_length=100, null=True)),
                 ('ch_code', models.CharField(max_length=100, null=True)),
                 ('ch_status', models.CharField(max_length=50, null=True)),
-                ('ch_parent', models.CharField(max_length=100, null=True)),
                 ('ch_delivery_model', models.CharField(max_length=100, null=True)),
+                ('ch_parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tool.cl_New_organization')),
             ],
             options={
                 'db_table': 'cl_New_organization',
