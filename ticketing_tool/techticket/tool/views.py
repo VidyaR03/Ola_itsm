@@ -1191,7 +1191,7 @@ def TDelete(request):
 def newchange(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(email=request.user).first()
-    if user.ch_organization == None:
+    if user.ch_organization.ch_name == "Inhouse":
         org = cl_New_organization.objects.all()
         call = cl_Person.objects.all()
         nchange = cl_New_change.objects.all()
