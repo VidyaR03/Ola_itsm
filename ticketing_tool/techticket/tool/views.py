@@ -33,6 +33,7 @@ from tool.modules.configurationmanagement.ConfigurationManagement import *
 from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
 import requests
+from .models import cl_Reopen
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -73,9 +74,9 @@ def dashboard(request):
     log = user_activity_log.objects.all()
     permission = roles.objects.filter(id=request.session['user_role']).first()
     User = cl_User_request.objects.all().count()
-    org = cl_New_organization.objects.all().count()
-    service = cl_Service.objects.all().count()
-    change = cl_New_change.objects.all().count()    
+    service = cl_User_request.objects.all().count()
+    change = cl_New_change.objects.all().count() 
+    total = User+change
     Assign = cl_User_request.objects.exclude(ch_assign_agent = 'Deallocate').count()    
     newopen= cl_User_request.objects.filter(Q(ch_assign_agent = 'Deallocate') | Q(ch_status = 'Active')).count()
     Assign1 = cl_New_change.objects.filter(ch_status = 'Assigned').count()
@@ -90,6 +91,9 @@ def dashboard(request):
     SLT_count = cl_Slt.objects.all().count()
     incident_count = cl_User_request.objects.filter(ch_request_type = "Incident").count()
     service_count = cl_User_request.objects.filter(ch_request_type = "Service").count()
+    overdue= cl_User_request.objects.filter(Q(ch_status = 'TTO Escalated') | Q(ch_status = 'TTR Escalated')).count()
+    team = cl_Team.objects.all().count()
+    
  
 
 ###################### DONT DELETE THIS CODEEEEEEE ######################
@@ -102,7 +106,6 @@ def dashboard(request):
         'log':log,
         'User': User,
         'permission':permission,
-        'org':org,
         'service':service,
         'change':change,
         'newopen':newopen,
@@ -118,7 +121,10 @@ def dashboard(request):
         'SLT_count':SLT_count,
         'Service_Subcategory_count':Service_Subcategory_count,
         'incident_count':incident_count,
-        'service_count':service_count
+        'service_count':service_count,
+        'overdue':overdue,
+        'total':total,
+        'team':team
     }
 
     return render(request, 'tool/dashboard.html',context)
@@ -1673,6 +1679,7 @@ def UADD(request):
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
             txt_description =txt_description,
+            # reopen_reason = reopen_reason,
         )
         ur.save()
 
@@ -1894,18 +1901,18 @@ def im_resolved(request):
 
 ########## Reopen Change For Incident Management############
 
-@login_required(login_url='/login_render/')
-def reopen(request):
-    # permission = roles.objects.filter(id=request.session['user_role']).first()
-    if request.method == "POST":
-        list_id = request.POST.getlist('id[]')  
+# @login_required(login_url='/login_render/')
+# def reopen(request):
+#     # permission = roles.objects.filter(id=request.session['user_role']).first()
+#     if request.method == "POST":
+#         list_id = request.POST.getlist('id[]')  
               
-        for i in list_id:
-            ur = cl_User_request.objects.filter(id=i).first()
-            ur.ch_status = "Reopen"
-            ur.save()
+#         for i in list_id:
+#             ur = cl_User_request.objects.filter(id=i).first()
+#             ur.ch_status = "Reopen"
+#             ur.save()
         
-    return redirect('userrequest')
+#     return redirect('userrequest')
 
 
 
@@ -1947,9 +1954,11 @@ def cm_close(request):
 def cm_reopen(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        list_id = request.POST.getlist('id[]')  
-              
-        for i in list_id:
+        reason = request.POST.get('reason')
+        ur_id = request.POST.getlist('ur_id[]')   
+        cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur_id)
+           
+        for i in ur_id:
             cm = cl_New_change.objects.filter(id=i).first()
             cm.ch_status = "Reopen"
             cm.save()
@@ -4350,6 +4359,90 @@ def oauthdelete(request):
             oauthg = cl_Oauth_google.objects.filter(id=i).first()
             oauthg.delete()
     return redirect('authgoogle')
+
+def vreopen(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    ropen = cl_Reopen.objects.all()
+    context = {
+        'ropen': ropen,
+        # 'permission':permission
+    }
+    return render(request, 'tool/userrequest.html', context)
+
+# def addreopen(request):
+#     if request.method == "POST":
+#         txt_reopen = request.POST.get('txt_reopen')
+#         ropen = cl_Reopen(
+#             txt_reopen=txt_reopen,
+
+#         )
+#     return render(request, 'tool/userrequest.html', {'ropen':ropen})
+
+
+
+def reopen(request):
+    if request.method == "POST":
+        reason = request.POST.get('reason')
+        ur_id = request.POST.getlist('ur_id[]')
+        # ur = cl_User_request.objects.get(id=ur_id)
+        # create a new instance of cl_Reopen model
+        cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur_id)
+
+        # txt_reopen = cl_Reopen.objects.create(txt_reopen=reason)
+        # update the user request instance with the new cl_Reopen instance
+        # ur.ch_status = "Reopen"
+        for i in ur_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Reopen"
+            ur.save()
+        
+        return redirect('userrequest')
+    
+    return render(request, 'reopen.html')
+
+
+  
+
+# @login_required(login_url='/login_render/')
+# def reopen(request):
+#     # permission = roles.objects.filter(id=request.session['user_role']).first()
+#     if request.method == "POST":
+#         list_id = request.POST.getlist('id[]')  
+#         reason = request.POST.get('txt_reopen')
+#         ur_id = request.POST.get('ur_id')
+#         ur = cl_User_request.objects.get(id=ur_id)
+#         up = cl_Reopen.objects.get(id=i)
+#         up.txt_reopen = reason
+#         up.save()
+#         print(up)
+#         # ur.reopen_reason = reason
+#         ur.save()
+              
+#         for i in list_id:
+#             ur = cl_User_request.objects.filter(id=i).first()
+#             ur.ch_status = "Reopen"
+#             ur.save()
+        
+#     return redirect('userrequest')
+
+# def store_reopen_reason(request):
+#     if request.method == 'POST':
+#         reason = request.POST.get('txt_reopen')
+#         ur_id = request.POST.get('ur_id')
+#         ur = cl_User_request.objects.get(id=ur_id)
+#         ur.reopen_reason = reason
+#         ur.save()
+#         return HttpResponse('Reason stored successfully!')
+#     else:
+#         return HttpResponse('Invalid request method!')
+
+
+
+
+        
+
+
+
 
 
 

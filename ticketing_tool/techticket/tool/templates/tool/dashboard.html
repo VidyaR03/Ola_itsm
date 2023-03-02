@@ -15,8 +15,8 @@
   <div class="row" style="margin-left: 20px; margin-right: 20px;">
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
-        <h3 style="color:azure; font-weight: bolder;">{{User}}
-          <h2 style="color:azure; ">Total Request</h2>
+        <h3 style="color:azure; font-weight: bolder;">{{total}}
+          <h2 style="color:azure; ">Total Tickets</h2>
 
           <!-- <i class="fas fa-users"></i> -->
         </h3>
@@ -25,7 +25,7 @@
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
-        <h3 style="color:azure; font-weight: bolder;">100
+        <h3 style="color:azure; font-weight: bolder;">{{overdue}}
           <h2 style="color:azure; ">Overdue Tickets</h2>
 
           <!-- <i class="fas fa-users"></i> -->
@@ -45,8 +45,8 @@
     </div>
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
-        <h3 style="color:azure; font-weight: bolder;">{{org}}
-          <h2 style="color:azure; ">Tickets On Hold</h2>
+        <h3 style="color:azure; font-weight: bolder;">{{team}}
+          <h2 style="color:azure; ">Team</h2>
 
           <!-- <i class="fas fa-users"></i> -->
         </h3>
@@ -84,7 +84,7 @@
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; ">{{service}}
-          <h2 style="color:azure; ">Service Request</h2>
+          <h2 style="color:azure; ">Number of Incident</h2>
 
           <!-- <i class="fas fa-users"></i> -->
         </h3>
@@ -94,7 +94,7 @@
     <div class="col-3 col-m-6 col-sm-6">
       <div class="counter " style="background: linear-gradient(140deg, #736cd3  10%, rgb(79, 169, 189)  90%);">
         <h3 style="color:azure; font-weight: bolder;">{{change}}
-          <h2 style="color:azure; ">Change Request</h2>
+          <h2 style="color:azure; ">No of Changes</h2>
 
           <!-- <i class="fas fa-users"></i> -->
         </h3>
@@ -189,6 +189,7 @@
           yAxes: [{
             ticks: {
               beginAtZero: true
+
             }
           }]
         }

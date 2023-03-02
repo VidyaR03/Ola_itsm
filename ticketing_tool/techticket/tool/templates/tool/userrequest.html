@@ -22,7 +22,8 @@
         <ul class="dropdown-menu">
           <li><a href="#" id="Request_approve_btn">Request for Approve</a></li>
           <li><a href="#" id="approved_btn">Approved</a></li>
-          <li><a href="#" id="reopen_btn">Reopen</a></li>
+          <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
+            <span>Reopen Remark</span></a></li>
           <li><a href="#" id="resolved_btn">Resolved</a></li>
         </ul>
       </div>
@@ -38,6 +39,8 @@
       <a href="#assign_URModal" class="btn btn-primary" data-toggle="modal">
         <span>Assign User Request</span></a>
       {% endif %}
+      <!-- <a href="#reopen_model" class="btn btn-primary" data-toggle="modal">
+        <span>Reopen Remark</span></a> -->
     </div>
   </div>
 
@@ -443,9 +446,15 @@
             </div>
             <div class="form-group">
               <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
-              <input class="form-control w-25" id="datetimepicker_{{ i.id }}" type="datetime-local" name="dt_Updated_date"
+              <input class="form-control w-25" id="datetimepicker_{{ i.id }}"  type="datetime-local" name="dt_Updated_date"
+                value="{{ i.dt_Updated_date|date:'Y-m-d\TH:i' }}"
                 pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
             </div>
+            <!-- <div class="form-group">
+              <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
+              <input class="form-control w-25" id="datetimepicker_{{ i.id }}" type="datetime-local" name="dt_Updated_date"
+                pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
+            </div> -->
             <div class="form-group">
               <label>Service</label>
               <select name="ch_sername" type="text" id="select_service_{{ i.id }}" class="form-control"
@@ -488,7 +497,7 @@
               <label>Parent Request</label>
               <select name="ch_parent_request_id" class="form-control" id="ch_parent_request"
                 style="min-height:30px;min-width:280px;">
-                <option selected value="{{ i.ch_parent_request }}">{{ i.ch_parent_request }}</option>
+                <option selected value="{{ i.ch_parent_request_id }}">{{ i.ch_parent_request }}</option>
                 {% for j in ur %}
                 <option value="{{j.id}}">{{j.id}}</option>
                 {% endfor %}
@@ -689,6 +698,38 @@
     </div>
   </div>
 </div>
+
+
+<!-- Reopen Remark Form -->
+
+<div id="reopen_model" class="modal fade">
+<!-- <div id="addcl_ReopenModal" class="modal fade"> -->
+
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 400px; position: relative; left: 15%;">
+      <div class="modal-header">
+        <h4 class="modal-title">Reopen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label>Reason for Reopen</label>
+          <input class="form-control" name="txt_reopen" type="text">
+        </div>
+     
+        <div class="modal-footer">
+          <button type="submit" id="reopen_btn" class="btn btn-primary" value="Add">Remark</button>
+          <a href="{% url 'userrequest' %}" class="btn btn-default" role="button">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <script>
   $(document).ready(function () {
@@ -950,7 +991,7 @@
 </script>
 <!-- For Reopen Change -->
 
-<script>
+<!-- <script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
       if (confirm('Are You Sure You Want to Reopen UR?')) {
@@ -967,6 +1008,37 @@
           method: "POST",
           data: {
             id,
+            csrfmiddlewaretoken: csrf
+          },
+          success: function () {
+            location.reload();
+          },
+        });
+
+      }
+    }
+    })
+  })
+</script> -->
+
+<script>
+  $(document).ready(function () {
+    $('#reopen_btn').click(function () {
+      if (confirm('Are You Sure You Want to Reopen UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Reopen?")
+        } else {
+        $.ajax({
+          url: "{% url 'reopen' %}",
+          method: "POST",
+          data: {
+            reason: $('input[name=txt_reopen]').val(),
+            ur_id: id,
             csrfmiddlewaretoken: csrf
           },
           success: function () {
