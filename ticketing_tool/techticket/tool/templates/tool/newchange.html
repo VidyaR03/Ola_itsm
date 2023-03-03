@@ -23,12 +23,10 @@
         <button class="btn btn-info" type="button" data-toggle="dropdown">
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a href="#" id="approve_btn">Waiting for Approve</a></li>
+          <li><a href="#" id="approve_btn">Request for Approve</a></li>
           <li><a href="#" id="approved_btn">Approved</a></li>
-          <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
-            <span>Reopen Remark</span></a></li>
-          <!-- <li><a href="#" id="reopen_btn">Reopen</a></li> -->
-          <li><a href="#" id="close_btn">Close</a></li>
+          <li><a href="#" id="reopen_btn">Reopen</a></li>
+          <li><a href="#" id="close_btn">Resolved</a></li>
           <!-- <li><a href="#" id="assign_btn">Assign</a></li> -->
         </ul>
       </div>
@@ -82,18 +80,27 @@
     <tbody>
       {% csrf_token %}
       {% for i in users %}
-      {% if forloop.counter < 11 %} <tr id="{{i.id}}">
+      {% if forloop.counter < 11 %} 
+      <tr id="{{i.id}}">
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
         <td>{{i.id}}</td>
         <td>{{i.ch_organization}}</td>
         <td>{{i.ch_caller}}</td>
-        {% if i.ch_status == "New" %}
-        <td>New</td>
-        {% else %}
-        <td>{{i.ch_status}}</td>
-        {% endif %}
+        <td id="status_{{i.id}}">{{i.ch_status}}</td>
+        <script>
+          var status = $('#status_{{i.id}}').text();
+          if (status === 'Waiting for Approval') {
+            $('#status_{{i.id}}').css('color', 'orange');
+          }
+          if (status === 'Approved') {
+            $('#status_{{i.id}}').css('color', 'blue');
+          }
+          if (status === 'Resolved') {
+            $('#status_{{i.id}}').css('color', 'Green');
+          }
+        </script>
         <td>{{i.ch_category}}</td>
         <td>{{i.ch_title}}</td>
         <td>{{i.dt_start_date}}</td>
@@ -638,7 +645,8 @@
 <script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
-      if (confirm('Are You Sure You Want to Reopen UR?')) {
+      if (condition) {
+              if (confirm('Are You Sure You Want to Reopen UR?')) {
         var id = [];
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
         $(':checkbox:checked').each(function (i) {
@@ -661,6 +669,7 @@
           
           });
         }
+      }
       }
     })
   })

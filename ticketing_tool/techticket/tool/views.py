@@ -1260,9 +1260,10 @@ def newchange(request):
             q = request.GET.get('searchstatus')
             if q != None:
                 nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    else:
-        org = cl_New_change.objects.filter(ch_organization=user.ch_organization)
-        call = cl_Person.objects.all()
+    elif user.ch_organization.ch_name != 'Inhouse':
+        org = cl_New_organization.objects.filter(ch_name=user.ch_organization)
+        # print(org)
+        call = cl_Person.objects.filter(ch_organization=user.ch_organization)
         nchange = cl_New_change.objects.filter(ch_organization=user.ch_organization)
         if request.method == "GET":
             allteam = cl_Team.objects.filter(ch_organization=user.ch_organization)
@@ -1326,6 +1327,24 @@ def CADD(request):
             txt_description = txt_description,
         )
         nchange.save()
+
+        cr_raised = cl_New_change.objects.latest('id')
+        subject = 'New Change request raised'
+        message = f'New Change request raised by "{cr_raised.ch_organization}", Request ID : "{cr_raised.id}".' 
+        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L1.L1_Manager.e_person_email]
+        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
         admin_name = request.session["username"]
         adminaction = "addition of new changes"
         event ="event"
@@ -1417,25 +1436,24 @@ def assign_changeModal(request):
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
 
-        s= "Assigned"
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
-            nchange.ch_status = s
+            nchange.ch_status = "Assigned"
             nchange.save()
+
         try:
             mail_sender()
-            change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
-            subject = 'Welcome to Olatech Solutions'
-            message = f'Request ID : "{list_id[0]}" Assigned to you '
+            subject = 'Change Request Assign'
+            message = f'Change Request ID : "{list_id}" is Assigned to you'
             sender = settings.EMAIL_HOST_USER
-            recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+            recepient = [per.e_person_email]
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Request ID : "{list_id[0]}" Assigned to you ')
-
-            # return JsonResponse({'result': 'success'})
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
+            return JsonResponse({'result': 'success'})
         except:
             print('email not send')
+
         admin_name = request.session["username"]
         adminaction = "assign the changes"
         event ="event"
@@ -1445,7 +1463,6 @@ def assign_changeModal(request):
         context = {
             'nchange': nchange,
             'permission':permission,
-            'change_approve':change_approve
         }
     return render(request, 'tool/tassign.html', context)
 
@@ -1467,38 +1484,39 @@ def send_approval_Mail(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        p_Emp_id = request.POST.get('p')
-        per = cl_Person.objects.filter(id=p_Emp_id).first()
-        # telegram_chat_id = per.telegram_chatid  
-        recepient = []
-        telegram_chat_id=[]
+        helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        L1_manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()
+        recepient = [L1_manager.e_person_email]
+        telegram_chat_id=[L1_manager.telegram_chatid]
      
-
-        print("######")
-        print(recepient)
 
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
-            nchange.ch_status = "Watting for Approval"
+            nchange.ch_status = "Waiting for Approval"
             nchange.save()
-            c_mail = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
-            t_id = cl_Person.objects.filter(id=nchange.ch_caller_id).first()
-            recepient.append(c_mail.e_person_email)
-            telegram_chat_id.append(t_id.telegram_chatid)
-
+        
         try:
             mail_sender()
-            list_id = request.POST.getlist('id[]')
-            change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
-            subject = 'Welcome to Olatech Solutions'
-            message = f'Please approve Following Change for further process.\nChange ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
+            subject = 'Request for Approval of Change Request'
+            message = f'Please approve Following Change Request for further process.\nRequest ID : "{ list_id }"'
             sender = settings.EMAIL_HOST_USER
-            # # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Change ID : "{list_id[0]}" ')
-
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
         except:
             raise Exception('Please Configure Email Sender Details')
+        # try:
+        #     mail_sender()
+        #     list_id = request.POST.getlist('id[]')
+        #     change_approve = cl_New_change.objects.filter(id=list_id[0]).first()
+        #     subject = 'Welcome to Olatech Solutions'
+        #     message = f'Please approve Following Change for further process.\nChange ID : "{list_id[0]}" Change Description : "{change_approve.txt_description}" '
+        #     sender = settings.EMAIL_HOST_USER
+        #     # # recepient = ['ankush.n@olatechs.com', 'mangesh.b@olatechs.com']
+        #     send_mail(subject, message, sender, recepient, fail_silently=False)
+        #     send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= f'Please approve Following Change for further process. Change ID : "{list_id[0]}" ')
+
+        # except:
+        #     raise Exception('Please Configure Email Sender Details')
         
     return redirect('newchange')
 
@@ -1574,11 +1592,11 @@ def escalation_mail(req_status, id):
         ur_raised = cl_User_request.objects.filter(id=id).first()
 
         if req_status == "TTO Escalated":
-            message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
-            subject = 'Request TTO Escalation'
+            message = f' User "{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
+            subject = 'User Request TTO Escalation'
         elif req_status == "TTR Escalated":
-            message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
-            subject = 'Request TTR Escalation'
+            message = f'User "{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority : "{ur_raised.ch_priority}" is {req_status} ' 
+            subject = 'User Request TTR Escalation'
 
         helpdesk_L2 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
         recepient = [helpdesk_L2.L2_Manager.e_person_email]
@@ -1738,7 +1756,7 @@ def UADD(request):
 
         ur_raised = cl_User_request.objects.latest('id')
         subject = 'New User request raised'
-        message = f'"{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority is "{ur_raised.ch_priority}"' 
+        message = f'User "{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority is "{ur_raised.ch_priority}"' 
         helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
         recepient = [helpdesk_L1.L1_Manager.e_person_email]
         telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
@@ -1882,8 +1900,8 @@ def assign_URModal(request):
 
         try:
             mail_sender()
-            subject = 'Request Assign'
-            message = f'Request ID : "{list_id}" Assigned to you'
+            subject = 'User Request Assign'
+            message = f'User Request ID : "{list_id}" Assigned to you'
             sender = settings.EMAIL_HOST_USER
             recepient = [per.e_person_email]
             send_mail(subject, message, sender, recepient, fail_silently=False)
@@ -1932,40 +1950,58 @@ def im_resolved(request):
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Resolved"
             ur.save() 
-            req_caller = cl_Person.objects.filter(id=ur.fk_caller_id).first()   
-            helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-            L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
-            L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
-            all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
-            try:
-                mail_sender()
-                subject = 'Request Resolved'
-                message = f'Request ID : "{list_id}" is resolved successfully.'
-                sender = settings.EMAIL_HOST_USER
-                recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
-                send_mail(subject, message, sender, recepient, fail_silently=False)
-                for i in all_chat_ids:
-                    send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
-                return JsonResponse({'result': 'success'})
-            except:
-                print('email not send')
+            
+        req_caller = cl_Person.objects.filter(id=ur.fk_caller_id).first()   
+        helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
+        L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
+        all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
+        try:
+            mail_sender()
+            subject = 'User Request Resolved'
+            message = f'User Request ID : "{list_id}" is resolved successfully.'
+            sender = settings.EMAIL_HOST_USER
+            recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+            for i in all_chat_ids:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+            return JsonResponse({'result': 'success'})
+        except:
+            print('email not send')
     return redirect('userrequest')
 
 
 ########## Reopen Change For Incident Management############
 
-# @login_required(login_url='/login_render/')
-# def reopen(request):
-#     # permission = roles.objects.filter(id=request.session['user_role']).first()
-#     if request.method == "POST":
-#         list_id = request.POST.getlist('id[]')  
+@login_required(login_url='/login_render/')
+def reopen(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')  
               
-#         for i in list_id:
-#             ur = cl_User_request.objects.filter(id=i).first()
-#             ur.ch_status = "Reopen"
-#             ur.save()
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            ur.ch_status = "Reopen"
+            ur.save()
+
+        subject = 'User request Reopened'
+        message = f'User Request IDs : "{list_id}" are reopened' 
+        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L1.L1_Manager.e_person_email]
+        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
         
-#     return redirect('userrequest')
+    return redirect('userrequest')
 
 
 
@@ -1996,8 +2032,27 @@ def cm_close(request):
               
         for i in list_id:
             cm = cl_New_change.objects.filter(id=i).first()
-            cm.ch_status = "Close"
+            cm.ch_status = "Resolved"
             cm.save()
+        
+        req_caller = cl_Person.objects.filter(id=cm.ch_caller_id).first()   
+        helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
+        L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
+        all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
+        try:
+            mail_sender()
+            subject = 'Change Request Resolved'
+            message = f'Change Request ID : "{list_id}" is resolved successfully.'
+            sender = settings.EMAIL_HOST_USER
+            recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+            for i in all_chat_ids:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+            return JsonResponse({'result': 'success'})
+        except:
+            print('email not send')
+            
     return redirect('newchange')
 
 
@@ -2005,7 +2060,6 @@ def cm_close(request):
 
 @login_required(login_url='/login_render/')
 def cm_reopen(request):
-    # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         reason = request.POST.get('reason')
         ur_id = request.POST.getlist('ur_id[]')   
@@ -2016,6 +2070,22 @@ def cm_reopen(request):
             cm.ch_status = "Reopen"
             cm.save()
         
+        subject = 'Change request Reopened'
+        message = f'Change Request IDs : "{list_id}" are reopened' 
+        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L1.L1_Manager.e_person_email]
+        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
     return redirect('newchange')
 
 
@@ -2037,8 +2107,8 @@ def send_approval_Mail_UR(request):
 
         try:
             mail_sender()
-            subject = 'Request for Approval'
-            message = f'Please approve Following Request for further process.\nRequest ID : "{list_id}"'
+            subject = 'Request for Approval of User Request'
+            message = f'Please approve Following User Request for further process.\nRequest ID : "{list_id}"'
             sender = settings.EMAIL_HOST_USER
             send_mail(subject, message, sender, recepient, fail_silently=False)
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
