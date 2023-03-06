@@ -16,6 +16,7 @@
     
         <form action="{% url 'csvimport' %}" enctype="multipart/form-data" method="POST">
             {% csrf_token %}
+            
             <table class="table table-striped">
                 <tbody>
                    
