@@ -193,7 +193,7 @@
             <div class="form-group">
               <span class="required-field"></span>
               <label>Mobile Number</label>
-              <input type="tel" class="form-control" id="mobile-number" name="ch_person_mobilenumber" pattern="[6789]\d{9}" required>
+              <input type="tel" class="form-control" id="mobile-number" name="ch_person_mobilenumber" pattern="^[6-9]\d{9}$" required>
             </div>
           </div>
           <div class="modal-footer">
@@ -288,7 +288,7 @@
             <div class="form-group">
               <label>Mobile Number</label>
               <input name="ch_person_mobilenumber" value="{{i.ch_person_mobilenumber}}" type="text" class="form-control"
-                pattern="[6789]\d{9}" required>
+                pattern="^[6-9]\d{9}$" required>
             </div>
           </div>
           <div class="modal-footer">
