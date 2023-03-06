@@ -1,0 +1,105 @@
+
+
+{% extends 'tool/adminbase.html' %}
+{% load static %}
+{% block content %}
+
+<div style="position: relative; top: 65px; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
+  
+  <div class="col-xl-12">
+    {% if urequest.ch_sla_id %}
+      <p><strong>SLA:</strong> {{ urequest.ch_sla_id}}</p>
+     {% endif %}
+    <div class="col-md-8" style="color:brown;">
+      <h1>{{ urequest.fk_organization}}</h1>
+    </div>
+    <div class="col-md-6" style="color:blue;">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>ID:</td>
+            <td>{{ urequest.id }}</td>
+          </tr>
+          <tr>
+            <td>Organization:</td>
+            <td>{{ urequest.fk_organization}}</td>
+          </tr>
+          <tr>
+            <td>Caller:</td>
+            <td>{{ urequest.fk_caller }}</td>
+          </tr>
+          <tr>
+            <td>Request Type:</td>
+            <td>{{ urequest.ch_request_type }}</td>
+          </tr>
+          <tr>
+            <td>Status:</td>
+            <td>{{ urequest.ch_status }}</td>
+          </tr>
+          <tr>
+            <td>Priority :</td>
+            <td>{{ urequest.ch_priority }}</td>
+          </tr>
+          <tr>
+            <td>Start Date:</td>
+            <td>{{ urequest.dt_start_date }}</td>
+          </tr>
+          <tr>
+            <td>Updated Date:</td>
+            <td>{{ urequest.dt_Updated_date }}</td>
+          </tr>
+        
+          <tr>
+            <td>Title:</td>
+            <td>{{ urequest.ch_title }}</td>
+          </tr>
+          <tr>
+            <td>Service:</td>
+            <td>{{ urequest.ch_service }}</td>
+          </tr>
+          <tr>
+            <td>Service Subcategory::</td>
+            <td>{{ urequest.ch_service_subcategory }}</td>
+          </tr>
+          <tr>
+            <td>Parent Request:</td>
+            <td>{{ urequest.ch_parent_request_id }}</td>
+          </tr>
+          <tr>
+            <td>Parent Change:</td>
+            <td>{{ urequest.ch_parent_change_id }}</td>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td>{{ urequest.txt_description }}</td>
+          </tr>
+          <!-- Add any other fields you want to display here -->
+        </tbody>
+      </table>
+      {% if urequest.ch_service_subcategory_id %}
+      <p><strong>Service subcategory:</strong> {{ urequest.ch_service_subcategory_id}}</p>
+     {% endif %}
+     {% if sla %}
+     <p><strong>SLA:</strong> {{ sla.ch_slname }}</p> 
+     <!-- {% if slt %}
+       <p><strong>SLT:</strong> {{ slt.cl_slt_id }}</p>
+     {% endif %}  -->
+      {% if slt %}
+    <p><strong>SLT:</strong>{{ slt.ch_name }}</p>
+    
+      {% for i in slt %}
+        {{ i.cl_slt_id}} 
+      {% endfor %}
+    
+   {% endif %}
+   {% endif %}
+
+   
+
+  
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
