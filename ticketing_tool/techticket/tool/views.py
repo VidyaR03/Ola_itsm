@@ -1207,8 +1207,16 @@ def TUpdate(request, id):
         ch_teamstatus = request.POST.get('ch_teamstatus')
         ch_organization = cl_New_organization.objects.filter(
             id=request.POST.get('ch_organization')).first()
-        L1_Manager = cl_Person.objects.filter(id=request.POST.get('L1_Manager')).first()
-        L2_Manager = cl_Person.objects.filter(id=request.POST.get('L2_Manager')).first()
+        try:
+            L1_Manager = cl_Person.objects.filter(id=request.POST.get('L1_Manager')).first()
+        except:
+            L1_Manager = None
+        
+        try:
+            L2_Manager = cl_Person.objects.filter(id=request.POST.get('L2_Manager')).first()
+        except:
+            L2_Manager = None
+
         ch_team_function = request.POST.get('ch_team_function')
         tem = cl_Team(
             id=id,

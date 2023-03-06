@@ -131,7 +131,7 @@
                   <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a></label>
               <select name="ch_organization" class="form-control" id="ch_organization_a"
-                style="min-height:30px;min-width:280px;">
+                style="min-height:30px;min-width:280px;" required>
                 <option selected value="">Please select Organization</option>
                 {% for i in org %}
                 <option value="{{i.id}}">{{i.ch_name}}</option>
@@ -211,7 +211,7 @@
                 </a></label>
               <select name="ch_organization" class="form-control" id="ch_organization_{{ i.id }}"
                 style="min-height:30px;min-width:280px;" required>
-                <option style="background-color: red; color: white;" selected value="{{i.ch_organization}}">{{i.ch_organization}}</option>
+                <option style="background-color: red; color: white;" selected value="{{i.ch_organization_id}}">{{i.ch_organization}}</option>
                 {% for i in org %}
                 <option value="{{i.id}}">{{i.ch_name}}</option>
                 {% endfor %}
