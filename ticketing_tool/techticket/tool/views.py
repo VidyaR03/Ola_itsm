@@ -2071,7 +2071,7 @@ def cm_reopen(request):
             cm.save()
         
         subject = 'Change request Reopened'
-        message = f'Change Request IDs : "{list_id}" are reopened' 
+        message = f'Change Request IDs : "{ur_id}" are reopened' 
         helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
         recepient = [helpdesk_L1.L1_Manager.e_person_email]
         telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,

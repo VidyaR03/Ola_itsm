@@ -1186,7 +1186,7 @@ class adminuser(AbstractUser):
     email = models.EmailField(unique=True)
     ch_user_role = models.ForeignKey(
         roles, on_delete=models.CASCADE, null=True, blank=True)
-    ch_user_mobilenumber = models.IntegerField(max_length=15, null=True)
+    ch_user_mobilenumber = models.CharField( max_length=15, null=True)
     ch_organization = models.ForeignKey( cl_New_organization, on_delete=models.CASCADE, null=True, blank=True)
     object=CustomUserManager()
 
