@@ -30,10 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-BOT_TOKEN="6060226398:AAH69ccQhASbfr7fJq2d1y0w2UbGZyo0Eds"
-BOT_URL="https://api.telegram.org/bot%s/"%BOT_TOKEN
-
-
 AUTH_USER_MODEL = 'tool.adminuser' # new
 # Application definition
 
@@ -163,20 +159,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
-#default parameter for olateh web server
-# EMAIL_PORT = 465
-# EMAIL_HOST = 'mail.supremecluster.com'
-# EMAIL_HOST_USER = 'ankush.n@olatechs.com'
-# EMAIL_HOST_PASSWORD = 'Contact@1234'
-# EMAIL_USE_SSL=True
-
-
 EMAIL_HOST = ""
 EMAIL_PORT = ""
 EMAIL_USE_SSL=True
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 
+
+BOT_TOKEN=""
+BOT_URL="https://api.telegram.org/bot%s/"%BOT_TOKEN
 
 
 # Disable Django's logging setup
