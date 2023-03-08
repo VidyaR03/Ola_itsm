@@ -71,6 +71,10 @@ def home(request):
     }
     return render(request, 'tool/dashboard.html',context)
 
+def tel_bot_lodder():
+    bot_d = boat_notifier.objects.latest('id')
+    settings.BOT_TOKEN = bot_d.boat_tokan
+
 
 @login_required(login_url='/login_render/')
 def dashboard(request): 
@@ -97,8 +101,10 @@ def dashboard(request):
     overdue= cl_User_request.objects.filter(Q(ch_status = 'TTO Escalated') | Q(ch_status = 'TTR Escalated')).count()
     team = cl_Team.objects.all().count()
     
- 
-
+    try:
+        tel_bot_lodder()
+    except:
+        print("Bot not configured")
 ###################### DONT DELETE THIS CODEEEEEEE ######################
 
     # try:
@@ -1270,7 +1276,6 @@ def newchange(request):
                 nchange = cl_New_change.objects.filter(ch_status__icontains=q)
     elif user.ch_organization.ch_name != 'Inhouse':
         org = cl_New_organization.objects.filter(ch_name=user.ch_organization)
-        # print(org)
         call = cl_Person.objects.filter(ch_organization=user.ch_organization)
         nchange = cl_New_change.objects.filter(ch_organization=user.ch_organization)
         if request.method == "GET":
@@ -1279,7 +1284,7 @@ def newchange(request):
             q = request.GET.get('searchstatus')
             if q != None:
                 nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-
+    
     page = request.GET.get('page', 1)
     paginator = Paginator(nchange, 10)
     try:
@@ -1349,6 +1354,10 @@ def CADD(request):
                 send_mail(subject, message, sender, recepient, fail_silently=False)
             except:
                 print('email not send')
+            try:
+                tel_bot_lodder()
+            except:
+                print("Bot not configured")
             try:
                 send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
             except:
@@ -1446,6 +1455,10 @@ def assign_changeModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
 
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
@@ -1479,7 +1492,7 @@ def assign_changeModal(request):
 
 
 def mail_sender():
-    mail_host = email_notifier.objects.filter(id=1).first()
+    mail_host = email_notifier.objects.latest('id')
     if mail_host != None:
         settings.EMAIL_HOST = mail_host.host
         settings.EMAIL_PORT = mail_host.port
@@ -1499,7 +1512,10 @@ def send_approval_Mail(request):
         L1_manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()
         recepient = [L1_manager.e_person_email]
         telegram_chat_id=[L1_manager.telegram_chatid]
-     
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
 
         for i in list_id:
             nchange = cl_New_change.objects.filter(id=i).first()
@@ -1619,6 +1635,12 @@ def escalation_mail(req_status, id):
             send_mail(subject, message, sender, recepient, fail_silently=False)
         except:
             print('email not send')
+
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
+
         try:
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
         except:
@@ -1779,6 +1801,10 @@ def UADD(request):
             except:
                 print('email not send')
             try:
+                tel_bot_lodder()
+            except:
+                print("Bot not configured")
+            try:
                 send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
             except:
                 print('Telegram notification not send')
@@ -1910,6 +1936,10 @@ def assign_URModal(request):
             now = datetime.now()
             ur.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
             ur.save()
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
 
         try:
             mail_sender()
@@ -1976,11 +2006,15 @@ def im_resolved(request):
             sender = settings.EMAIL_HOST_USER
             recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            for i in all_chat_ids:
-                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
-            return JsonResponse({'result': 'success'})
         except:
             print('email not send')
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
+        for i in all_chat_ids:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+        return JsonResponse({'result': 'success'})
     return redirect('userrequest')
 
 
@@ -2009,6 +2043,10 @@ def reopen(request):
             send_mail(subject, message, sender, recepient, fail_silently=False)
         except:
             print('email not send')
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
         try:
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
         except:
@@ -2060,12 +2098,15 @@ def cm_close(request):
             sender = settings.EMAIL_HOST_USER
             recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            for i in all_chat_ids:
-                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
             return JsonResponse({'result': 'success'})
         except:
             print('email not send')
-            
+        try:
+            tel_bot_lodder()
+            for i in all_chat_ids:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+        except:
+            print("Bot not configured") 
     return redirect('newchange')
 
 
@@ -2096,9 +2137,11 @@ def cm_reopen(request):
         except:
             print('email not send')
         try:
+            tel_bot_lodder()
             send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
         except:
-            print('Telegram notification not send')
+            print("Bot not configured")
+
     return redirect('newchange')
 
 
@@ -2124,17 +2167,17 @@ def send_approval_Mail_UR(request):
             message = f'Please approve Following User Request for further process.\nRequest ID : "{list_id}"'
             sender = settings.EMAIL_HOST_USER
             send_mail(subject, message, sender, recepient, fail_silently=False)
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text= message)
-
         except:
             raise Exception('Please Configure Email Sender Details')
-        
+        try:
+            tel_bot_lodder()
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text=message)
+        except:
+            print("Bot not configured")
     return redirect('userrequest')
 
     # return render(request, 'tool/approve_change.html',{'permission':permission})
  
-
-
 #######################################################
 
 @login_required(login_url='/login_render/')
@@ -4036,6 +4079,8 @@ def add_new_boatid(request):
         
         )
         boat.save()
+
+        settings.BOT_TOKEN = boat_tokan
         return redirect('boat_display')
     return render(request, 'tool/boat_notifier.html',{'permission':permission})
 
