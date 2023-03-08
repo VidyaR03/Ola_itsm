@@ -1314,7 +1314,6 @@ def CADD(request):
         ch_caller =cl_Person.objects.filter(
             ch_person_firstname=str.capitalize(request.POST.get('ch_caller'))).first()
         ch_status = request.POST.get('ch_status')
-        # ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
         dt_start_date = request.POST.get('dt_start_date')
@@ -1340,19 +1339,23 @@ def CADD(request):
         subject = 'New Change request raised'
         message = f'New Change request raised by "{cr_raised.ch_organization}", Request ID : "{cr_raised.id}".' 
         helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        recepient = [helpdesk_L1.L1_Manager.e_person_email]
-        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+        if helpdesk_L1.L1_Manager is not None:
+            recepient = [helpdesk_L1.L1_Manager.e_person_email]
+            telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
 
-        try:
-            mail_sender()
-            sender = settings.EMAIL_HOST_USER
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            print('email not send')
-        try:
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
-        except:
-            print('Telegram notification not send')
+            try:
+                mail_sender()
+                sender = settings.EMAIL_HOST_USER
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('email not send')
+            try:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+            except:
+                print('Telegram notification not send')
+        else:
+            print('Team Has no assigned L1 Manager')
+
         admin_name = request.session["username"]
         adminaction = "addition of new changes"
         event ="event"
@@ -1766,19 +1769,21 @@ def UADD(request):
         subject = 'New User request raised'
         message = f'User "{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority is "{ur_raised.ch_priority}"' 
         helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        recepient = [helpdesk_L1.L1_Manager.e_person_email]
-        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
-
-        try:
-            mail_sender()
-            sender = settings.EMAIL_HOST_USER
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            print('email not send')
-        try:
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
-        except:
-            print('Telegram notification not send')
+        if helpdesk_L1.L1_Manager is not None:
+            recepient = [helpdesk_L1.L1_Manager.e_person_email]
+            telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+            try:
+                mail_sender()
+                sender = settings.EMAIL_HOST_USER
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('email not send')
+            try:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+            except:
+                print('Telegram notification not send')
+        else:
+            print('Team Has no assigned L1 Manager')
 
         admin_name = request.session["username"]
         adminaction = "addtion of user request"
