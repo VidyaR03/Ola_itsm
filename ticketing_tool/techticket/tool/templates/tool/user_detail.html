@@ -85,12 +85,17 @@
        <p><strong>SLT:</strong> {{ slt.cl_slt_id }}</p>
      {% endif %}  -->
       {% if slt %}
-    <p><strong>SLT:</strong>{{ slt.ch_name }}</p>
+    <p><strong>SLT:</strong>
     
-      {% for i in slt %}
-        {{ i.cl_slt_id}} 
+      
+      {% for ch_name in slt_names %}
+          {{ ch_name }}
       {% endfor %}
-    
+      
+  
+
+
+
    {% endif %}
    {% endif %}
 
