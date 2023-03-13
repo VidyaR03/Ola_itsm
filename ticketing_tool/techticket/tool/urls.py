@@ -136,6 +136,8 @@ urlpatterns = [
     
     # URL for Incident Management
     path("userrequest/", views.user_request, name='userrequest'),
+    path('userrequest/<str:pk>/',views.user_detail, name='user_detail'),
+
     path('uadd', views.UADD, name='uadd'),
     path('uedit', views.UEdit, name='uedit'),
     path('uupdate/<str:id>', views.UUpdate, name='uupdate'),

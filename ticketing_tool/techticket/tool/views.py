@@ -1533,6 +1533,9 @@ def send_approval_Mail(request):
 
 @login_required(login_url='/login_render/')
 def user_request(request):
+    users = []
+    if request.method == 'POST':
+        users = request.POST.getlist('users')
     permission = roles.objects.filter(id=request.session['user_role']).first()
     user = adminuser.objects.filter(email=request.user).first()
     if user.ch_organization.ch_name == 'Inhouse':
@@ -1863,6 +1866,35 @@ def UUpdate(request, id):
 
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html',{'permission':permission})
+
+
+########### Display sla,slt #########
+
+def user_detail(request, pk):
+    urequest = get_object_or_404(cl_User_request, pk=pk)
+    print(urequest.ch_service_subcategory_id)
+    service_subcategory = cl_Service_subcategory.objects.filter(id=urequest.ch_service_subcategory_id).first()
+    sla= cl_Sla.objects.filter(id=service_subcategory.ch_sla_id).first()
+
+    slt = sla.slts.through.objects.filter(cl_sla_id=sla.id)
+    
+    slt = sla.slts.all() # get all SLTs associated with the sla
+    slt_names = [i.ch_name for i in slt] # create a list of the S
+
+    
+    
+    print(sla)
+    print(slt)
+
+    context = {
+        'urequest': urequest,
+        'service_subcategory': service_subcategory,
+        'sla':sla,
+        'slt':slt,
+        'slt_names':slt_names
+    }
+    return render(request, 'tool/user_detail.html', context)
+
 
 
 @login_required(login_url='/login_render/')

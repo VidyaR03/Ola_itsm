@@ -77,7 +77,7 @@
         <td>
           <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
         </td>
-        <td>{{i.id}}
+        <td><a href="{{ i.id }}">{{i.id}}</a></td>
         <td>{{i.fk_organization}}</td>
         <td>{{i.fk_caller}}</td>
         <td>{{i.ch_request_type}}</td>
