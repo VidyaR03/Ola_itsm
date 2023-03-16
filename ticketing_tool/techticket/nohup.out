@@ -1,0 +1,2041 @@
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+2023-03-10 12:28:38,904 django.security.DisallowedHost ERROR    Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+2023-03-10 12:28:39,095 django.request WARNING  Bad Request: /
+[10/Mar/2023 12:28:39] "GET / HTTP/1.1" 400 66820
+2023-03-10 12:28:39,748 django.security.DisallowedHost ERROR    Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+2023-03-10 12:28:39,853 django.request WARNING  Bad Request: /favicon.ico
+[10/Mar/2023 12:28:39] "GET /favicon.ico HTTP/1.1" 400 66794
+2023-03-10 12:33:40,997 django.security.DisallowedHost ERROR    Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+2023-03-10 12:33:41,054 django.request WARNING  Bad Request: /
+[10/Mar/2023 12:33:41] "GET / HTTP/1.1" 400 67009
+2023-03-10 12:33:41,916 django.security.DisallowedHost ERROR    Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'app.olatechs.com:9092'. You may need to add 'app.olatechs.com' to ALLOWED_HOSTS.
+2023-03-10 12:33:41,982 django.request WARNING  Bad Request: /favicon.ico
+[10/Mar/2023 12:33:41] "GET /favicon.ico HTTP/1.1" 400 66994
+Performing system checks...
+
+March 10, 2023 - 12:28:08
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9092/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+[10/Mar/2023 12:49:28] "GET /logout/ HTTP/1.1" 302 0
+[10/Mar/2023 12:49:28] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:49:35] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:49:35] "GET /login_render/?next=/ HTTP/1.1" 200 3443
+2023-03-10 12:49:37,642 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 12:49:37] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 12:49:38] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 200 254216
+[10/Mar/2023 12:49:42] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:49:43] "GET /login_render/?next=/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:49:44] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 200 254216
+2023-03-10 12:49:46,266 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 12:49:46] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 12:49:47] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:49:47] "GET /login_render/?next=/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:49:49] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:49:49] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 12:49:56] "GET /logout/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:50:05] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:50:05] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:50:05] "GET /login_render/?next=/ HTTP/1.1" 200 3507
+[10/Mar/2023 12:50:22] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:50:22] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:50:22] "GET /login_render/?next=/ HTTP/1.1" 200 3507
+[10/Mar/2023 12:50:42] "GET /login_render/?next=/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:50:42] "GET /login_render/?next=/ HTTP/1.1" 200 3443
+[10/Mar/2023 12:51:26] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:51:26] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 12:51:27] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 200 58935
+[10/Mar/2023 12:51:27] "GET /static/style.css HTTP/1.1" 200 9896
+[10/Mar/2023 12:51:27] "GET /static/index.js HTTP/1.1" 200 2027
+[10/Mar/2023 12:51:27] "GET /static/images/admin.png HTTP/1.1" 200 8229
+[10/Mar/2023 12:51:28] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 12:51:28] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 80328
+[10/Mar/2023 12:51:30] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:51:30] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:51:30] "GET /login_render/?next=/ HTTP/1.1" 200 3507
+[10/Mar/2023 12:51:33] "GET /newchange HTTP/1.1" 301 0
+2023-03-10 12:51:33,442 django.request ERROR    Internal Server Error: /newchange/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1267, in newchange
+    if user.ch_organization.ch_name == "Inhouse":
+AttributeError: 'NoneType' object has no attribute 'ch_name'
+[10/Mar/2023 12:51:33] "GET /newchange/ HTTP/1.1" 500 71110
+[10/Mar/2023 12:52:04] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:52:04] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 12:52:04] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 200 58935
+[10/Mar/2023 12:52:04] "GET /static/style.css HTTP/1.1" 200 9896
+[10/Mar/2023 12:52:05] "GET /static/index.js HTTP/1.1" 200 2027
+[10/Mar/2023 12:52:05] "GET /static/images/admin.png HTTP/1.1" 200 8229
+[10/Mar/2023 12:52:05] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 80328
+[10/Mar/2023 12:52:07] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 12:52:07] "GET /logout/ HTTP/1.1" 302 0
+[10/Mar/2023 12:52:07] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 12:53:47] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 12:53:47] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 200 254216
+[10/Mar/2023 12:56:02] "GET /newchange HTTP/1.1" 301 0
+2023-03-10 12:56:02,907 django.request ERROR    Internal Server Error: /newchange/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1267, in newchange
+    if user.ch_organization.ch_name == "Inhouse":
+AttributeError: 'NoneType' object has no attribute 'ch_name'
+[10/Mar/2023 12:56:02] "GET /newchange/ HTTP/1.1" 500 71077
+[10/Mar/2023 12:56:09] "GET /userrequest HTTP/1.1" 301 0
+2023-03-10 12:56:09,486 django.request ERROR    Internal Server Error: /userrequest/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1557, in user_request
+    if user.ch_organization.ch_name == 'Inhouse':
+AttributeError: 'NoneType' object has no attribute 'ch_name'
+[10/Mar/2023 12:56:09] "GET /userrequest/ HTTP/1.1" 500 71145
+[10/Mar/2023 12:56:21] "GET /logs HTTP/1.1" 301 0
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:250: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.user_activity_log'> QuerySet.
+  paginator = Paginator(log, 10)
+[10/Mar/2023 12:56:21] "GET /logs/ HTTP/1.1" 200 21809
+[10/Mar/2023 12:56:39] "GET /logs/?searchname=admin HTTP/1.1" 200 18924
+[10/Mar/2023 12:56:50] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:56:50] "GET /login_render/?next=/ HTTP/1.1" 200 3449
+[10/Mar/2023 12:56:52] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 200 254216
+2023-03-10 12:56:53,695 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 12:56:53] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 12:57:09] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 12:57:09] "GET /login_render/?next=/ HTTP/1.1" 200 3449
+[10/Mar/2023 12:57:11] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 200 254216
+2023-03-10 12:57:12,954 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 12:57:12] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 12:57:41] "GET /login_render/?next=/ HTTP/1.1" 200 3449
+[10/Mar/2023 12:57:55] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 12:57:55] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 12:57:56] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 200 58935
+[10/Mar/2023 12:57:56] "GET /static/style.css HTTP/1.1" 200 9896
+[10/Mar/2023 12:57:56] "GET /static/index.js HTTP/1.1" 200 2027
+[10/Mar/2023 12:57:56] "GET /static/images/admin.png HTTP/1.1" 200 8229
+[10/Mar/2023 12:57:56] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 80328
+[10/Mar/2023 12:57:58] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 12:58:06] "GET /newchange HTTP/1.1" 301 0
+2023-03-10 12:58:06,792 django.request ERROR    Internal Server Error: /newchange/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1267, in newchange
+    if user.ch_organization.ch_name == "Inhouse":
+AttributeError: 'NoneType' object has no attribute 'ch_name'
+[10/Mar/2023 12:58:06] "GET /newchange/ HTTP/1.1" 500 71065
+[10/Mar/2023 12:58:26] "GET /role_display HTTP/1.1" 200 23823
+[10/Mar/2023 12:58:32] "POST /role_add HTTP/1.1" 302 0
+[10/Mar/2023 12:58:32] "GET /role_display HTTP/1.1" 200 34827
+[10/Mar/2023 12:58:38] "GET /user_display HTTP/1.1" 200 19175
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:632: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_New_organization'> QuerySet.
+  paginator = Paginator(org, 10)
+[10/Mar/2023 12:58:45] "GET /new_organization/ HTTP/1.1" 200 19734
+[10/Mar/2023 12:58:57] "GET /dashboard HTTP/1.1" 301 0
+[10/Mar/2023 12:58:57] "GET /dashboard/ HTTP/1.1" 200 20067
+[10/Mar/2023 12:59:18] "POST /OrgADD HTTP/1.1" 302 0
+[10/Mar/2023 12:59:18] "GET /new_organization/ HTTP/1.1" 200 22894
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1145: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Team'> QuerySet.
+  paginator = Paginator(tem, 10)
+[10/Mar/2023 12:59:54] "GET /team/ HTTP/1.1" 200 19523
+[10/Mar/2023 13:00:31] "GET /get_people_by_org?org_id=1&csrfmiddlewaretoken=vTGTDekd74GZ0Id32tWTaZttDehav65KYGnInbh220fANIcVGa4ken5QRbpsUh1X HTTP/1.1" 200 2
+[10/Mar/2023 13:00:36] "POST /tadd HTTP/1.1" 302 0
+[10/Mar/2023 13:00:36] "GET /team/ HTTP/1.1" 200 24840
+[10/Mar/2023 13:00:41] "GET /contact/ HTTP/1.1" 200 11786
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:727: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Person'> QuerySet.
+  paginator = Paginator(per, 10)
+[10/Mar/2023 13:00:43] "GET /client/ HTTP/1.1" 200 21656
+[10/Mar/2023 13:01:07] "GET /logout HTTP/1.1" 301 0
+[10/Mar/2023 13:01:07] "GET /logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 13:05:35] "GET /role_display HTTP/1.1" 200 34827
+[10/Mar/2023 13:05:35] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 13:05:35] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 13:05:35] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 13:05:35] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 13:05:35] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 13:05:35] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+[10/Mar/2023 13:05:41] "GET /new_organization/ HTTP/1.1" 200 22894
+[10/Mar/2023 13:05:46] "GET /login_render/?next=/ HTTP/1.1" 200 3449
+2023-03-10 13:05:48,456 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 13:05:48] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 13:05:49] "GET /servicenav HTTP/1.1" 301 0
+[10/Mar/2023 13:05:49] "GET /servicenav/ HTTP/1.1" 200 15098
+[10/Mar/2023 13:05:52] "GET /user_display HTTP/1.1" 200 19247
+[10/Mar/2023 13:06:08] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 13:06:08] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 13:06:32] "GET /logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 13:08:52] "GET /logout HTTP/1.1" 301 0
+[10/Mar/2023 13:08:52] "GET /logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 13:08:52] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 304 0
+2023-03-10 13:28:03,443 django.request ERROR    Internal Server Error: /newchange/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1267, in newchange
+    if user.ch_organization.ch_name == "Inhouse":
+AttributeError: 'NoneType' object has no attribute 'ch_name'
+[10/Mar/2023 13:28:03] "GET /newchange/ HTTP/1.1" 500 71122
+[10/Mar/2023 14:14:23] "GET /logout/ HTTP/1.1" 302 0
+[10/Mar/2023 14:14:23] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 14:14:23] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 304 0
+[10/Mar/2023 14:14:27] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 14:16:01] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 14:16:04] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3449
+[10/Mar/2023 14:16:11] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3603
+[10/Mar/2023 14:16:12] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 14:16:54] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3603
+[10/Mar/2023 14:18:09] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3609
+[10/Mar/2023 14:19:17] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:20:10] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:21:32] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 14:21:32] "GET /login_render/?next=/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:21:33] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 14:22:03] "GET /login_render/?next=/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:22:52] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:25:42] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:25:42] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 14:25:43] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 14:25:43] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 14:25:43] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 14:25:43] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 14:25:43] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+[10/Mar/2023 14:25:51] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:26:01] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:26:03] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:26:19] "GET /logout HTTP/1.1" 301 0
+[10/Mar/2023 14:26:20] "GET /logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:26:30] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3641
+[10/Mar/2023 14:27:31] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:27:31] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 14:27:31] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 14:27:31] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 14:27:31] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 14:27:32] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 14:27:32] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+[10/Mar/2023 14:32:24] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3638
+[10/Mar/2023 14:32:56] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3647
+[10/Mar/2023 14:33:20] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3649
+[10/Mar/2023 14:33:35] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3649
+[10/Mar/2023 14:34:46] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3659
+[10/Mar/2023 14:34:46] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 14:35:01] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3659
+[10/Mar/2023 14:45:18] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 14:45:19] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:45:19] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 14:45:19] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 14:45:19] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 14:45:19] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 14:45:19] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 14:45:19] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:4053: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.boat_notifier'> QuerySet.
+  paginator = Paginator(boat, 10)
+[10/Mar/2023 14:45:27] "GET /boat_display HTTP/1.1" 200 17821
+[10/Mar/2023 14:46:03] "GET /team/ HTTP/1.1" 200 24840
+[10/Mar/2023 14:46:23] "GET /user_display HTTP/1.1" 200 19247
+[10/Mar/2023 14:47:58] "GET /logout/ HTTP/1.1" 200 3657
+[10/Mar/2023 14:48:13] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 14:48:13] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 14:54:30] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 14:54:30] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+2023-03-10 14:54:31,863 django.request WARNING  Not Found: /favicon.ico
+[10/Mar/2023 14:54:31] "GET /favicon.ico HTTP/1.1" 404 49046
+[10/Mar/2023 14:54:32] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 14:57:02] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 14:57:04] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 14:57:09] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 14:57:09] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 14:57:09] "GET /login_render/?next=/ HTTP/1.1" 200 3721
+[10/Mar/2023 15:07:25] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 15:07:25] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 15:07:25] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 200 58935
+[10/Mar/2023 15:07:26] "GET /static/style.css HTTP/1.1" 200 9896
+[10/Mar/2023 15:07:26] "GET /static/index.js HTTP/1.1" 200 2027
+[10/Mar/2023 15:07:26] "GET /static/images/admin.png HTTP/1.1" 200 8229
+[10/Mar/2023 15:07:26] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 80328
+[10/Mar/2023 15:12:02] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 15:12:02] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:04] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 200 211692
+[10/Mar/2023 15:12:22] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:22] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 15:12:26] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:28] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:28] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:32] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:32] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 15:12:36] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:12:41] "GET / HTTP/1.1" 302 0
+[10/Mar/2023 15:12:41] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:14:23] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:14:26] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:14:32] "GET /login_render/?next=/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:24:12] "GET /logout HTTP/1.1" 301 0
+[10/Mar/2023 15:24:12] "GET /logout/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:24:12] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 15:24:15] "GET /user_display HTTP/1.1" 200 19247
+[10/Mar/2023 15:24:16] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 15:24:16] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 15:24:16] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 15:24:16] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[10/Mar/2023 15:24:16] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 15:24:18] "GET /logout/ HTTP/1.1" 302 0
+[10/Mar/2023 15:24:18] "GET /login_render/?next=/logout/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:24:44] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 15:24:44] "GET / HTTP/1.1" 200 20067
+[10/Mar/2023 15:24:44] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[10/Mar/2023 15:24:44] "GET /static/style.css HTTP/1.1" 304 0
+[10/Mar/2023 15:24:44] "GET /static/index.js HTTP/1.1" 304 0
+[10/Mar/2023 15:24:44] "GET /static/images/admin.png HTTP/1.1" 304 0
+[10/Mar/2023 15:24:45] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+[10/Mar/2023 15:27:49] "GET /get_Existing_user?user_emailID=vidya.a.rakate%40gmail.com&csrfmiddlewaretoken=69sPjrYL5zOWm2AW5ACLddrcN72qwJOytNKhi359vvv3EwTnr49BFkLXZFGNJuRV HTTP/1.1" 200 1
+[10/Mar/2023 15:28:27] "GET /get_Existing_user?user_emailID=vidya.r%40olatechs.com&csrfmiddlewaretoken=69sPjrYL5zOWm2AW5ACLddrcN72qwJOytNKhi359vvv3EwTnr49BFkLXZFGNJuRV HTTP/1.1" 200 1
+[10/Mar/2023 15:29:15] "POST /add_new_user HTTP/1.1" 302 0
+[10/Mar/2023 15:29:15] "GET /user_display HTTP/1.1" 200 22718
+[10/Mar/2023 15:29:24] "GET /logout/ HTTP/1.1" 200 3657
+[10/Mar/2023 15:29:32] "POST /login HTTP/1.1" 302 0
+[10/Mar/2023 15:29:32] "GET / HTTP/1.1" 200 20067
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/manage.py", line 11, in main
+    from django.core.management import execute_from_command_line
+ModuleNotFoundError: No module named 'django'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/manage.py", line 23, in <module>
+    main()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/manage.py", line 13, in main
+    raise ImportError(
+ImportError: Couldn't import Django. Are you sure it's installed and available on your PYTHONPATH environment variable? Did you forget to activate a virtual environment?
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+[15/Mar/2023 14:14:15] "GET / HTTP/1.1" 200 20068
+[15/Mar/2023 14:14:21] "GET / HTTP/1.1" 200 20068
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1595: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_User_request'> QuerySet.
+  paginator = Paginator(ur, 10)
+[15/Mar/2023 14:14:24] "GET /userrequest/ HTTP/1.1" 200 37235
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Error: That port is already in use.
+[15/Mar/2023 14:14:31] "GET /servicenav/ HTTP/1.1" 200 15098
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:2975: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Slt'> QuerySet.
+  paginator = Paginator(slt, 10)
+[15/Mar/2023 14:14:35] "GET /slt/ HTTP/1.1" 200 40150
+[15/Mar/2023 14:14:42] "GET /user_display HTTP/1.1" 200 38018
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Error: That port is already in use.
+[15/Mar/2023 14:14:46] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[15/Mar/2023 14:14:51] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[15/Mar/2023 14:15:08] "GET / HTTP/1.1" 302 0
+[15/Mar/2023 14:15:08] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[15/Mar/2023 14:15:19] "GET /userrequest/ HTTP/1.1" 200 37235
+[15/Mar/2023 14:15:26] "GET /servicenav/ HTTP/1.1" 200 15098
+[15/Mar/2023 14:15:29] "GET /userrequest/ HTTP/1.1" 200 37235
+[15/Mar/2023 14:15:29] "GET /userrequest/ HTTP/1.1" 200 37235
+[15/Mar/2023 14:15:33] "GET /get_people_by_org?org_id=1&csrfmiddlewaretoken=eD9ZmOCkgGgnTmYMeqMnWzQlD57xbLdcj78aP5e7Gv4he3ROKNt4swbDcmm2Q1oY HTTP/1.1" 200 226
+[15/Mar/2023 14:16:05] "GET /get_SubCategory_by_service_for_UR?serviceId=1&csrfmiddlewaretoken=eD9ZmOCkgGgnTmYMeqMnWzQlD57xbLdcj78aP5e7Gv4he3ROKNt4swbDcmm2Q1oY HTTP/1.1" 200 2659
+[15/Mar/2023 14:16:10] "POST /uadd HTTP/1.1" 302 0
+[15/Mar/2023 14:16:10] "GET /userrequest/ HTTP/1.1" 200 52012
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1289: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_New_change'> QuerySet.
+  paginator = Paginator(nchange, 10)
+[15/Mar/2023 14:16:19] "GET /newchange/ HTTP/1.1" 200 31638
+[15/Mar/2023 14:16:23] "GET /userrequest/ HTTP/1.1" 200 52012
+Performing system checks...
+
+March 15, 2023 - 14:14:08
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+Bot not configured
+Bot not configured
+Team Has no assigned L1 Manager
+2023-03-15T14:45
+2023-03-15T14:45
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1658
+    ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
+IndentationError: unexpected indent
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1658
+    ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
+IndentationError: unexpected indent
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1657
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:24:35
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:24:38
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:26:06
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:26:30
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:26:35
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla.)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla.ch_slname)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla.ch_slname)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(ur_sla.ch_slname)
+TabError: inconsistent use of tabs and spaces in indentation
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:28:57
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:29:01
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:29:11
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:29:15
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:29:21
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:29:23
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Error: That port is already in use.
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1595: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_User_request'> QuerySet.
+  paginator = Paginator(ur, 10)
+2023-03-15 15:30:27,366 django.request ERROR    Internal Server Error: /userrequest/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1603, in user_request
+    TTO_Calculation()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1685, in TTO_Calculation
+    escalation_mail(i.ch_status,i.id)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1629, in escalation_mail
+    recepient = [helpdesk_L2.L2_Manager.e_person_email]
+AttributeError: 'NoneType' object has no attribute 'e_person_email'
+[15/Mar/2023 15:30:27] "GET /userrequest/ HTTP/1.1" 500 82161
+[15/Mar/2023 15:31:20] "GET /userrequest/ HTTP/1.1" 200 52032
+Performing system checks...
+
+March 15, 2023 - 15:29:26
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+AMC
+2023-03-15T14:45
+AMC
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print(""ur_sla)
+          ^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print("',ur_sla)
+          ^
+SyntaxError: unterminated string literal (detected at line 1659)
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/commands/runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/checks/urls.py", line 24, in check_resolver
+    return check_method()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/techticket/urls.py", line 21, in <module>
+    path('', include('tool.urls')),
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/urls.py", line 2, in <module>
+    from . import views
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1659
+    print("HI',ur_sla)
+          ^
+SyntaxError: unterminated string literal (detected at line 1659)
+Performing system checks...
+
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+Performing system checks...
+
+March 15, 2023 - 15:31:50
+Django version 4.1.6, using settings 'techticket.settings'
+Starting development server at http://0.0.0.0:9093/
+Quit the server with CONTROL-C.
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1595: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_User_request'> QuerySet.
+  paginator = Paginator(ur, 10)
+[15/Mar/2023 15:31:58] "GET /userrequest/ HTTP/1.1" 200 52032
+[15/Mar/2023 15:33:35] "GET /userrequest/ HTTP/1.1" 200 52032
+[15/Mar/2023 15:33:41] "POST /udelete/ HTTP/1.1" 302 0
+[15/Mar/2023 15:33:41] "GET /userrequest/ HTTP/1.1" 200 37235
+[15/Mar/2023 15:33:43] "GET /userrequest/ HTTP/1.1" 200 37235
+[15/Mar/2023 15:33:47] "GET /get_people_by_org?org_id=1&csrfmiddlewaretoken=qyS6DdtRKIl9fPUng7lXbctoGdIsGZ0gG4aNNIPBN4tGizzwgLPvC7vYxCjPXuUP HTTP/1.1" 200 226
+[15/Mar/2023 15:34:13] "GET /get_SubCategory_by_service_for_UR?serviceId=1&csrfmiddlewaretoken=qyS6DdtRKIl9fPUng7lXbctoGdIsGZ0gG4aNNIPBN4tGizzwgLPvC7vYxCjPXuUP HTTP/1.1" 200 2659
+[15/Mar/2023 15:34:17] "POST /uadd HTTP/1.1" 302 0
+[15/Mar/2023 15:34:17] "GET /userrequest/ HTTP/1.1" 200 52006
+System check identified some issues:
+
+WARNINGS:
+tool.user_activity_log.duration: (fields.W161) Fixed default value provided.
+	HINT: It seems you set a fixed date / time / datetime value as default for this field. This may not be what you want. If you want to have the current date as default, use `django.utils.timezone.now`
+
+System check identified 1 issue (0 silenced).
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1595: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_User_request'> QuerySet.
+  paginator = Paginator(ur, 10)
+[15/Mar/2023 15:59:07] "GET /userrequest/ HTTP/1.1" 200 52010
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:1289: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_New_change'> QuerySet.
+  paginator = Paginator(nchange, 10)
+[15/Mar/2023 15:59:10] "GET /newchange/ HTTP/1.1" 200 31638
+[15/Mar/2023 16:01:34] "GET /newchange/ HTTP/1.1" 200 31638
+[15/Mar/2023 16:01:54] "GET / HTTP/1.1" 302 0
+[15/Mar/2023 16:01:54] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:02:07] "GET /logout/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:05:21] "POST /login HTTP/1.1" 302 0
+[15/Mar/2023 16:05:21] "GET / HTTP/1.1" 200 20068
+[15/Mar/2023 16:05:26] "GET /userrequest/ HTTP/1.1" 200 52010
+[15/Mar/2023 16:05:42] "GET /logout/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:40:19] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+2023-03-15 16:40:22,048 django.request WARNING  Not Found: /favicon.ico
+[15/Mar/2023 16:40:22] "GET /favicon.ico HTTP/1.1" 404 49046
+[15/Mar/2023 16:40:43] "POST /login HTTP/1.1" 302 0
+[15/Mar/2023 16:40:43] "GET / HTTP/1.1" 200 20068
+2023-03-15 16:40:46,642 django.request ERROR    Internal Server Error: /userrequest/
+Traceback (most recent call last):
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/venv/lib/python3.10/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1603, in user_request
+    TTO_Calculation()
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1685, in TTO_Calculation
+    escalation_mail(i.ch_status,i.id)
+  File "/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py", line 1629, in escalation_mail
+    recepient = [helpdesk_L2.L2_Manager.e_person_email]
+AttributeError: 'NoneType' object has no attribute 'e_person_email'
+[15/Mar/2023 16:40:46] "GET /userrequest/ HTTP/1.1" 500 83647
+[15/Mar/2023 16:40:50] "GET /userrequest/ HTTP/1.1" 200 52030
+/home/itsm/Desktop/itsm/Ola_Itsm/ticketing_tool/techticket/tool/views.py:727: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'tool.models.cl_Person'> QuerySet.
+  paginator = Paginator(per, 10)
+[15/Mar/2023 16:40:59] "GET /client/ HTTP/1.1" 200 45718
+[15/Mar/2023 16:41:07] "GET /email_display HTTP/1.1" 200 18911
+[15/Mar/2023 16:41:11] "GET /userrequest/ HTTP/1.1" 200 52030
+[15/Mar/2023 16:41:43] "GET /newchange/ HTTP/1.1" 200 31638
+[15/Mar/2023 16:41:45] "GET /userrequest/ HTTP/1.1" 200 52030
+[15/Mar/2023 16:41:53] "GET /logout/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:41:57] "POST /login HTTP/1.1" 302 0
+[15/Mar/2023 16:41:57] "GET / HTTP/1.1" 200 20068
+[15/Mar/2023 16:41:59] "GET /userrequest/ HTTP/1.1" 200 52030
+[15/Mar/2023 16:42:24] "GET /userrequest/ HTTP/1.1" 200 52030
+[15/Mar/2023 16:42:32] "GET /logout/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:42:39] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[15/Mar/2023 16:42:42] "POST /login HTTP/1.1" 302 0
+[15/Mar/2023 16:42:43] "GET / HTTP/1.1" 200 20068
+[15/Mar/2023 16:42:45] "GET /userrequest/ HTTP/1.1" 200 52030
+[15/Mar/2023 16:42:51] "GET /logout/ HTTP/1.1" 200 3653
+[16/Mar/2023 04:04:23] "GET / HTTP/1.1" 302 0
+[16/Mar/2023 04:04:23] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[16/Mar/2023 08:37:23] "HEAD / HTTP/1.0" 302 0
+2023-03-16 08:37:25,330 django.request WARNING  Not Found: /system_api.php
+[16/Mar/2023 08:37:25] "GET /system_api.php HTTP/1.1" 404 49054
+2023-03-16 08:37:32,070 django.request WARNING  Not Found: /c/version.js
+[16/Mar/2023 08:37:32] "GET /c/version.js HTTP/1.1" 404 49048
+2023-03-16 08:37:38,815 django.request WARNING  Not Found: /streaming/clients_live.php
+[16/Mar/2023 08:37:38] "GET /streaming/clients_live.php HTTP/1.1" 404 49090
+2023-03-16 08:37:45,337 django.request WARNING  Not Found: /stalker_portal/c/version.js
+[16/Mar/2023 08:37:45] "GET /stalker_portal/c/version.js HTTP/1.1" 404 49093
+2023-03-16 08:37:52,112 django.request WARNING  Not Found: /stream/live.php
+[16/Mar/2023 08:37:52] "GET /stream/live.php HTTP/1.1" 404 49057
+2023-03-16 08:37:58,867 django.request WARNING  Not Found: /flu/403.html
+[16/Mar/2023 08:37:58] "GET /flu/403.html HTTP/1.1" 404 49048
+[16/Mar/2023 08:38:06] "GET / HTTP/1.1" 302 0
+[16/Mar/2023 08:38:06] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[16/Mar/2023 09:47:07] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[16/Mar/2023 09:47:07] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[16/Mar/2023 09:47:08] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 304 0
+2023-03-16 09:47:08,393 django.request WARNING  Not Found: /favicon.ico
+[16/Mar/2023 09:47:08] "GET /favicon.ico HTTP/1.1" 404 49046
+[16/Mar/2023 09:47:18] "POST /login HTTP/1.1" 302 0
+[16/Mar/2023 09:47:18] "GET / HTTP/1.1" 200 20068
+[16/Mar/2023 09:47:18] "GET /static/fontawesome-free/css/all.min.css HTTP/1.1" 304 0
+[16/Mar/2023 09:47:18] "GET /static/style.css HTTP/1.1" 304 0
+[16/Mar/2023 09:47:18] "GET /static/index.js HTTP/1.1" 304 0
+[16/Mar/2023 09:47:18] "GET /static/images/admin.png HTTP/1.1" 304 0
+[16/Mar/2023 09:47:18] "GET /static/fontawesome-free/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 0
+[16/Mar/2023 09:47:22] "GET /userrequest/ HTTP/1.1" 200 52030
+[16/Mar/2023 10:23:03] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+2023-03-16 10:23:04,202 django.request WARNING  Not Found: /favicon.ico
+[16/Mar/2023 10:23:04] "GET /favicon.ico HTTP/1.1" 404 49046
+[16/Mar/2023 10:30:28] "GET / HTTP/1.1" 302 0
+[16/Mar/2023 10:30:28] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[16/Mar/2023 10:30:28] "GET /static/images/olatlogo_300dpi_updated.png HTTP/1.1" 304 0
+[16/Mar/2023 10:30:29] "GET /static/images/mountains-1112911_1920.jpg HTTP/1.1" 304 0
+2023-03-16 10:30:29,291 django.request WARNING  Not Found: /apple-touch-icon-precomposed.png
+[16/Mar/2023 10:30:29] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 49109
+2023-03-16 10:30:29,673 django.request WARNING  Not Found: /apple-touch-icon.png
+[16/Mar/2023 10:30:29] "GET /apple-touch-icon.png HTTP/1.1" 404 49073
+[16/Mar/2023 10:34:05] "GET /login_render/?next=/ HTTP/1.1" 200 3653
+[16/Mar/2023 10:34:12] "POST /login HTTP/1.1" 302 0
+[16/Mar/2023 10:34:12] "GET / HTTP/1.1" 200 20068
+[16/Mar/2023 10:34:15] "GET /userrequest/ HTTP/1.1" 200 52030
+[16/Mar/2023 10:34:27] "GET /logout/ HTTP/1.1" 200 3653

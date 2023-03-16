@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure--^4)h92%2ukfiq0+ib44w=%gxq^p4@%n4xs5yca4h88#bw0kyn
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'tool.adminuser' # new
 # Application definition
@@ -94,7 +94,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'itsm',
     'USER': 'root',
-    'PASSWORD': 'Admin@123',
+    'PASSWORD': 'Admin@12345',
     # 'HOST': '127.0.0.1',
     # 'PORT': '3306',
     # 'OPTIONS': {

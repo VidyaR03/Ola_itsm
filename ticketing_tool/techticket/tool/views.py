@@ -1652,11 +1652,14 @@ def escalation_mail(req_status, id):
 
 def TTO_Calculation():
     ur = cl_User_request.objects.all()
+
+
     for i in ur:
         ur_tto = None
         ur_ttr = None
         ur_sub_cate = i.ch_service_subcategory
         ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
+        print("HI",ur_sla)
         ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
         if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved":
             if (i.ch_assign_agent == "Deallocate" and i.ch_status != "TTO Escalated") or i.ch_status == "Approved":
