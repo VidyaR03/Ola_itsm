@@ -15,7 +15,7 @@
           Management</a></b>
     </form>
     <div class="pull-right" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
-      {% if permission.inci_m_approve == "on" and permission.inci_m_assign == "on" or permission == None %}
+      {% if permission.inci_m_approve == "on" or permission == None %}
       <div class="dropdown" style="display: inline-block; margin-right: 10px; margin-top: 10px;">
         <button class="btn btn-info" type="button" data-toggle="dropdown">
         <span class="caret"></span></button>
@@ -24,7 +24,9 @@
           <li><a href="#" id="approved_btn">Approved</a></li>
           <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
             <span>Reopen Remark</span></a></li>
-          <li><a href="#" id="resolved_btn">Resolved</a></li>
+          <li><a href="#resolved_model" class="btn btn-info" data-toggle="modal">
+              <span>Resolved Remark</span></a></li>
+          <!-- <li><a href="#" id="resolved_btn">Resolved</a></li> -->
         </ul>
       </div>
       {% endif %}
@@ -728,6 +730,33 @@
   </div>
 </div>
 
+<!--  Resolved Remark Form  -->
+
+<div id="resolved_model" class="modal fade">
+  <!-- <div id="addcl_ReopenModal" class="modal fade"> -->
+  
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 400px; position: relative; left: 15%;">
+        <div class="modal-header">
+          <h4 class="modal-title">Resolved</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+  
+          <div class="form-group">
+            <label>Resolved Remark</label>
+            <input class="form-control" name="txt_resolved" type="text">
+          </div>
+       
+          <div class="modal-footer">
+            <button type="submit" id="resolved_btn" class="btn btn-primary" value="Add">Remark</button>
+            <a href="{% url 'userrequest' %}" class="btn btn-default" role="button">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 
@@ -1022,9 +1051,12 @@
   })
 </script> -->
 
+
+
 <script>
   $(document).ready(function () {
     $('#reopen_btn').click(function () {
+      // alert($('input[name=txt_reopen]').val())
       if (confirm('Are You Sure You Want to Reopen UR?')) {
         var id = [];
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
@@ -1039,6 +1071,40 @@
           method: "POST",
           data: {
             reason: $('input[name=txt_reopen]').val(),
+            ur_id: id,
+            csrfmiddlewaretoken: csrf
+          },
+          success: function () {
+            location.reload();
+          },
+        });
+
+      }
+    }
+    })
+  })
+</script>
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#resolved_btn').click(function () {
+      // alert($('input[name=txt_reopen]').val())
+      if (confirm('Are You Sure You Want to Resolved UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Resolved?")
+        } else {
+        $.ajax({
+          url: "{% url 'resolved' %}",
+          method: "POST",
+          data: {
+            reason: $('input[name=txt_resolved]').val(),
             ur_id: id,
             csrfmiddlewaretoken: csrf
           },

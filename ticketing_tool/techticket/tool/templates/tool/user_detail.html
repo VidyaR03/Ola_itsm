@@ -76,6 +76,10 @@
           <!-- Add any other fields you want to display here -->
         </tbody>
       </table>
+     
+
+
+
       {% if urequest.ch_service_subcategory_id %}
       <p><strong>Service subcategory:</strong> {{ urequest.ch_service_subcategory_id}}</p>
      {% endif %}
@@ -84,6 +88,12 @@
      <!-- {% if slt %}
        <p><strong>SLT:</strong> {{ slt.cl_slt_id }}</p>
      {% endif %}  -->
+    
+
+     <!-- {% if comment %}
+     <p>{{ comment }}</p>
+     {% endif %}
+  -->
       {% if slt %}
     <p><strong>SLT:</strong>
     
@@ -92,17 +102,34 @@
           {{ ch_name }}
       {% endfor %}
       
-  
-
-
-
+     
    {% endif %}
    {% endif %}
 
-   
+   {% if comment %}
 
-  
-    </div>
+   <p><strong>Reason of Reopen:</strong>{{comment}}</p>
+   <!-- <p>{{ comment }}</p> -->
+   {% else %}
+   <p>No comment available.</p>
+   {% endif %}
+
+
+    
+   {% if Rcomment %}
+
+   <p><strong>Reason of Resolved:</strong>{{Rcomment}}</p>
+   <!-- <p>{{ comment }}</p> -->
+   {% else %}
+   <p>No comment available.</p>
+   {% endif %}
+
+ 
+
+  </div>
+
+ 
+
   </div>
 </div>
 

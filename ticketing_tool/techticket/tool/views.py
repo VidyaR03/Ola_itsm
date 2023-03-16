@@ -1661,7 +1661,7 @@ def TTO_Calculation():
         ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
         print("HI",ur_sla)
         ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
-        if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved":
+        if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved" and i.ch_status != "Reopen":
             if (i.ch_assign_agent == "Deallocate" and i.ch_status != "TTO Escalated") or i.ch_status == "Approved":
                 for s in ur_slt:
                     queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
@@ -1914,21 +1914,88 @@ def user_detail(request, pk):
     
     slt = sla.slts.all() # get all SLTs associated with the sla
     slt_names = [i.ch_name for i in slt] # create a list of the S
-
-    
-    
     print(sla)
     print(slt)
+
+    comment = None
+    if urequest.ch_status == 'Reopen':
+            comment = cl_Reopen.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_reopen
+            # comment = cl_Reopen.objects.get(ureq_id=urequest.id).txt_reopen
+    else:
+        comment = 'No comment available'
+
+
+    
+    Rcomment = None
+    if urequest.ch_status == 'Resolved':
+            Rcomment = cl_Resolved.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_resolved
+            # comment = cl_Reopen.objects.get(ureq_id=urequest.id).txt_reopen
+    else:
+        Rcomment = 'No comment available'
+
+
+         
+
+    # Pass the comment to the template
+    # return render(request, 'template.html', {'comment': comment})
+    # comment = None
+    # if urequest.ch_status == 'Reopen':
+    #     reopen_obj = cl_Reopen.objects.filter(ureq_id=urequest.id).first()
+    #     if reopen_obj:
+    #         comment = reopen_obj.txt_reopen
+
+
+    # if urequest.ch_status == 'Reopen':
+    #     list_id =cl_Reopen.objects.all()
+    #     print(list_id)
+    #     comment = [i.txt_reopen for i in list_id]
+    #     # comment = get_object_or_404(cl_Reopen, ureq_id=pk).first()
+
+    #     # reopen_comment = comment.txt_reopen
+    #     print(comment,"#####")
+    # else:
+    #     comment = 'In Process'
+    #     print(comment)
 
     context = {
         'urequest': urequest,
         'service_subcategory': service_subcategory,
         'sla':sla,
         'slt':slt,
-        'slt_names':slt_names
+        'slt_names':slt_names,
+        'comment':comment,
+        'Rcomment':Rcomment
     }
     return render(request, 'tool/user_detail.html', context)
 
+
+
+####Display all info related to this id########
+def change_detail(request,pk):
+    mchange = get_object_or_404(cl_New_change,pk=pk)
+    
+    ##Reopen Comment
+    chcomment = None
+    if mchange.ch_status == 'Reopen':
+        chcomment = cl_CReopen.objects.filter(creq_id=mchange.id).order_by('-id').first().txt_creopen
+    else:
+        chcomment = 'No comment available'
+
+    ##Resolved Comment
+    chRcomment = None
+    if mchange.ch_status == 'Resolved':
+        chRcomment = cl_CResolved.objects.filter(creq_id = mchange.id).order_by('-id').first().txt_cresolved
+    else:
+        chRcomment = 'No comment available'
+
+
+
+    context={
+        'mchange':mchange,
+        'chcomment':chcomment,
+        'chRcomment':chRcomment
+    } 
+    return render(request, 'tool/change_details.html',context)
 
 
 @login_required(login_url='/login_render/')
@@ -2059,15 +2126,61 @@ def im_resolved(request):
 def reopen(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        list_id = request.POST.getlist('id[]')  
-              
+        list_id = request.POST.getlist('ur_id[]')  
+        reason = request.POST.get('reason')
+        # print(reason)
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
+            # print("AAAAAAAAAAAAAAAAAAAAAA",ur.id)
             ur.ch_status = "Reopen"
+            if ur.ch_status == 'Reopen':
+                ur.ch_assign_agent = 'Not Assign'                   
+            
+
             ur.save()
+            cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur.id)  
 
         subject = 'User request Reopened'
         message = f'User Request IDs : "{list_id}" are reopened' 
+        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        recepient = [helpdesk_L1.L1_Manager.e_person_email]
+        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+
+        try:
+            mail_sender()
+            sender = settings.EMAIL_HOST_USER
+            send_mail(subject, message, sender, recepient, fail_silently=False)
+        except:
+            print('email not send')
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
+        try:
+            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+        except:
+            print('Telegram notification not send')
+        
+    return redirect('userrequest')
+
+
+
+@login_required(login_url='/login_render/')
+def resolved(request):
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        list_id = request.POST.getlist('ur_id[]')  
+        reason = request.POST.get('reason')
+        # print(reason)
+        for i in list_id:
+            ur = cl_User_request.objects.filter(id=i).first()
+            # print("AAAAAAAAAAAAAAAAAAAAAA",ur.id)
+            ur.ch_status = "Resolved"
+            ur.save()
+            cl_Resolved.objects.create(txt_resolved=reason,ureq_id=ur.id)  
+
+        subject = 'User request Resolved'
+        message = f'User Request IDs : "{list_id}" are Resolved' 
         helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
         recepient = [helpdesk_L1.L1_Manager.e_person_email]
         telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
@@ -2150,14 +2263,17 @@ def cm_close(request):
 @login_required(login_url='/login_render/')
 def cm_reopen(request):
     if request.method == "POST":
-        reason = request.POST.get('reason')
-        ur_id = request.POST.getlist('ur_id[]')   
-        cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur_id)
+        ur_id = request.POST.getlist('ur_id[]')  
+        reason = request.POST.get('reason') 
            
         for i in ur_id:
             cm = cl_New_change.objects.filter(id=i).first()
             cm.ch_status = "Reopen"
+            if cm.ch_status == 'Reopen':
+                cm.ch_assign_agent = 'Not Assign'
             cm.save()
+            cl_CReopen.objects.create(txt_creopen=reason,creq_id=ur_id)
+
         
         subject = 'Change request Reopened'
         message = f'Change Request IDs : "{ur_id}" are reopened' 
@@ -4596,25 +4712,22 @@ def vreopen(request):
 
 
 
-def reopen(request):
-    if request.method == "POST":
-        reason = request.POST.get('reason')
-        ur_id = request.POST.getlist('ur_id[]')
-        # ur = cl_User_request.objects.get(id=ur_id)
-        # create a new instance of cl_Reopen model
-        cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur_id)
+# def reopen(request):
+#     if request.method == "POST":
+#         reason = request.POST.get('reason')
+#         cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur_id)
 
-        # txt_reopen = cl_Reopen.objects.create(txt_reopen=reason)
-        # update the user request instance with the new cl_Reopen instance
-        # ur.ch_status = "Reopen"
-        for i in ur_id:
-            ur = cl_User_request.objects.filter(id=i).first()
-            ur.ch_status = "Reopen"
-            ur.save()
+#         # txt_reopen = cl_Reopen.objects.create(txt_reopen=reason)
+#         # update the user request instance with the new cl_Reopen instance
+#         # ur.ch_status = "Reopen"
+#         for i in ur_id:
+#             ur = cl_User_request.objects.filter(id=i).first()
+#             ur.ch_status = "Reopen"
+#             ur.save()
         
-        return redirect('userrequest')
+#         return redirect('userrequest')
     
-    return render(request, 'reopen.html')
+#     return render(request, 'reopen.html')
 
 
   

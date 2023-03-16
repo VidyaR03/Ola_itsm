@@ -29,6 +29,8 @@ urlpatterns = [
 
     #Url For New Change
     path("newchange/", views.newchange, name='newchange'),
+    path('newchange/<str:pk>/',views.change_detail, name='change_detail'),
+
     path('cadd', views.CADD, name='cadd'),
     # path('cedit', views.CEdit, name='cedit'),
     path('cupdate/<str:id>', views.CUpdate, name='cupdate'),
@@ -71,6 +73,10 @@ urlpatterns = [
           
     ###### Reopen 
     path('reopen', views.reopen, name='reopen'),
+
+    #######Resolved
+    path('resolved', views.resolved, name='resolved'),
+
     path('get_Existing_user', views.get_Existing_user, name='get_Existing_user'),
     # path('reopen', views.reopen, name='reopen'),
 
@@ -132,6 +138,10 @@ urlpatterns = [
     path('pcEdit', views.pcEdit, name='pcEdit'),
     path('pcUpdate/<str:id>', views.pcUpdate, name='pcUpdate'),
     path('pcDelete/', views.pcDelete, name='pcDelete'),
+
+    ##URL for disply id related info in another page
+
+
     
     
     # URL for Incident Management
@@ -156,7 +166,7 @@ urlpatterns = [
     path('approved', views.change_approved, name='approved'),
 
     ########URL for Reopen in User Request#######
-    path('reopen', views.reopen, name='reopen'),
+    # path('reopen', views.reopen, name='reopen'),
     
     ########URL for Close in User Request#######
     path('im_resolved', views.im_resolved, name='im_resolved'),
