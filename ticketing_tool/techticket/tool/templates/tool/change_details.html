@@ -1,0 +1,87 @@
+{% extends 'tool/adminbase.html' %}
+{% load static %}
+{% block content %}
+
+
+<div style="position: relative; top: 65px; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
+    <div class="col-md-8" style="color:brown;">
+        <h1>{{ mchange.ch_organization}}</h1>
+    </div>
+
+    <div class="col-md-6" style="color: black;">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>ID:</td>
+                    <td>{{mchange.id}}</td>
+                </tr>
+                <tr>
+                    <td>Organization:</td>
+                    <td>{{mchange.ch_organization}}</td>
+                </tr>
+                <tr>
+                    <td>Caller:</td>
+                    <td>{{mchange.ch_status}}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{{mchange.ch_organization}}</td>
+                </tr>
+                <tr>
+                    <td>Category:</td>
+                    <td>{{mchange.ch_category}}</td>
+                </tr>
+                <tr>
+                    <td>Title:</td>
+                    <td>{{mchange.ch_title}}</td>
+                </tr>
+                <tr>
+                    <td>Start Date:</td>
+                    <td>{{mchange.dt_start_date}}</td>
+                </tr>
+                <tr>
+                    <td>Updated Date:</td>
+                    <td>{{mchange.dt_Updated_date}}</td>
+                </tr>
+                <tr>
+                    <td>Parent Change:</td>
+                    <td>{{mchange.ch_parent_change}}</td>
+                </tr>
+                <tr>
+                    <td>Fallback Plan:</td>
+                    <td>{{mchange.txt_fallback_plan}}</td>
+                </tr>
+                <tr>
+                    <td>Description:</td>
+                    <td>{{mchange.txt_description}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        {% if chcomment %}
+        <p><strong>Reason of Reopen:</strong>{{chcomment}}</p>
+        {% else %}
+        <p>No comment available</p>
+        {% endif %}
+
+
+        {% if chRcomment %}
+        <p><strong>Reason of Resolved:</strong>{{chRcomment}}</p>
+        {% else %}
+        <p>No comment available</p>
+        {% endif %}
+
+
+
+
+    
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+

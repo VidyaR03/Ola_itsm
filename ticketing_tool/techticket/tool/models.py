@@ -530,16 +530,59 @@ class cl_Server(models.Model):
 
     class Meta:
         db_table = 'cl_Server'
+
+
+
+## Remark of Reopen of Change Management
+
+class cl_CReopen(models.Model):
+    txt_creopen = models.TextField()
+    creq_id = models.CharField(max_length=100,null=True)
+
+    def __str__(self):
+        return self.txt_creopen
+    class Meta:
+        db_table = 'cl_CReopen'
+
+
+##   Remark of Resolved of Change Managemnet
+
+class cl_CResolved(models.Model):
+    txt_cresolved = models.TextField()
+    creq_id = models.CharField(max_length=100,null=True)
+
+    def __str__(self):
+        return self.txt_cresolved
     
+    class Meta:
+        db_table = 'cl_CResolved'
+
+
+
+
+
+## Remark of Reopen of User Request   
 class cl_Reopen(models.Model):
     txt_reopen = models.TextField()
     ureq_id = models.CharField(max_length=100,null=True)  
 
     def __str__(self):
         return self.txt_reopen
-
     class Meta:
         db_table = 'cl_Reopen'
+
+
+###Remark of Resolved of User Request
+
+class cl_Resolved(models.Model):
+    txt_resolved = models.TextField()
+    ureq_id = models.CharField(max_length=100,null=True)  
+
+    def __str__(self):
+        return self.txt_resolved
+
+    class Meta:
+        db_table = 'cl_Resolved'
 
 
 
