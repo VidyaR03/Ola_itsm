@@ -1950,15 +1950,25 @@ def change_detail(request,pk):
     
     ##Reopen Comment
     chcomment = None
-    if mchange.ch_status == 'Reopen':
-        chcomment = cl_CReopen.objects.filter(creq_id=mchange.id).order_by('-id').first().txt_creopen
+    query_result = cl_CReopen.objects.filter(creq_id=mchange.id).order_by('-id').first()
+    if query_result is not None:
+        chcomment = query_result.txt_creopen
     else:
         chcomment = 'No comment available'
 
+    # chcomment = None
+    # if mchange.ch_status == 'Reopen':
+    #     chcomment = cl_CReopen.objects.filter(creq_id=mchange.id).order_by('-id').first().txt_creopen
+    # else:
+    #     chcomment = 'No comment available'
+
     ##Resolved Comment
     chRcomment = None
-    if mchange.ch_status == 'Resolved':
-        chRcomment = cl_CResolved.objects.filter(creq_id = mchange.id).order_by('-id').first().txt_cresolved
+    query = cl_CResolved.objects.filter(creq_id = mchange.id).order_by('-id').first()
+    if query is not None:
+        chRcomment = query.txt_cresolved
+       
+
     else:
         chRcomment = 'No comment available'
 
@@ -2066,13 +2076,31 @@ def ur_approved(request):
 
 @login_required(login_url='/login_render/')
 def im_resolved(request):
+
+    # permission = roles.objects.filter(id=request.session['user_role']).first()
+    # if request.method == "POST":
+    #     list_id = request.POST.getlist('creq_id[]')  
+    #     reason = request.POST.get('reason')
+    
+              
+    #     for i in list_id:
+    #         ur = cl_New_change.objects.filter(id=i).first()
+    #         ur.ch_status = "Resolved"
+    #         ur.save() 
+    #         cr = cl_CResolved(txt_cresolved=reason,creq_id=ur.id)
+    #         cr.save()
+
+    
+
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
-        list_id = request.POST.getlist('id[]')      
+        list_id = request.POST.getlist('creq_id[]')  
+        reason = request.POST.get('reason')
+    
         admin_name = request.session["username"]
 
         for i in list_id:
-            ur = cl_User_request.objects.filter(id=i).first()
+            ur = cl_New_change.objects.filter(id=i).first()
             ur.ch_status = "Resolved"
             ur.save() 
             ticket_log(None, ur, "Request Resolved", admin_name)
@@ -2247,7 +2275,7 @@ def cm_close(request):
 @login_required(login_url='/login_render/')
 def cm_reopen(request):
     if request.method == "POST":
-        ur_id = request.POST.getlist('ur_id[]')  
+        ur_id = request.POST.getlist('creq_id[]')  
         reason = request.POST.get('reason') 
            
         for i in ur_id:
@@ -2256,7 +2284,7 @@ def cm_reopen(request):
             if cm.ch_status == 'Reopen':
                 cm.ch_assign_agent = 'Not Assign'
             cm.save()
-            cl_CReopen.objects.create(txt_creopen=reason,creq_id=ur_id)
+            cl_CReopen.objects.create(txt_creopen=reason,creq_id=cm.id)
 
         
         subject = 'Change request Reopened'

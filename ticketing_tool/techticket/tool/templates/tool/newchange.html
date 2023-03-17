@@ -480,7 +480,7 @@
   
           <div class="form-group">
             <label>Resolved Remark</label>
-            <input class="form-control" name="txt_resolved" type="text">
+            <input class="form-control" name="txt_cresolved" type="text">
           </div>
        
           <div class="modal-footer">
@@ -691,7 +691,7 @@
           method: "POST",
           data: {
             reason: $('input[name=txt_creopen]').val(),
-            ur_id: id,
+            creq_id: id,
             csrfmiddlewaretoken: csrf
           },
           success: function () {
@@ -786,6 +786,40 @@
     }
   }); 
 </script>
+
+
+<!-- For Resolved Change -->
+<script>
+  $(document).ready(function () {
+    $('#resolved_btn').click(function () {
+      if (confirm('Are You Sure You Want to resolved UR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select UR Which u want to Reopen?")
+        } else {
+          $.ajax({
+          url: "{% url 'im_resolved' %}",
+          method: "POST",
+          data: {
+            reason: $('input[name=txt_cresolved]').val(),
+            creq_id: id,
+            csrfmiddlewaretoken: csrf
+          },
+          success: function () {
+            location.reload();
+          },
+        });
+
+      }
+    }
+    })
+  })
+</script>
+
 <!-- For Waiting For Approval Change -->
 <script>
   $(document).ready(function () {
@@ -823,5 +857,4 @@
     })
 </script>
 
-<!-- 
 {% endblock content %}
