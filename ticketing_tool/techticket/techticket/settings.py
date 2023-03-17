@@ -94,7 +94,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'itsm',
     'USER': 'root',
-    'PASSWORD': 'Admin@12345',
+    'PASSWORD': 'Admin@123',
     # 'HOST': '127.0.0.1',
     # 'PORT': '3306',
     # 'OPTIONS': {
@@ -170,48 +170,23 @@ BOT_TOKEN=""
 BOT_URL="https://api.telegram.org/bot%s/"%BOT_TOKEN
 
 
-# Disable Django's logging setup
-LOGGING_CONFIG = None
-
-LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
-
-logging.config.dictConfig({
+LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'default': {
-            # exact format is not important, this is the minimum information
-            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-        },
-        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
-    },
     'handlers': {
-        # console logs to stderr
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'default',
-        },
-        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
         'file': {
-        'level': 'DEBUG',
-        'class': 'logging.FileHandler',
-        'filename': 'Itsm.log',
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'itsm.log',
         },
     },
     'loggers': {
-        # default for all undefined Python modules
-        '': {
-            'level': 'WARNING',
-            'handlers': ['console', 'file'],
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
-        # Our application code
-        'app': {
-            'level': LOGLEVEL,
-            'handlers': ['console', 'file'],
-            # Avoid double logging because of root logger
-            'propagate': False,
-        },
-        # Default runserver request logging
-        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
     },
-})
+}
+
+

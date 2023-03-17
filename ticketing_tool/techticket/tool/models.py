@@ -1278,3 +1278,20 @@ class sms_notifier(models.Model):
 
     class Meta:
         db_table = 'sms_notifier'
+
+
+
+class cl_Ticket_Logs(models.Model):
+    """Models which create the table for Ticket_Logs """
+    id = models.AutoField(primary_key=True, editable=False)
+    change_req_id = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True)
+    incident_req_id = models.ForeignKey(cl_User_request, on_delete=models.CASCADE, null=True)
+    action = models.CharField(max_length=100)
+    logged_user = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        db_table = 'cl_ticket_logs'

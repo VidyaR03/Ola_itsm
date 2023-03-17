@@ -22,11 +22,10 @@
         <ul class="dropdown-menu">
           <li><a href="#" id="Request_approve_btn">Request for Approve</a></li>
           <li><a href="#" id="approved_btn">Approved</a></li>
-          <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
+          <li><a href="#reopen_model" class="btn" data-toggle="modal">
             <span>Reopen Remark</span></a></li>
-          <li><a href="#resolved_model" class="btn btn-info" data-toggle="modal">
+          <li><a href="#resolved_model" class="btn" data-toggle="modal">
               <span>Resolved Remark</span></a></li>
-          <!-- <li><a href="#" id="resolved_btn">Resolved</a></li> -->
         </ul>
       </div>
       {% endif %}
@@ -69,7 +68,6 @@
         {% if permission.inci_m_e == "on" or permission == None %}
         <th style="text-align: center;">Edit</th>
         {% endif %}
-
       </tr>
     </thead>
     <tbody style="text-align: center;">

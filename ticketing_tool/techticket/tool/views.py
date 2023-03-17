@@ -1603,7 +1603,9 @@ def user_request(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
 
-    TTO_Calculation()
+    admin_name = request.session["username"]
+
+    TTO_Calculation(admin_name)
 
     context = {
             'ur': ur,
@@ -1629,39 +1631,37 @@ def escalation_mail(req_status, id):
             subject = 'User Request TTR Escalation'
 
         helpdesk_L2 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        recepient = [helpdesk_L2.L2_Manager.e_person_email]
-        telchat_id=helpdesk_L2.L2_Manager.telegram_chatid,
+        if helpdesk_L2.L2_Manager is not None:
+            recepient = [helpdesk_L2.L2_Manager.e_person_email]
+            telchat_id=helpdesk_L2.L2_Manager.telegram_chatid,
 
-        try:
-            mail_sender()
-            sender = settings.EMAIL_HOST_USER
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            print('email not send')
+            try:
+                mail_sender()
+                sender = settings.EMAIL_HOST_USER
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('email not send')
 
-        try:
-            tel_bot_lodder()
-        except:
-            print("Bot not configured")
+            try:
+                tel_bot_lodder()
+            except:
+                print("Bot not configured")
 
-        try:
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
-        except:
-            print('Telegram notification not send')
+            try:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+            except:
+                print('Telegram notification not send')
 
 
-def TTO_Calculation():
+def TTO_Calculation(admin_name):
     ur = cl_User_request.objects.all()
-
-
     for i in ur:
         ur_tto = None
         ur_ttr = None
         ur_sub_cate = i.ch_service_subcategory
         ur_sla = cl_Sla.objects.filter(id=ur_sub_cate.id).first()
-        print("HI",ur_sla)
         ur_slt = ur_sla.slts.through.objects.filter(cl_sla_id=ur_sla.id)
-        if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved" and i.ch_status != "Reopen":
+        if i.ch_status != "Waiting for Approval" and i.ch_status != "Resolved":
             if (i.ch_assign_agent == "Deallocate" and i.ch_status != "TTO Escalated") or i.ch_status == "Approved":
                 for s in ur_slt:
                     queryset = cl_Slt.objects.filter(id=int(s.cl_slt_id), ch_priority=i.ch_priority, ch_request_type=i.ch_request_type)
@@ -1681,12 +1681,14 @@ def TTO_Calculation():
                                     i.ch_status = "TTO Escalated"
                                     i.save()
                                     escalation_mail(i.ch_status,i.id)
-                                    print("Status changed -> TTO Escalate")
+                                    ticket_log(None, i, "Request TTO Escalate", admin_name)
+                                    # print("Status changed -> TTO Escalate")
                                 elif datetime.date(ur_tto_Date) == datetime.date(datetime.now()) and datetime.time(ur_tto_Date) < datetime.time(datetime.now()) and i.ch_assign_agent == 'Deallocate':
                                     i.ch_status = "TTO Escalated"
                                     i.save()
                                     escalation_mail(i.ch_status,i.id)
-                                    print("Status changed -> TTO Escalate")
+                                    ticket_log(None, i, "Request TTO Escalate", admin_name)
+                                    # print("Status changed -> TTO Escalate")
                                 else:
                                     i.ch_status = i.ch_status
                                     i.save()
@@ -1710,12 +1712,14 @@ def TTO_Calculation():
                                     i.ch_status = "TTR Escalated"
                                     i.save()
                                     escalation_mail(i.ch_status,i.id)
-                                    print("Status changed -> TTR Escalate")
+                                    ticket_log(None, i, "Request TTR Escalate", admin_name)
+                                    # print("Status changed -> TTR Escalate")
                                 elif datetime.date(ur_ttr_Date) == datetime.date(datetime.now()) and datetime.time(ur_ttr_Date) < datetime.time(datetime.now()) and i.ch_assign_agent != 'Deallocate':
                                     i.ch_status = "TTR Escalated"
                                     i.save()
                                     escalation_mail(i.ch_status,i.id)
-                                    print("Status changed -> TTR Escalate")
+                                    ticket_log(None, i, "Request TTR Escalate", admin_name)
+                                    # print("Status changed -> TTR Escalate")
                                 else:
                                     i.ch_status = i.ch_status
                                     i.save()
@@ -1792,7 +1796,7 @@ def UADD(request):
             # reopen_reason = reopen_reason,
         )
         ur.save()
-
+        
         ur_raised = cl_User_request.objects.latest('id')
         subject = 'New User request raised'
         message = f'User "{ur_raised.ch_request_type}" request raised by "{ur_raised.fk_organization}", Request ID : "{ur_raised.id}", Request Priority is "{ur_raised.ch_priority}"' 
@@ -1822,6 +1826,7 @@ def UADD(request):
         event ="event"
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
+        ticket_log(None, ur_raised, "Request Added", admin_name)
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html',{'permission':permission})
 
@@ -1897,16 +1902,16 @@ def UUpdate(request, id):
         event ="event"
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
-
+        ticket_log(None, ur1, "Request Updated", admin_name)
         return redirect('userrequest')
     return render(request, 'tool/userrequest.html',{'permission':permission})
 
 
 ########### Display sla,slt #########
 
-def user_detail(request, pk):
+def ur_detail(request, pk):
     urequest = get_object_or_404(cl_User_request, pk=pk)
-    print(urequest.ch_service_subcategory_id)
+    # print(urequest.ch_service_subcategory_id)
     service_subcategory = cl_Service_subcategory.objects.filter(id=urequest.ch_service_subcategory_id).first()
     sla= cl_Sla.objects.filter(id=service_subcategory.ch_sla_id).first()
 
@@ -1914,48 +1919,16 @@ def user_detail(request, pk):
     
     slt = sla.slts.all() # get all SLTs associated with the sla
     slt_names = [i.ch_name for i in slt] # create a list of the S
-    print(sla)
-    print(slt)
 
     comment = None
     if urequest.ch_status == 'Reopen':
             comment = cl_Reopen.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_reopen
-            # comment = cl_Reopen.objects.get(ureq_id=urequest.id).txt_reopen
-    else:
-        comment = 'No comment available'
 
-
-    
     Rcomment = None
     if urequest.ch_status == 'Resolved':
             Rcomment = cl_Resolved.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_resolved
-            # comment = cl_Reopen.objects.get(ureq_id=urequest.id).txt_reopen
-    else:
-        Rcomment = 'No comment available'
 
-
-         
-
-    # Pass the comment to the template
-    # return render(request, 'template.html', {'comment': comment})
-    # comment = None
-    # if urequest.ch_status == 'Reopen':
-    #     reopen_obj = cl_Reopen.objects.filter(ureq_id=urequest.id).first()
-    #     if reopen_obj:
-    #         comment = reopen_obj.txt_reopen
-
-
-    # if urequest.ch_status == 'Reopen':
-    #     list_id =cl_Reopen.objects.all()
-    #     print(list_id)
-    #     comment = [i.txt_reopen for i in list_id]
-    #     # comment = get_object_or_404(cl_Reopen, ureq_id=pk).first()
-
-    #     # reopen_comment = comment.txt_reopen
-    #     print(comment,"#####")
-    # else:
-    #     comment = 'In Process'
-    #     print(comment)
+    ticket_log = cl_Ticket_Logs.objects.filter(incident_req_id = pk)
 
     context = {
         'urequest': urequest,
@@ -1964,7 +1937,8 @@ def user_detail(request, pk):
         'slt':slt,
         'slt_names':slt_names,
         'comment':comment,
-        'Rcomment':Rcomment
+        'Rcomment':Rcomment,
+        'ticket_log':ticket_log
     }
     return render(request, 'tool/user_detail.html', context)
 
@@ -2001,16 +1975,18 @@ def change_detail(request,pk):
 @login_required(login_url='/login_render/')
 def UDelete(request):
     if request.method == "POST":
+        admin_name = request.session["username"]
         list_id = request.POST.getlist('id[]')
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
+            ticket_log(None, ur, "Request Deleted", admin_name)
             ur.delete()
-    admin_name = request.session["username"]
-    adminaction = "deletion of user request"
-    event ="event"
-    resultcode = "200"
-    user_activity(admin_name, adminaction, event, resultcode)
-    return redirect('userrequest')
+
+            adminaction = "Deletion of user request ID :"+ i
+            event ="event"
+            resultcode = "200"
+            user_activity(admin_name, adminaction, event, resultcode)
+        return redirect('userrequest')
 
 
 @login_required(login_url='/login_render/')
@@ -2030,7 +2006,8 @@ def assign_URModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
-     
+        admin_name = request.session["username"]
+  
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_assign_agent = per.ch_person_firstname
@@ -2038,6 +2015,7 @@ def assign_URModal(request):
             now = datetime.now()
             ur.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
             ur.save()
+            ticket_log(None, ur, "Request Assigned", admin_name)
         try:
             tel_bot_lodder()
         except:
@@ -2056,7 +2034,6 @@ def assign_URModal(request):
             print('email not send')
         
 
-        admin_name = request.session["username"]
         adminaction = "assign the changes"
         event ="event"
         resultcode = "200"
@@ -2071,15 +2048,17 @@ def assign_URModal(request):
 ########## Approved Change For Incident Management############
 
 @login_required(login_url='/login_render/')
-def change_approved(request):
+def ur_approved(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-          
+        admin_name = request.session["username"]
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Approved"
             ur.save()
+            ticket_log(None, ur, "Request Approved", admin_name)
+
     return redirect('userrequest')
 
 
@@ -2090,32 +2069,35 @@ def im_resolved(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')      
-              
+        admin_name = request.session["username"]
+
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Resolved"
             ur.save() 
-            
+            ticket_log(None, ur, "Request Resolved", admin_name)
+
         req_caller = cl_Person.objects.filter(id=ur.fk_caller_id).first()   
         helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
-        L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
-        all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
-        try:
-            mail_sender()
-            subject = 'User Request Resolved'
-            message = f'User Request ID : "{list_id}" is resolved successfully.'
-            sender = settings.EMAIL_HOST_USER
-            recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            print('email not send')
-        try:
-            tel_bot_lodder()
-        except:
-            print("Bot not configured")
-        for i in all_chat_ids:
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
+        if helpdesk_team.L1_Manager is not None:
+            L1_Manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()  
+            L2_Manager = cl_Person.objects.filter(id=helpdesk_team.L2_Manager_id).first()  
+            all_chat_ids = [req_caller.telegram_chatid,L1_Manager.telegram_chatid,L2_Manager.telegram_chatid]
+            try:
+                mail_sender()
+                subject = 'User Request Resolved'
+                message = f'User Request ID : "{list_id}" is resolved successfully.'
+                sender = settings.EMAIL_HOST_USER
+                recepient = [req_caller.e_person_email,L1_Manager.e_person_email,L2_Manager.e_person_email]
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('email not send')
+            try:
+                tel_bot_lodder()
+            except:
+                print("Bot not configured")
+            for i in all_chat_ids:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=i, text= message)
         return JsonResponse({'result': 'success'})
     return redirect('userrequest')
 
@@ -2128,39 +2110,41 @@ def reopen(request):
     if request.method == "POST":
         list_id = request.POST.getlist('ur_id[]')  
         reason = request.POST.get('reason')
-        # print(reason)
+        admin_name = request.session["username"]
         for i in list_id:
             ur = cl_User_request.objects.filter(id=i).first()
-            # print("AAAAAAAAAAAAAAAAAAAAAA",ur.id)
             ur.ch_status = "Reopen"
             if ur.ch_status == 'Reopen':
-                ur.ch_assign_agent = 'Not Assign'                   
-            
-
+                ur.ch_assign_agent = 'Not Assign'
+                ur.ch_assign_agent = 'Deallocate' 
+                ur.dt_start_date = timezone.now()       
+          
+                 
             ur.save()
+            ticket_log(None, ur, "Request Reopend", admin_name)
             cl_Reopen.objects.create(txt_reopen=reason,ureq_id=ur.id)  
 
         subject = 'User request Reopened'
         message = f'User Request IDs : "{list_id}" are reopened' 
-        helpdesk_L1 = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        recepient = [helpdesk_L1.L1_Manager.e_person_email]
-        telchat_id=helpdesk_L1.L1_Manager.telegram_chatid,
+        helpdesk = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
+        if helpdesk.L1_Manager is not None:
+            recepient = [helpdesk.L1_Manager.e_person_email]
+            telchat_id=helpdesk.L1_Manager.telegram_chatid,
 
-        try:
-            mail_sender()
-            sender = settings.EMAIL_HOST_USER
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            print('email not send')
-        try:
-            tel_bot_lodder()
-        except:
-            print("Bot not configured")
-        try:
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
-        except:
-            print('Telegram notification not send')
-        
+            try:
+                mail_sender()
+                sender = settings.EMAIL_HOST_USER
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('email not send')
+            try:
+                tel_bot_lodder()
+            except:
+                print("Bot not configured")
+            try:
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=telchat_id, text=message)
+            except:
+                print('Telegram notification not send')
     return redirect('userrequest')
 
 
@@ -2303,28 +2287,32 @@ def send_approval_Mail_UR(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
         helpdesk_team = cl_Team.objects.filter(ch_teamname='Helpdesk').first()
-        L1_manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()
-        recepient = [L1_manager.e_person_email]
-        telegram_chat_id=[L1_manager.telegram_chatid]
-              
-        for i in list_id:
-            ur = cl_User_request.objects.filter(id=i).first()
-            ur.ch_status = "Waiting for Approval"
-            ur.save()
+        admin_name = request.session["username"]
 
-        try:
-            mail_sender()
-            subject = 'Request for Approval of User Request'
-            message = f'Please approve Following User Request for further process.\nRequest ID : "{list_id}"'
-            sender = settings.EMAIL_HOST_USER
-            send_mail(subject, message, sender, recepient, fail_silently=False)
-        except:
-            raise Exception('Please Configure Email Sender Details')
-        try:
-            tel_bot_lodder()
-            send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text=message)
-        except:
-            print("Bot not configured")
+        for i in list_id:
+                ur = cl_User_request.objects.filter(id=i).first()
+                ur.ch_status = "Waiting for Approval"
+                ur.save()
+                ticket_log(None, ur, "Request send for Approval", admin_name)
+
+        if helpdesk_team.L1_Manager is not None:
+            L1_manager = cl_Person.objects.filter(id=helpdesk_team.L1_Manager_id).first()
+            recepient = [L1_manager.e_person_email]
+            telegram_chat_id=[L1_manager.telegram_chatid]            
+
+            try:
+                mail_sender()
+                subject = 'Request for Approval of User Request'
+                message = f'Please approve Following User Request for further process.\nRequest ID : "{list_id}"'
+                sender = settings.EMAIL_HOST_USER
+                send_mail(subject, message, sender, recepient, fail_silently=False)
+            except:
+                print('Please Configure Email Sender Details')
+            try:
+                tel_bot_lodder()
+                send_telegram_message(token=settings.BOT_TOKEN, chat_id=telegram_chat_id, text=message)
+            except:
+                print("Bot not configured")
     return redirect('userrequest')
 
     # return render(request, 'tool/approve_change.html',{'permission':permission})
@@ -4766,12 +4754,5 @@ def vreopen(request):
 #         return HttpResponse('Invalid request method!')
 
 
-
-
-        
-
-
-
-
-
-
+def ticket_log(change_req_id,incident_req_id,action,logged_user):
+    cl_Ticket_Logs.objects.create(change_req_id=change_req_id, incident_req_id=incident_req_id, action=action, logged_user=logged_user)

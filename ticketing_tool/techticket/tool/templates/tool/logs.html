@@ -9,42 +9,32 @@
                 style="display: inline-block; margin-top: 10px; margin-left: 10px;">
                 <input type="text" class="form-control" name="searchname" placeholder="Search by User">
                 <input type="submit" class="btn btn-primary" value="Search by User">
-                <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button>
-
+                <!-- <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button> -->
             </form>
     <table class="table table-striped table-hover" id="table" style="margin-top: 30px;">
       <thead>
         <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
          <th>
-
          </th>
           <th>Id</th>
           <th>User</th>
           <th>Action</th>
-          <th>Event</th>
           <th>Success Code</th>
           <th>Duration</th>
-          <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody> 
       {% for i in users %}
       {% if forloop.counter < 11 %}  
         <tr>
           <td>
               <input type="checkbox" name="change_id[]" id="delete_product" value="{{i.id}}">
           </td>
-          <td>{{i.id}}</td>
+          <td>{{forloop.counter}}</td>
           <td>{{i.username}}</td>
           <td>{{i.action}}</td>
           <td>{{i.resultcode}}</td>
-          <td>{{i.ch_login}}</td>
           <td>{{i.duration}}</td>
-          <td>
-            <!-- <a href="#editcl_ExternaluserModal-{{forloop.counter}}" class="edit" data-toggle="modal"><i
-                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-             -->
-          </td>
         </tr>
         {% endif %}
 

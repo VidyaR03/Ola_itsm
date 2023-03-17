@@ -146,7 +146,7 @@ urlpatterns = [
     
     # URL for Incident Management
     path("userrequest/", views.user_request, name='userrequest'),
-    path('userrequest/<str:pk>/',views.user_detail, name='user_detail'),
+    path('userrequest/<str:pk>/',views.ur_detail, name='ur_detail'),
 
     path('uadd', views.UADD, name='uadd'),
     path('uedit', views.UEdit, name='uedit'),
@@ -163,7 +163,7 @@ urlpatterns = [
     path('assign_UR', views.assign_URModal, name='assign_UR'),
 
     ########URL for Change Approved in User Request#######
-    path('approved', views.change_approved, name='approved'),
+    path('approved', views.ur_approved, name='approved'),
 
     ########URL for Reopen in User Request#######
     # path('reopen', views.reopen, name='reopen'),

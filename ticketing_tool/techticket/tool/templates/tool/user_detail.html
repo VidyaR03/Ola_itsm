@@ -1,25 +1,16 @@
-
-
 {% extends 'tool/adminbase.html' %}
 {% load static %}
 {% block content %}
 
-<div style="position: relative; top: 65px; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
-  
-  <div class="col-xl-12">
-    {% if urequest.ch_sla_id %}
-      <p><strong>SLA:</strong> {{ urequest.ch_sla_id}}</p>
-     {% endif %}
-    <div class="col-md-8" style="color:brown;">
-      <h1>{{ urequest.fk_organization}}</h1>
+
+<div style="position: relative; top: 65px; overflow-x: hidden; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
+  <div style="width: 60%;">
+    <div class="col-md-8" style="color:brown; display: block;">
+      <h2>{{ urequest.id}}</h2>
     </div>
-    <div class="col-md-6" style="color:blue;">
+    <div class="col-md-6" style="display: block;">
       <table class="table">
         <tbody>
-          <tr>
-            <td>ID:</td>
-            <td>{{ urequest.id }}</td>
-          </tr>
           <tr>
             <td>Organization:</td>
             <td>{{ urequest.fk_organization}}</td>
@@ -48,7 +39,6 @@
             <td>Updated Date:</td>
             <td>{{ urequest.dt_Updated_date }}</td>
           </tr>
-        
           <tr>
             <td>Title:</td>
             <td>{{ urequest.ch_title }}</td>
@@ -71,67 +61,67 @@
           </tr>
           <tr>
             <td>Description:</td>
-            <td>{{ urequest.txt_description }}</td>
+            <td style="white-space: pre-wrap;">{{ urequest.txt_description }}</td>
           </tr>
           <!-- Add any other fields you want to display here -->
+          <tr>
+            <td>Service subcategory:</td>
+            <td>{{ urequest.ch_service_subcategory_id}}</td>
+          </tr>
+          <tr>
+            <td>SLA:</td>
+            <td>{{ sla.ch_slname }}</td>
+          </tr>
+          <tr>
+            <td>SLTs:</td>
+            <td>{% for ch_name in slt_names %}
+              {{ ch_name }} ,
+              {% endfor %}</td>
+          </tr>
         </tbody>
       </table>
-     
+      {% if Rcomment is not None %}
+      <div style="color: green;">
+        <h4>Resolved Remark : {{ Rcomment }}</h4>
+      </div>
+      {% endif %}
 
-
-
-      {% if urequest.ch_service_subcategory_id %}
-      <p><strong>Service subcategory:</strong> {{ urequest.ch_service_subcategory_id}}</p>
-     {% endif %}
-     {% if sla %}
-     <p><strong>SLA:</strong> {{ sla.ch_slname }}</p> 
-     <!-- {% if slt %}
-       <p><strong>SLT:</strong> {{ slt.cl_slt_id }}</p>
-     {% endif %}  -->
-    
-
-     <!-- {% if comment %}
-     <p>{{ comment }}</p>
-     {% endif %}
-  -->
-      {% if slt %}
-    <p><strong>SLT:</strong>
-    
-      
-      {% for ch_name in slt_names %}
-          {{ ch_name }}
-      {% endfor %}
-      
-     
-   {% endif %}
-   {% endif %}
-
-   {% if comment %}
-
-   <p><strong>Reason of Reopen:</strong>{{comment}}</p>
-   <!-- <p>{{ comment }}</p> -->
-   {% else %}
-   <p>No comment available.</p>
-   {% endif %}
-
-
-    
-   {% if Rcomment %}
-
-   <p><strong>Reason of Resolved:</strong>{{Rcomment}}</p>
-   <!-- <p>{{ comment }}</p> -->
-   {% else %}
-   <p>No comment available.</p>
-   {% endif %}
-
- 
-
+      {% if urequest.ch_status == "Reopen" %}
+      <div style="color: red;">
+        <h4>Reason of Reopen : {{ comment }}</h4>
+      </div>
+      {% endif %}
+    </div>
   </div>
 
- 
 
+  <div style="position: relative; bottom: 90px; left: 200px;">
+    <div class="col-md-6" style="color:brown; display: block;">
+      <h2>Logs</h2>
+    </div> 
+    <div class="col-md-6" style="display: block;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="text-align: center;">ID</th>
+            <th style="text-align: center;">Aciton</th>
+            <th style="text-align: center;">Logged User</th>
+            <th style="text-align: center;">Timestamp</th>
+          </tr>
+        </thead>
+
+        {% for i in ticket_log %}
+        <tbody style="text-align: center;">
+          {% csrf_token %}
+            <td>{{forloop.counter}}</td>
+            <td>{{i.action}}</td>
+            <td>{{i.logged_user}}</td>
+            <td>{{i.timestamp}}</td>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
   </div>
 </div>
 
-
-{% endblock %}
+  {% endblock %}
