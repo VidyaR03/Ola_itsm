@@ -1084,7 +1084,7 @@
 </script>
 
 
-
+<!-- 
 <script>
   $(document).ready(function () {
     $('#resolved_btn').click(function () {
@@ -1115,7 +1115,7 @@
     }
     })
   })
-</script>
+</script> -->
 
 
 <!-- For Waiting For Approval Change -->
@@ -1175,13 +1175,14 @@
           id[i] = $(this).val()
         })
         if (id.length === 0) {
-          alert("please select UR Which u want to Reopen?")
+          alert("please select UR Which u want to Resolved?")
         } else {
           $.ajax({
           url: "{% url 'im_resolved' %}",
           method: "POST",
           data: {
-            id,
+            reason: $('input[name=txt_resolved]').val(),
+            ur_id: id,
             csrfmiddlewaretoken: csrf
           },
           success: function () {

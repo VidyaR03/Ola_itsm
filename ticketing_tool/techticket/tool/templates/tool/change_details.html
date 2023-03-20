@@ -59,7 +59,20 @@
             </tbody>
         </table>
 
-        {% if chcomment %}
+
+        {% if chcomment is not None %}
+        <div style="color: green;">
+          <h4>Resolved Remark : {{ chRcomment }}</h4>
+        </div>
+        {% endif %}
+  
+        {% if mchange.ch_status == "Reopen" %}
+        <div style="color: red;">
+          <h4>Reason of Reopen : {{ chcomment }}</h4>
+        </div>
+        {% endif %}
+
+        <!-- {% if chcomment %}
         <p><strong>Reason of Reopen:</strong>{{chcomment}}</p>
         {% else %}
         <p>No comment available</p>
@@ -70,7 +83,7 @@
         <p><strong>Reason of Resolved:</strong>{{chRcomment}}</p>
         {% else %}
         <p>No comment available</p>
-        {% endif %}
+        {% endif %} -->
 
 
 
