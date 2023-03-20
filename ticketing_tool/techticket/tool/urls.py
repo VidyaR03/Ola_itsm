@@ -74,7 +74,7 @@ urlpatterns = [
     ###### Reopen 
     path('reopen', views.reopen, name='reopen'),
 
-    #######Resolved
+    #######Resolved for CM
     path('resolved', views.resolved, name='resolved'),
 
     path('get_Existing_user', views.get_Existing_user, name='get_Existing_user'),
@@ -168,7 +168,7 @@ urlpatterns = [
     ########URL for Reopen in User Request#######
     # path('reopen', views.reopen, name='reopen'),
     
-    ########URL for Close in User Request#######
+    ########URL for Resolved in User Request#######
     path('im_resolved', views.im_resolved, name='im_resolved'),
 
 
@@ -190,7 +190,7 @@ urlpatterns = [
 
     ########URL for Send close  status in Change Management#######
 
-    path('cm_close', views.cm_close, name='cm_close'),
+    # path('cm_close', views.cm_close, name='cm_close'),
 
 
 

@@ -25,9 +25,9 @@
         <ul class="dropdown-menu">
           <li><a href="#" id="approve_btn">Request for Approve</a></li>
           <li><a href="#" id="approved_btn">Approved</a></li>
-          <li><a href="#reopen_model" class="btn btn-info" data-toggle="modal">
+          <li><a href="#reopen_model" class="btn " data-toggle="modal">
             <span>Reopen Remark</span></a></li>
-          <li><a href="#resolved_model" class="btn btn-info" data-toggle="modal">
+          <li><a href="#resolved_model" class="btn " data-toggle="modal">
               <span>Resolved Remark</span></a></li>
           <!-- <li><a href="#" id="reopen_btn">Reopen</a></li>
           <li><a href="#" id="close_btn">Resolved</a></li> -->
@@ -465,6 +465,7 @@
 
 
 
+
 <!--  Resolved Remark Form  -->
 
 <div id="resolved_model" class="modal fade">
@@ -480,12 +481,12 @@
   
           <div class="form-group">
             <label>Resolved Remark</label>
-            <input class="form-control" name="txt_resolved" type="text">
+            <input class="form-control" name="txt_cresolved" type="text">
           </div>
        
           <div class="modal-footer">
             <button type="submit" id="resolved_btn" class="btn btn-primary" value="Add">Remark</button>
-            <a href="{% url 'userrequest' %}" class="btn btn-default" role="button">Cancel</a>
+            <a href="{% url 'newchange' %}" class="btn btn-default" role="button">Cancel</a>
           </div>
         </div>
       </div>
@@ -691,7 +692,7 @@
           method: "POST",
           data: {
             reason: $('input[name=txt_creopen]').val(),
-            ur_id: id,
+            creq_id: id,
             csrfmiddlewaretoken: csrf
           },
           success: function () {
@@ -742,7 +743,7 @@
 
 
 <!-- For Close Change -->
-<script>
+<!-- <script>
   $(document).ready(function () {
     $('#close_btn').click(function () {
       if (confirm('Are You Sure You Want to Close UR?')) {
@@ -755,7 +756,6 @@
           alert("please select UR Which u want to Close?")
         } else {
           $.ajax({
-            url: "{% url 'cm_close' %}",
             method: "POST",
             data: {
               id,
@@ -769,7 +769,7 @@
       }
     })
   })
-</script>
+</script> -->
 
 <script>
   $('#select-all').click(function (event) {
@@ -786,6 +786,40 @@
     }
   }); 
 </script>
+
+
+<!-- For Resolved Change -->
+<script>
+  $(document).ready(function () {
+    $('#resolved_btn').click(function () {
+      if (confirm('Are You Sure You Want to resolved CR?')) {
+        var id = [];
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $(':checkbox:checked').each(function (i) {
+          id[i] = $(this).val()
+        })
+        if (id.length === 0) {
+          alert("please select CR Which u want to Resolved?")
+        } else {
+          $.ajax({
+          url: "{% url 'resolved' %}",
+          method: "POST",
+          data: {
+            reason: $('input[name=txt_cresolved]').val(),
+            cr_id: id,
+            csrfmiddlewaretoken: csrf
+          },
+          success: function () {
+            location.reload();
+          },
+        });
+
+      }
+    }
+    })
+  })
+</script>
+
 <!-- For Waiting For Approval Change -->
 <script>
   $(document).ready(function () {
@@ -823,5 +857,4 @@
     })
 </script>
 
-<!-- 
 {% endblock content %}
