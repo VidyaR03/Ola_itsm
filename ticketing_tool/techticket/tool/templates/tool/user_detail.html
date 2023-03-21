@@ -46,7 +46,11 @@
           </tr>
           <tr>
             <td>Part Number:</td>
+            {% if urequest.ch_hardware.part_number is none %}
+            <td>None</td>
+            {% else %}
             <td>{{ urequest.ch_hardware.part_number }}</td>
+            {% endif %}
           </tr>
           <tr>
             <td>Service:</td>
