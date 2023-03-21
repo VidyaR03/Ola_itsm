@@ -328,6 +328,22 @@ class cl_Delivery_model(models.Model):
     class Meta:
         db_table = 'cl_Delivery_model'
 
+class cl_Hardware(models.Model):
+    """Models which create the table for Hardware parts """
+    id = models.AutoField(primary_key=True, editable=False)
+    part_number = models.CharField(max_length=100)
+    serial_number = models.CharField(max_length=100)
+    description = models.TextField()
+    inword_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    outword_date = models.DateTimeField(auto_now=False, auto_now_add=False)
+    remark = models.TextField()
+    status = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.part_number
+
+    class Meta:
+        db_table = 'cl_Hardware'
 
 
 class cl_Business_process(models.Model):
@@ -715,6 +731,7 @@ class cl_User_request(models.Model):
     ch_parent_request = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     ch_parent_change = models.ForeignKey(cl_New_change, on_delete=models.CASCADE, null=True, blank=True)
     txt_description = models.TextField()
+    ch_hardware = models.ForeignKey('cl_Hardware', on_delete=models.CASCADE, null=True, blank=True)
     reopen_reason = models.TextField(default='issue')
     ch_assign_agent = models.CharField(max_length=100, default='Deallocate')
 
@@ -1295,3 +1312,10 @@ class cl_Ticket_Logs(models.Model):
 
     class Meta:
         db_table = 'cl_ticket_logs'
+
+
+
+
+
+
+

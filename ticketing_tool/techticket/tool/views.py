@@ -1563,6 +1563,7 @@ def user_request(request):
         ser_sub = cl_Service_subcategory.objects.all()
         nchange = cl_New_change.objects.all()
         org = cl_New_organization.objects.all()
+        hard = cl_Hardware.objects.all()
         allteam = cl_Team.objects.all()
         team_person = cl_Person.objects.all()
         if request.method == "GET":
@@ -1612,6 +1613,7 @@ def user_request(request):
             'users':users,
             'permission':permission,
             'org':org,
+            'hard':hard,
             'allteam':allteam,
             'team_person':team_person,
             'allservice':allservice,
@@ -1768,6 +1770,11 @@ def UADD(request):
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
         ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_ser_sub')).first()
         try:
+            ch_hardware =cl_Hardware.objects.filter(id=request.POST.get('part_number')).first()
+        except:
+            ch_hardware = None
+
+        try:
             ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
         except:
             ch_parent_request = None
@@ -1789,6 +1796,7 @@ def UADD(request):
             dt_start_date =dt_start_date,
             dt_Updated_date =dt_updated_date,
             ch_service =ch_service,
+            ch_hardware = ch_hardware,
             ch_service_subcategory =ch_service_subcategory,
             ch_parent_request=ch_parent_request,
             ch_parent_change =ch_parent_change,
@@ -1861,9 +1869,15 @@ def UUpdate(request, id):
         dt_start_date = request.POST.get('dt_start_date')
         dt_updated_date = request.POST.get('dt_Updated_date')
         ch_service =cl_Service.objects.filter(id=request.POST.get('ch_sername')).first()
+        # ch_hardware =cl_Hardware.objects.filter(part_number=request.POST.get('part_number')).first()
         ch_service_subcategory = cl_Service_subcategory.objects.filter(id=request.POST.get('ch_ser_sub')).first()
         # slt_id = int(request.POST.get('select_service_slt'))
         # ch_service_slts = cl_Slt.objects.filter(id=slt_id).first()
+        try:
+            ch_hardware =cl_Hardware.objects.filter(id=request.POST.get('part_number')).first()
+            print(ch_hardware)
+        except:
+            ch_hardware = None
         try:
             ch_parent_request = cl_User_request.objects.filter(id=request.POST.get('ch_parent_request_id')).first()
         except:
@@ -1889,6 +1903,7 @@ def UUpdate(request, id):
             dt_start_date =dt_start_date,
             dt_Updated_date =dt_updated_date,
             ch_service =ch_service,
+            ch_hardware = ch_hardware,
             ch_service_subcategory =ch_service_subcategory,
             # ch_service_slts=ch_service_slts,
             ch_parent_request=ch_parent_request,
@@ -3124,16 +3139,12 @@ def SLDelete(request):
 
 @login_required(login_url='/login_render/')
 def SLT(request):
-    permission = roles.objects.filter(id=request.session['user_role']).first()
-   
+    permission = roles.objects.filter(id=request.session['user_role']).first()  
 
             # Code to process form data and add to table
         # ...
        
-
-
-    slt = cl_Slt.objects.all()
-  
+    slt = cl_Slt.objects.all() 
          
     if request.method == "GET":
         q = request.GET.get('searchname')
@@ -4720,6 +4731,115 @@ def vreopen(request):
         # 'permission':permission
     }
     return render(request, 'tool/userrequest.html', context)
+
+
+
+##################### Hardware #######################
+
+@login_required(login_url='/login_render/')
+def hardware_part(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    hard = cl_Hardware.objects.all()
+   
+    if request.method == "GET":
+        q = request.GET.get('searchname')
+        if q != None:
+            hard = cl_Hardware.objects.filter( part_number__icontains=q)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(hard, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+    return render(request, 'tool/hardware.html', {'hard': hard,'users':users,'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def Hard_Add(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    if request.method == "POST":
+        part_number = request.POST.get('part_number')
+        serial_number = request.POST.get('serial_number')
+        description = request.POST.get('description')
+        inword_date = request.POST.get('inword_date')
+        outword_date = request.POST.get('outword_date')
+        remark = request.POST.get('remark')        
+        status = request.POST.get('status')
+
+
+        hard = cl_Hardware(
+
+            part_number=part_number,
+            serial_number=serial_number,
+            description=description,
+            inword_date=inword_date,
+            outword_date=outword_date,
+            status=status,
+            remark=remark,
+
+        )
+        hard.save()
+        return redirect('hardware')
+    return render(request, 'tool/hardware.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def Hard_Edit(request):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    hard = cl_Hardware.objects.all()
+    context = {
+        'hard': hard,
+        'permission':permission
+    }
+    return render(request, 'tool/hardware.html', context)
+
+
+@login_required(login_url='/login_render/')
+def Hard_Update(request, id):
+    permission = roles.objects.filter(id=request.session['user_role']).first()
+    """
+    Function for update Hardware info
+    """
+    if request.method == "POST":
+        part_number = request.POST.get('part_number')
+        serial_number = request.POST.get('serial_number')
+        description = request.POST.get('description')
+        inword_date = request.POST.get('inword_date')
+        outword_date = request.POST.get('outword_date')
+        remark = request.POST.get('remark')        
+        status = request.POST.get('status')
+
+
+        hard = cl_Hardware(
+            id = id,
+            part_number=part_number,
+            serial_number=serial_number,
+            description=description,
+            inword_date=inword_date,
+            outword_date=outword_date,
+            status=status,
+            remark=remark,
+
+        )
+        hard.save()
+        return redirect('hardware')
+    return render(request, 'tool/hardware.html',{'permission':permission})
+
+
+@login_required(login_url='/login_render/')
+def Hard_Delete(request):
+    if request.method == "POST":
+        list_id = request.POST.getlist('id[]')
+        for i in list_id:
+            hard = cl_Hardware.objects.filter(id=i).first()
+            hard.delete()
+    return redirect('hardware')
+
+
+
 
 # def addreopen(request):
 #     if request.method == "POST":

@@ -89,7 +89,7 @@
           <th>Asset Number</th>
           <th>Move To Production Date</th>
           <th>Purchase Date</th>
-          <th>End Of Warrenty</th>
+          <th>End Of Warranty</th>
           <th>Description</th>
           {% if permission.confi_m_e == "on" or permission == None %}
           <th>Edit</th>
@@ -324,7 +324,7 @@
                 <span class="validity"></span>
               </div> -->
               <div class="form-group">
-                <span class="required-field"></span><label for="dt_end_of_warranty">End Of Warrenty</label>
+                <span class="required-field"></span><label for="dt_end_of_warranty">End Of Warranty</label>
                 <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_end_of_warranty"
                   pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
               </div>
@@ -528,7 +528,7 @@
                 name="dt_end_of_warranty" required pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
               </div>  -->
                 <div class="form-group">
-                  <span class="required-field"></span><label for="dt_end_of_warranty">End Of Warrenty</label>
+                  <span class="required-field"></span><label for="dt_end_of_warranty">End Of Warranty</label>
                   <input class="form-control w-25" id="dt_end_of_warranty" type="datetime-local" name="dt_end_of_warranty"
                     value="{{ i.dt_end_of_warranty|date:'Y-m-d\TH:i' }}"
                     pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}" required>
