@@ -1937,11 +1937,11 @@ def ur_detail(request, pk):
 
     comment = None
     if urequest.ch_status == 'Reopen':
-            comment = cl_Reopen.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_reopen
+        comment = cl_Reopen.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_reopen
 
     Rcomment = None
     if urequest.ch_status == 'Resolved':
-            Rcomment = cl_Resolved.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_resolved
+        Rcomment = cl_Resolved.objects.filter(ureq_id=urequest.id).order_by('-id').first().txt_resolved
 
     ticket_log = cl_Ticket_Logs.objects.filter(incident_req_id = pk)
 
@@ -2115,11 +2115,12 @@ def im_resolved(request):
             ur = cl_User_request.objects.filter(id=i).first()
             ur.ch_status = "Resolved"
             ur.save() 
-            # cl_CResolved.objects.create(txt_cresolved=reason,creq_id=ur.id)
-            cl_Resolved.objects.create(txt_resolved=reason,ureq_id=ur.id)  
-            # cl_Resolved.objects.create(txt_resolved=reason,ur_id=ur.id)  
+            print(reason)
+            cl_Resolved.objects.create(txt_resolved=reason,ureq_id=ur.id)
 
 
+
+            # cl_Resolved.objects.create(txt_resolved=reason,ureq_id=ur.id)
             ticket_log(None, ur, "Request Resolved", admin_name)
 
         req_caller = cl_Person.objects.filter(id=ur.fk_caller_id).first()   
