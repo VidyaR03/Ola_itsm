@@ -483,6 +483,15 @@ urlpatterns = [
     path('syndelete', views.syndelete, name='syndelete'),
 
 
+    ### For Hardware
+    path("hardware/", views.hardware_part,name='hardware'),
+    path('Hard_Add', views.Hard_Add, name='Hard_Add'),
+    path('Hard_Edit', views.Hard_Edit, name='Hard_Edit'),
+    path('Hard_Update/<str:id>', views.Hard_Update, name='Hard_Update'),
+    path('Hard_Delete/', views.Hard_Delete, name='Hard_Delete'),
+
+
+
     # path('store_reopen_reason/', views.store_reopen_reason, name='store_reopen_reason'),
 
 

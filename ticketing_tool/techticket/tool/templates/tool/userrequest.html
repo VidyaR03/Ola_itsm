@@ -59,6 +59,7 @@
         <th style="text-align: center;">Start Date</th>
         <th style="text-align: center;">Updated Date</th>
         <th style="text-align: center;">Title</th>
+        <th style="text-align: center;">Hardware</th>
         <th style="text-align: center;">Service</th>
         <th style="text-align: center;">Service Subcategory</th>
         <th style="text-align: center;">Parent Request</th>
@@ -101,6 +102,11 @@
         <td>{{i.dt_start_date}}</td>
         <td>{{i.dt_Updated_date}}</td>
         <td>{{i.ch_title}}</td>
+        {% if i.ch_hardware.part_number is none %}
+        <td>None</td>
+        {% else %}
+        <td>{{i.ch_hardware.part_number}}</td>
+        {% endif %}
         <td>{{i.ch_service}}</td>
         <td>{{i.ch_service_subcategory}}</td>
         <td>{{i.ch_parent_request_id}}</td>
@@ -195,6 +201,7 @@
               <label>Status</label>
               <input class="form-control" name="ch_status" value="New" type="text" readonly>
             </div>
+            
             <div class="form-group">
               <span class="required-field"></span>  <label>Origin</label>
               <select name="ch_origin" type="text" class="form-control" aria-label="Default select example"
@@ -209,6 +216,22 @@
             <div class="form-group">
               <span class="required-field"></span>  <label>Title</label>
               <input class="form-control" name="ch_title" type="text" placeholder="Enter Title" required>
+            </div>
+            <div class="form-group">
+              <label>Hardware Part
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'hardware' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="part_number" class="form-control" id="part_number"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Hardware Part</option>
+                {% for i in hard %}
+                <option value="{{i.id}}">{{i.part_number}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="form-group">
               <label>Request Type</label>
@@ -229,6 +252,9 @@
                 <option value="service"> A service</option>
               </select>
             </div>
+         
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; ">
             <div class="form-group">
               <label>Priority</label>
               <select name="ch_priority" type="text" class="form-control" aria-label="Default select example"
@@ -240,8 +266,6 @@
                 <option value="Low"> Low</option>
               </select>
             </div>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
@@ -375,6 +399,7 @@
                 {% endfor %}
               </select>
             </div>
+           
             <div class="form-group">
               <label>Caller
                 {% if permission.confi_m_a == "on" or permission == None %}
@@ -387,6 +412,7 @@
                 <option selected value="{{ i.fk_caller }}">{{ i.fk_caller.ch_person_firstname }} {{ i.fk_caller.ch_person_lastname }}</option>
               </select>
             </div>
+
             <div class="form-group">
               <label>Status</label>
               <input class="form-control" name="ch_status" value="{{i.ch_status}}" type="text" readonly>
@@ -407,6 +433,23 @@
               <input class="form-control" name="ch_title" value="{{i.ch_title}}" type="text" placeholder="Enter Title" required>
             </div>
             <div class="form-group">
+              <label>Hardware Part
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'hardware' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="part_number" class="form-control" id="ch_hardware_{{i.id}}"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{i.ch_hardware_id}}">{{i.ch_hardware}}</option>
+                <option value="">None</option>
+                {% for j in hard %}  
+                <option value="{{j.id}}">{{j.part_number}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
               <label>Request Type</label>
               <select name="ch_request_type" type="text" class="form-control" aria-label="Default select example"
                 aria-invalid="false" required>
@@ -425,6 +468,9 @@
                 <option value="service"> A service</option>
               </select>
             </div>
+         
+          </div>
+          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; ">
             <div class="form-group">
               <label>Priority</label>
               <select name="ch_priority" type="text" class="form-control" aria-label="Default select example"
@@ -436,8 +482,6 @@
                 <option value="Low"> Low</option>
               </select>
             </div>
-          </div>
-          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="dt_start_date" type="datetime-local" name="dt_start_date"
@@ -735,16 +779,17 @@
   
     <div class="modal-dialog">
       <div class="modal-content" style="width: 400px; position: relative; left: 15%;">
-        <div class="modal-header">
+        <!-- <div class="modal-header">
           <h4 class="modal-title">Resolved</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
+        </div> -->
+        <label class="form-label" for="name">Resolved Remark</label>
+        <textarea id="fname" name="txt_resolved" class="form-control" rows="2" cols="10" style="height: 15px;"></textarea></div>
   
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Resolved Remark</label>
             <input class="form-control" name="txt_resolved" type="text">
-          </div>
+          </div> -->
        
           <div class="modal-footer">
             <button type="submit" id="resolved_btn" class="btn btn-primary" value="Add">Remark</button>
