@@ -679,6 +679,7 @@ class cl_New_change(models.Model):
     ch_parent_change= models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     txt_fallback_plan = models.CharField(max_length=100, null=True)
     txt_description = models.CharField(max_length=100, null=True)
+    ch_hardware = models.ForeignKey('cl_Hardware', on_delete=models.CASCADE, null=True, blank=True)
     ch_assign_agent = models.CharField(max_length=100, null=True, default="Deallocated")
 
     def __str__(self):

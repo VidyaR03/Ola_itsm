@@ -4,11 +4,13 @@
 
 
 <div style="position: relative; top: 65px; margin-left: 150px; padding-top: 0px; margin-top: 0px;">
-    <div class="col-md-8" style="color:brown;">
+    <div style="width: 60%;">
+
+    <div class="col-md-8" style="color:brown; display: block;">
         <h1>{{ mchange.ch_organization}}</h1>
     </div>
 
-    <div class="col-md-6" style="color: black;">
+    <div class="col-md-6"  style="display: block;">
         <table class="table">
             <tbody>
                 <tr>
@@ -52,8 +54,20 @@
                     <td>{{mchange.txt_fallback_plan}}</td>
                 </tr>
                 <tr>
+                    <td>Part Number:</td>
+                    {% if mchange.ch_hardware.part_number is none %}
+                    <td>None</td>
+                    {% else %}
+                    <td>{{ mchange.ch_hardware.part_number }}</td>
+                    {% endif %}
+                  </tr>
+                <tr>
                     <td>Description:</td>
                     <td>{{mchange.txt_description}}</td>
+                </tr>
+                <tr>
+                    <td>Assign Agent:</td>
+                    <td>{{ mchange.ch_assign_agent}}</td>
                 </tr>
 
             </tbody>
@@ -62,15 +76,17 @@
 
         {% if chcomment is not None %}
         <div style="color: green;">
-          <h4>Resolved Remark : {{ chRcomment }}</h4>
+            <h4>Resolved Remark : {{ chRcomment }}</h4>
         </div>
         {% endif %}
-  
+
         {% if mchange.ch_status == "Reopen" %}
         <div style="color: red;">
-          <h4>Reason of Reopen : {{ chcomment }}</h4>
+            <h4>Reason of Reopen : {{ chcomment }}</h4>
         </div>
         {% endif %}
+    </div>
+    </div>
 
         <!-- {% if chcomment %}
         <p><strong>Reason of Reopen:</strong>{{chcomment}}</p>
@@ -85,16 +101,39 @@
         <p>No comment available</p>
         {% endif %} -->
 
+        <div style="position: relative; bottom: 90px; left: 200px;">
+            <div class="col-md-6" style="color:brown; display: block;">
+                <h2>Logs</h2>
+            </div>
+            <div class="col-md-6" style="display: block;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">ID</th>
+                            <th style="text-align: center;">Aciton</th>
+                            <th style="text-align: center;">Logged User</th>
+                            <th style="text-align: center;">Timestamp</th>
+                        </tr>
+                    </thead>
+
+                    {% for i in cticket_log %}
+                    <tbody style="text-align: center;">
+                        {% csrf_token %}
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.action}}</td>
+                        <td>{{i.logged_user}}</td>
+                        <td>{{i.timestamp}}</td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
 
 
 
-    
+
+
+        </div>
+
     </div>
 
-</div>
-
-{% endblock %}
-
-
-
-
+    {% endblock %}

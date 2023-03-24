@@ -37,6 +37,7 @@ from tool.modules.user_logs.user_activity_log import *
 from django.conf import settings
 import requests
 from .models import cl_Reopen
+import re
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -1267,6 +1268,7 @@ def newchange(request):
     if user.ch_organization.ch_name == "Inhouse":
         org = cl_New_organization.objects.all()
         call = cl_Person.objects.all()
+        hard = cl_Hardware.objects.all()
         nchange = cl_New_change.objects.all()
         if request.method == "GET":
             allteam = cl_Team.objects.all()
@@ -1297,7 +1299,7 @@ def newchange(request):
     q = request.GET.get('searchstatus')
     if q != None:
         nchange = cl_New_change.objects.filter(ch_status__icontains=q)
-    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call,'team_person':team_person})
+    return render(request, 'tool/newchange.html', {'nchange': nchange, 'allteam': allteam,'users':users,'permission':permission,'org':org,'call':call,'team_person':team_person,'hard':hard})
 
 def get_people_by_team(request):
     team_id = request.GET.get('teamId')
@@ -1314,10 +1316,10 @@ def CADD(request):
     permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         ch_organization = cl_New_organization.objects.filter(
-            ch_name=str.capitalize(request.POST.get('ch_organization'))).first()
+            id=request.POST.get('ch_organization')).first()
 
         ch_caller =cl_Person.objects.filter(
-            ch_person_firstname=str.capitalize(request.POST.get('ch_caller'))).first()
+            id=request.POST.get('ch_caller')).first()
         ch_status = request.POST.get('ch_status')
         ch_category = request.POST.get('ch_category')
         ch_title = request.POST.get('ch_title')
@@ -1325,6 +1327,11 @@ def CADD(request):
         dt_Updated_date = request.POST.get('dt_Updated_date')
         ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
+        try:
+            ch_hardware =cl_Hardware.objects.filter(id=request.POST.get('part_number')).first()
+        except:
+            ch_hardware = None
+        
         txt_description = request.POST.get('txt_description')
         nchange = cl_New_change(
             ch_organization=ch_organization,
@@ -1336,6 +1343,7 @@ def CADD(request):
             dt_Updated_date=dt_Updated_date,
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
+            ch_hardware = ch_hardware,
             txt_description = txt_description,
         )
         nchange.save()
@@ -1370,6 +1378,8 @@ def CADD(request):
         event ="event"
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
+        ticket_log(cr_raised,None ,"Request Added", admin_name)
+
         return redirect('newchange')
     return render(request, 'tool/newchange.html',{'permission':permission})
 
@@ -1394,10 +1404,10 @@ def CUpdate(request, id):
     if request.method == "POST":
         nchange = cl_New_change.objects.filter(id=id).first()
         # id = request.POST.get('id')
-        ch_organization = cl_New_organization.objects.get(
-            ch_name=str.capitalize(request.POST.get('ch_organization')))
-        ch_caller =cl_Person.objects.get(
-            ch_person_firstname=str.capitalize(request.POST.get('ch_caller')))
+        ch_organization = cl_New_organization.objects.filter(
+            ch_name=request.POST.get('ch_organization')).first()
+        ch_caller =cl_Person.objects.filter(
+            ch_person_firstname=request.POST.get('ch_caller')).first()
         # ch_status = request.POST.get('ch_status')
         ch_status = nchange.ch_status
         ch_category = request.POST.get('ch_category')
@@ -1406,6 +1416,11 @@ def CUpdate(request, id):
         dt_Updated_date = request.POST.get('dt_Updated_date')
         ch_parent_change = cl_New_change.objects.filter(id=request.POST.get('ch_parent_change_id')).first()
         txt_fallback_plan = request.POST.get('txt_fallback_plan')
+        try:
+            ch_hardware =cl_Hardware.objects.filter(id=request.POST.get('part_number')).first()
+            print(ch_hardware)
+        except:
+            ch_hardware = None
         txt_description = request.POST.get('txt_description')
         ch_assign_agent = nchange.ch_assign_agent
         nchange = cl_New_change(
@@ -1420,6 +1435,7 @@ def CUpdate(request, id):
             ch_parent_change=ch_parent_change,
             txt_fallback_plan=txt_fallback_plan,
             txt_description=txt_description,
+            ch_hardware = ch_hardware,
             ch_assign_agent=ch_assign_agent
         )
         nchange.save()
@@ -1428,6 +1444,7 @@ def CUpdate(request, id):
         event ="event"
         resultcode = "200"
         user_activity(admin_name, adminaction, event, resultcode)
+        ticket_log( nchange,None, "Request Updated", admin_name)
         return redirect('newchange')
     return render(request, 'tool/newchange.html',{'permission':permission})
 
@@ -1455,6 +1472,8 @@ def assign_changeModal(request):
         p_Emp_id = request.POST.get('p')
         per = cl_Person.objects.filter(id=p_Emp_id).first()
         telegram_chat_id = per.telegram_chatid
+        admin_name = request.session["username"]
+
         try:
             tel_bot_lodder()
         except:
@@ -1464,7 +1483,15 @@ def assign_changeModal(request):
             nchange = cl_New_change.objects.filter(id=i).first()
             nchange.ch_assign_agent = per.ch_person_firstname
             nchange.ch_status = "Assigned"
+            now = datetime.now()
+            nchange.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
             nchange.save()
+            req = f'Request Assigned To {nchange.ch_assign_agent}'
+            ticket_log(nchange,None,req, admin_name)
+        try:
+            tel_bot_lodder()
+        except:
+            print("Bot not configured")
 
         try:
             mail_sender()
@@ -1987,12 +2014,16 @@ def change_detail(request,pk):
     else:
         chRcomment = 'No comment available'
 
+    cticket_log = cl_Ticket_Logs.objects.filter(change_req_id = pk)
+
+
 
 
     context={
         'mchange':mchange,
         'chcomment':chcomment,
-        'chRcomment':chRcomment
+        'chRcomment':chRcomment,
+        'cticket_log':cticket_log
     } 
     return render(request, 'tool/change_details.html',context)
 
@@ -2040,7 +2071,8 @@ def assign_URModal(request):
             now = datetime.now()
             ur.dt_Request_Assign_date = now.strftime("%Y-%m-%d %H:%M:00")  
             ur.save()
-            ticket_log(None, ur, "Request Assigned", admin_name)
+            req = f'Request Assigned To {ur.ch_assign_agent}'
+            ticket_log(None, ur, req, admin_name)
         try:
             tel_bot_lodder()
         except:
@@ -2117,6 +2149,7 @@ def im_resolved(request):
             ur.save() 
             print(reason)
             cl_Resolved.objects.create(txt_resolved=reason,ureq_id=ur.id)
+            
 
 
 
@@ -2201,6 +2234,8 @@ def resolved(request):
     if request.method == "POST":
         list_id = request.POST.getlist('cr_id[]')  
         reason = request.POST.get('reason')
+        admin_name = request.session["username"]
+
         # print(reason)
         for i in list_id:
             cr = cl_New_change.objects.filter(id=i).first()
@@ -2209,6 +2244,8 @@ def resolved(request):
             cr.save()
             # cl_Resolved.objects.create(txt_resolved=reason,creq_id=cr.id)  
             cl_CResolved.objects.create(txt_cresolved=reason,creq_id=cr.id)
+            ticket_log( cr,None, "Request Resolved", admin_name)
+
 
 
         subject = 'Change request Resolved'
@@ -2244,11 +2281,14 @@ def cm_approved(request):
     # permission = roles.objects.filter(id=request.session['user_role']).first()
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-          
+        admin_name = request.session["username"]
+  
         for i in list_id:
             cm = cl_New_change.objects.filter(id=i).first()
             cm.ch_status = "Approved"
             cm.save()
+            ticket_log( cm, None,"Request Approved", admin_name)
+
 
     return redirect('newchange')
 
@@ -2297,6 +2337,8 @@ def cm_reopen(request):
     if request.method == "POST":
         ur_id = request.POST.getlist('creq_id[]')  
         reason = request.POST.get('reason') 
+        admin_name = request.session["username"]
+
            
         for i in ur_id:
             cm = cl_New_change.objects.filter(id=i).first()
@@ -2304,6 +2346,8 @@ def cm_reopen(request):
             if cm.ch_status == 'Reopen':
                 cm.ch_assign_agent = 'Not Assign'
             cm.save()
+            ticket_log(cm,None,  "Request Reopend", admin_name)
+
             cl_CReopen.objects.create(txt_creopen=reason,creq_id=cm.id)
 
         
