@@ -73,6 +73,7 @@
       <th style="text-align: center;">Last Updated Date</th>
       <th style="text-align: center;">Parent Change</th>
       <th style="text-align: center;">Fallback Plan</th>
+      <th style="text-align: center;">Hardware</th>
       <th style="text-align: center;">Description</th>
       <th style="text-align: center;">Agent</th>
       {% if permission.ch_m_e == "on" or permission == None %}
@@ -111,6 +112,11 @@
         <td>{{i.dt_Updated_date}}</td>
         <td>{{i.ch_parent_change_id}}</td>
         <td>{{i.txt_fallback_plan}}</td>
+        {% if i.ch_hardware.part_number is none %}
+        <td>None</td>
+        {% else %}
+        <td>{{i.ch_hardware.part_number}}</td>
+        {% endif %}
         <td>{{i.txt_description}}</td>
         {% if i.ch_assign_agent == "Deallocated" %}
           <td>Not Assign</td>
@@ -170,23 +176,24 @@
           </div>
           <!--start of left half -->
           <div class="modal-body" style="width: 330px; padding-left: 40px; display: inline-block;">
+         
             <div class="form-group">
-              <span class="required-field"></span>
+              <span class="required-field"></span>  
               <label>Organization
                 {% if permission.setting_a == "on" or permission == None %}
                 <a href="{% url 'new_organization' %}">
-                 <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
                 </a>
                 {% endif %}
               </label>
-              <select name="ch_organization" id="ch_organization" style="min-height:30px;min-width:280px;" required>
-                <option selected value=''>Please select Organization</option>
+              <select name="ch_organization" class="form-control" id="ch_organization_a"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Organization</option>
                 {% for i in org %}
-                <option value="{{i.ch_name}}">{{i.ch_name}}</option>
+                <option value="{{i.id}}">{{i.ch_name}}</option>
                 {% endfor %}
               </select>
             </div>
-
             <div class="form-group">
               <span class="required-field"></span>
               <label>Caller
@@ -196,33 +203,18 @@
                 </a>
                 {% endif %}
               </label>
-              <select name="ch_caller" id="ch_caller" style="min-height:30px;min-width:280px;" required>
-                <option selected value="">Please select Caller</option>
-                {% for i in call %}
-                <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
-                {% endfor %}
+              <select name="ch_caller" class="form-control" id="org_people_id" style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Organization First</option>
               </select>
             </div>
+
 
             <div class="form-group">
               <label>Status</label>
               <input class="form-control" name="ch_status" value="New" type="text" readonly>
             </div>
             
-            <!-- <div class="form-group"> 
-
-              <span class="required-field"> <label>Status</span></label>
-              <select name="ch_status" type="text" class="form-control" aria-label="Default select example"
-                aria-invalid="false" required>
-                <option value="New">New</option>
-                <option value="Approval_Awaited">Approval Awaited</option>
-                <option value="Approved">Approved</option>
-                <option value="Assigned">Assigned</option>
-                <option value="Resolved">Resolved</option>
-                <option value="Closed">Closed</option>
-                <option value="Reopend">Reopend</option>
-              </select>
-            </div> -->
+        
             <div class="form-group">
               <span class="required-field"></span> <label>Category</label>
               <input name="ch_category" type="text" class="form-control" required>
@@ -231,14 +223,15 @@
               <span class="required-field"></span><label>Title</label>
               <input name="ch_title" type="text" class="form-control" required>
             </div>
-          </div>
-          <!--start of right half -->
-          <div class="modal-body" style="width: 330px; display: inline-block;">
             <div class="form-group">
               <span class="required-field"></span><label for="dt_start_date">Start Date</label>
               <input class="form-control w-25" id="datetimepicker1" type="datetime-local" name="dt_start_date"
               pattern="[0-9]{2}-[0-9]{2}-[0-9]{4} / [0-12]{2}:[0-60]{2}"  required>
             </div>
+          </div>
+          <!--start of right half -->
+          <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 75px;">
+         
             <div class="form-group">
               <span class="required-field"></span><label for="dt_Updated_date">Updated Date</label>
               <input class="form-control w-25" id="datetimepicker2" type="datetime-local" name="dt_Updated_date"
@@ -272,6 +265,22 @@
               <input name="txt_fallback_plan" type="text" class="form-control" required>
             </div>
             <div class="form-group">
+              <label>Hardware Part
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'hardware' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="part_number" class="form-control" id="part_number"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="">Please select Hardware Part</option>
+                {% for i in hard %}
+                <option value="{{i.id}}">{{i.part_number}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
               <span class="required-field"></span><label>Description</label>
               <input name="txt_description" type="textarea" class="form-control" required>
             </div>
@@ -284,6 +293,35 @@
       </div>
     </div>
   </div>
+
+  <!-- for Getting people related to org -->
+<script>
+  $("#ch_organization_a").change(function () {
+    var org_id = $(this).val();
+    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+    // Make an AJAX request to the server
+    $.ajax({
+      method: "GET",
+      url: "{% url 'get_people_by_org' %}",
+      data: {
+        org_id,
+        csrfmiddlewaretoken: csrf
+      },
+      success: function (people) {
+        // Update the options of the person dropdown
+        var org_people = $("#org_people_id");
+        org_people.empty();
+        $.each(people, function (index, person) {
+          org_people.append($("<option>", {
+            value: person.id,
+            text: person.firstname+" "+person.lastname,
+          }));
+        });
+      },
+    });
+  });
+
+</script>
 
   <!-- Edit Modal HTML -->
   {% for i in nchange %}
@@ -303,6 +341,35 @@
               <input name="id" value="{{i.id}}" type="text" class="form-control" required readonly>
             </div>
             <div class="form-group">
+              <label>Organization
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'new_organization' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="ch_organization" class="form-control" id="ch_organization_{{ i.id }}"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_organization }}">{{ i.ch_organization }}</option>
+                {% for i in org %}  
+                <option value="{{i.id}}">{{i.ch_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+           
+            <div class="form-group">
+              <label>Caller
+                {% if permission.confi_m_a == "on" or permission == None %}
+                <a href="{% url 'client' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="ch_caller" class="form-control" id="org_people_{{ i.id }}" style="min-height:30px;min-width:280px;">
+                <option selected value="{{ i.ch_caller }}">{{ i.ch_caller.ch_person_firstname }} {{ i.ch_caller.ch_person_lastname }}</option>
+              </select>
+            </div>
+            <!-- <div class="form-group">
               <span class="required-field"></span>
               <label>Organization
                 {% if permission.setting_a == "on" or permission == None %}
@@ -317,12 +384,12 @@
                 <option value="{{i.ch_name}}">{{i.ch_name}}</option>
                 {% endfor %}
               </select>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
               <label>Organization</label>
               <input name="ch_organization" value="{{i.ch_organization}}" type="text" class="form-control" required>
             </div> -->
-            <div class="form-group">
+            <!-- <div class="form-group">
               <span class="required-field"></span>
               <label>Caller
                 {% if permission.confi_m_a == "on" or permission == None %}
@@ -337,7 +404,7 @@
                 <option value="{{i.ch_person_firstname}}">{{i.ch_person_firstname}}</option>
                 {% endfor %}
               </select>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
               <label>Caller</label>
               <input name="ch_caller" value="{{i.ch_caller}}" type="text" class="form-control" required>
@@ -406,6 +473,23 @@
             <div class="form-group">
               <label>Fallback Plan</label>
               <input name="txt_fallback_plan" value="{{i.txt_fallback_plan}}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Hardware Part
+                {% if permission.setting_a == "on" or permission == None %}
+                <a href="{% url 'hardware' %}">
+                  <span class="glyphicon glyphicon-plus-sign" style="display: inline;"></span>
+                </a>
+                {% endif %}
+              </label>
+              <select name="part_number" class="form-control" id="ch_hardware_{{i.id}}"
+                style="min-height:30px;min-width:280px;">
+                <option selected value="{{i.ch_hardware_id}}">{{i.ch_hardware}}</option>
+                <option value="">None</option>
+                {% for j in hard %}  
+                <option value="{{j.id}}">{{j.part_number}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="form-group">
               <label>Description</label>
